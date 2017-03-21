@@ -5,6 +5,13 @@
 // Variables
 @import "variables";
 
-// Bootstrap
+// Bulma
 @import "node_modules/bulma/bulma";
+
+// Components
 @import "core";
+@import "nav";
+@import "sidebar";
+
+// Elements
+@import "form";

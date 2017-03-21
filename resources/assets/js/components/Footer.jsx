@@ -1,15 +1,10 @@
 import React, {Component, PropTypes} from 'react'
 
 export default class Footer extends Component {
-    constructor(props) {
-        super(props)
-
-    }
-
     render() {
         return (
             <footer className="main-footer">
-                Copyright 2017&copy; University of Tennessee at Knoxville
+                &copy;2017 <a target="_blank" href="https://utk.edu">UTK</a> and <a target="_blank" href="http://www.uky.edu/UKHome/">UKY</a>
             </footer>
         )
     }

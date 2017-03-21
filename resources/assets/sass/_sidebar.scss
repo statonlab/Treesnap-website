@@ -1,0 +1,15 @@
+.sidebar {
+  width: $sidebar-width;
+  position: absolute;
+  top: $nav-height;
+  left: 0;
+  bottom: 0;
+  padding: 20px 10px;
+  background: $body-bg;
+  box-shadow: 3px 0 3px rgba(0, 0, 0, .16);
+  z-index: 5;
+
+  @media(max-width: 700px) {
+    left: -300px;
+  }
+}

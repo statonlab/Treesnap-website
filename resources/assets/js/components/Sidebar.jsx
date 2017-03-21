@@ -67,6 +67,22 @@ export default class Sidebar extends Component {
     render() {
         return (
             <div className="sidebar" style={{maxHeight: '100%', overflow: 'auto'}}>
+                <form action="#" method="get" className="mb-1">
+                    <p className="mb-0 text-underline">
+                        <strong>Search</strong>
+                    </p>
+                    <div className="field has-addons">
+                        <p className="control flex-grow">
+                            <input className="input" type="search" placeholder="Search"/>
+                        </p>
+                        <p className="control">
+                            <button type="submit" className="button is-primary">
+                                <i className="fa fa-search"></i>
+                            </button>
+                        </p>
+                    </div>
+                </form>
+
                 <p className="mb-0 text-underline">
                     <strong>Filter by Plant</strong>
                 </p>
@@ -81,7 +97,9 @@ export default class Sidebar extends Component {
                     return (
                         <a className="box"
                            style={{padding: 10, marginBottom: '.5em'}}
-                           onClick={() => {panToMap()}}
+                           onClick={() => {
+                               panToMap()
+                           }}
                            key={index}>
                             <div className="media">
                                 <div className="media-left">

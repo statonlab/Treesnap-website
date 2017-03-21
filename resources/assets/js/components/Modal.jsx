@@ -23,7 +23,7 @@ export default class Modal extends Component {
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-content">
                     <div className="box" style={{padding: '20px'}}>
-                        <h3 className="title is-3" style={{borderBottom: '1px solid #dedede', paddingBottom: 10}}><strong>Login</strong></h3>
+                        <h3 className="title is-4" style={{borderBottom: '1px solid #dedede', paddingBottom: 10}}><strong>Login</strong></h3>
                         <form action="/" method="post">
                             <div className="field">
                                 <label className="label">Username</label>
@@ -50,7 +50,6 @@ export default class Modal extends Component {
 
                             <div className="field">
                                 <button type="submit" className="button is-primary">Login</button>
-                                <a href="#" className="is-pulled-right">Register</a>
                             </div>
                         </form>
                     </div>

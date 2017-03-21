@@ -14,4 +14,7 @@ mix.browserSync('treesource.app');
 
 mix.react('resources/assets/js/app.jsx', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
-    .version();
+
+if (mix.config.inProduction) {
+    mix.version();
+}

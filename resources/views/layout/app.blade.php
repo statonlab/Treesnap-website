@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>{{ $title or 'Tree Source' }}</title>
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    <script>
+        window.Laravel = {
+            csrfToken: '{{ csrf_token() }}'
+        }
+    </script>
 </head>
 <body>
 

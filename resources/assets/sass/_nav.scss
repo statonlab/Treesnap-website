@@ -1,0 +1,28 @@
+.nav {
+  z-index: 10;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  background-color: $primary;
+  .nav-item {
+    color: #fff;
+  }
+
+  a.nav-item {
+    &:hover {
+      color: #fff;
+      background: darken($primary, 5%);
+    }
+  }
+}
+
+.nav-brand {
+  > .nav-item {
+    font-size: 1.2em;
+    font-weight: 400;
+    > b {
+      font-weight: 700;
+    }
+  }
+  > small.nav-item {
+    font-size: 14px;
+  }
+}

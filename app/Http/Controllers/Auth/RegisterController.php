@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -27,12 +28,10 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -51,6 +50,8 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'is_over_thirteen' => 'required|boolean',
+            'zipcode' => 'integer|size:5'
         ]);
     }
 
@@ -66,6 +67,13 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'is_over_thirteen' => $data['is_over_thirteen'],
+            'token' => $this->generateAPIToken(),
+            'zipcode' => $data['zipcode']
         ]);
+    }
+
+    protected function generateAPIToken() {
+        return bcrypt(str_random(60));
     }
 }

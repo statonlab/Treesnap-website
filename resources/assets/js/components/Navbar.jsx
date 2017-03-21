@@ -22,12 +22,12 @@ export default class Navbar extends Component {
     render() {
         return (
             <div>
-                <nav className={`nav`}>
-                    <div className="nav-left">
-                        <a className="nav-item" style={{fontSize: '1.2em', color: '#444'}}>
-                            <b style={{color: '#2A9D8F', fontWeight: '700'}}>Tree</b>Source
+                <nav className="nav">
+                    <div className="nav-left nav-brand">
+                        <a className="nav-item">
+                            <b>Tree</b>Source
                         </a>
-                        <small className="nav-item" style={{color: '#888', fontSize: '14px'}}>
+                        <small className="nav-item">
                             Citizen science app
                         </small>
                     </div>
@@ -43,20 +43,15 @@ export default class Navbar extends Component {
                             Home
                         </a>
                         <a className="nav-item">
-                            Documentation
+                            Help
                         </a>
                         <a className="nav-item">
                             About
                         </a>
 
-                        <div className="nav-item">
-                            <a className="button" onClick={() => this.modal.open()}>
-                                <span>Login</span>
-                            </a>
-                            <a className="button is-primary">
-                                <span>Register</span>
-                            </a>
-                        </div>
+                        <a className="nav-item" onClick={() => this.modal.open()}>
+                            Login
+                        </a>
                     </div>
                 </nav>
                 <Modal ref={modal => this.modal = modal}/>

@@ -1,3 +1,5 @@
+// Bootstrap Everything (loads dash and axios)
+import './bootstrap'
 import React, {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import Sidebar from './components/Sidebar'

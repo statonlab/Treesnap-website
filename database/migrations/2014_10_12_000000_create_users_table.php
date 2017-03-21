@@ -18,6 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('is_anonymous')->default(false);
+            $table->string('token', 60)->index();
+            $table->date('is_over_thirteen')->nullable();
+            $table->string('zipcode', 5)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
