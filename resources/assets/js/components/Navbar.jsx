@@ -32,7 +32,7 @@ export default class Navbar extends Component {
                         </small>
                     </div>
 
-                    <div className="nav-toggle" onClick={this.toggle.bind(this)} style={{height: '60px'}}>
+                    <div className="nav-toggle" onClick={this.toggle.bind(this)}>
                         <span></span>
                         <span></span>
                         <span></span>
@@ -49,8 +49,15 @@ export default class Navbar extends Component {
                             About
                         </a>
 
-                        <a className="nav-item" onClick={() => this.modal.open()}>
+                        <a href="#" className="nav-item" onClick={(e) => {
+                            e.preventDefault();
+                            this.modal.open()
+                        }}>
                             Login
+                        </a>
+
+                        <a href="/register" className="nav-item">
+                            Register
                         </a>
                     </div>
                 </nav>

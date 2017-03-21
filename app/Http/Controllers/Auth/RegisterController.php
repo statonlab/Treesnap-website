@@ -67,8 +67,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'is_over_thirteen' => $data['is_over_thirteen'],
-            'token' => $this->generateAPIToken(),
+            'is_over_thirteen' => !empty($data['is_over_thirteen']),
+            'api_token' => $this->generateAPIToken(),
             'zipcode' => $data['zipcode']
         ]);
     }

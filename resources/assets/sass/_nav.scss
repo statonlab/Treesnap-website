@@ -12,6 +12,12 @@
       background: darken($primary, 5%);
     }
   }
+
+  @include tablet() {
+    > .container {
+      width: 100%;
+    }
+  }
 }
 
 .nav-brand {
@@ -24,5 +30,22 @@
   }
   > small.nav-item {
     font-size: 14px;
+  }
+}
+
+.nav-toggle {
+  > span {
+    background-color: #fff;
+  }
+  &:hover {
+    background-color: darken($primary, 5%);
+  }
+}
+
+@include mobile() {
+  .nav-menu {
+    .nav-item {
+      color: #444;
+    }
   }
 }

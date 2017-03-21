@@ -12,13 +12,25 @@ body,
   position: absolute;
   top: $nav-height;
   left: $sidebar-width;
-  bottom: 0;
+  bottom: 0;//$app-footer-height;
   right: 0;
   padding: 40px;
   background-color: #fff;
   @media(max-width: 700px) {
     left: 0;
   }
+}
+
+.auth-footer {
+  border-top: 1px solid $laravel-border-color;
+  padding: 10px 0;
+  color: #666;
+}
+
+.main-content {
+  padding-top: 40px;
+  margin-bottom: 20px;
+  min-height: calc(100% - 140px);
 }
 
 .flex-grow {
@@ -48,7 +60,7 @@ a.box {
   color: #444;
 }
 
-.main-footer {
+.copyright {
   position: fixed;
   top: 65px;
   right: 5px;
@@ -61,5 +73,28 @@ a.box {
   &,
   > a {
     color: #777;
+  }
+}
+
+.app-footer {
+  background-color: #2d2d2d;
+  position: absolute;
+  left: $sidebar-width;
+  right: 0;
+  bottom: 0;
+  height: 3em;
+  padding: 0 1rem;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  &,
+  strong {
+    color: #fff;
+  }
+  a {
+    text-decoration: underline;
+  }
+  a:hover {
+    color: #fff;
   }
 }

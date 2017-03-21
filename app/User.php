@@ -18,7 +18,7 @@ class User extends Authenticatable
       'name',
       'email',
       'password',
-      'token',
+      'api_token',
       'is_over_thirteen',
       'zip_code'
     ];
@@ -31,6 +31,6 @@ class User extends Authenticatable
     protected $hidden = [
       'password',
       'remember_token',
-      'token',
+      'api_token',
     ];
 }

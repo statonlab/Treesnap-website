@@ -1,15 +1,19 @@
 import React, {Component, PropTypes} from 'react'
 
 export default class Footer extends Component {
+    constructor(props) {
+        super(props)
+    }
+
     render() {
         return (
-            <footer className="main-footer">
-                &copy;2017 <a target="_blank" href="https://utk.edu">UTK</a> and <a target="_blank" href="http://www.uky.edu/UKHome/">UKY</a>
-            </footer>
+            <div className="app-footer">
+                <div>
+                    Download <strong>TreeSource</strong> from the <a href="#">App Store</a> or <a href="#">Google Play</a>
+                </div>
+            </div>
         )
     }
 }
 
-Footer.PropTypes = {
-    name: PropTypes.string.isRequired
-}
+Footer.PropTypes = {}

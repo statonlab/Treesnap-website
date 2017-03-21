@@ -1,9 +1,11 @@
 // Body
 $body-bg: #f5f8fa;
 
-
 // Sidebar
 $sidebar-width: 300px;
+
+// App Footer
+$app-footer-height: 3em;
 
 // Borders
 $radius-small: 2px;
@@ -17,9 +19,9 @@ $panel-inner-border: $laravel-border-color;
 
 // Brands
 $primary: #2A9D8F;
-$info: #8eb4cb;
+$info: #00c0ef;
 $success: #2ab27b;
-$warning: #cbb956;
+$warning: #f39c12; //#cbb956;
 $danger: #bf5329;
 
 // Typography
