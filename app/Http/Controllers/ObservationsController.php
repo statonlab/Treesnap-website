@@ -3,37 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\v1\ResponseTrait;
+use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
 
 class ObservationsController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, Observable;
 
+    /**
+     * Get all public observations.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        $observations = Observation::all();
+        $observations = Observation::where('is_private', false)
+          ->orderby('collection_date', 'desc')
+          ->get();
         $data = [];
 
         foreach ($observations as $observation) {
-            // Skip private observations
-            if ($observation->is_private) {
-                continue;
-            }
-
             // Compile the data into a standardized response
-            $data[] = [
-              'id' => $observation->id,
-              'observation_category' => $observation->observation_category,
-              'meta_data' => $observation->data,
-              'location' => [
-                'longitude' => $observation->longitude,
-                'latitude' => $observation->latitude,
-              ],
-              'images' => $observation->images,
-              'date' => $observation->collection_date,
-              'data' => $observation->data,
-            ];
+            // Remove the is_private value from the response
+            $data[] = array_except($this->getObservationJson($observation),
+              ['is_private']);
         }
 
         return $this->success($data);

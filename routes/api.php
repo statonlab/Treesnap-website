@@ -22,8 +22,8 @@ Route::group([
     Route::get('/observations', 'ObservationsController@index');
     Route::get('/observation/{id}', 'ObservationsController@show');
     Route::post('/observations', 'ObservationsController@create');
-    Route::delete('/observation/{id}', 'ObservationsController@remove');
-    Route::put('/observation/{id}', 'ObservationsContrller@update');
+    Route::delete('/observation/{id}/delete', 'ObservationsController@delete');
+    Route::put('/observation/{id}/update', 'ObservationsController@update');
 
 });
 
