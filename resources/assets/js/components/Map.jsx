@@ -3,11 +3,15 @@ import React, {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import GoogleMap from 'google-map-react'
 
+import FaLeaf from 'react-icons/lib/fa/leaf';
+import FaTree from 'react-icons/lib/fa/tree';
+
+
 axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken
 
+const AnyReactComponent = ({ icon }) => <FaTree style = {greatPlaceStyle}/>
 
-
-const AnyReactComponent = ({ text }) => <div style = {greatPlaceStyle}>{text}</div>
+//need to set anchor location somehow
 
 const defaultProps = {
   center: {lat: 38.0377, lng: -84.4833},
@@ -75,15 +79,11 @@ export default class Map extends Component {
 const greatPlaceStyle = {
   // initially any map object has left top corner at lat lng coordinates
   // it's on you to set object origin to 0,0 coordinates
-  width: 10,
-  height: 10,
-  border: '2px solid #f44336',
-  borderRadius: 10,
-  backgroundColor: 'white',
   textAlign: 'center',
   color: '#3f51b5',
   fontSize: 16,
   fontWeight: 'bold',
   padding: 4
 };
+
 

@@ -41613,6 +41613,10 @@ Point.convert = function (a) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google_map_react__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google_map_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_google_map_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_icons_lib_fa_leaf__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_icons_lib_fa_leaf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_icons_lib_fa_leaf__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_icons_lib_fa_tree__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_icons_lib_fa_tree___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_icons_lib_fa_tree__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41625,16 +41629,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
+
+
 axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 
 var AnyReactComponent = function AnyReactComponent(_ref) {
-  var text = _ref.text;
-  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    'div',
-    { style: greatPlaceStyle },
-    text
-  );
+  var icon = _ref.icon;
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_icons_lib_fa_tree___default.a, { style: greatPlaceStyle });
 };
+
+//need to set anchor location somehow
 
 var defaultProps = {
   center: { lat: 38.0377, lng: -84.4833 },
@@ -41708,11 +41713,6 @@ var Map = function (_Component) {
 var greatPlaceStyle = {
   // initially any map object has left top corner at lat lng coordinates
   // it's on you to set object origin to 0,0 coordinates
-  width: 10,
-  height: 10,
-  border: '2px solid #f44336',
-  borderRadius: 10,
-  backgroundColor: 'white',
   textAlign: 'center',
   color: '#3f51b5',
   fontSize: 16,
@@ -44188,6 +44188,142 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
   return $script
 });
 
+
+/***/ }),
+/* 241 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(21);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var IconBase = function IconBase(_ref, _ref2) {
+  var children = _ref.children;
+  var color = _ref.color;
+  var size = _ref.size;
+  var style = _ref.style;
+
+  var props = _objectWithoutProperties(_ref, ['children', 'color', 'size', 'style']);
+
+  var _ref2$reactIconBase = _ref2.reactIconBase;
+  var reactIconBase = _ref2$reactIconBase === undefined ? {} : _ref2$reactIconBase;
+
+  var computedSize = size || reactIconBase.size || '1em';
+  return _react2.default.createElement('svg', _extends({
+    children: children,
+    fill: 'currentColor',
+    preserveAspectRatio: 'xMidYMid meet',
+    height: computedSize,
+    width: computedSize
+  }, reactIconBase, props, {
+    style: _extends({
+      verticalAlign: 'middle',
+      color: color || reactIconBase.color
+    }, reactIconBase.style || {}, style)
+  }));
+};
+
+IconBase.propTypes = {
+  color: _react.PropTypes.string,
+  size: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
+  style: _react.PropTypes.object
+};
+
+IconBase.contextTypes = {
+  reactIconBase: _react.PropTypes.shape(IconBase.propTypes)
+};
+
+exports.default = IconBase;
+module.exports = exports['default'];
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(21);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIconBase = __webpack_require__(241);
+
+var _reactIconBase2 = _interopRequireDefault(_reactIconBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FaTree = function FaTree(props) {
+    return _react2.default.createElement(
+        _reactIconBase2.default,
+        _extends({ viewBox: '0 0 40 40' }, props),
+        _react2.default.createElement(
+            'g',
+            null,
+            _react2.default.createElement('path', { d: 'm36.6 32.9q0 0.5-0.5 1t-1 0.4h-10.3q0.1 0.4 0.2 1.9t0.1 2.5q0 0.5-0.4 0.9t-1 0.4h-7.1q-0.6 0-1-0.4t-0.4-0.9q0-0.9 0.1-2.5t0.2-1.9h-10.4q-0.5 0-1-0.4t-0.4-1 0.4-1l9-9h-5.1q-0.6 0-1-0.5t-0.4-1 0.4-1l9-9h-4.4q-0.6 0-1-0.4t-0.5-1 0.5-1l8.5-8.6q0.5-0.4 1-0.4t1 0.4l8.6 8.6q0.4 0.4 0.4 1t-0.4 1-1 0.4h-4.4l9 9q0.4 0.4 0.4 1t-0.4 1-1 0.5h-5.1l8.9 8.9q0.5 0.5 0.5 1.1z' })
+        )
+    );
+};
+
+exports.default = FaTree;
+module.exports = exports['default'];
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(21);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIconBase = __webpack_require__(241);
+
+var _reactIconBase2 = _interopRequireDefault(_reactIconBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FaLeaf = function FaLeaf(props) {
+    return _react2.default.createElement(
+        _reactIconBase2.default,
+        _extends({ viewBox: '0 0 40 40' }, props),
+        _react2.default.createElement(
+            'g',
+            null,
+            _react2.default.createElement('path', { d: 'm28.6 15.7q0-0.6-0.5-1t-1-0.4q-3.8 0-7.1 1.1t-5.7 3-5.3 4.9q-0.4 0.5-0.4 1 0 0.6 0.4 1t1 0.4q0.5 0 1-0.4 0.6-0.5 1.7-1.6t1.5-1.5q3-2.7 5.9-3.9t7-1.2q0.6 0 1-0.4t0.5-1z m11.4-4.4q0 2.1-0.4 4.3-1.1 5-4.2 8.6t-7.9 5.9q-4.8 2.4-9.8 2.4-3.3 0-6.4-1-0.3-0.1-2-0.9t-2.1-0.9q-0.4 0-0.9 0.7t-1 1.6-1.2 1.6-1.3 0.7q-0.7 0-1.1-0.3t-0.7-0.5-0.6-0.9q-0.1-0.1-0.2-0.3t-0.1-0.2-0.1-0.2 0-0.3q0-0.8 0.7-1.7t1.5-1.4 1.5-1.3 0.7-1q0-0.1-0.3-0.9t-0.3-1q-0.2-1.1-0.2-2.3 0-2.6 0.9-4.9t2.7-4.1 3.8-3.1 4.5-2.2q1.3-0.4 3.3-0.5t4-0.2 4-0.2 3.6-0.5 2.5-1.3l0.7-0.6 0.7-0.6 0.6-0.5 0.8-0.3 1-0.1q0.8 0 1.5 1t1.1 2.5 0.5 2.8 0.2 2.1z' })
+        )
+    );
+};
+
+exports.default = FaLeaf;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);
