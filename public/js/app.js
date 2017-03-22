@@ -41642,12 +41642,12 @@ var defaultProps = {
 };
 
 var defaultMarkers = [{ name: "the singing tree",
-  lat: 38.0377,
-  lng: -84.4833,
-  key: 1 }, { name: "the golden water",
-  lat: 38.0477,
-  lng: -84.4933,
-  key: 2
+  latitude: 38.0377,
+  longitude: -84.4833,
+  id: 1 }, { name: "the golden water",
+  latitude: 38.0477,
+  longitude: -84.4933,
+  id: 2
 }];
 
 var Map = function (_Component) {
