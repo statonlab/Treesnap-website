@@ -13,6 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group([
+  'prefix' => 'api/v1',
+  'namespace' => 'Api/v1',
+  'middleware' => ['auth:api'],
+], function () {
+
+    Route::get('/observations', 'ObservationsController@index');
+    Route::get('/observation/{id}', 'ObservationsController@show');
+    Route::post('/observations', 'ObservationsController@create');
+    Route::delete('/observation/{id}', 'ObservationsController@remove');
+    Route::put('/observation/{id}', 'ObservationsContrller@update');
+
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
