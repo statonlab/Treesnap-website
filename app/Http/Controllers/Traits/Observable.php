@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Traits;
 
-
 use App\Observation;
 
 trait Observable
@@ -23,6 +22,7 @@ trait Observable
     {
         return [
           'id' => $observation->id,
+          'user_id' => $observation->user_id,
           'observation_category' => $observation->observation_category,
           'meta_data' => $observation->data,
           'location' => [
@@ -34,7 +34,6 @@ trait Observable
           'date' => $observation->collection_date,
           'meta_data' => $observation->data,
           'is_private' => $observation->is_private,
-          'collection_date' => $observation->collection_date,
         ];
     }
 }
