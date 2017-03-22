@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('is_anonymous')->default(false);
             $table->string('api_token', 60)->unique();
-            $table->date('is_over_thirteen')->nullable();
+            $table->boolean('is_over_thirteen')->nullable();
             $table->string('zipcode', 5)->nullable();
             $table->rememberToken();
             $table->timestamps();

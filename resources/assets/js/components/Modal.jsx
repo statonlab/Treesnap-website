@@ -19,7 +19,7 @@ export default class Modal extends Component {
 
     render() {
         return (
-            <div className={`modal${this.state.open && ' is-active'}`}>
+            <div className={`modal${this.state.open ? ' is-active' : ''}`}>
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-content">
                     <div className="box" style={{padding: '20px'}}>

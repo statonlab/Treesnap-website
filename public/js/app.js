@@ -11156,7 +11156,7 @@ var Modal = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'modal' + (this.state.open && ' is-active') },
+                { className: 'modal' + (this.state.open ? ' is-active' : '') },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'modal-background', onClick: this.close.bind(this) }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',

@@ -9,7 +9,7 @@
   box-shadow: 3px 0 3px rgba(0, 0, 0, .16);
   z-index: 5;
 
-  @media(max-width: 700px) {
+  @include mobile() {
     left: -300px;
   }
 

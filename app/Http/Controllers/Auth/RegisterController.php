@@ -74,6 +74,12 @@ class RegisterController extends Controller
     }
 
     protected function generateAPIToken() {
-        return bcrypt(str_random(60));
+        // Make sure the random string is 100% unique to our database
+        $str = str_random(60);
+        while(User::where('api_token', $str)->get()) {
+            $str = str_random(60);
+        }
+
+        return $str;
     }
 }
