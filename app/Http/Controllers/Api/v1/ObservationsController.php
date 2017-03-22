@@ -6,12 +6,13 @@ use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\v1\ResponseTrait;
+use App\Http\Controllers\Api\v1\Responds;
 use Illuminate\Validation\Rule;
+use Validator;
 
 class ObservationsController extends Controller
 {
-    use ResponseTrait, Observable;
+    use Responds, Observable;
 
     /**
      * Get all observations related to a user.
@@ -83,7 +84,11 @@ class ObservationsController extends Controller
     public function create(Request $request)
     {
         $user = $request->user();
-        $this->validate($request, $this->validationRules());
+
+        $validator = Validator::make($request->all(), $this->validationRules());
+        if ($validator->fails()) {
+            return $this->error($validator->errors());
+        }
 
         // TODO: UPLOAD IMAGES HERE
         $images = [
@@ -99,7 +104,7 @@ class ObservationsController extends Controller
           'latitude' => $request->latitude,
           'location_accuracy' => $request->location_accuracy,
           'collection_date' => $request->date,
-          'images' => $request->images,
+          'images' => $images,
           'is_private' => $request->is_private,
         ]);
 
@@ -128,7 +133,10 @@ class ObservationsController extends Controller
           ],
         ]);
 
-        $this->validate($request, $rules);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->error($validator->errors());
+        }
 
         // TODO: UPLOAD IMAGES HERE
         $images = [
@@ -144,7 +152,7 @@ class ObservationsController extends Controller
           'latitude' => $request->latitude,
           'location_accuracy' => $request->location_accuracy,
           'collection_date' => $request->date,
-          'images' => $request->images,
+          'images' => $images,
           'is_private' => $request->is_private,
         ])->where();
 

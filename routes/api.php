@@ -19,12 +19,17 @@ Route::group([
   'middleware' => ['auth:api'],
 ], function () {
 
+    // Observations Controller
     Route::get('/observations', 'ObservationsController@index');
-    Route::get('/observation/{id}', 'ObservationsController@show');
     Route::post('/observations', 'ObservationsController@create');
+    Route::get('/observation/{id}', 'ObservationsController@show');
     Route::delete('/observation/{id}', 'ObservationsController@delete');
     Route::put('/observation/{id}', 'ObservationsController@update');
 
+    // Users Controller
+    Route::post('/users', 'UsersController@create');
+    Route::get('/user/{id}', 'UsersController@show');
+    Route::put('/user/{id}', 'UsersController@update');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

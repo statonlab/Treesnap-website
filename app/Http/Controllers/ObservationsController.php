@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\v1\ResponseTrait;
+use App\Http\Controllers\Api\v1\Responds;
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
 
 class ObservationsController extends Controller
 {
-    use ResponseTrait, Observable;
+    use Responds, Observable;
 
     /**
      * Get all public observations.

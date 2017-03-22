@@ -1,18 +1,9 @@
-
 import React, {Component, PropTypes} from 'react'
-import ReactDOM from 'react-dom'
 import GoogleMap from 'google-map-react'
 
-import FaLeaf from 'react-icons/lib/fa/leaf';
-import FaTree from 'react-icons/lib/fa/tree';
+const AnyReactComponent = ({ icon }) => <i className="fa fa-leaf"></i>
 
-
-axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken
-
-const AnyReactComponent = ({ icon }) => <FaTree style = {greatPlaceStyle}/>
-
-//need to set anchor location somehow
-
+// need to set anchor location somehow
 const defaultProps = {
   center: {lat: 38.0377, lng: -84.4833},
   zoom: 11

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 /**
  * Utility methods for API responses.
  */
-trait ResponseTrait
+trait Responds
 {
     /**
      * No results found for a specific request.

@@ -62,6 +62,5 @@ class ObservationsTableSeeder extends Seeder
           'is_private' => true,
           'collection_date' => \Carbon\Carbon::now(),
         ]);
-
     }
 }
