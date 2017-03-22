@@ -1,13 +1,12 @@
 @extends('layout.app')
 
 @section('content')
-    <div id="map"></div>
+    <!--div id="map"></div>
     <script>
         var map;
         var markers = [];
 
         function panToMap() {
-            var t =
             map.setZoom(14)
             map.panTo(markers[Math.floor(Math.random() * markers.length)].marker.position)
             console.log()
@@ -106,7 +105,11 @@
             }, false)
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I&callback=initMap"
+    <script-- src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I&callback=initMap"
             async defer>
-    </script>
+    </script-->
+@endsection
+
+@section('js')
+    <script src="{{ mix('js/app.js') }}"></script>
 @endsection

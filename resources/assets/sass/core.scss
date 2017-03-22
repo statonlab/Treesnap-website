@@ -12,11 +12,11 @@ body,
   position: absolute;
   top: $nav-height;
   left: $sidebar-width;
-  bottom: 0;//$app-footer-height;
+  bottom: 0; //$app-footer-height;
   right: 0;
   padding: 40px;
   background-color: #fff;
-  @media(max-width: 700px) {
+  @include mobile() {
     left: 0;
   }
 }
@@ -96,5 +96,11 @@ a.box {
   }
   a:hover {
     color: #fff;
+  }
+}
+
+@include mobile() {
+  .container {
+    padding: 0 1rem;
   }
 }

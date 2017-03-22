@@ -20,7 +20,7 @@ class User extends Authenticatable
       'password',
       'api_token',
       'is_over_thirteen',
-      'zip_code'
+      'zip_code',
     ];
 
     /**
@@ -32,5 +32,15 @@ class User extends Authenticatable
       'password',
       'remember_token',
       'api_token',
+    ];
+
+    /**
+     * Default casts
+     *
+     * @var array
+     */
+    protected $casts = [
+      'is_over_thirteen' => 'boolean',
+      'is_anonymous' => 'boolean',
     ];
 }
