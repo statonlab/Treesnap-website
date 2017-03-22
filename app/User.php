@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\App;
 
 class User extends Authenticatable
 {
@@ -43,4 +44,13 @@ class User extends Authenticatable
       'is_over_thirteen' => 'boolean',
       'is_anonymous' => 'boolean',
     ];
+
+    /**
+     * Get the observations of a user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function observations() {
+        return $this->hasMany('App\Observation');
+    }
 }
