@@ -41691,7 +41691,6 @@ var Map = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AnyReactComponent, {
               lat: point.latitude,
               lng: point.longitude,
-              text: point.name,
               key: point.id
             });
           })
@@ -41709,8 +41708,8 @@ var Map = function (_Component) {
 var greatPlaceStyle = {
   // initially any map object has left top corner at lat lng coordinates
   // it's on you to set object origin to 0,0 coordinates
-  width: 200,
-  height: 50,
+  width: 10,
+  height: 10,
   border: '2px solid #f44336',
   borderRadius: 10,
   backgroundColor: 'white',
