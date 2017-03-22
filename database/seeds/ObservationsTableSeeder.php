@@ -18,8 +18,8 @@ class ObservationsTableSeeder extends Seeder
             ['path' => '/images/am.jpg'],
             ['path' => '/images/ash.jpg'],
           ],
-          'longitude' => 12,
-          'latitude' => 0,
+          'longitude' => 40.354388,
+          'latitude' => -95.998237,
           'data' => [
             'comment' => 'Comment on record 1'
           ],
@@ -33,8 +33,8 @@ class ObservationsTableSeeder extends Seeder
             ['path' => '/images/hem.jpg'],
             ['path' => '/images/oak.jpg'],
           ],
-          'longitude' => 12,
-          'latitude' => 0,
+          'longitude' => 40.354388,
+          'latitude' => -95.998237,
           'data' => [
             'comment' => 'Comment on record 2'
           ],
@@ -47,8 +47,8 @@ class ObservationsTableSeeder extends Seeder
           'images' => [
             ['path' => '/images/ash.jpg']
           ],
-          'longitude' => 12,
-          'latitude' => 0,
+          'longitude' => 44.354388,
+          'latitude' => -93.998237,
           'data' => [
             'comment' => 'Comment on record 3'
           ],

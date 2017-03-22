@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers;
 
+use App\Observation;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\v1\ResponseTrait;
 
 class ObservationsController extends Controller
 {
-    use ResponseTrait;
-
-    public function index(Request $request)
+    public function index()
     {
-        $user = $request->user();
-        $observations = $user->observations()->get();
+        $observations = Observation::all();
         $data = [];
 
         foreach ($observations as $observation) {
@@ -31,6 +27,8 @@ class ObservationsController extends Controller
             ];
         }
 
-        return $this->success($data);
+        return [
+          'data' => $data,
+        ];
     }
 }
