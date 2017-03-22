@@ -107,7 +107,7 @@ class ObservationsController extends Controller
             return $this->error('Request could not be completed. Error code: 100');
         }
 
-        return $this->success(['observation_id' => $observation->id]);
+        return $this->created(['observation_id' => $observation->id]);
     }
 
     /**
@@ -152,7 +152,7 @@ class ObservationsController extends Controller
             return $this->error('Request could not be completed. Error code: 100');
         }
 
-        return $this->success('Observation has been recorded successfully');
+        return $this->created('Observation record has been updated successfully');
     }
 
     /**
