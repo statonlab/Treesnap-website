@@ -41679,7 +41679,7 @@ var Map = function (_Component) {
     value: function render() {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { style: { width: '100%', height: '800px' } },
+        { id: 'map' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_2_google_map_react___default.a,
           {
