@@ -11,12 +11,14 @@ export default class Map extends Component {
     }
 
     componentDidMount() {
+        // Initialize the map
         this.maps = new google.maps.Map(this.refs.mapContainer, {
             center: {lat: 40.354388, lng: -95.998237},
             scrollwheel: true,
             zoom: 4
         })
 
+        // Here is where we will get the markers from the api and set the state
         this.setState({
             markers: [
                 {

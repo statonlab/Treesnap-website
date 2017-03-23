@@ -11065,12 +11065,14 @@ var Map = function (_Component) {
     _createClass(Map, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            // Initialize the map
             this.maps = new google.maps.Map(this.refs.mapContainer, {
                 center: { lat: 40.354388, lng: -95.998237 },
                 scrollwheel: true,
                 zoom: 4
             });
 
+            // Here is where we will get the markers from the api and set the state
             this.setState({
                 markers: [{
                     title: 'Hemlock',
@@ -11163,6 +11165,7 @@ var Marker = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Marker.__proto__ || Object.getPrototypeOf(Marker)).call(this, props));
 
         _this.state = {
+            // Set the initial state for the callout
             calloutOpen: false
         };
         return _this;
@@ -11173,17 +11176,20 @@ var Marker = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
+            // Create a marker
             this.marker = new google.maps.Marker({
                 title: this.props.title,
                 position: { lat: this.props.position.latitude, lng: this.props.position.longitude },
                 map: this.props.maps
             });
 
+            // Create a Callout
             this.callout = new google.maps.InfoWindow({
                 content: this.renderCallout(),
                 maxWidth: 200
             });
 
+            // Handle click events on the callout
             this.marker.addListener('click', function () {
                 if (_this2.state.calloutOpen) {
                     _this2.callout.close();
@@ -11194,6 +11200,13 @@ var Marker = function (_Component) {
                 _this2.setState({ calloutOpen: !_this2.state.calloutOpen });
             });
         }
+
+        /**
+         * Creates a DOM element for the callout
+         *
+         * @returns {Element}
+         */
+
     }, {
         key: 'renderCallout',
         value: function renderCallout() {
@@ -11201,14 +11214,16 @@ var Marker = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(this.props.children, callout);
             return callout;
         }
+
+        /**
+         * Not needed because we are using Google's JS API
+         * @returns {null}
+         */
+
     }, {
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                this.props.children
-            );
+            return null;
         }
     }]);
 
