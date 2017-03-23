@@ -49,6 +49,9 @@ import React, {Component, PropTypes} from 'react'
         <div className="boxItem" style={{padding:'20px'}}>
           TreeSource is written and developed in the Staton laboratory at the University of Tennessee-Knoxville by Abdullah Almasaeed and Bradford Condon.  The TreeSource citizen science collection project...
         </div>
+          <img src={'../images/Download_on_the_App_Store_Badge_US-UK_135x40.svg'} height = "40" width ="135" />
+        <img src={'../images/google-play-badge.png'} height="40" width="135" />
+
       </div>;
 
 
