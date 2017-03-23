@@ -76,7 +76,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Update an existing user.
+     * Update an existing user. This method does not allow password updates.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -94,7 +94,6 @@ class UsersController extends Controller
         $update = $user->update([
           'name' => $request->name,
           'email' => $request->email,
-          'password' => bcrypt($request->password),
           'is_over_thirteen' => $request->is_over_thirteen,
           'is_anonymous' => $request->is_anonymous,
           'zipcode' => $request->zipcode,
@@ -132,12 +131,12 @@ class UsersController extends Controller
                 $rules['email'] .= '|unique:users';
             }
         } else {
+            $rules['password'] = 'required|min:6';
             $rules['email'] .= '|unique:users';
         }
 
         return Validator::make($data, array_merge([
           'name' => 'required|min:3',
-          'password' => 'required|min:6',
           'is_over_thirteen' => 'required|boolean',
           'is_anonymous' => 'boolean',
           'zipcode' => [

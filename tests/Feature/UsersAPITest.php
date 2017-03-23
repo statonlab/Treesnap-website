@@ -5,8 +5,6 @@ namespace Tests\Feature;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersAPITest extends TestCase
 {
@@ -50,7 +48,6 @@ class UsersAPITest extends TestCase
 
         $response = $this->put('/api/v1/user', [
           'name' => 'Test User',
-          'password' => 'TestPass321',
           'email' => 'example2@email.com',
           'zipcode' => '37919',
           'is_anonymous' => false,
