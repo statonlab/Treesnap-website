@@ -56,6 +56,7 @@ export default class Map extends Component {
         return (
             <div id="map" ref="mapContainer">
                 {this.state.markers.map((marker, index) => {
+                    console.log(marker)
                     return (
                         <Marker
                             key={index}

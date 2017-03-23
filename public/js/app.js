@@ -11120,6 +11120,7 @@ var Map = function (_Component) {
                 'div',
                 { id: 'map', ref: 'mapContainer' },
                 this.state.markers.map(function (marker, index) {
+                    console.log(marker);
                     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2__Marker__["a" /* default */],
                         {
@@ -11206,12 +11207,12 @@ var Marker = function (_Component) {
             // Handle click events on the callout
             this.marker.addListener('click', function () {
                 if (_this2.state.calloutOpen) {
-                    //this.callout.close()
-                } else {}
-                    //this.callout.open(this.props.map, this.marker)
+                    _this2.callout.close();
+                } else {
+                    _this2.callout.open(_this2.props.map, _this2.marker);
+                }
 
-
-                    //this.setState({calloutOpen: !this.state.calloutOpen})
+                _this2.setState({ calloutOpen: !_this2.state.calloutOpen });
             });
         }
 
