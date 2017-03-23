@@ -18,6 +18,12 @@ trait Observable
       'White Oak',
     ];
 
+    /**
+     * Formats the observation record into the expected response.
+     *
+     * @param \App\Observation $observation
+     * @return array
+     */
     protected function getObservationJson(Observation $observation)
     {
         return [

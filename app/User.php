@@ -21,7 +21,8 @@ class User extends Authenticatable
       'password',
       'api_token',
       'is_over_thirteen',
-      'zip_code',
+      'is_anonymous',
+      'zipcode',
     ];
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\v1\Responds;
@@ -43,10 +44,14 @@ class ObservationsController extends Controller
     public function show($id, Request $request)
     {
         $user = $request->user();
-        $observation = $user->observations()->where('id', $id)->first();
+        $observation = Observation::where('id', $id)->first();
 
         if (!$observation) {
             return $this->notFound('The observation you requested was not found.');
+        }
+
+        if ($observation->user_id != $user->id) {
+            return $this->unauthorized();
         }
 
         return $this->success($this->getObservationJson($observation));
@@ -62,10 +67,16 @@ class ObservationsController extends Controller
     public function delete($id, Request $request)
     {
         $user = $request->user();
-        $observation = $user->observations()->where('id', $id)->first();
+
+        // Make sure the user is updating a record that they own
+        $observation = Observation::where('id', $id)->first();
 
         if (!$observation) {
             return $this->notFound('The observation you requested was not found.');
+        }
+
+        if ($observation->user_id != $user->id) {
+            return $this->unauthorized();
         }
 
         $observation->delete();
@@ -87,7 +98,7 @@ class ObservationsController extends Controller
 
         $validator = Validator::make($request->all(), $this->validationRules());
         if ($validator->fails()) {
-            return $this->error($validator->errors());
+            return $this->error($validator->errors(), 200);
         }
 
         // TODO: UPLOAD IMAGES HERE
@@ -103,13 +114,13 @@ class ObservationsController extends Controller
           'longitude' => $request->longitude,
           'latitude' => $request->latitude,
           'location_accuracy' => $request->location_accuracy,
-          'collection_date' => $request->date,
+          'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
           'images' => $images,
           'is_private' => $request->is_private,
         ]);
 
         if (!$observation) {
-            return $this->error('Request could not be completed. Error code: 100');
+            return $this->error('Request could not be completed', 100);
         }
 
         return $this->created(['observation_id' => $observation->id]);
@@ -118,24 +129,28 @@ class ObservationsController extends Controller
     /**
      * Updates an existing record related to the authenticated user.
      *
+     * @param $id
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
         $user = $request->user();
 
         // Make sure the user is updating a record that they own
-        $rules = array_merge($this->validationRules(), [
-          'observation_id' => [
-            'required',
-            Rule::exists('observations', 'id')->where('user_id', $user->id),
-          ],
-        ]);
+        $observation = Observation::where('id', $id)->first();
 
-        $validator = Validator::make($request->all(), $rules);
+        if (!$observation) {
+            return $this->notFound('The observation you requested was not found.');
+        }
+
+        if ($observation->user_id != $user->id) {
+            return $this->unauthorized();
+        }
+
+        $validator = Validator::make($request->all(), $this->validationRules());
         if ($validator->fails()) {
-            return $this->error($validator->errors());
+            return $this->error($validator->errors(), 200);
         }
 
         // TODO: UPLOAD IMAGES HERE
@@ -144,20 +159,20 @@ class ObservationsController extends Controller
         ];
 
         // Create the record
-        $observation = Observation::update([
+        $observation->update([
           'user_id' => $user->id,
           'observation_category' => $request->observation_category,
           'data' => json_decode($request->meta_data),
           'longitude' => $request->longitude,
           'latitude' => $request->latitude,
           'location_accuracy' => $request->location_accuracy,
-          'collection_date' => $request->date,
+          'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
           'images' => $images,
           'is_private' => $request->is_private,
-        ])->where();
+        ]);
 
         if (!$observation) {
-            return $this->error('Request could not be completed. Error code: 100');
+            return $this->error('Request could not be completed', 101);
         }
 
         return $this->created('Observation record has been updated successfully');
@@ -179,8 +194,8 @@ class ObservationsController extends Controller
           'longitude' => 'required|numeric',
           'latitude' => 'required|numeric',
           'location_accuracy' => 'required|numeric',
-          'date' => 'date_format:"m-d-Y H:i:s"',
-          'images.*' => 'required|mimes:jpg,jpeg,png,bmp|max:2048',
+          'date' => 'required|date_format:"m-d-Y H:i:s"',
+          //'images.*' => 'required|mimes:jpg,jpeg,png,bmp|max:2048',
           'is_private' => 'required|boolean',
         ];
     }

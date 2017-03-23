@@ -19,6 +19,8 @@ class Observation extends Model
       'latitude',
       'data',
       'collection_date',
+      'location_accuracy',
+      'is_private',
     ];
 
     /**
