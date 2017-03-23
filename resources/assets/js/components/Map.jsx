@@ -37,9 +37,9 @@ export  class GoogleMap extends Component {
   }
 
   markerClicked( point) {
-  console.log("clicked!");
-    console.log(point);
+    console.log(point)
 
+    // this.props.google.maps.panTo({lati: point.latitide, long: point.longitude});
   }
   onMouseoverMarker(point) {
     console.log("moused!");
@@ -69,8 +69,8 @@ export  class GoogleMap extends Component {
               name={point.id}
               position={{lat: point.latitude, lng: point.longitude}}
               key = {point.id}
+              label = {point.name}
               onClick={() => this.markerClicked(point)}
-              onMouseover =  {() => this.onMouseoverMarker(point).bind(this)}
             />
           )}
 
