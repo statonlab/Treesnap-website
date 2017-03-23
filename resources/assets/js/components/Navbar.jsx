@@ -45,7 +45,10 @@ export default class Navbar extends Component {
                         <a className="nav-item">
                             Help
                         </a>
-                        <a className="nav-item">
+                        <a href="#" className="nav-item" onClick={(e) => {
+                          e.preventDefault();
+                          this.modal.open("about")
+                        }}>
                             About
                         </a>
 
