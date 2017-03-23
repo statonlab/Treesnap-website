@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import GoogleMap, {GoogleApiWrapper} from 'google-maps-react'
+import Map, {GoogleApiWrapper} from 'google-maps-react'
 import Marker from './Marker'
 
 
@@ -8,7 +8,7 @@ const AnyReactComponent = ({ icon }) => <i className="fa fa-leaf"></i>
 // need to set anchor location somehow
 const defaultProps = {
   center: {lat: 38.0377, lng: -84.4833},
-  zoom: 11
+  zoom: 15
 }
 
 const defaultMarkers = [
@@ -25,13 +25,13 @@ const defaultMarkers = [
 
 
 
-export  class Map extends Component {
+export  class GoogleMap extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      markersLoad : defaultMarkers
+      markersLoad : defaultMarkers,
     };
   }
 
@@ -50,10 +50,10 @@ export  class Map extends Component {
   render() {
     return (
       <div id="map">
-        <GoogleMap
+        <Map
           google={this.props.google}
           zoom={defaultProps.zoom}
-          center={defaultProps.center}
+          initialCenter={defaultProps.center}
         >
 
           {this.state.markersLoad.map((point) =>
@@ -64,7 +64,7 @@ export  class Map extends Component {
             />
           )}
 
-        </GoogleMap>
+        </Map>
       </div>
     )
   }
@@ -84,4 +84,4 @@ const greatPlaceStyle = {
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyA2mdlJN43gdiwARBpxMWeIZFaaHmW-mew"
-})(Map)
+})(GoogleMap)

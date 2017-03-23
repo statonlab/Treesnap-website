@@ -11168,7 +11168,7 @@ Copyright.PropTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_google_maps_react__ = __webpack_require__(246);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_google_maps_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_google_maps_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Marker__ = __webpack_require__(254);
-/* unused harmony export Map */
+/* unused harmony export GoogleMap */
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11189,7 +11189,7 @@ var AnyReactComponent = function AnyReactComponent(_ref) {
 // need to set anchor location somehow
 var defaultProps = {
   center: { lat: 38.0377, lng: -84.4833 },
-  zoom: 11
+  zoom: 15
 };
 
 var defaultMarkers = [{ name: "the singing tree",
@@ -11201,13 +11201,13 @@ var defaultMarkers = [{ name: "the singing tree",
   id: 2
 }];
 
-var Map = function (_Component) {
-  _inherits(Map, _Component);
+var GoogleMap = function (_Component) {
+  _inherits(GoogleMap, _Component);
 
-  function Map(props) {
-    _classCallCheck(this, Map);
+  function GoogleMap(props) {
+    _classCallCheck(this, GoogleMap);
 
-    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (GoogleMap.__proto__ || Object.getPrototypeOf(GoogleMap)).call(this, props));
 
     _this.state = {
       markersLoad: defaultMarkers
@@ -11225,7 +11225,7 @@ var Map = function (_Component) {
   // }
 
 
-  _createClass(Map, [{
+  _createClass(GoogleMap, [{
     key: 'render',
     value: function render() {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -11236,7 +11236,7 @@ var Map = function (_Component) {
           {
             google: this.props.google,
             zoom: defaultProps.zoom,
-            center: defaultProps.center
+            initialCenter: defaultProps.center
           },
           this.state.markersLoad.map(function (point) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Marker__["a" /* default */], {
@@ -11250,7 +11250,7 @@ var Map = function (_Component) {
     }
   }]);
 
-  return Map;
+  return GoogleMap;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 var greatPlaceStyle = {
@@ -11264,7 +11264,7 @@ var greatPlaceStyle = {
 
 /* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_google_maps_react__["GoogleApiWrapper"])({
   apiKey: "AIzaSyA2mdlJN43gdiwARBpxMWeIZFaaHmW-mew"
-})(Map));
+})(GoogleMap));
 
 /***/ }),
 /* 117 */
