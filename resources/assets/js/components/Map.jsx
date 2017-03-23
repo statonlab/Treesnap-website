@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
-import GoogleMap from 'google-map-react'
+import GoogleMap, {GoogleApiWrapper} from 'google-maps-react'
+
 
 const AnyReactComponent = ({ icon }) => <i className="fa fa-leaf"></i>
 
@@ -22,7 +23,8 @@ const defaultMarkers = [
 ]
 
 
-export default class Map extends Component {
+
+export  class Map extends Component {
 
   constructor(props) {
     super(props);
@@ -48,18 +50,17 @@ export default class Map extends Component {
     return (
       <div id="map">
         <GoogleMap
-          bootstrapURLKeys={{key: "AIzaSyA2mdlJN43gdiwARBpxMWeIZFaaHmW-mew"}}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
+          google={this.props.google}
+          zoom={defaultProps.zoom}
         >
-          {this.state.markersLoad.map((point) =>
-            <AnyReactComponent
-              lat= {point.latitude}
-              lng = {point.longitude}
-              key = {point.id}
-            />
+          {/*{this.state.markersLoad.map((point) =>*/}
+            {/*<Marker*/}
+              {/*name={point.id}*/}
+              {/*position={{lat: point.latitude, lng: point.longitude}}*/}
+              {/*key = {point.id}*/}
+            {/*/>*/}
+          {/*)}*/}
 
-          )}
         </GoogleMap>
       </div>
     )
@@ -77,3 +78,7 @@ const greatPlaceStyle = {
 };
 
 
+
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyA2mdlJN43gdiwARBpxMWeIZFaaHmW-mew"
+})(Map)
