@@ -11212,22 +11212,37 @@ var GoogleMap = function (_Component) {
     _this.state = {
       markersLoad: defaultMarkers
     };
+
     return _this;
   }
 
-  // componentDidMount(){
-  //
-  //   axios.get('/observations').then( (response) => {
-  //     markersLoad = response.data;
-  //     this.setState({markersLoad: markersLoad});
-  //   });
-  //   console.log(this.state.markersLoad);
-  // }
-
-
   _createClass(GoogleMap, [{
+    key: 'markerClicked',
+    value: function markerClicked(point) {
+      console.log("clicked!");
+      console.log(point);
+    }
+  }, {
+    key: 'onMouseoverMarker',
+    value: function onMouseoverMarker(point) {
+      console.log("moused!");
+      console.log(point);
+    }
+    // componentDidMount(){
+    //
+    //   axios.get('/observations').then( (response) => {
+    //     markersLoad = response.data;
+    //     this.setState({markersLoad: markersLoad});
+    //   });
+    //   console.log(this.state.markersLoad);
+    // }
+
+
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { id: 'map' },
@@ -11242,7 +11257,13 @@ var GoogleMap = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Marker__["a" /* default */], {
               name: point.id,
               position: { lat: point.latitude, lng: point.longitude },
-              key: point.id
+              key: point.id,
+              onClick: function onClick() {
+                return _this2.markerClicked(point);
+              },
+              onMouseover: function onMouseover() {
+                return _this2.onMouseoverMarker(point).bind(_this2);
+              }
             });
           })
         )
@@ -42691,6 +42712,8 @@ module.exports = __webpack_require__(250);
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_camelizer__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_camelizer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_camelizer__);
 /* unused harmony export Marker */
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -42699,6 +42722,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -42798,7 +42822,8 @@ var Marker = function (_React$Component) {
       var _this3 = this;
 
       return function (e) {
-        var evtName = 'on$evt';
+        var evtName = 'on' + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_camelizer__["camelize"])(evt);
+        // const evtName = `on${evt}`
         if (_this3.props[evtName]) {
           _this3.props[evtName](_this3.props, _this3.marker, e);
         }
@@ -42828,6 +42853,155 @@ Marker.defaultProps = {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Marker);
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const camelcaseKeys = __webpack_require__(256);
+
+/* eslint prefer-const:0 */
+/**
+ * Will take any object property that is capitalized
+ * and return it in camelCase.
+ * @param { Object } obj The object to be mutated.
+ * @param { Object } opts Options to pass to camelcaseKeys.
+ * @returns { Object } The "camelized" object.
+ */
+function camelize(obj, opts) {
+    for (let key in obj) {
+        if (Array.isArray(obj[key])) {
+            obj[key] = obj[key].map((item) => {
+                return camelize(item, opts);
+            });
+        } else if (typeof obj === 'string') {
+            return obj;
+        } else if (typeof obj[key] === 'object' &&
+            !(obj[key] instanceof Date) &&
+            obj[key] !== null) {
+            obj[key] = camelize(obj[key], opts);
+        }
+    }
+
+    return camelcaseKeys(obj, opts);
+}
+
+module.exports = function(obj, opts) {
+    return camelize(obj, opts);
+};
+
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var mapObj = __webpack_require__(258);
+var camelCase = __webpack_require__(257);
+
+var has = function (arr, key) {
+	return arr.some(function (pattern) {
+		return typeof pattern === 'string' ? pattern === key : pattern.test(key);
+	});
+};
+
+module.exports = function (input, options) {
+	options = options || {};
+
+	var exclude = options.exclude || [];
+
+	return mapObj(input, function (key, val) {
+		key = has(exclude, key) ? key : camelCase(key);
+		return [key, val];
+	});
+};
+
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function preserveCamelCase(str) {
+	var isLastCharLower = false;
+
+	for (var i = 0; i < str.length; i++) {
+		var c = str.charAt(i);
+
+		if (isLastCharLower && (/[a-zA-Z]/).test(c) && c.toUpperCase() === c) {
+			str = str.substr(0, i) + '-' + str.substr(i);
+			isLastCharLower = false;
+			i++;
+		} else {
+			isLastCharLower = (c.toLowerCase() === c);
+		}
+	}
+
+	return str;
+}
+
+module.exports = function () {
+	var str = [].map.call(arguments, function (str) {
+		return str.trim();
+	}).filter(function (str) {
+		return str.length;
+	}).join('-');
+
+	if (!str.length) {
+		return '';
+	}
+
+	if (str.length === 1) {
+		return str.toLowerCase();
+	}
+
+	if (!(/[_.\- ]+/).test(str)) {
+		if (str === str.toUpperCase()) {
+			return str.toLowerCase();
+		}
+
+		if (str[0] !== str[0].toLowerCase()) {
+			return str[0].toLowerCase() + str.slice(1);
+		}
+
+		return str;
+	}
+
+	str = preserveCamelCase(str);
+
+	return str
+	.replace(/^[_.\- ]+/, '')
+	.toLowerCase()
+	.replace(/[_.\- ]+(\w|$)/g, function (m, p1) {
+		return p1.toUpperCase();
+	});
+};
+
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (obj, cb) {
+	var ret = {};
+	var keys = Object.keys(obj);
+
+	for (var i = 0; i < keys.length; i++) {
+		var key = keys[i];
+		var res = cb(key, obj[key], obj);
+		ret[res[0]] = res[1];
+	}
+
+	return ret;
+};
+
 
 /***/ })
 /******/ ]);

@@ -33,9 +33,18 @@ export  class GoogleMap extends Component {
     this.state = {
       markersLoad : defaultMarkers,
     };
+
   }
 
+  markerClicked( point) {
+  console.log("clicked!");
+    console.log(point);
 
+  }
+  onMouseoverMarker(point) {
+    console.log("moused!");
+    console.log(point);
+  }
   // componentDidMount(){
   //
   //   axios.get('/observations').then( (response) => {
@@ -44,7 +53,6 @@ export  class GoogleMap extends Component {
   //   });
   //   console.log(this.state.markersLoad);
   // }
-
 
 
   render() {
@@ -61,6 +69,8 @@ export  class GoogleMap extends Component {
               name={point.id}
               position={{lat: point.latitude, lng: point.longitude}}
               key = {point.id}
+              onClick={() => this.markerClicked(point)}
+              onMouseover =  {() => this.onMouseoverMarker(point).bind(this)}
             />
           )}
 

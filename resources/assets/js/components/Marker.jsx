@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react'
+ import { camelize } from 'camelizer'
 
 const evtNames = ['click', 'mouseover', 'recenter', 'dragend'];
 
@@ -61,7 +62,7 @@ export class Marker extends React.Component {
     this.marker = new google.maps.Marker(pref);
 
     evtNames.forEach(e => {
-      this.marker.addListener(e, this.handleEvent(e));
+       this.marker.addListener(e, this.handleEvent(e));
     });
 
     this.markerPromise.resolve(this.marker);
@@ -73,7 +74,8 @@ export class Marker extends React.Component {
 
   handleEvent(evt) {
     return (e) => {
-      const evtName = `on$evt`
+      const evtName = `on${camelize(evt)}`
+      // const evtName = `on${evt}`
       if (this.props[evtName]) {
         this.props[evtName](this.props, this.marker, e);
       }
