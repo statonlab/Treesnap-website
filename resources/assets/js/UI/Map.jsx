@@ -45,20 +45,10 @@ export default class Map extends Component {
             })
 
             // Add the markers to the state
-            //this.setState({markers})
+            this.setState({markers})
 
         }).catch(error => {
             console.log(error)
-        })
-
-        this.setState({
-            markers: [{
-                title: 'Mine',
-                position: {
-                    latitude: -95.998237,
-                    longitude: 30.0003
-                }
-            }]
         })
     }
 

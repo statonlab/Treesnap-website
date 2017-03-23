@@ -11088,6 +11088,8 @@ var Map = function (_Component) {
     }, {
         key: 'loadObservations',
         value: function loadObservations() {
+            var _this2 = this;
+
             axios.get('/observations').then(function (response) {
                 // Setup the observations to be rendered into markers
                 var markers = [];
@@ -11104,25 +11106,15 @@ var Map = function (_Component) {
                 });
 
                 // Add the markers to the state
-                //this.setState({markers})
+                _this2.setState({ markers: markers });
             }).catch(function (error) {
                 console.log(error);
-            });
-
-            this.setState({
-                markers: [{
-                    title: 'Mine',
-                    position: {
-                        latitude: -95.998237,
-                        longitude: 30.0003
-                    }
-                }]
             });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
@@ -11132,7 +11124,7 @@ var Map = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_2__Marker__["a" /* default */],
                         {
                             key: index,
-                            maps: _this2.maps,
+                            maps: _this3.maps,
                             position: marker.position,
                             title: marker.title
                         },
