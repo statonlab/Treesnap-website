@@ -174,4 +174,32 @@ class ObservationsAPITest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    /**
+     * Test deleting a record.
+     */
+    public function testDeletingARecord()
+    {
+        $user = User::first();
+        $this->actingAs($user);
+        $observation = $user->observations()->orderby('id', 'desc')->first();
+
+        $response = $this->delete("/api/v1/observation/{$observation->id}");
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Test deleting a record that belongs to someone else.
+     */
+    public function testDeletingUnauthorizedRecord()
+    {
+        $user = User::first();
+        $this->actingAs($user);
+        $observation = Observation::where('user_id', '!=', $user->id)->first();
+
+        $response = $this->delete("/api/v1/observation/{$observation->id}");
+
+        $response->assertStatus(401);
+    }
 }

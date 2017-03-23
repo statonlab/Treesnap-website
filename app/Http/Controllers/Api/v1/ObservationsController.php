@@ -67,10 +67,16 @@ class ObservationsController extends Controller
     public function delete($id, Request $request)
     {
         $user = $request->user();
-        $observation = $user->observations()->where('id', $id)->first();
+
+        // Make sure the user is updating a record that they own
+        $observation = Observation::where('id', $id)->first();
 
         if (!$observation) {
             return $this->notFound('The observation you requested was not found.');
+        }
+
+        if ($observation->user_id != $user->id) {
+            return $this->unauthorized();
         }
 
         $observation->delete();
