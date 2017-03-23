@@ -11034,9 +11034,11 @@ module.exports = function spread(callback) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Marker__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Marker__ = __webpack_require__(109);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11044,6 +11046,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -11067,37 +11070,52 @@ var Map = function (_Component) {
         value: function componentDidMount() {
             // Initialize the map
             this.maps = new google.maps.Map(this.refs.mapContainer, {
-                center: { lat: 40.354388, lng: -95.998237 },
-                scrollwheel: true,
+                center: {
+                    lat: 40.354388,
+                    lng: -95.998237
+                },
                 zoom: 4
             });
 
-            // Here is where we will get the markers from the api and set the state
+            // Get the markers
+            this.loadObservations();
+        }
+
+        /**
+         * Gets observations from the API and parses them into markers.
+         */
+
+    }, {
+        key: 'loadObservations',
+        value: function loadObservations() {
+            axios.get('/observations').then(function (response) {
+                // Setup the observations to be rendered into markers
+                var markers = [];
+
+                response.data.data.map(function (observation) {
+                    markers.push({
+                        title: observation.observation_category,
+                        images: observation.images,
+                        position: {
+                            latitude: observation.location.latitude,
+                            longitude: observation.location.longitude
+                        }
+                    });
+                });
+
+                // Add the markers to the state
+                //this.setState({markers})
+            }).catch(function (error) {
+                console.log(error);
+            });
+
             this.setState({
                 markers: [{
-                    title: 'Hemlock',
-                    position: { latitude: 40.354388, longitude: -95.998237 }
-                }, {
-                    title: 'Green Ash',
-                    position: { latitude: 44.354388, longitude: -93.998237 }
-                }, {
-                    title: 'American Chestnut',
-                    position: { latitude: 40.354388, longitude: -90.998237 }
-                }, {
-                    title: 'White Oak',
-                    position: { latitude: 39.354388, longitude: -99.998237 }
-                }, {
-                    title: 'Hemlock',
-                    position: { latitude: 39.354388, longitude: -92.998237 }
-                }, {
-                    title: 'Green Ash',
-                    position: { latitude: 35.354388, longitude: -84.998237 }
-                }, {
-                    title: 'American Chestnut',
-                    position: { latitude: 46.354388, longitude: -99.998237 }
-                }, {
-                    title: 'White Oak',
-                    position: { latitude: 38.354388, longitude: -90.998237 }
+                    title: 'Mine',
+                    position: {
+                        latitude: -95.998237,
+                        longitude: 30.0003
+                    }
                 }]
             });
         }
@@ -11106,18 +11124,19 @@ var Map = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 { id: 'map', ref: 'mapContainer' },
                 this.state.markers.map(function (marker, index) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1__Marker__["a" /* default */],
+                    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2__Marker__["a" /* default */],
                         {
                             key: index,
                             maps: _this2.maps,
-                            position: marker.position
+                            position: marker.position,
+                            title: marker.title
                         },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
                             null,
                             marker.title
@@ -11129,7 +11148,7 @@ var Map = function (_Component) {
     }]);
 
     return Map;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = Map;
 
@@ -11179,7 +11198,10 @@ var Marker = function (_Component) {
             // Create a marker
             this.marker = new google.maps.Marker({
                 title: this.props.title,
-                position: { lat: this.props.position.latitude, lng: this.props.position.longitude },
+                position: {
+                    lat: this.props.position.latitude,
+                    lng: this.props.position.longitude
+                },
                 map: this.props.maps
             });
 
@@ -11192,12 +11214,12 @@ var Marker = function (_Component) {
             // Handle click events on the callout
             this.marker.addListener('click', function () {
                 if (_this2.state.calloutOpen) {
-                    _this2.callout.close();
-                } else {
-                    _this2.callout.open(_this2.props.map, _this2.marker);
-                }
+                    //this.callout.close()
+                } else {}
+                    //this.callout.open(this.props.map, this.marker)
 
-                _this2.setState({ calloutOpen: !_this2.state.calloutOpen });
+
+                    //this.setState({calloutOpen: !this.state.calloutOpen})
             });
         }
 

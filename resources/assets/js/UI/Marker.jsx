@@ -15,10 +15,12 @@ export default class Marker extends Component {
         // Create a marker
         this.marker = new google.maps.Marker({
             title: this.props.title,
-            position: {lat: this.props.position.latitude, lng: this.props.position.longitude},
+            position: {
+                lat: this.props.position.latitude,
+                lng: this.props.position.longitude
+            },
             map: this.props.maps
         })
-
 
         // Create a Callout
         this.callout = new google.maps.InfoWindow({
@@ -29,12 +31,12 @@ export default class Marker extends Component {
         // Handle click events on the callout
         this.marker.addListener('click', () => {
             if (this.state.calloutOpen) {
-                this.callout.close()
+                //this.callout.close()
             } else {
-                this.callout.open(this.props.map, this.marker)
+                //this.callout.open(this.props.map, this.marker)
             }
 
-            this.setState({calloutOpen: !this.state.calloutOpen})
+            //this.setState({calloutOpen: !this.state.calloutOpen})
         })
     }
 

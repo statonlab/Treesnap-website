@@ -1,3 +1,4 @@
+import '../bootstrap'
 import React, {Component, PropTypes} from 'react'
 import Marker from './Marker'
 
@@ -13,47 +14,51 @@ export default class Map extends Component {
     componentDidMount() {
         // Initialize the map
         this.maps = new google.maps.Map(this.refs.mapContainer, {
-            center: {lat: 40.354388, lng: -95.998237},
-            scrollwheel: true,
+            center: {
+                lat: 40.354388,
+                lng: -95.998237
+            },
             zoom: 4
         })
 
-        // Here is where we will get the markers from the api and set the state
+        // Get the markers
+        this.loadObservations()
+    }
+
+    /**
+     * Gets observations from the API and parses them into markers.
+     */
+    loadObservations() {
+        axios.get('/observations').then(response => {
+            // Setup the observations to be rendered into markers
+            let markers = []
+
+            response.data.data.map(observation => {
+                markers.push({
+                    title: observation.observation_category,
+                    images: observation.images,
+                    position: {
+                        latitude: observation.location.latitude,
+                        longitude: observation.location.longitude
+                    }
+                })
+            })
+
+            // Add the markers to the state
+            //this.setState({markers})
+
+        }).catch(error => {
+            console.log(error)
+        })
+
         this.setState({
-            markers: [
-                {
-                    title: 'Hemlock',
-                    position: {latitude: 40.354388, longitude: -95.998237},
-                },
-                {
-                    title: 'Green Ash',
-                    position: {latitude: 44.354388, longitude: -93.998237},
-                },
-                {
-                    title: 'American Chestnut',
-                    position: {latitude: 40.354388, longitude: -90.998237},
-                },
-                {
-                    title: 'White Oak',
-                    position: {latitude: 39.354388, longitude: -99.998237},
-                },
-                {
-                    title: 'Hemlock',
-                    position: {latitude: 39.354388, longitude: -92.998237},
-                },
-                {
-                    title: 'Green Ash',
-                    position: {latitude: 35.354388, longitude: -84.998237},
-                },
-                {
-                    title: 'American Chestnut',
-                    position: {latitude: 46.354388, longitude: -99.998237},
-                },
-                {
-                    title: 'White Oak',
-                    position: {latitude: 38.354388, longitude: -90.998237},
+            markers: [{
+                title: 'Mine',
+                position: {
+                    latitude: -95.998237,
+                    longitude: 30.0003
                 }
-            ]
+            }]
         })
     }
 
@@ -66,10 +71,9 @@ export default class Map extends Component {
                             key={index}
                             maps={this.maps}
                             position={marker.position}
+                            title={marker.title}
                         >
-                            <div>
-                                {marker.title}
-                            </div>
+                            <div>{marker.title}</div>
                         </Marker>
                     )
                 })}

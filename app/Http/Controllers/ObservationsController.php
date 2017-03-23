@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\v1\Responds;
+use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
@@ -26,8 +26,7 @@ class ObservationsController extends Controller
         foreach ($observations as $observation) {
             // Compile the data into a standardized response
             // Remove the is_private value from the response
-            $data[] = array_except($this->getObservationJson($observation),
-              ['is_private']);
+            $data[] = array_except($this->getObservationJson($observation), ['is_private']);
         }
 
         return $this->success($data);

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\v1\Responds;
+use App\Http\Controllers\Traits\Responds;
 use Validator;
 
 class UsersController extends Controller
