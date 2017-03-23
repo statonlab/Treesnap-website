@@ -33,9 +33,18 @@ export  class GoogleMap extends Component {
     this.state = {
       markersLoad : defaultMarkers,
     };
+
   }
 
+  markerClicked( point) {
+    console.log(point)
 
+    // this.props.google.maps.panTo({lati: point.latitide, long: point.longitude});
+  }
+  onMouseoverMarker(point) {
+    console.log("moused!");
+    console.log(point);
+  }
   // componentDidMount(){
   //
   //   axios.get('/observations').then( (response) => {
@@ -44,7 +53,6 @@ export  class GoogleMap extends Component {
   //   });
   //   console.log(this.state.markersLoad);
   // }
-
 
 
   render() {
@@ -61,6 +69,8 @@ export  class GoogleMap extends Component {
               name={point.id}
               position={{lat: point.latitude, lng: point.longitude}}
               key = {point.id}
+              label = {point.name}
+              onClick={() => this.markerClicked(point)}
             />
           )}
 
