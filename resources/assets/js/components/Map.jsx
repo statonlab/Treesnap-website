@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import GoogleMap, {GoogleApiWrapper} from 'google-maps-react'
+import Marker from './Marker'
 
 
 const AnyReactComponent = ({ icon }) => <i className="fa fa-leaf"></i>
@@ -52,14 +53,16 @@ export  class Map extends Component {
         <GoogleMap
           google={this.props.google}
           zoom={defaultProps.zoom}
+          center={defaultProps.center}
         >
-          {/*{this.state.markersLoad.map((point) =>*/}
-            {/*<Marker*/}
-              {/*name={point.id}*/}
-              {/*position={{lat: point.latitude, lng: point.longitude}}*/}
-              {/*key = {point.id}*/}
-            {/*/>*/}
-          {/*)}*/}
+
+          {this.state.markersLoad.map((point) =>
+            <Marker
+              name={point.id}
+              position={{lat: point.latitude, lng: point.longitude}}
+              key = {point.id}
+            />
+          )}
 
         </GoogleMap>
       </div>
