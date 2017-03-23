@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Api\v1;
 
+use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Utility methods for API responses.
  */
@@ -13,7 +15,7 @@ trait Responds
      * when a specific observation has been requested by id and was not
      * found in the DB.
      *
-     * @param $message
+     * @param String $message
      * @return \Illuminate\Http\JsonResponse
      */
     protected function notFound($message)
@@ -38,7 +40,7 @@ trait Responds
     /**
      * Successful response.
      *
-     * @param $data
+     * @param Array $data
      * @return \Illuminate\Http\JsonResponse
      */
     protected function success($data)
@@ -51,13 +53,15 @@ trait Responds
     /**
      * Bad request response
      *
-     * @param $message
+     * @param String $message
+     * @param Integer $error_code Internal application error code.
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function error($message)
+    protected function error($message, $error_code = 100)
     {
         return response()->json([
           'error' => $message,
+          'code' => $error_code
         ], 400);
     }
 
@@ -67,7 +71,7 @@ trait Responds
      * According to RFC 2616, this can be used for both newly created records
      * submitted using POST or updated records submitted using PUT.
      *
-     * @param (optional) $message
+     * @param  Mixed $message (optional)
      * @return \Illuminate\Http\JsonResponse
      */
     protected function created($message = null) {

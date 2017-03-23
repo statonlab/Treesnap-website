@@ -14,7 +14,6 @@ body,
   left: $sidebar-width;
   bottom: 0; //$app-footer-height;
   right: 0;
-  padding: 40px;
   background-color: #fff;
   @include mobile() {
     left: 0;
