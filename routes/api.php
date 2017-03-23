@@ -1,7 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,11 +24,14 @@ Route::group([
     Route::put('/observation/{id}', 'ObservationsController@update');
 
     // Users Controller
-    Route::post('/users', 'UsersController@create');
-    Route::get('/user/{id}', 'UsersController@show');
-    Route::put('/user/{id}', 'UsersController@update');
+    Route::get('/user', 'UsersController@show');
+    Route::put('/user', 'UsersController@update');
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Methods that do not require an api_key
+Route::group([
+  'prefix' => 'v1',
+  'namespace' => 'Api\v1',
+], function () {
+    Route::post('/users', 'UsersController@create');
 });

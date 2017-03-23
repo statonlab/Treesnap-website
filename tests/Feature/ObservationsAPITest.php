@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Observation;
 use App\User;
-use Carbon\Carbon;
 use DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
