@@ -41,42 +41,52 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'is_over_thirteen' => 'required|boolean',
-            'zipcode' => 'integer|size:5'
+          'name' => 'required|max:255',
+          'email' => 'required|email|max:255|unique:users',
+          'password' => 'required|min:6|confirmed',
+          'is_over_thirteen' => 'required|boolean',
+          'is_anonymous' => 'boolean',
+          'zipcode' => [
+            'min:5',
+            'max:10',
+            'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
+          ],
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'is_over_thirteen' => !empty($data['is_over_thirteen']),
-            'api_token' => $this->generateAPIToken(),
-            'zipcode' => $data['zipcode']
+          'name' => $data['name'],
+          'email' => $data['email'],
+          'password' => bcrypt($data['password']),
+          'is_over_thirteen' => !empty($data['is_over_thirteen']),
+          'api_token' => $this->generateAPIToken(),
+          'zipcode' => $data['zipcode'],
         ]);
     }
 
-    protected function generateAPIToken() {
+    /**
+     * Generates a unique API Token
+     * @return string
+     */
+    protected function generateAPIToken()
+    {
         // Make sure the random string is 100% unique to our database
         $str = str_random(60);
-        while(User::where('api_token', $str)->get()) {
+        while (!User::where('api_token', $str)->get()->isEmpty()) {
             $str = str_random(60);
         }
 
