@@ -5,10 +5,11 @@ namespace Tests\Feature;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UsersAPITest extends TestCase
 {
-    use WithoutMiddleware;
+    use WithoutMiddleware, DatabaseTransactions;
 
     /**
      * Test the ability to create a new user.
@@ -66,6 +67,24 @@ class UsersAPITest extends TestCase
     }
 
     /**
+     * Test updating a user's password.
+     */
+    public function testUpdatingPassword()
+    {
+        // Get the last user created
+        $user = User::orderBy('id', 'desc')->first();
+        $this->actingAs($user);
+
+        $response = $this->patch('/api/v1/user/password', [
+          'password' => 'testing123',
+        ]);
+
+        $response->assertJsonStructure([
+          'data',
+        ])->assertStatus(201);
+    }
+
+    /**
      * Test retrieving a user's record.
      */
     public function testGettingUser()
@@ -85,8 +104,5 @@ class UsersAPITest extends TestCase
             'is_anonymous',
           ],
         ])->assertStatus(200);
-
-        // Testing finished ... delete the user.
-        $user->delete();
     }
 }

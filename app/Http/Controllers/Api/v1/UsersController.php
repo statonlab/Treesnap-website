@@ -113,6 +113,31 @@ class UsersController extends Controller
     }
 
     /**
+     * Update an existing user's password.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+          'password' => 'required|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors(), 200);
+        }
+
+        $user->update([
+          'password' => bcrypt($request->password),
+        ]);
+
+        return $this->created('Password updated');
+    }
+
+    /**
      * Generates a validator.
      *
      * @param $data
