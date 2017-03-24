@@ -13,3 +13,15 @@
 .callout {
   font-weight: normal;
 }
+
+.reset-map-button {
+  position: absolute;
+  top: $nav-height + 5.6em;
+  left: $sidebar-width + 10px;
+  background: #fff;
+  border-radius: $radius;
+  z-index: 20;
+  font-size: 11px;
+  border: 0;
+  box-shadow: 0 3px 2px rgba(10, 10, 10, .1)!important;
+}

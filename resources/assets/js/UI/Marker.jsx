@@ -7,7 +7,9 @@ export default class Marker extends Component {
 
         this.state = {
             // Set the initial state for the callout
-            calloutOpen: false
+            calloutOpen: false,
+            // Whether to display the marker
+            show: true
         }
     }
 
@@ -31,6 +33,9 @@ export default class Marker extends Component {
             maxWidth: 250
         })
 
+        this.marker.setVisible(this.props.show)
+        this.setState({show: this.props.show})
+
         // Handle click events on the callout
         this.marker.addListener('click', () => {
             if (this.state.calloutOpen) {
@@ -41,6 +46,16 @@ export default class Marker extends Component {
 
             this.setState({calloutOpen: !this.state.calloutOpen})
         })
+    }
+
+    /**
+     * Update properties when needed.
+     *
+     * @param nextProps
+     */
+    componentWillReceiveProps(nextProps) {
+        this.setState({show: nextProps.show})
+        this.marker.setVisible(nextProps.show)
     }
 
     /**
@@ -55,14 +70,6 @@ export default class Marker extends Component {
     }
 
     /**
-     * Returns the rendered marker.
-     * @returns {Marker.marker}
-     */
-    marker() {
-        return this.marker
-    }
-
-    /**
      * Not needed because we are using Google's JS API
      * @returns {null}
      */
@@ -74,9 +81,11 @@ export default class Marker extends Component {
 Marker.PropTypes = {
     maps: PropTypes.object.isRequired,
     position: PropTypes.object.isRequired,
-    title: PropTypes.string
+    title: PropTypes.string,
+    show: PropTypes.boolean
 }
 
 Marker.defaultProps = {
-    title: ''
+    title: '',
+    show: true
 }

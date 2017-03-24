@@ -6,3 +6,54 @@
 .textarea {
   box-shadow: none;
 }
+
+.checkbox-container {
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+  border: 1px solid #dbdbdb;
+  border-bottom: 0;
+  border-radius: $radius;
+}
+
+.checkbox-button {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid #dbdbdb;
+  background: #eee;
+
+  &:first-of-type {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  &:hover,
+  &:focus {
+    box-shadow: none;
+    border-color: #dbdbdb;
+  }
+
+  .icon {
+    margin-right: .5rem;
+    color: #aaa;
+  }
+
+  &.is-active {
+    background: #fff;
+    box-shadow: none;
+    border-color: #dedede;
+    .icon {
+      color: $primary;
+    }
+    &:hover {
+      background: #f7f7f7;
+    }
+  }
+}

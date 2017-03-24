@@ -8,6 +8,8 @@
   background: $body-bg;
   box-shadow: 3px 0 3px rgba(0, 0, 0, .16);
   z-index: 5;
+  max-height: 100%;
+  overflow-y: auto;
 
   @include mobile() {
     left: -300px;
