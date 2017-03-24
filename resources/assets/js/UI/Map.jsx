@@ -16,6 +16,10 @@ export default class Map extends Component {
         })
     }
 
+    /**
+     * Render children (markers) by passing the map to them.
+     * @returns {*}
+     */
     renderChildren() {
         return React.Children.map(this.props.children, child => {
             console.log(child.type)

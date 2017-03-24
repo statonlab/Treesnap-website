@@ -11173,6 +11173,12 @@ var Map = function (_Component) {
                 zoom: 4
             });
         }
+
+        /**
+         * Render children (markers) by passing the map to them.
+         * @returns {*}
+         */
+
     }, {
         key: 'renderChildren',
         value: function renderChildren() {
