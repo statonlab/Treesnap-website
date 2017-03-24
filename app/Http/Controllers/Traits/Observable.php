@@ -38,7 +38,6 @@ trait Observable
           ],
           'images' => $observation->images,
           'date' => $observation->collection_date,
-          'meta_data' => $observation->data,
           'is_private' => $observation->is_private,
         ];
     }

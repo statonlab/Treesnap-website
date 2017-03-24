@@ -105,4 +105,19 @@ class UsersAPITest extends TestCase
           ],
         ])->assertStatus(200);
     }
+
+    /**
+     * Tests user authentication/login.
+     */
+    public function testAuthenticatingAUser()
+    {
+        $response = $this->post('/api/v1/user/login', [
+          'email' => 'almasaeed2010@gmail.com',
+          'password' => 'testpass',
+        ]);
+
+        $response->assertJsonStructure([
+          'data' => ['api_token'],
+        ])->assertStatus(200);
+    }
 }
