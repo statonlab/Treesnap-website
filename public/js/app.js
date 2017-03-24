@@ -11185,7 +11185,6 @@ var Map = function (_Component) {
             var _this2 = this;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.map(this.props.children, function (child) {
-                console.log(child.type);
                 if (child.type == __WEBPACK_IMPORTED_MODULE_1__Marker__["a" /* default */]) {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.cloneElement(child, {
                         maps: _this2.maps

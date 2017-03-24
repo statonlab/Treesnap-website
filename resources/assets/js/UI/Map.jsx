@@ -22,7 +22,6 @@ export default class Map extends Component {
      */
     renderChildren() {
         return React.Children.map(this.props.children, child => {
-            console.log(child.type)
             if (child.type == Marker) {
                 return React.cloneElement(child, {
                     maps: this.maps
