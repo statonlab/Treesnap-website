@@ -21,7 +21,6 @@ export default class App extends Component {
      * Set the maps and load observations into the state.
      */
     componentDidMount() {
-        this.maps = this.refs.maps.getMap()
         this.loadObservations();
     }
 
@@ -63,7 +62,6 @@ export default class App extends Component {
                         return (
                             <Marker
                                 key={index}
-                                maps={this.maps}
                                 position={marker.position}
                                 title={marker.title}
                             >

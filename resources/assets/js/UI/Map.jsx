@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react'
+import Marker from './Marker'
 
 export default class Map extends Component {
     /**
@@ -15,19 +16,23 @@ export default class Map extends Component {
         })
     }
 
-    /**
-     * Returns a reference to the map
-     *
-     * @returns {google.maps.Map|Map|*}
-     */
-    getMap() {
-        return this.maps
+    renderChildren() {
+        return React.Children.map(this.props.children, child => {
+            console.log(child.type)
+            if (child.type == Marker) {
+                return React.cloneElement(child, {
+                    maps: this.maps
+                })
+            } else {
+                return child
+            }
+        })
     }
 
     render() {
         return (
             <div ref="mapContainer" {...this.props}>
-                {this.props.children}
+                {this.renderChildren()}
             </div>
         )
     }

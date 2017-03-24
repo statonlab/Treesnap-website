@@ -10175,7 +10175,6 @@ var App = function (_Component) {
     _createClass(App, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.maps = this.refs.maps.getMap();
             this.loadObservations();
         }
 
@@ -10213,8 +10212,6 @@ var App = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
-
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 null,
@@ -10228,7 +10225,6 @@ var App = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_7__UI_Marker__["a" /* default */],
                             {
                                 key: index,
-                                maps: _this3.maps,
                                 position: marker.position,
                                 title: marker.title
                             },
@@ -11138,6 +11134,7 @@ module.exports = function spread(callback) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Marker__ = __webpack_require__(109);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11147,6 +11144,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -11160,7 +11158,7 @@ var Map = function (_Component) {
     }
 
     _createClass(Map, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
 
         /**
          * Initializes the map.
@@ -11175,25 +11173,29 @@ var Map = function (_Component) {
                 zoom: 4
             });
         }
-
-        /**
-         * Returns a reference to the map
-         *
-         * @returns {google.maps.Map|Map|*}
-         */
-
     }, {
-        key: "getMap",
-        value: function getMap() {
-            return this.maps;
+        key: 'renderChildren',
+        value: function renderChildren() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.map(this.props.children, function (child) {
+                console.log(child.type);
+                if (child.type == __WEBPACK_IMPORTED_MODULE_1__Marker__["a" /* default */]) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.cloneElement(child, {
+                        maps: _this2.maps
+                    });
+                } else {
+                    return child;
+                }
+            });
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "div",
-                _extends({ ref: "mapContainer" }, this.props),
-                this.props.children
+                'div',
+                _extends({ ref: 'mapContainer' }, this.props),
+                this.renderChildren()
             );
         }
     }]);
@@ -11443,6 +11445,122 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+var LoginForm = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    'div',
+    { className: 'box', style: { padding: '20px' } },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'h3',
+        { className: 'title is-4', style: { borderBottom: '1px solid #dedede', paddingBottom: 10 } },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            'Login'
+        )
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'form',
+        { action: '/', method: 'post' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'field' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'label',
+                { className: 'label' },
+                'Username'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'control' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'input', type: 'text', placeholder: 'Username', autoFocus: true })
+            )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'field' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'label',
+                { className: 'label' },
+                'Password'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'control' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'input', type: 'password', placeholder: 'Password' })
+            )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'field' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'control' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'label',
+                    { className: 'checkbox' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox' }),
+                    'Remember me'
+                )
+            )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'field' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'button',
+                { type: 'submit', className: 'button is-primary' },
+                'Login'
+            )
+        )
+    )
+);
+
+var aboutModal = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    'div',
+    { className: 'box', style: { padding: '20px' } },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'h3',
+        { className: 'title is-4', style: { borderBottom: '1px solid #dedede', paddingBottom: 10 } },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            'About TreeSource'
+        )
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'boxItem', style: { padding: '20px' } },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            'TreeSource'
+        ),
+        ' is collaboration between citizens and scientists to improve breeding efforts for foresters at the University of Kentucky.  Participants download the TreeSource app and, with it, tag American Chestnut, Hemlock, Ash, and White Oak trees out in the field. After taking a photo of the tree and answering a few questions, the tree is added to the TreeSource database.  Breeders at the University of Kentucky use the tree data collected to track disease and identify candidates for DNA sequencing and breeding efforts.'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'boxItem', style: { padding: '20px' } },
+        'If you would like to participate in the ',
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            'TreeSource'
+        ),
+        ' project, create an account and find our app on the Android or iOS store.'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'h3',
+        { className: 'title is-4', style: { borderBottom: '1px solid #dedede', paddingBottom: 10 } },
+        'About the creators'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'boxItem', style: { padding: '20px' } },
+        'TreeSource is written and developed in the Staton laboratory at the University of Tennessee-Knoxville by Abdullah Almasaeed and Bradford Condon.  The TreeSource citizen science collection project...'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '../images/Download_on_the_App_Store_Badge_US-UK_135x40.svg', height: '40', width: '135' }),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '../images/google-play-badge.png', height: '40', width: '135' })
+);
+
 var Modal = function (_Component) {
     _inherits(Modal, _Component);
 
@@ -11452,7 +11570,8 @@ var Modal = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
 
         _this.state = {
-            open: false
+            open: false,
+            type: null
         };
         return _this;
     }
@@ -11464,12 +11583,20 @@ var Modal = function (_Component) {
         }
     }, {
         key: 'open',
-        value: function open() {
+        value: function open(type) {
+            this.setState({ type: type });
             this.setState({ open: true });
         }
     }, {
         key: 'render',
         value: function render() {
+            var modalBody;
+            if (this.state.type === "login") {
+                modalBody = LoginForm;
+            }
+            if (this.state.type === "about") {
+                modalBody = aboutModal;
+            }
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'modal' + (this.state.open ? ' is-active' : '') },
@@ -11477,74 +11604,7 @@ var Modal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'modal-content' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'box', style: { padding: '20px' } },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h3',
-                            { className: 'title is-4', style: { borderBottom: '1px solid #dedede', paddingBottom: 10 } },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'strong',
-                                null,
-                                'Login'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'form',
-                            { action: '/', method: 'post' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'field' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'label',
-                                    { className: 'label' },
-                                    'Username'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'p',
-                                    { className: 'control' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'input', type: 'text', placeholder: 'Username', autoFocus: true })
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'field' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'label',
-                                    { className: 'label' },
-                                    'Password'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'p',
-                                    { className: 'control' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'input', type: 'password', placeholder: 'Password' })
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'field' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'p',
-                                    { className: 'control' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'label',
-                                        { className: 'checkbox' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox' }),
-                                        'Remember me'
-                                    )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'field' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { type: 'submit', className: 'button is-primary' },
-                                    'Login'
-                                )
-                            )
-                        )
-                    )
+                    modalBody
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('button', { className: 'modal-close', onClick: this.close.bind(this) })
             );
@@ -11657,14 +11717,17 @@ var Navbar = function (_Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'a',
-                            { className: 'nav-item' },
+                            { href: '#', className: 'nav-item', onClick: function onClick(e) {
+                                    e.preventDefault();
+                                    _this2.modal.open("about");
+                                } },
                             'About'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'a',
                             { href: '#', className: 'nav-item', onClick: function onClick(e) {
                                     e.preventDefault();
-                                    _this2.modal.open();
+                                    _this2.modal.open("login");
                                 } },
                             'Login'
                         ),
@@ -11677,7 +11740,8 @@ var Navbar = function (_Component) {
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Modal__["a" /* default */], { ref: function ref(modal) {
                         return _this2.modal = modal;
-                    } })
+                    }
+                })
             );
         }
     }]);
