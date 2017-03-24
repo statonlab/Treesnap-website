@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react'
-import SidebarItem from './SidebarItem'
 
 export default class Sidebar extends Component {
     constructor(props) {

@@ -10,15 +10,27 @@ import Navbar from './components/Navbar'
 import Copyright from './components/Copyright'
 import Map from './UI/Map'
 import Marker from './UI/Marker'
-import SidebarItem from './components/SidebarItem'
 
 export default class App extends Component {
     constructor(props) {
         super(props)
 
+        this.defaultMapPosition = {
+            center: {
+                lat: 40.354388,
+                lng: -95.998237
+            },
+            zoom: 4
+        }
+
         this.state = {
             markers: [],
-            categories: {}
+            categories: {},
+            center: {
+                lat: 40.354388,
+                lng: -95.998237
+            },
+            zoom: 4
         }
 
         this.allMarkers = []
@@ -67,22 +79,33 @@ export default class App extends Component {
         })
     }
 
-    renderSubmission(plant, index) {
+    goToSubmission(marker) {
+        this.setState({
+            center: {
+                lat: marker.position.latitude,
+                lng: marker.position.longitude
+            },
+            zoom: 11
+        })
+    }
+
+    renderSubmission(marker, index) {
         return (
             <a
                 href="#"
                 className="box"
                 style={{padding: 10, marginBottom: '.5em'}}
                 key={index}
+                onClick={() => this.goToSubmission.call(this, marker)}
             >
                 <div className="media">
                     <div className="media-left">
-                        <img src={plant.images[0]} alt={plant.title} style={{width: 50}}/>
+                        <img src={marker.images[0]} alt={marker.title} style={{width: 50}}/>
                     </div>
                     <div className="media-content">
-                        <strong>{plant.title}</strong>
+                        <strong>{marker.title}</strong>
                         <p style={{color: '#666', fontWeight: '500', fontSize: '14px'}}>
-                            {plant.owner}
+                            {marker.owner}
                         </p>
                     </div>
                 </div>
@@ -90,6 +113,11 @@ export default class App extends Component {
         )
     }
 
+    /**
+     * Allow users to filter submissions by plant.
+     *
+     * @param name
+     */
     filterByPlant(name) {
         let filteredMarkers = []
         let categories = this.state.categories
@@ -105,6 +133,13 @@ export default class App extends Component {
         this.setState({
             markers: filteredMarkers,
             categories: categories
+        })
+    }
+
+    resetMapPosition() {
+        this.setState({
+            center: this.defaultMapPosition.center,
+            zoom: this.defaultMapPosition.zoom
         })
     }
 
@@ -136,20 +171,30 @@ export default class App extends Component {
                     <p className="mb-0 text-underline" style={{marginTop: '1em'}}>
                         <strong>Submissions</strong>
                     </p>
-                    {this.state.markers.map((plant, index) => {
-                        if (!plant.show) return
-                        return this.renderSubmission(plant, index)
+                    {this.state.markers.map((marker, index) => {
+                        if (!marker.show) return
+                        return this.renderSubmission(marker, index)
                     })}
                 </Sidebar>
 
-                <Map id="map" ref="maps">
+                <button
+                    type="button"
+                    className="button reset-map-button"
+                    onClick={this.resetMapPosition.bind(this)}>
+                    Reset Position
+                </button>
+
+                <Map id="map"
+                     ref="maps"
+                     center={this.state.center}
+                     zoom={this.state.zoom}
+                >
                     {this.state.markers.map((marker, index) => {
                         return (
-                            <Marker
-                                key={index}
-                                position={marker.position}
-                                title={marker.title}
-                                show={marker.show}
+                            <Marker key={index}
+                                    position={marker.position}
+                                    title={marker.title}
+                                    show={marker.show}
                             >
                                 <div className="media callout">
                                     <div className="media-left mr-0">

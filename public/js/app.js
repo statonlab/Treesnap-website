@@ -10270,7 +10270,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Copyright__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__UI_Map__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__UI_Marker__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_SidebarItem__ = __webpack_require__(115);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10292,7 +10291,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
 var App = function (_Component) {
     _inherits(App, _Component);
 
@@ -10301,9 +10299,22 @@ var App = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
+        _this.defaultMapPosition = {
+            center: {
+                lat: 40.354388,
+                lng: -95.998237
+            },
+            zoom: 4
+        };
+
         _this.state = {
             markers: [],
-            categories: {}
+            categories: {},
+            center: {
+                lat: 40.354388,
+                lng: -95.998237
+            },
+            zoom: 4
         };
 
         _this.allMarkers = [];
@@ -10362,15 +10373,31 @@ var App = function (_Component) {
             });
         }
     }, {
+        key: 'goToSubmission',
+        value: function goToSubmission(marker) {
+            this.setState({
+                center: {
+                    lat: marker.position.latitude,
+                    lng: marker.position.longitude
+                },
+                zoom: 11
+            });
+        }
+    }, {
         key: 'renderSubmission',
-        value: function renderSubmission(plant, index) {
+        value: function renderSubmission(marker, index) {
+            var _this3 = this;
+
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'a',
                 {
                     href: '#',
                     className: 'box',
                     style: { padding: 10, marginBottom: '.5em' },
-                    key: index
+                    key: index,
+                    onClick: function onClick() {
+                        return _this3.goToSubmission.call(_this3, marker);
+                    }
                 },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
@@ -10378,7 +10405,7 @@ var App = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'media-left' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: plant.images[0], alt: plant.title, style: { width: 50 } })
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: marker.images[0], alt: marker.title, style: { width: 50 } })
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
@@ -10386,17 +10413,24 @@ var App = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'strong',
                             null,
-                            plant.title
+                            marker.title
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'p',
                             { style: { color: '#666', fontWeight: '500', fontSize: '14px' } },
-                            plant.owner
+                            marker.owner
                         )
                     )
                 )
             );
         }
+
+        /**
+         * Allow users to filter submissions by plant.
+         *
+         * @param name
+         */
+
     }, {
         key: 'filterByPlant',
         value: function filterByPlant(name) {
@@ -10417,9 +10451,17 @@ var App = function (_Component) {
             });
         }
     }, {
+        key: 'resetMapPosition',
+        value: function resetMapPosition() {
+            this.setState({
+                center: this.defaultMapPosition.center,
+                zoom: this.defaultMapPosition.zoom
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
@@ -10445,9 +10487,9 @@ var App = function (_Component) {
                                 'a',
                                 { key: index,
                                     href: '#',
-                                    className: 'button is-full checkbox-button' + (_this3.state.categories[name] ? ' is-active' : ''),
+                                    className: 'button is-full checkbox-button' + (_this4.state.categories[name] ? ' is-active' : ''),
                                     onClick: function onClick() {
-                                        return _this3.filterByPlant.call(_this3, name);
+                                        return _this4.filterByPlant.call(_this4, name);
                                     } },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'span',
@@ -10471,19 +10513,30 @@ var App = function (_Component) {
                             'Submissions'
                         )
                     ),
-                    this.state.markers.map(function (plant, index) {
-                        if (!plant.show) return;
-                        return _this3.renderSubmission(plant, index);
+                    this.state.markers.map(function (marker, index) {
+                        if (!marker.show) return;
+                        return _this4.renderSubmission(marker, index);
                     })
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'button',
+                    {
+                        type: 'button',
+                        className: 'button reset-map-button',
+                        onClick: this.resetMapPosition.bind(this) },
+                    'Reset Position'
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_6__UI_Map__["a" /* default */],
-                    { id: 'map', ref: 'maps' },
+                    { id: 'map',
+                        ref: 'maps',
+                        center: this.state.center,
+                        zoom: this.state.zoom
+                    },
                     this.state.markers.map(function (marker, index) {
                         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_7__UI_Marker__["a" /* default */],
-                            {
-                                key: index,
+                            { key: index,
                                 position: marker.position,
                                 title: marker.title,
                                 show: marker.show
@@ -11411,27 +11464,53 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Map = function (_Component) {
     _inherits(Map, _Component);
 
-    function Map() {
+    function Map(props) {
         _classCallCheck(this, Map);
 
-        return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
     }
+
+    /**
+     * Initializes the map.
+     */
+
 
     _createClass(Map, [{
         key: 'componentDidMount',
-
-        /**
-         * Initializes the map.
-         */
         value: function componentDidMount() {
             // Initialize the map
-            this.maps = new google.maps.Map(this.refs.mapContainer, {
+            var options = {
                 center: {
-                    lat: 40.354388,
-                    lng: -95.998237
+                    lat: this.props.center.lat,
+                    lng: this.props.center.lng
                 },
-                zoom: 4
+                zoom: this.props.zoom
+            };
+
+            this.maps = new google.maps.Map(this.refs.mapContainer, options);
+
+            this.setState({
+                center: options.center,
+                zoom: options.zoom
             });
+        }
+
+        /**
+         * Deal with changing regions.
+         *
+         * @param nextProps
+         */
+
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.center.lng != nextProps.center.lat || nextProps.center.lng != nextProps.center.lng) {
+                this.maps.setCenter(nextProps.center);
+            }
+
+            if (nextProps.zoom != this.state.center.zoom) {
+                this.maps.setZoom(nextProps.zoom);
+            }
         }
 
         /**
@@ -11459,7 +11538,7 @@ var Map = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                _extends({ ref: 'mapContainer' }, this.props),
+                _extends({ ref: 'mapContainer' }, _.omit(this.props, ['center', 'zoom'])),
                 this.renderChildren()
             );
         }
@@ -11471,9 +11550,18 @@ var Map = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = Map;
 
 
-Map.PropTypes = {};
+Map.PropTypes = {
+    center: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object,
+    zoom: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number
+};
 
-Map.defaultProps = {};
+Map.defaultProps = {
+    center: {
+        lat: 40.354388,
+        lng: -95.998237
+    },
+    zoom: 4
+};
 
 /***/ }),
 /* 110 */
@@ -11902,7 +11990,6 @@ Navbar.PropTypes = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SidebarItem__ = __webpack_require__(115);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11910,7 +11997,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -11924,38 +12010,38 @@ var Sidebar = function (_Component) {
     }
 
     _createClass(Sidebar, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'sidebar' },
+                "div",
+                { className: "sidebar" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'form',
-                    { action: '#', method: 'get', className: 'mb-1' },
+                    "form",
+                    { action: "#", method: "get", className: "mb-1" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'p',
-                        { className: 'mb-0 text-underline' },
+                        "p",
+                        { className: "mb-0 text-underline" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'strong',
+                            "strong",
                             null,
-                            'Search'
+                            "Search"
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'field has-addons' },
+                        "div",
+                        { className: "field has-addons" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'p',
-                            { className: 'control flex-grow' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'input', type: 'search', placeholder: 'Search' })
+                            "p",
+                            { className: "control flex-grow" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "search", placeholder: "Search" })
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'p',
-                            { className: 'control' },
+                            "p",
+                            { className: "control" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'button',
-                                { type: 'submit', className: 'button is-primary' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-search' })
+                                "button",
+                                { type: "submit", className: "button is-primary" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })
                             )
                         )
                     )
@@ -11976,80 +12062,7 @@ Sidebar.PropTypes = {
 };
 
 /***/ }),
-/* 115 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var SidebarItem = function (_Component) {
-    _inherits(SidebarItem, _Component);
-
-    function SidebarItem(props) {
-        _classCallCheck(this, SidebarItem);
-
-        var _this = _possibleConstructorReturn(this, (SidebarItem.__proto__ || Object.getPrototypeOf(SidebarItem)).call(this, props));
-
-        _this.state = {
-            selected: true
-        };
-        return _this;
-    }
-
-    _createClass(SidebarItem, [{
-        key: 'clicked',
-        value: function clicked(e) {
-            e.preventDefault();
-            this.setState({ selected: !this.state.selected });
-            var event = new CustomEvent('filter', { detail: this.props.name });
-            document.dispatchEvent(event);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'a',
-                _extends({ href: '#',
-                    className: 'button is-full checkbox-button'
-                }, this.props, {
-                    style: { marginBottom: '0' } }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    { className: 'icon', style: { marginRight: '.6rem' } },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-check', style: { color: this.state.selected ? '#2A9D8F' : '#aaa' } })
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    null,
-                    this.props.name
-                )
-            );
-        }
-    }]);
-
-    return SidebarItem;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* unused harmony default export */ var _unused_webpack_default_export = SidebarItem;
-
-
-SidebarItem.PropTypes = {
-    name: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string.isRequired
-};
-
-/***/ }),
+/* 115 */,
 /* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
