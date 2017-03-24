@@ -15,7 +15,6 @@ Route::group([
   'namespace' => 'Api\v1',
   'middleware' => ['auth:api'],
 ], function () {
-
     // Observations Controller
     Route::get('/observations', 'ObservationsController@index');
     Route::post('/observations', 'ObservationsController@create');
