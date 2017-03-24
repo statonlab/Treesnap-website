@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
 use Validator;
+use DB;
 
 class UsersController extends Controller
 {
@@ -22,12 +23,7 @@ class UsersController extends Controller
     {
         $user = $request->user();
         return $this->success([
-          'id' => $user->id,
-          'name' => $user->name,
-          'is_over_thirteen' => $user->is_over_thirteen,
-          'zipcode' => $user->zipcode,
-          'email' => $user->email,
-          'is_anonymous' => $user->is_anonymous,
+          'id' => $user->id, 'name' => $user->name, 'is_over_thirteen' => $user->is_over_thirteen, 'zipcode' => $user->zipcode, 'email' => $user->email, 'is_anonymous' => $user->is_anonymous,
         ]);
     }
 
@@ -50,13 +46,7 @@ class UsersController extends Controller
         $api_token = $this->generateAPIToken();
 
         $user = User::create([
-          'name' => $request->name,
-          'email' => $request->email,
-          'password' => bcrypt($request->password),
-          'is_over_thirteen' => $request->is_over_thirteen,
-          'is_anonymous' => $request->is_anonymous,
-          'zipcode' => $request->zipcode,
-          'api_token' => $api_token,
+          'name' => $request->name, 'email' => $request->email, 'password' => bcrypt($request->password), 'is_over_thirteen' => $request->is_over_thirteen, 'is_anonymous' => $request->is_anonymous, 'zipcode' => $request->zipcode, 'api_token' => $api_token,
         ]);
 
         if (!$user) {
@@ -64,13 +54,7 @@ class UsersController extends Controller
         }
 
         return $this->created([
-          'user_id' => $user->id,
-          'name' => $user->name,
-          'email' => $user->email,
-          'is_over_thirteen' => $user->is_over_thirteen,
-          'is_anonymous' => $user->is_anonymous,
-          'zipcode' => $user->zipcode,
-          'api_token' => $api_token,
+          'user_id' => $user->id, 'name' => $user->name, 'email' => $user->email, 'is_over_thirteen' => $user->is_over_thirteen, 'is_anonymous' => $user->is_anonymous, 'zipcode' => $user->zipcode, 'api_token' => $api_token,
         ]);
     }
 
@@ -91,11 +75,7 @@ class UsersController extends Controller
         }
 
         $update = $user->update([
-          'name' => $request->name,
-          'email' => $request->email,
-          'is_over_thirteen' => $request->is_over_thirteen,
-          'is_anonymous' => $request->is_anonymous,
-          'zipcode' => $request->zipcode,
+          'name' => $request->name, 'email' => $request->email, 'is_over_thirteen' => $request->is_over_thirteen, 'is_anonymous' => $request->is_anonymous, 'zipcode' => $request->zipcode,
         ]);
 
         if (!$update) {
@@ -103,17 +83,13 @@ class UsersController extends Controller
         }
 
         return $this->created([
-          'name' => $user->name,
-          'email' => $user->email,
-          'is_over_thirteen' => $user->is_over_thirteen,
-          'is_anonymous' => $user->is_anonymous,
-          'zipcode' => $user->zipcode,
+          'name' => $user->name, 'email' => $user->email, 'is_over_thirteen' => $user->is_over_thirteen, 'is_anonymous' => $user->is_anonymous, 'zipcode' => $user->zipcode,
         ]);
     }
 
     /**
      * Update an existing user's password.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -134,6 +110,38 @@ class UsersController extends Controller
         ]);
 
         return $this->created('Password updated');
+    }
+
+
+    /**
+     * Authenticates a user using email and password.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+          'email' => 'required|email', 'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error($validator->errors(), 200);
+        }
+
+        // Authenticate the user using email and password
+        if (!auth()->attempt(['email' => $request->email, 'password' => $request->password,])) {
+            return $this->error('Invalid Credentials', 200);
+        }
+
+        // Return the api token to the user on success
+        $user = auth()->user();
+        // We have to use raw queries to get a hidden column
+        $users = DB::select('select api_token from users where id = ?', [$user->id]);
+        return $this->success([
+          'api_token' => $users[0]->api_token,
+        ]);
     }
 
     /**
@@ -160,13 +168,8 @@ class UsersController extends Controller
         }
 
         return Validator::make($data, array_merge([
-          'name' => 'required|min:3',
-          'is_over_thirteen' => 'required|boolean',
-          'is_anonymous' => 'boolean',
-          'zipcode' => [
-            'min:5',
-            'max:10',
-            'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
+          'name' => 'required|min:3', 'is_over_thirteen' => 'required|boolean', 'is_anonymous' => 'boolean', 'zipcode' => [
+            'min:5', 'max:10', 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
           ],
         ], $rules));
     }

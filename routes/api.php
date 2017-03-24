@@ -34,4 +34,5 @@ Route::group([
   'namespace' => 'Api\v1',
 ], function () {
     Route::post('/users', 'UsersController@create');
+    Route::post('/user/login', 'UsersController@login');
 });
