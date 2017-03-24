@@ -77,7 +77,7 @@
                             <div class="field">
                                 <label for="zipcode" class="label">Zipcode</label>
                                 <div class="control">
-                                    <input type="text" class="input" placeholder="Optional" maxlength="5" minlength="5">
+                                    <input type="text" name="zipcode" class="input" placeholder="Optional" maxlength="10" minlength="5">
                                 </div>
                             </div>
 

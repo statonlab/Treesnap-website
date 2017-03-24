@@ -18,7 +18,10 @@ export default class SidebarItem extends Component {
 
     render() {
         return (
-            <a className="button is-full" onClick={this.clicked.bind(this)} style={{marginBottom: '.1em'}}>
+            <a href="#"
+               className="button is-full checkbox-button"
+               {...this.props}
+               style={{marginBottom: '0'}}>
                 <span className="icon" style={{marginRight: '.6rem'}}>
                     <i className="fa fa-check" style={{color: this.state.selected ? '#2A9D8F' : '#aaa'}}></i>
                 </span>

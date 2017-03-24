@@ -1,4 +1,7 @@
-// Bootstrap Everything (loads dash and axios)
+/**
+ * TreeSource Website Entry Point JS File
+ */
+// Bootstrap Everything (loads dash and a configured axios)
 import './bootstrap'
 import React, {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
@@ -7,14 +10,18 @@ import Navbar from './components/Navbar'
 import Copyright from './components/Copyright'
 import Map from './UI/Map'
 import Marker from './UI/Marker'
+import SidebarItem from './components/SidebarItem'
 
 export default class App extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            markers: []
+            markers: [],
+            categories: {}
         }
+
+        this.allMarkers = []
     }
 
     /**
@@ -29,26 +36,75 @@ export default class App extends Component {
      */
     loadObservations() {
         axios.get('/observations').then(response => {
+            let categories = {}
             // Setup the observations to be rendered into markers
-            let markers = []
+            response.data.data.map((observation, index) => {
+                let category = observation.observation_category
 
-            response.data.data.map(observation => {
-                markers.push({
-                    title: observation.observation_category,
+                // Set the category
+                categories[category] = true
+
+                this.allMarkers.push({
+                    title: category,
                     images: observation.images,
                     position: {
                         latitude: observation.location.latitude,
                         longitude: observation.location.longitude
                     },
-                    owner: observation.user.name
+                    accuracy: observation.location.accuracy,
+                    owner: observation.user.name,
+                    show: true
                 })
             })
 
             // Add the markers to the state
-            this.setState({markers})
-
+            this.setState({
+                markers: this.allMarkers,
+                categories
+            })
         }).catch(error => {
             console.log(error)
+        })
+    }
+
+    renderSubmission(plant, index) {
+        return (
+            <a
+                href="#"
+                className="box"
+                style={{padding: 10, marginBottom: '.5em'}}
+                key={index}
+            >
+                <div className="media">
+                    <div className="media-left">
+                        <img src={plant.images[0]} alt={plant.title} style={{width: 50}}/>
+                    </div>
+                    <div className="media-content">
+                        <strong>{plant.title}</strong>
+                        <p style={{color: '#666', fontWeight: '500', fontSize: '14px'}}>
+                            {plant.owner}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        )
+    }
+
+    filterByPlant(name) {
+        let filteredMarkers = []
+        let categories = this.state.categories
+
+        this.state.markers.map(marker => {
+            if (marker.title == name) {
+                marker.show = !marker.show
+                categories[name] = marker.show
+            }
+            filteredMarkers.push(marker)
+        })
+
+        this.setState({
+            markers: filteredMarkers,
+            categories: categories
         })
     }
 
@@ -56,7 +112,36 @@ export default class App extends Component {
         return (
             <div>
                 <Navbar />
-                <Sidebar />
+                <Sidebar>
+                    <p className="mb-0 text-underline">
+                        <strong>Filter by Plant</strong>
+                    </p>
+                    <div className="checkbox-container">
+                        {Object.keys(this.state.categories).map((name, index) => {
+                            return (
+                                <a key={index}
+                                   href="#"
+                                   className={`button is-full checkbox-button${this.state.categories[name] ? ' is-active' : ''}`}
+                                   onClick={() => this.filterByPlant.call(this, name)}>
+                                    <span className="icon">
+                                        <i className="fa fa-check"></i>
+                                    </span>
+                                    <span>{name}</span>
+                                </a>
+                            )
+                        })}
+                    </div>
+
+
+                    <p className="mb-0 text-underline" style={{marginTop: '1em'}}>
+                        <strong>Submissions</strong>
+                    </p>
+                    {this.state.markers.map((plant, index) => {
+                        if (!plant.show) return
+                        return this.renderSubmission(plant, index)
+                    })}
+                </Sidebar>
+
                 <Map id="map" ref="maps">
                     {this.state.markers.map((marker, index) => {
                         return (
@@ -64,6 +149,7 @@ export default class App extends Component {
                                 key={index}
                                 position={marker.position}
                                 title={marker.title}
+                                show={marker.show}
                             >
                                 <div className="media callout">
                                     <div className="media-left mr-0">
