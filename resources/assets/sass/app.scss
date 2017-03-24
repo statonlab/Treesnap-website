@@ -1,17 +1,13 @@
-
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
 // Variables
 @import "variables";
-
 // Bulma
 @import "node_modules/bulma/bulma";
-
 // Components
 @import "core";
 @import "nav";
 @import "sidebar";
-
+@import "map";
 // Elements
 @import "form";

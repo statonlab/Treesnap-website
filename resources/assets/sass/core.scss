@@ -8,16 +8,8 @@ body,
   background-color: $body-bg;
 }
 
-#map {
-  position: absolute;
-  top: $nav-height;
-  left: $sidebar-width;
-  bottom: 0; //$app-footer-height;
-  right: 0;
-  background-color: #fff;
-  @include mobile() {
-    left: 0;
-  }
+.font-family {
+  font-family: $family-primary!important;
 }
 
 .auth-footer {
@@ -42,6 +34,10 @@ body,
 
 .mb-1 {
   margin-bottom: 1em;
+}
+
+.mr-0 {
+  margin-right: .5rem !important;
 }
 
 .button.is-full {

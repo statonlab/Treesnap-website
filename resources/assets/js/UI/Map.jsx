@@ -1,16 +1,9 @@
-import '../bootstrap'
 import React, {Component, PropTypes} from 'react'
-import Marker from './Marker'
 
 export default class Map extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            markers: []
-        }
-    }
-
+    /**
+     * Initializes the map.
+     */
     componentDidMount() {
         // Initialize the map
         this.maps = new google.maps.Map(this.refs.mapContainer, {
@@ -20,57 +13,26 @@ export default class Map extends Component {
             },
             zoom: 4
         })
-
-        // Get the markers
-        this.loadObservations()
     }
 
     /**
-     * Gets observations from the API and parses them into markers.
+     * Returns a reference to the map
+     *
+     * @returns {google.maps.Map|Map|*}
      */
-    loadObservations() {
-        axios.get('/observations').then(response => {
-            // Setup the observations to be rendered into markers
-            let markers = []
-
-            response.data.data.map(observation => {
-                markers.push({
-                    title: observation.observation_category,
-                    images: observation.images,
-                    position: {
-                        latitude: observation.location.latitude,
-                        longitude: observation.location.longitude
-                    }
-                })
-            })
-
-            // Add the markers to the state
-            this.setState({markers})
-
-        }).catch(error => {
-            console.log(error)
-        })
+    getMap() {
+        return this.maps
     }
 
     render() {
         return (
-            <div id="map" ref="mapContainer">
-                {this.state.markers.map((marker, index) => {
-                    console.log(marker)
-                    return (
-                        <Marker
-                            key={index}
-                            maps={this.maps}
-                            position={marker.position}
-                            title={marker.title}
-                        >
-                            <div>{marker.title}</div>
-                        </Marker>
-                    )
-                })}
+            <div ref="mapContainer" {...this.props}>
+                {this.props.children}
             </div>
         )
     }
 }
 
 Map.PropTypes = {}
+
+Map.defaultProps = {}

@@ -10134,6 +10134,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Navbar__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Copyright__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__UI_Map__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__UI_Marker__ = __webpack_require__(109);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10151,24 +10152,125 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var App = function (_Component) {
     _inherits(App, _Component);
 
     function App(props) {
         _classCallCheck(this, App);
 
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+        _this.state = {
+            markers: []
+        };
+        return _this;
     }
 
+    /**
+     * Set the maps and load observations into the state.
+     */
+
+
     _createClass(App, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.maps = this.refs.maps.getMap();
+            this.loadObservations();
+        }
+
+        /**
+         * Gets observations from the API and parses them into markers.
+         */
+
+    }, {
+        key: 'loadObservations',
+        value: function loadObservations() {
+            var _this2 = this;
+
+            axios.get('/observations').then(function (response) {
+                // Setup the observations to be rendered into markers
+                var markers = [];
+
+                response.data.data.map(function (observation) {
+                    markers.push({
+                        title: observation.observation_category,
+                        images: observation.images,
+                        position: {
+                            latitude: observation.location.latitude,
+                            longitude: observation.location.longitude
+                        },
+                        owner: observation.user.name
+                    });
+                });
+
+                // Add the markers to the state
+                _this2.setState({ markers: markers });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Navbar__["a" /* default */], null),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_Sidebar__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__UI_Map__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_6__UI_Map__["a" /* default */],
+                    { id: 'map', ref: 'maps' },
+                    this.state.markers.map(function (marker, index) {
+                        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_7__UI_Marker__["a" /* default */],
+                            {
+                                key: index,
+                                maps: _this3.maps,
+                                position: marker.position,
+                                title: marker.title
+                            },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'media callout' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media-left mr-0' },
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: marker.images[0], alt: marker.title, style: {
+                                            width: 50,
+                                            height: 'auto'
+                                        } })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media-content' },
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'div',
+                                        { className: 'mb-0' },
+                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                            'strong',
+                                            null,
+                                            marker.title
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'div',
+                                        { className: 'mb-0' },
+                                        'By ',
+                                        marker.owner
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'a',
+                                        { href: '#' },
+                                        'See full description'
+                                    )
+                                )
+                            )
+                        );
+                    })
+                ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_Copyright__["a" /* default */], null)
             );
         }
@@ -11034,11 +11136,10 @@ module.exports = function spread(callback) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Marker__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11049,24 +11150,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-
 var Map = function (_Component) {
     _inherits(Map, _Component);
 
-    function Map(props) {
+    function Map() {
         _classCallCheck(this, Map);
 
-        var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
-
-        _this.state = {
-            markers: []
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).apply(this, arguments));
     }
 
     _createClass(Map, [{
-        key: 'componentDidMount',
+        key: "componentDidMount",
+
+        /**
+         * Initializes the map.
+         */
         value: function componentDidMount() {
             // Initialize the map
             this.maps = new google.maps.Map(this.refs.mapContainer, {
@@ -11076,77 +11174,39 @@ var Map = function (_Component) {
                 },
                 zoom: 4
             });
-
-            // Get the markers
-            this.loadObservations();
         }
 
         /**
-         * Gets observations from the API and parses them into markers.
+         * Returns a reference to the map
+         *
+         * @returns {google.maps.Map|Map|*}
          */
 
     }, {
-        key: 'loadObservations',
-        value: function loadObservations() {
-            var _this2 = this;
-
-            axios.get('/observations').then(function (response) {
-                // Setup the observations to be rendered into markers
-                var markers = [];
-
-                response.data.data.map(function (observation) {
-                    markers.push({
-                        title: observation.observation_category,
-                        images: observation.images,
-                        position: {
-                            latitude: observation.location.latitude,
-                            longitude: observation.location.longitude
-                        }
-                    });
-                });
-
-                // Add the markers to the state
-                _this2.setState({ markers: markers });
-            }).catch(function (error) {
-                console.log(error);
-            });
+        key: "getMap",
+        value: function getMap() {
+            return this.maps;
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
-            var _this3 = this;
-
-            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { id: 'map', ref: 'mapContainer' },
-                this.state.markers.map(function (marker, index) {
-                    console.log(marker);
-                    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_2__Marker__["a" /* default */],
-                        {
-                            key: index,
-                            maps: _this3.maps,
-                            position: marker.position,
-                            title: marker.title
-                        },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'div',
-                            null,
-                            marker.title
-                        )
-                    );
-                })
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                _extends({ ref: "mapContainer" }, this.props),
+                this.props.children
             );
         }
     }]);
 
     return Map;
-}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = Map;
 
 
 Map.PropTypes = {};
+
+Map.defaultProps = {};
 
 /***/ }),
 /* 109 */
@@ -11183,6 +11243,11 @@ var Marker = function (_Component) {
         return _this;
     }
 
+    /**
+     * Creates the marker and adds it to the map.
+     */
+
+
     _createClass(Marker, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
@@ -11201,7 +11266,7 @@ var Marker = function (_Component) {
             // Create a Callout
             this.callout = new google.maps.InfoWindow({
                 content: this.renderCallout(),
-                maxWidth: 200
+                maxWidth: 250
             });
 
             // Handle click events on the callout
@@ -11228,6 +11293,17 @@ var Marker = function (_Component) {
             var callout = document.createElement('div');
             __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(this.props.children, callout);
             return callout;
+        }
+
+        /**
+         * Returns the rendered marker.
+         * @returns {Marker.marker}
+         */
+
+    }, {
+        key: 'marker',
+        value: function marker() {
+            return this.marker;
         }
 
         /**

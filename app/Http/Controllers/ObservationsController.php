@@ -18,7 +18,8 @@ class ObservationsController extends Controller
      */
     public function index()
     {
-        $observations = Observation::where('is_private', false)
+        $observations = Observation::with('user')
+          ->where('is_private', false)
           ->orderby('collection_date', 'desc')
           ->get();
         $data = [];
@@ -26,7 +27,11 @@ class ObservationsController extends Controller
         foreach ($observations as $observation) {
             // Compile the data into a standardized response
             // Remove the is_private value from the response
-            $data[] = array_except($this->getObservationJson($observation), ['is_private']);
+            $data[] = array_merge(array_except($this->getObservationJson($observation), ['is_private']), [
+              'user' => [
+                'name' => $observation->user->name,
+              ],
+            ]);
         }
 
         return $this->success($data);
