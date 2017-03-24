@@ -18,8 +18,8 @@ class ObservationsTableSeeder extends Seeder
             '/images/am.jpg',
             '/images/ash.jpg',
           ],
-          'longitude' => 40.354388,
-          'latitude' => -95.998237,
+          'latitude' => 40.354388,
+          'longitude' => -95.998237,
           'location_accuracy' => 60.09932,
           'data' => [
             'comment' => 'Comment on record 1',
@@ -35,8 +35,8 @@ class ObservationsTableSeeder extends Seeder
             '/images/hem.jpg',
             '/images/oak.jpg',
           ],
-          'longitude' => 40.354388,
-          'latitude' => -95.998237,
+          'latitude' => 40.354388,
+          'longitude' => -90.998237,
           'location_accuracy' => 20.50,
           'data' => [
             'comment' => 'Comment on record 2',
@@ -53,8 +53,8 @@ class ObservationsTableSeeder extends Seeder
           'images' => [
             '/images/ash.jpg',
           ],
-          'longitude' => 44.354388,
-          'latitude' => -93.998237,
+          'latitude' => 44.354388,
+          'longitude' => -93.998237,
           'location_accuracy' => 10,
           'data' => [
             'comment' => 'Comment on record 3',

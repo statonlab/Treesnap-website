@@ -1,7 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\v1;
-
-use phpDocumentor\Reflection\Types\Integer;
+namespace App\Http\Controllers\Traits;
 
 /**
  * Utility methods for API responses.

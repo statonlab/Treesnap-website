@@ -1,0 +1,15 @@
+#map {
+  position: absolute;
+  top: $nav-height;
+  left: $sidebar-width;
+  bottom: 0;
+  right: 0;
+  background-color: #fff;
+  @include mobile() {
+    left: 0;
+  }
+}
+
+.callout {
+  font-weight: normal;
+}

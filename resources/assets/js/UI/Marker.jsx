@@ -11,19 +11,24 @@ export default class Marker extends Component {
         }
     }
 
+    /**
+     * Creates the marker and adds it to the map.
+     */
     componentDidMount() {
         // Create a marker
         this.marker = new google.maps.Marker({
             title: this.props.title,
-            position: {lat: this.props.position.latitude, lng: this.props.position.longitude},
+            position: {
+                lat: this.props.position.latitude,
+                lng: this.props.position.longitude
+            },
             map: this.props.maps
         })
-
 
         // Create a Callout
         this.callout = new google.maps.InfoWindow({
             content: this.renderCallout(),
-            maxWidth: 200
+            maxWidth: 250
         })
 
         // Handle click events on the callout
@@ -47,6 +52,14 @@ export default class Marker extends Component {
         let callout = document.createElement('div')
         ReactDOM.render(this.props.children, callout)
         return callout
+    }
+
+    /**
+     * Returns the rendered marker.
+     * @returns {Marker.marker}
+     */
+    marker() {
+        return this.marker
     }
 
     /**
