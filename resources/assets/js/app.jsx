@@ -167,7 +167,6 @@ export default class App extends Component {
                         })}
                     </div>
 
-
                     <p className="mb-0 text-underline" style={{marginTop: '1em'}}>
                         <strong>Submissions</strong>
                     </p>
