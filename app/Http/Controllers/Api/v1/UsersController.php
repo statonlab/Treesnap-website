@@ -131,7 +131,7 @@ class UsersController extends Controller
         }
 
         $user->update([
-          'password' => bcrypt($request->password),
+          'password' => bcrypt($request->password)
         ]);
 
         return $this->created('Password updated');
