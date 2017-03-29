@@ -168,9 +168,16 @@ class UsersController extends Controller
         // Return the api token to the user on success
         $user = auth()->user();
         // We have to use raw queries to get a hidden column
-        $users = DB::select('select api_token from users where id = ?', [$user->id]);
+        $users = DB::select('select * from users where id = ?', [$user->id]);
+        $user = $users[0];
         return $this->success([
-          'api_token' => $users[0]->api_token,
+          'name' => $user->name,
+          'api_token' => $user->api_token,
+          'email' => $user->email,
+          'zipcode' => $user->zipcode,
+          'is_anonymous' => $user->is_anonymous,
+          'created_at' => $user->created_at,
+          'is_over_thirteen' => $user->is_over_thirteen,
         ]);
     }
 
