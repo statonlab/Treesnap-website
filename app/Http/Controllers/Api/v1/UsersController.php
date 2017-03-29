@@ -168,7 +168,6 @@ class UsersController extends Controller
         // Return the api token to the user on success
         $user = auth()->user();
         return $this->success([
-          'user_id' => $user->id,
           'name' => $user->name,
           'api_token' => $user->api_token,
           'email' => $user->email,
