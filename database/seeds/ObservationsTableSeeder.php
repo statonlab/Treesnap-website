@@ -49,7 +49,7 @@ class ObservationsTableSeeder extends Seeder
         // Another user with a private record
         \App\Observation::create([
           'user_id' => \App\User::orderby('id', 'desc')->first()->id,
-          'observation_category' => 'Green Ash',
+          'observation_category' => 'Ash',
           'images' => [
             '/images/ash.jpg',
           ],
