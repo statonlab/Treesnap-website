@@ -13,9 +13,10 @@ trait Observable
      */
     protected $observation_categories = [
       'American Chestnut',
-      'Green Ash',
+      'Ash',
       'Hemlock',
       'White Oak',
+      'Other'
     ];
 
     /**
