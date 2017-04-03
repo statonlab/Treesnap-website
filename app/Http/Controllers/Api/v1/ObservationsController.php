@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Validator;
 
@@ -101,12 +102,17 @@ class ObservationsController extends Controller
             return $this->error($validator->errors(), 200);
         }
 
-        // Upload images
-        if ($request->has('images')) {
-            $images = $this->uploadImages($request->images);
+        Log::info($request->all());
+
+        /*
+         * if ($request->has('images')) {
         } else {
             return $this->error('Images are required.', 200);
         }
+         */
+        // Upload images
+
+        $images = $this->uploadImages($request->images);
 
         // Create the record
         $observation = Observation::create([
