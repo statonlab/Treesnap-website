@@ -201,6 +201,7 @@ class ObservationsController extends Controller
           'latitude' => 'required|numeric',
           'location_accuracy' => 'required|numeric',
           'date' => 'required|date_format:"m-d-Y H:i:s"',
+          'images' => 'required',
           'images.*' => 'required|image|max:2048',
           'is_private' => 'required|boolean',
         ];
