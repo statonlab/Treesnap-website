@@ -187,7 +187,7 @@ class ObservationsController extends Controller
             'required',
             Rule::in($this->observation_categories),
           ],
-          'meta_data' => 'required|json',
+          'meta_data' => 'json|nullable',
           'longitude' => 'required|numeric',
           'latitude' => 'required|numeric',
           'location_accuracy' => 'required|numeric',
