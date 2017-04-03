@@ -102,7 +102,11 @@ class ObservationsController extends Controller
         }
 
         // Upload images
-        $images = $this->uploadImages($request->images);
+        if ($request->has('images')) {
+            $images = $this->uploadImages($request->images);
+        } else {
+            return $this->error('Images are required.', 200);
+        }
 
         // Create the record
         $observation = Observation::create([
@@ -191,7 +195,7 @@ class ObservationsController extends Controller
           'latitude' => 'required|numeric',
           'location_accuracy' => 'required|numeric',
           'date' => 'required|date_format:"m-d-Y H:i:s"',
-          'images.*' => 'required|mimes:jpg,jpeg,png,bmp|max:2048',
+          'images.*' => 'required|image|max:2048',
           'is_private' => 'required|boolean',
         ];
     }
@@ -206,10 +210,10 @@ class ObservationsController extends Controller
     {
         $prefix = '/storage/images/';
         $paths = [];
-        foreach($images as $image) {
-            $name = str_random(5).uniqid().'.'.$image->extension();
+        foreach ($images as $image) {
+            $name = str_random(5) . uniqid() . '.' . $image->extension();
             $image->storeAs('images', $name, 'public');
-            $paths[] = $prefix.$name;
+            $paths[] = $prefix . $name;
         }
 
         return $paths;
