@@ -102,16 +102,7 @@ class ObservationsController extends Controller
             return $this->error($validator->errors(), 200);
         }
 
-        Log::info($request->all());
-
-        /*
-         * if ($request->has('images')) {
-        } else {
-            return $this->error('Images are required.', 200);
-        }
-         */
         // Upload images
-
         $images = $this->uploadImages($request->images);
 
         // Create the record
