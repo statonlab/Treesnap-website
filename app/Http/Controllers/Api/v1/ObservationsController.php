@@ -101,10 +101,8 @@ class ObservationsController extends Controller
             return $this->error($validator->errors(), 200);
         }
 
-        // TODO: UPLOAD IMAGES HERE
-        $images = [
-          '/images/ash.jpg',
-        ];
+        // Upload images
+        $images = $this->uploadImages($request->images);
 
         // Create the record
         $observation = Observation::create([
@@ -153,10 +151,8 @@ class ObservationsController extends Controller
             return $this->error($validator->errors(), 200);
         }
 
-        // TODO: UPLOAD IMAGES HERE
-        $images = [
-          '/images/ash.jpg',
-        ];
+        // Upload images
+        $images = $this->uploadImages($request->images);
 
         // Create the record
         $observation->update([
@@ -195,8 +191,27 @@ class ObservationsController extends Controller
           'latitude' => 'required|numeric',
           'location_accuracy' => 'required|numeric',
           'date' => 'required|date_format:"m-d-Y H:i:s"',
-          //'images.*' => 'required|mimes:jpg,jpeg,png,bmp|max:2048',
+          'images.*' => 'required|mimes:jpg,jpeg,png,bmp|max:2048',
           'is_private' => 'required|boolean',
         ];
+    }
+
+    /**
+     * Upload images
+     *
+     * @param $images
+     * @return array
+     */
+    protected function uploadImages($images)
+    {
+        $prefix = '/storage/images/';
+        $paths = [];
+        foreach($images as $image) {
+            $name = str_random(5).uniqid().'.'.$image->extension();
+            $image->storeAs('images', $name, 'public');
+            $paths[] = $prefix.$name;
+        }
+
+        return $paths;
     }
 }

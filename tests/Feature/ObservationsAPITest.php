@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Observation;
 use App\User;
 use DB;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -124,7 +125,7 @@ class ObservationsAPITest extends TestCase
           'latitude' => 34.090,
           'location_accuracy' => 5.00,
           'date' => '03-23-2017 20:00:00',
-          'images' => ['/images/ash.jpg', '/images/hem.jpg'],
+          'images' => [UploadedFile::fake()->image('avatar.jpg'), UploadedFile::fake()->image('guy.jpg')],
           'is_private' => true,
         ]);
 
@@ -150,7 +151,7 @@ class ObservationsAPITest extends TestCase
           'latitude' => 34.090,
           'location_accuracy' => 5.00,
           'date' => '03-23-2017 20:00:00',
-          'images' => ['/images/ash.jpg', '/images/hem.jpg'],
+          'images' => [UploadedFile::fake()->image('avatar2.jpg'), UploadedFile::fake()->image('hem.jpg')],
           'is_private' => true,
         ]);
 

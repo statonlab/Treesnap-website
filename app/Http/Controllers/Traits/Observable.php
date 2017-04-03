@@ -26,6 +26,12 @@ trait Observable
      */
     protected function getObservationJson(Observation $observation)
     {
+        // Set Image Urls
+        $images = [];
+        foreach ($observation->images as $image) {
+            $images[] = config('app.url')."/$image";
+        }
+
         return [
           'id' => $observation->id,
           'user_id' => $observation->user_id,
@@ -36,7 +42,7 @@ trait Observable
             'latitude' => $observation->latitude,
             'accuracy' => $observation->location_accuracy,
           ],
-          'images' => $observation->images,
+          'images' => $images,
           'date' => $observation->collection_date,
           'is_private' => $observation->is_private,
         ];
