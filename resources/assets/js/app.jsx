@@ -99,9 +99,11 @@ export default class App extends Component {
                 onClick={() => this.goToSubmission.call(this, marker)}
             >
                 <div className="media">
-                    <div className="media-left">
-                        <img src={marker.images[0]} alt={marker.title} style={{width: 50}}/>
-                    </div>
+                    {marker.images.length < 1 ? null :
+                        <div className="media-left">
+                            <img src={marker.images[0]} alt={marker.title} style={{width: 50, height: 'auto'}}/>
+                        </div>
+                    }
                     <div className="media-content">
                         <strong>{marker.title}</strong>
                         <p style={{color: '#666', fontWeight: '500', fontSize: '14px'}}>

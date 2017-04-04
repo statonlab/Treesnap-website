@@ -103,7 +103,10 @@ class ObservationsController extends Controller
         }
 
         // Upload images
-        $images = $this->uploadImages($request->images);
+        $images = [];
+        if ($request->has('images')) {
+            $images = $this->uploadImages($request->images);
+        }
 
         // Create the record
         $observation = Observation::create([
@@ -153,7 +156,10 @@ class ObservationsController extends Controller
         }
 
         // Upload images
-        $images = $this->uploadImages($request->images);
+        $images = [];
+        if ($request->has('images')) {
+            $images = $this->uploadImages($request->images);
+        }
 
         // Create the record
         $observation->update([
@@ -192,7 +198,7 @@ class ObservationsController extends Controller
           'latitude' => 'required|numeric',
           'location_accuracy' => 'required|numeric',
           'date' => 'required|date_format:"m-d-Y H:i:s"',
-          'images' => 'required',
+          'images' => 'nullable',
           'images.*' => 'required|image|max:2048',
           'is_private' => 'required|boolean',
         ];
