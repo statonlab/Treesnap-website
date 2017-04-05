@@ -40,7 +40,7 @@ export default class App extends Component {
      * Set the maps and load observations into the state.
      */
     componentDidMount() {
-        this.loadObservations();
+        this.loadObservations()
     }
 
     /**

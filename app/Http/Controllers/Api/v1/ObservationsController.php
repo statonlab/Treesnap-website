@@ -103,10 +103,7 @@ class ObservationsController extends Controller
         }
 
         // Upload images
-        $images = [];
-        if ($request->has('images')) {
-            $images = $this->uploadImages($request->images);
-        }
+        $images = $this->uploadImages($request->images);
 
         // Create the record
         $observation = Observation::create([
@@ -156,10 +153,7 @@ class ObservationsController extends Controller
         }
 
         // Upload images
-        $images = [];
-        if ($request->has('images')) {
-            $images = $this->uploadImages($request->images);
-        }
+        $images = $this->uploadImages($request->images);
 
         // Create the record
         $observation->update([
@@ -212,6 +206,10 @@ class ObservationsController extends Controller
      */
     protected function uploadImages($images)
     {
+        if (empty($images)) {
+            return [];
+        }
+
         $prefix = '/storage/images/';
         $paths = [];
         foreach ($images as $image) {
