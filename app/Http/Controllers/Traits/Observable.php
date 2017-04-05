@@ -34,7 +34,7 @@ trait Observable
         }
 
         return [
-          'id' => $observation->id,
+          'observation_id' => $observation->id,
           'user_id' => $observation->user_id,
           'observation_category' => $observation->observation_category,
           'meta_data' => $observation->data,
