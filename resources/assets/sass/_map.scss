@@ -16,12 +16,20 @@
 
 .reset-map-button {
   position: absolute;
-  top: $nav-height + 5.6em;
-  left: $sidebar-width + 10px;
+  top: $nav-height + 2.5em;
+  left: $sidebar-width + 110px;
   background: #fff;
   border-radius: $radius;
   z-index: 20;
   font-size: 11px;
   border: 0;
   box-shadow: 0 3px 2px rgba(10, 10, 10, .1)!important;
+  height: 2.5em;
+  &:hover {
+    background: #ddd;
+    color: #000;
+  }
+  @include mobile() {
+    left: 10px;
+  }
 }
