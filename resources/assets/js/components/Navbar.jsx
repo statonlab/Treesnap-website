@@ -24,7 +24,7 @@ export default class Navbar extends Component {
             <div>
                 <nav className="nav">
                     <div className="nav-left nav-brand">
-                        <a className="nav-item">
+                        <a href="/" className="nav-item">
                             <b>Tree</b>Source
                         </a>
                         <small className="nav-item">
@@ -39,10 +39,10 @@ export default class Navbar extends Component {
                     </div>
 
                     <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
-                        <a className="nav-item">
+                        <a href="/" className="nav-item">
                             Home
                         </a>
-                        <a className="nav-item">
+                        <a href="#" className="nav-item">
                             Help
                         </a>
                         <a href="#" className="nav-item" onClick={(e) => {
@@ -52,10 +52,7 @@ export default class Navbar extends Component {
                             About
                         </a>
 
-                        <a href="#" className="nav-item" onClick={(e) => {
-                            e.preventDefault();
-                            this.modal.open("login")
-                        }}>
+                        <a href="/login" className="nav-item">
                             Login
                         </a>
 
@@ -64,8 +61,7 @@ export default class Navbar extends Component {
                         </a>
                     </div>
                 </nav>
-                <Modal ref={modal => this.modal = modal}
-                />
+                <Modal ref={modal => this.modal = modal}/>
             </div>
         )
     }

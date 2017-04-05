@@ -47,6 +47,10 @@
             <a href="/login" class="nav-item">
                 Login
             </a>
+
+            <a href="/register" class="nav-item">
+                Register
+            </a>
         </div>
     </div>
 </nav>

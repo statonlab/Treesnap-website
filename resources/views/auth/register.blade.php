@@ -82,9 +82,12 @@
                             </div>
 
                             <div class="field">
-                                <label for="is_over_thirteen" class="checkbox">
-                                    <input type="checkbox" name="is_over_thirteen" value="1"> I am over 13 years old
-                                </label>
+                                <div class="control">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="is_over_thirteen" value="1" {{ old('is_over_thirteen') ? 'checked' : '' }}>
+                                        I am over 13 years old
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="field">
