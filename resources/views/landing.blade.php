@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
         window.Laravel = {
-            csrfToken: '{{ csrf_token() }}'
+            csrfToken: '{{ csrf_token() }}',
+            loggedIn: {{ auth()->check() ? 1 : 0}},
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>

@@ -32,7 +32,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
       'password',
-      'remember_token'
+      'remember_token',
     ];
 
     /**
@@ -43,6 +43,7 @@ class User extends Authenticatable
     protected $casts = [
       'is_over_thirteen' => 'boolean',
       'is_anonymous' => 'boolean',
+      'zipcode' => 'string',
     ];
 
     /**
@@ -50,7 +51,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function observations() {
+    public function observations()
+    {
         return $this->hasMany('App\Observation');
     }
 }

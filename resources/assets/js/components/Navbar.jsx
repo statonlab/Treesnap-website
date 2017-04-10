@@ -46,19 +46,29 @@ export default class Navbar extends Component {
                             Help
                         </a>
                         <a href="#" className="nav-item" onClick={(e) => {
-                          e.preventDefault();
-                          this.modal.open("about")
+                            e.preventDefault()
+                            this.modal.open('about')
                         }}>
                             About
                         </a>
 
+                        {!Laravel.loggedIn ?
                         <a href="/login" className="nav-item">
                             Login
                         </a>
+                        : null}
 
+                        {!Laravel.loggedIn ?
                         <a href="/register" className="nav-item">
                             Register
                         </a>
+                        : null }
+
+                        {Laravel.loggedIn ?
+                        <a href="/register" className="nav-item">
+                            Account
+                        </a>
+                        : null}
                     </div>
                 </nav>
                 <Modal ref={modal => this.modal = modal}/>

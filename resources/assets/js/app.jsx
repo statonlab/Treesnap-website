@@ -3,7 +3,7 @@
  */
 // Bootstrap Everything (loads dash and a configured axios)
 import './bootstrap'
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
@@ -79,16 +79,28 @@ export default class App extends Component {
         })
     }
 
+    /**
+     * Zoom to marker.
+     *
+     * @param marker
+     */
     goToSubmission(marker) {
         this.setState({
             center: {
                 lat: marker.position.latitude,
                 lng: marker.position.longitude
             },
-            zoom: 11
+            zoom: 18
         })
     }
 
+    /**
+     * Render individual submission.
+     *
+     * @param marker
+     * @param index
+     * @returns {XML}
+     */
     renderSubmission(marker, index) {
         return (
             <a
@@ -138,6 +150,9 @@ export default class App extends Component {
         })
     }
 
+    /**
+     * Reset the position to the center and zoom out.
+     */
     resetMapPosition() {
         this.setState({
             center: this.defaultMapPosition.center,
@@ -145,11 +160,53 @@ export default class App extends Component {
         })
     }
 
+    /**
+     * search by plant name or username.
+     *
+     * @param term
+     */
+    search(event) {
+        let term = event.target.value
+        if (term.length === 0) {
+            this.setState({markers: this.allMarkers})
+            return
+        }
+
+        term = term.toLowerCase()
+
+        let markers = this.allMarkers.filter((marker) => {
+            return (marker.title.toLowerCase().indexOf(term) > -1 || marker.owner.toLowerCase().indexOf(term) > -1)
+        })
+
+        this.setState({markers})
+    }
+
+    /**
+     * Render the scene.
+     *
+     * @returns {XML}
+     */
     render() {
         return (
             <div>
                 <Navbar />
                 <Sidebar>
+                    <form action="#" method="get" className="mb-1">
+                        <p className="mb-0 text-underline">
+                            <strong>Search</strong>
+                        </p>
+                        <div className="field has-addons">
+                            <p className="control flex-grow">
+                                <input className="input" type="search" placeholder="Search" onChange={this.search.bind(this)}/>
+                            </p>
+                            <p className="control">
+                                <button type="submit" className="button is-primary">
+                                    <i className="fa fa-search"></i>
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+
                     <p className="mb-0 text-underline">
                         <strong>Filter by Plant</strong>
                     </p>

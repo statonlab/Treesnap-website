@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
         window.Laravel = {
-            csrfToken: '{{ csrf_token() }}'
+            csrfToken: '{{ csrf_token() }}',
+            loggedIn: {{ auth()->id() ? 1 : 0}}
         }
     </script>
 </head>
