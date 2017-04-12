@@ -12,15 +12,15 @@ class Observation extends Model
      * @var array
      */
     protected $fillable = [
-      'user_id',
-      'observation_category',
-      'images',
-      'longitude',
-      'latitude',
-      'data',
-      'collection_date',
-      'location_accuracy',
-      'is_private',
+        'user_id',
+        'observation_category',
+        'images',
+        'longitude',
+        'latitude',
+        'data',
+        'collection_date',
+        'location_accuracy',
+        'is_private',
     ];
 
     /**
@@ -29,9 +29,9 @@ class Observation extends Model
      * @var array
      */
     protected $dates = [
-      'created_at',
-      'updated_at',
-      'collection_date',
+        'created_at',
+        'updated_at',
+        'collection_date',
     ];
 
     /**
@@ -40,8 +40,8 @@ class Observation extends Model
      * @var array
      */
     protected $casts = [
-      'images' => 'array',
-      'data' => 'array',
+        'images' => 'array',
+        'data' => 'array'
     ];
 
     /**

@@ -57,6 +57,7 @@ export default class App extends Component {
                 categories[category] = true
 
                 this.allMarkers.push({
+                    id: observation.observation_id,
                     title: category,
                     images: observation.images,
                     position: {
@@ -197,7 +198,8 @@ export default class App extends Component {
                         </p>
                         <div className="field has-addons">
                             <p className="control flex-grow">
-                                <input className="input" type="search" placeholder="Search" onChange={this.search.bind(this)}/>
+                                <input className="input" type="search" placeholder="Search"
+                                       onChange={this.search.bind(this)}/>
                             </p>
                             <p className="control">
                                 <button type="submit" className="button is-primary">
@@ -264,7 +266,7 @@ export default class App extends Component {
                                     <div className="media-content">
                                         <div className="mb-0"><strong>{marker.title}</strong></div>
                                         <div className="mb-0">By {marker.owner}</div>
-                                        <a href="#">See full description</a>
+                                        <a href={`/observation/${marker.id}`}>See full description</a>
                                     </div>
                                 </div>
                             </Marker>
