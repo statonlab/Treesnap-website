@@ -19,7 +19,10 @@ Auth::routes();
 
 Route::get('/logout', function () {
     Auth::logout();
+
     return redirect('/');
 });
 
 Route::get('/observations', 'ObservationsController@index');
+Route::get('/observation/{id}', 'ObservationsController@show');
+Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');

@@ -9,17 +9,66 @@
     <script>
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
-            loggedIn: {{ auth()->id() ? 1 : 0}}
+            loggedIn: {{ auth()->id() ? 1 : 0}},
+            observationID: {{  $id or 0 }}
         }
     </script>
+    @yield('head')
 </head>
 <body>
 
-<div id="app-root"></div>
+<nav class="nav">
+    <div class="container">
+        <div class="nav-left nav-brand">
+            <a href="/" class="nav-item">
+                <b>Tree</b>Source
+            </a>
+            <small class="nav-item">
+                Citizen science app
+            </small>
+        </div>
 
-@yield('content')
+        <div class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-@yield('js')
+        <div class="nav-right nav-menu">
+            <a href="/" class="nav-item">
+                Home
+            </a>
+
+            <a href="/" class="nav-item">
+                Help
+            </a>
+
+            <a href="/" class="nav-item">
+                About
+            </a>
+
+            <a href="/login" class="nav-item">
+                Login
+            </a>
+
+            <a href="/register" class="nav-item">
+                Register
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+    @yield('content')
+</div>
+
+<div class="auth-footer">
+    <div class="container">
+        Copyright &copy; 2017 University of Tennessee at Knoxville
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+@yield('js')
 </body>
 </html>

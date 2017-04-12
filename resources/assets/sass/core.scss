@@ -9,7 +9,7 @@ body,
 }
 
 .font-family {
-  font-family: $family-primary!important;
+  font-family: $family-primary !important;
 }
 
 .auth-footer {
@@ -98,4 +98,21 @@ a.box {
   .container {
     padding: 0 1rem;
   }
+}
+
+.image-slider {
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+  }
+}
+
+.image-gallery-image {
+  margin: 0 auto;
+  text-align: center;
+
+}
+.image-gallery-slide {
+  background-color: rgba(0,0,0,.7)!important;
 }

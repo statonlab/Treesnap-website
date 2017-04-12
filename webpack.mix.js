@@ -13,6 +13,7 @@ const {mix} = require('laravel-mix');
 mix.browserSync('treesource.app');
 
 mix.react('resources/assets/js/app.jsx', 'public/js')
+    .react('resources/assets/js/scenes/ObservationScene.jsx', 'public/js/observation.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
 
 if (mix.config.inProduction) {
