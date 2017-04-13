@@ -10,7 +10,11 @@
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
             loggedIn: {{ auth()->check() ? 1 : 0}},
+            isAdmin: false
         }
+        @if(auth()->user())
+            window.Laravel.isAdmin = {{ App\User::isAdmin(auth()->user()) ? 1 : 0 }}
+        @endif
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>
 </head>

@@ -100,7 +100,7 @@ export default class App extends Component {
                 lat: marker.position.latitude,
                 lng: marker.position.longitude
             },
-            zoom: 18
+            zoom: 20
         })
     }
 

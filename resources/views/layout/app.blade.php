@@ -10,8 +10,13 @@
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
             loggedIn: {{ auth()->id() ? 1 : 0}},
-            observationID: {{  $id or 0 }}
+            observationID: {{  $id or 0 }},
+            isAdmin: false
         }
+
+        @if(auth()->user())
+            window.Laravel.isAdmin = {{ App\User::isAdmin(auth()->user()) ? 1 : 0 }}
+        @endif
     </script>
     @yield('head')
 </head>

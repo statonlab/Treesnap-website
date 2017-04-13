@@ -69,6 +69,10 @@ export default class Navbar extends Component {
                             Account
                         </a>
                         : null}
+
+                        {Laravel.isAdmin ?
+                            <a href="/admin" className="nav-item">Admin</a>
+                        : null}
                     </div>
                 </nav>
                 <Modal ref={modal => this.modal = modal}/>

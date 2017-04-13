@@ -32,7 +32,7 @@
 .reset-map-button {
   position: absolute;
   top: $nav-height + 2.5em;
-  left: $sidebar-width + 110px;
+  left: 110px;
   background: #fff;
   border-radius: $radius;
   z-index: 20;
@@ -43,6 +43,9 @@
   &:hover {
     background: #ddd;
     color: #000;
+  }
+  .sidebar-visible & {
+    left: $sidebar-width + 110px;
   }
   @include mobile() {
     display: none;
