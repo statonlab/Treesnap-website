@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Traits;
 
 use App\Observation;
@@ -12,11 +13,11 @@ trait Observable
      * @var array
      */
     protected $observation_categories = [
-      'American Chestnut',
-      'Ash',
-      'Hemlock',
-      'White Oak',
-      'Other'
+        'American Chestnut',
+        'Ash',
+        'Hemlock',
+        'White Oak',
+        'Other',
     ];
 
     /**
@@ -30,22 +31,23 @@ trait Observable
         // Set Image Urls
         $images = [];
         foreach ($observation->images as $image) {
-            $images[] = config('app.url')."/$image";
+            $images[] = url($image);
         }
 
         return [
-          'observation_id' => $observation->id,
-          'user_id' => $observation->user_id,
-          'observation_category' => $observation->observation_category,
-          'meta_data' => $observation->data,
-          'location' => [
-            'longitude' => $observation->longitude,
-            'latitude' => $observation->latitude,
-            'accuracy' => $observation->location_accuracy,
-          ],
-          'images' => $images,
-          'date' => $observation->collection_date,
-          'is_private' => $observation->is_private,
+            'observation_id' => $observation->id,
+            'user_id' => $observation->user_id,
+            'observation_category' => $observation->observation_category,
+            'meta_data' => $observation->data,
+            'location' => [
+                'longitude' => $observation->longitude,
+                'latitude' => $observation->latitude,
+                'accuracy' => $observation->location_accuracy,
+            ],
+            'images' => $images,
+            'date' => $observation->collection_date,
+            'is_private' => $observation->is_private,
+            'date_human_diff' => $observation->collection_date->diffForHumans()
         ];
     }
 }

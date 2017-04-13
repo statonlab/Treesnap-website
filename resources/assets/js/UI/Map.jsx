@@ -4,8 +4,6 @@ import Marker from './Marker'
 export default class Map extends Component {
     constructor(props) {
         super(props)
-
-
     }
 
     /**
@@ -35,11 +33,11 @@ export default class Map extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        if (nextProps.center.lng != nextProps.center.lat || nextProps.center.lng != nextProps.center.lng) {
+        if (nextProps.center.lng !== nextProps.center.lat || nextProps.center.lng !== nextProps.center.lng) {
             this.maps.setCenter(nextProps.center)
         }
 
-        if (nextProps.zoom != this.state.center.zoom) {
+        if (nextProps.zoom !== this.state.center.zoom) {
             this.maps.setZoom(nextProps.zoom)
         }
     }

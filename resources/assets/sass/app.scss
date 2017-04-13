@@ -2,13 +2,16 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 // Variables
 @import "variables";
+// Mixins
+@import "flex-mixins";
 // Bulma
 @import "node_modules/bulma/bulma";
 // Components
-@import "core";
+@import "layout";
 @import "nav";
 @import "sidebar";
 @import "map";
+@import "horizontal-bar";
 // Elements
 @import "form";
 // Plugins

@@ -109,7 +109,12 @@ export default class App extends Component {
                 className="box"
                 style={{padding: 10, marginBottom: '.5em'}}
                 key={index}
-                onClick={() => this.goToSubmission.call(this, marker)}
+                onClick={(e) => {
+                    if (e.nativeEvent) {
+                        e.nativeEvent.preventDefault()
+                    }
+                    this.goToSubmission.call(this, marker)
+                }}
             >
                 <div className="media">
                     {marker.images.length < 1 ? null :
@@ -192,19 +197,18 @@ export default class App extends Component {
             <div>
                 <Navbar />
                 <Sidebar>
-                    <form action="#" method="get" className="mb-1">
+                    <form action="#" method="get" className="mb-1" onSubmit={(e) => {
+                        e.nativeEvent ? e.nativeEvent.preventDefault() : null
+                    }}>
                         <p className="mb-0 text-underline">
                             <strong>Search</strong>
                         </p>
-                        <div className="field has-addons">
-                            <p className="control flex-grow">
-                                <input className="input" type="search" placeholder="Search"
-                                       onChange={this.search.bind(this)}/>
-                            </p>
-                            <p className="control">
-                                <button type="submit" className="button is-primary">
+                        <div className="field">
+                            <p className="control has-icon has-icon-right">
+                                <input className="input" type="search" placeholder="Search" onChange={this.search}/>
+                                <div className="icon is-small">
                                     <i className="fa fa-search"></i>
-                                </button>
+                                </div>
                             </p>
                         </div>
                     </form>
@@ -218,7 +222,12 @@ export default class App extends Component {
                                 <a key={index}
                                    href="#"
                                    className={`button is-full checkbox-button${this.state.categories[name] ? ' is-active' : ''}`}
-                                   onClick={() => this.filterByPlant.call(this, name)}>
+                                   onClick={(e) => {
+                                       if (e.nativeEvent) {
+                                           e.nativeEvent.preventDefault()
+                                       }
+                                       this.filterByPlant.call(this, name)
+                                   }}>
                                     <span className="icon">
                                         <i className="fa fa-check"></i>
                                     </span>

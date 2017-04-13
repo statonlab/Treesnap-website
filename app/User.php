@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\App;
 
 class User extends Authenticatable
 {
@@ -16,13 +15,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-      'name',
-      'email',
-      'password',
-      'api_token',
-      'is_over_thirteen',
-      'is_anonymous',
-      'zipcode',
+        'name',
+        'email',
+        'password',
+        'api_token',
+        'is_over_thirteen',
+        'is_anonymous',
+        'zipcode',
     ];
 
     /**
@@ -31,8 +30,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-      'password',
-      'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -41,9 +40,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-      'is_over_thirteen' => 'boolean',
-      'is_anonymous' => 'boolean',
-      'zipcode' => 'string',
+        'is_over_thirteen' => 'boolean',
+        'is_anonymous' => 'boolean',
+        'zipcode' => 'string',
     ];
 
     /**
@@ -54,5 +53,25 @@ class User extends Authenticatable
     public function observations()
     {
         return $this->hasMany('App\Observation');
+    }
+
+    /**
+     * Get user role.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
+    }
+
+    /**
+     * Determine if a user is an admin.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public static function isAdmin(User $user) {
+        return $user->role_id === Role::where('name', 'admin')->first()->id;
     }
 }

@@ -6,7 +6,6 @@ import Marker from '../UI/Marker'
 import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
 
-
 export default class ObservationScene extends Component {
     constructor(props) {
         super(props)
@@ -48,7 +47,20 @@ export default class ObservationScene extends Component {
                 })
             )
         }).catch(error => {
+            //alert("Could not obtain data from the server. Please contact the web admin.")
         })
+    }
+
+    _renderImage(item) {
+        return (
+            <div className='image-gallery-image' style={{backgroundColor: this.state.images.length > 1 ? '#222' : 'transparent'}}>
+                <img
+                    src={item.original}
+                    alt="Plant Image"
+                    style={{height: window.innerHeight * .9, width: 'auto'}}
+                />
+            </div>
+        )
     }
 
     _renderImagesModal() {
@@ -65,13 +77,14 @@ export default class ObservationScene extends Component {
 
         return (
             <Modal ref={ref => this.modal = ref}>
-                    <ImageGallery
-                        items={images}
-                        slideInterval={2000}
-                        showThumbnails={false}
-                        showFullscreenButton={false}
-                        showPlayButton={false}
-                    />
+                <ImageGallery
+                    items={images}
+                    slideInterval={2000}
+                    showThumbnails={false}
+                    showFullscreenButton={false}
+                    showPlayButton={false}
+                    renderItem={this._renderImage.bind(this)}
+                />
             </Modal>
         )
     }
@@ -111,10 +124,20 @@ export default class ObservationScene extends Component {
                                     <th>Date Collected</th>
                                     <td>{ this.state.collection_date }</td>
                                 </tr>
-                                <tr>
-                                    <th>Photos</th>
-                                    <td><a href="#" onClick={() => this.modal.open()}>See All Photos</a></td>
-                                </tr>
+                                {this.state.images.length === 0 ? null :
+                                    <tr>
+                                        <th>Photos</th>
+                                        <td>
+                                            <a href="#" onClick={(e) => {
+                                                this.modal.open()
+                                                if (e)
+                                                    e.nativeEvent.preventDefault()
+                                            }}>
+                                                See All Photos
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
                                 </tbody>
                             </table>
                         </div>

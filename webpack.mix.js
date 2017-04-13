@@ -1,4 +1,4 @@
-const {mix} = require('laravel-mix');
+const {mix} = require('laravel-mix')
 
 /*
  |--------------------------------------------------------------------------
@@ -10,12 +10,13 @@ const {mix} = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.browserSync('treesource.app');
+mix.browserSync('treesource.app')
 
 mix.react('resources/assets/js/app.jsx', 'public/js')
     .react('resources/assets/js/scenes/ObservationScene.jsx', 'public/js/observation.js')
+    .react('resources/assets/js/landing.jsx', 'public/js/landing.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
 
 if (mix.config.inProduction) {
-    mix.version();
+    mix.version()
 }

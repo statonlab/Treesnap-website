@@ -18,7 +18,7 @@
 
 <div id="app-root"></div>
 
-<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ mix('js/landing.js') }}"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 </html>

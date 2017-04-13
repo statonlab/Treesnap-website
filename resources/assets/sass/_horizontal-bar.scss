@@ -1,0 +1,100 @@
+.horizontal-bar {
+  background: #333;
+  height: $bottom-bar-height;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  @include mobile() {
+    &,
+    .sidebar-visible & {
+      left: 0;
+    }
+  }
+
+  .scroll {
+    position: absolute;
+    bottom: 0;
+    height: $bottom-bar-height;
+    display: block;
+    text-align: center;
+    background: rgba(0,0,0,0.6);
+    width: 60px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .7);
+
+    &,
+    &:hover {
+      cursor: pointer;
+      color: #fff;
+      font-size: 1.7rem;
+    }
+
+    &:hover {
+      background: rgba(0,0,0,0.5);
+    }
+
+    > .fa {
+      position: relative;
+      top: $bottom-bar-height / 2;
+      margin-top: -5px;
+    }
+  }
+
+  .scroll-right {
+    right: 0;
+    border-left: 1px solid rgba(255, 255, 255, .2);
+  }
+
+  .scroll-left {
+    left: 0;
+    border-right: 1px solid rgba(255, 255, 255, .2);
+  }
+}
+
+.bar-items-container {
+  @include flexbox();
+  @include flex-wrap(nowrap);
+  padding: .5rem 70px;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.bar-item {
+  @include flex(0 0 auto);
+  height: 125px;
+  width: 190px;
+  background-color: darken(#333, 5%);
+  border-radius: $radius;
+  margin-right: .5rem;
+  background: no-repeat center center;
+  background-size: 200px;
+
+  &:last-of-type {
+    margin-right: 70px;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    > .bar-item-field {
+      border-color: $laravel-border-color;
+    }
+  }
+
+  &,
+  .media-content > strong {
+    color: #fff;
+  }
+}
+
+.bar-item-field {
+  height: 100%;
+  width: 100%;
+  padding: .5rem;
+  background: rgba(0, 0, 0, .4);
+  text-shadow: 0 0 2px rgba(0, 0, 0, .8);
+  @include flexbox();
+  @include flex-direction(column);
+  @include justify-content(flex-end);
+}

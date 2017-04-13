@@ -113,6 +113,26 @@ a.box {
   text-align: center;
 
 }
+
 .image-gallery-slide {
-  background-color: rgba(0,0,0,.7)!important;
+  background-color: transparent !important;
+}
+
+#map2,
+.horizontal-bar {
+  transition: left 250ms linear;
+}
+
+.sidebar {
+  transition: transform 250ms linear;
+}
+
+.sidebar-visible {
+  .sidebar {
+    transform: translate(0, 0);
+  }
+  #map2,
+  .horizontal-bar {
+    left: $sidebar-width;
+  }
 }
