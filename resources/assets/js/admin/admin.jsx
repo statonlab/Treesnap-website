@@ -8,6 +8,7 @@ import Dashboard from './scenes/Dashboard'
 import Users from './scenes/Users'
 import User from './scenes/User'
 import Groups from './scenes/Groups'
+import Group from './scenes/Group'
 
 class Admin extends Component {
     render() {
@@ -26,6 +27,7 @@ class Admin extends Component {
                                     <Route path="/users" component={Users}/>
                                     <Route path="/user/:id" component={User}/>
                                     <Route path="/groups" component={Groups}/>
+                                    <Route path="/group/:id" component={Group}/>
                                     <div className="app-footer admin-footer">
                                         Copyright &copy; 2017 University of Tennessee at Knoxville
                                     </div>
