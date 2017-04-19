@@ -48,6 +48,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     Route::get('/api/groups', 'GroupsController@index');
     Route::post('/api/groups', 'GroupsController@create');
+    Route::get('/api/group/{id}', 'GroupsController@show');
+    Route::delete('/api/group/detach', 'GroupsController@detach');
+    Route::post('/api/group/attach', 'GroupsController@attach');
+    Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
     Route::get('/api/roles', 'RolesController@index');
 

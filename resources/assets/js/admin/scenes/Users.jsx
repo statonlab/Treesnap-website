@@ -3,13 +3,15 @@ import $ from 'jquery'
 import 'datatables.net'
 import '../plugins/dataTables.bulma'
 import {Link} from 'react-router-dom'
+import Spinner from '../../components/Spinner'
 
 export default class Users extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            users: []
+            users  : [],
+            loading: true
         }
     }
 
@@ -18,6 +20,8 @@ export default class Users extends Component {
             this.setState({users: response.data.data})
         }).catch(error => {
             console.log(error)
+        }).then(() => {
+            this.setState({loading: false})
         })
     }
 
@@ -66,6 +70,7 @@ export default class Users extends Component {
                         </tbody>
                     </table>
                 </div>
+                <Spinner visible={this.state.loading}/>
             </div>
         )
     }

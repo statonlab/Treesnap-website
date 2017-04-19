@@ -45,7 +45,7 @@ class ObservationsController extends Controller
      */
     public function show($id)
     {
-        return view('observations.observation')->with(compact('observation', 'id'));
+        return view('observations.observation')->with(compact('id'));
     }
 
     /**
@@ -58,7 +58,9 @@ class ObservationsController extends Controller
         $observation = Observation::findOrFail($id);
 
         if ($observation->is_private) {
-            return abort(401);
+            if (auth()->check() && ! auth()->user()->isAdmin()) {
+                return abort(401);
+            }
         }
 
         if ($request->wantsJson() || $request->ajax()) {

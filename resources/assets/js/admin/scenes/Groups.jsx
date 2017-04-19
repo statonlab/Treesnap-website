@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Spinner from '../../components/Spinner'
 import moment from 'moment'
+import {Link} from 'react-router-dom'
 
 export default class Groups extends Component {
     constructor(props) {
@@ -54,7 +55,7 @@ export default class Groups extends Component {
                     return (
                         <tr key={index}>
                             <td>{group.id}</td>
-                            <td>{group.name}</td>
+                            <td><Link to={`/group/${group.id}`}>{group.name}</Link></td>
                             <td>{group.users}</td>
                             <td>{moment(group.created_at).format('MMM Do, YYYY')}</td>
                         </tr>
