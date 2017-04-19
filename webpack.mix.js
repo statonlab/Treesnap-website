@@ -15,6 +15,7 @@ mix.browserSync('treesource.app')
 mix.react('resources/assets/js/app.jsx', 'public/js')
     .react('resources/assets/js/scenes/ObservationScene.jsx', 'public/js/observation.js')
     .react('resources/assets/js/landing.jsx', 'public/js/landing.js')
+    .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
 
 if (mix.config.inProduction) {

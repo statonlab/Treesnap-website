@@ -1,0 +1,11 @@
+.alert {
+  padding: 1rem;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  border-radius: $radius;
+
+  &.is-danger {
+    background-color: $danger;
+    color: #fff;
+  }
+}

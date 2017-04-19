@@ -1,0 +1,107 @@
+.admin-sidebar {
+  //min-width: 250px;
+  margin-top: 1rem;
+  padding-left: 0;
+
+  a {
+    border-left: 6px solid transparent;
+    border-radius: 0;
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+    margin-bottom: 1px;
+  }
+
+  a.is-active {
+    color: #444;
+    font-weight: $weight-bold;
+    border-left-color: $primary;
+  }
+
+  a.is-active,
+  a:hover {
+    background-color: darken($body-bg, 4%);
+  }
+
+  a:hover {
+    color: #444;
+  }
+
+  .fa {
+    width: 30px;
+    line-height: 1.2rem;
+  }
+
+  .menu-heading {
+    padding: 0 0 .5rem 1.5rem;
+    font-size: .8rem;
+    text-transform: uppercase;
+    font-weight: $weight-bold;
+    color: #666;
+  }
+}
+
+.admin-content {
+  padding-top: 1rem;
+  margin-bottom: 0;
+}
+
+.admin-footer {
+ margin-top: 2rem;
+}
+
+.container.is-fluid {
+  @include tablet-only() {
+    padding: 0 16px;
+  }
+}
+
+.limit-width {
+  max-width: 600px;
+}
+
+.has-bg-image > .card-image {
+  background: no-repeat center center;
+  background-size: 100%;
+  height: 200px;
+}
+
+.border-top {
+  border-top: 1px solid $laravel-border-color;
+}
+
+select[multiple].multi-select {
+  all: initial;
+  font: inherit;
+  overflow-y: auto;
+  border-radius: 3px;
+  padding-bottom: 0.5em;
+  padding-left: 0.625em;
+  padding-top: 0.5em;
+  background-color: white;
+  border: 1px solid #ccd0d2;
+  color: #444;
+  cursor: pointer;
+  display: block;
+  outline: none;
+  padding-right: 2.5em;
+  &:active,
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+$select-input-bg:                   #fff;
+$select-input-bg-disabled:          #f9f9f9;
+$select-input-border-color:         #ccc;
+$select-input-border-radius:        $radius;
+$select-input-border-focus:         $primary;
+$select-input-border-width:         1px;
+$select-input-height:               36px;
+$select-input-internal-height:      ($select-input-height - ($select-input-border-width * 2));
+$select-input-placeholder:          #aaa;
+$select-text-color:                 #333;
+$select-link-hover-color:           $select-input-border-focus;
+
+$select-padding-vertical:           8px;
+$select-padding-horizontal:         10px;
+@import "node_modules/react-select/scss/default";

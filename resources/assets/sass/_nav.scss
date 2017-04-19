@@ -6,7 +6,12 @@
     color: #fff;
   }
 
+  .container.is-fluid {
+    width: 100%;
+  }
+
   a.nav-item {
+    &.is-active,
     &:hover {
       color: #fff;
       background: darken($primary, 5%);
@@ -21,6 +26,7 @@
 }
 
 .nav-brand {
+  overflow: hidden;
   > .nav-item {
     font-size: 1.2em;
     font-weight: 400;

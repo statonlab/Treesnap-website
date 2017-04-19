@@ -8,21 +8,15 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
         window.Laravel = {
-            csrfToken: '{{ csrf_token() }}',
-            loggedIn: {{ auth()->check() ? 1 : 0}},
-            isAdmin: false
+            csrfToken: '{{ csrf_token() }}'
         }
-        @if(auth()->check())
-            window.Laravel.isAdmin = {{ auth()->user()->isAdmin() ? 1 : 0 }}
-        @endif
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>
 </head>
 <body>
 
-<div id="app-root"></div>
+<div id="app"></div>
 
-<script src="{{ mix('js/landing.js') }}"></script>
+<script src="{{ mix('js/admin.js') }}"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 </html>

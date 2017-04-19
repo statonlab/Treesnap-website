@@ -18,7 +18,10 @@ class ObservationsController extends Controller
      */
     public function index()
     {
-        $observations = Observation::with('user')->where('is_private', false)->orderby('collection_date', 'desc')->get();
+        $observations = Observation::with('user')
+            ->where('is_private', false)
+            ->orderby('collection_date', 'desc')
+            ->get();
         $data = [];
 
         foreach ($observations as $observation) {
@@ -62,9 +65,9 @@ class ObservationsController extends Controller
             return $this->success([
                 'observation_category' => $observation->observation_category,
                 'owner' => $observation->user->is_anonymous ? 'Anonymous' : $observation->user->name,
-                'latitude' => (double)number_format($observation->latitude, 5),
-                'longitude' => (double)number_format($observation->longitude, 5),
-                'location_accuracy' => (int)number_format($observation->location_accuracy, 0),
+                'latitude' => (double) number_format($observation->latitude, 5),
+                'longitude' => (double) number_format($observation->longitude, 5),
+                'location_accuracy' => (int) number_format($observation->location_accuracy, 0),
                 'meta_data' => $observation->data,
                 'images' => $observation->images,
                 'collection_date' => $observation->collection_date->diffForHumans(),
