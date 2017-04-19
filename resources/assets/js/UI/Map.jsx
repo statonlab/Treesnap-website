@@ -4,6 +4,9 @@ import Marker from './Marker'
 export default class Map extends Component {
     constructor(props) {
         super(props)
+
+        this.cluster = null
+        this.markers = []
     }
 
     /**
@@ -16,14 +19,14 @@ export default class Map extends Component {
                 lat: this.props.center.lat,
                 lng: this.props.center.lng
             },
-            zoom: this.props.zoom
+            zoom  : this.props.zoom
         }
 
         this.maps = new google.maps.Map(this.refs.mapContainer, options)
 
         this.setState({
             center: options.center,
-            zoom: options.zoom
+            zoom  : options.zoom
         })
     }
 
@@ -47,15 +50,34 @@ export default class Map extends Component {
      * @returns {*}
      */
     renderChildren() {
-        return React.Children.map(this.props.children, child => {
-            if (child.type == Marker) {
+        let children = React.Children.map(this.props.children, child => {
+            if (child.type === Marker) {
                 return React.cloneElement(child, {
-                    maps: this.maps
+                    maps    : this.maps,
+                    onCreate: (marker) => {
+                        this.markers.push(marker)
+                        this.createCluster()
+                    }
                 })
             } else {
                 return child
             }
         })
+        console.log('Printing Length', this.props.children.length)
+
+        return children
+    }
+
+    /**
+     * Create Cluster
+     * @param markers
+     */
+    createCluster() {
+        if (this.props.children.length > 0 && this.markers.length === this.props.children.length && this.cluster === null) {
+            this.cluster = new MarkerClusterer(this.maps, this.markers, {
+                imagePath: '/images/m'
+            })
+        }
     }
 
     render() {
@@ -69,7 +91,7 @@ export default class Map extends Component {
 
 Map.PropTypes = {
     center: PropTypes.object,
-    zoom: PropTypes.number
+    zoom  : PropTypes.number
 }
 
 Map.defaultProps = {
@@ -77,5 +99,5 @@ Map.defaultProps = {
         lat: 40.354388,
         lng: -95.998237
     },
-    zoom: 4
+    zoom  : 4
 }

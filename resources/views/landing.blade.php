@@ -7,15 +7,16 @@
     <title>{{ $title or 'Tree Source' }}</title>
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
-        window.Laravel = {
+        window.Laravel             = {
             csrfToken: '{{ csrf_token() }}',
-            loggedIn: {{ auth()->check() ? 1 : 0}},
-            isAdmin: false
+            loggedIn : {{ auth()->check() ? 1 : 0}},
+            isAdmin  : false
         }
         @if(auth()->check())
             window.Laravel.isAdmin = {{ auth()->user()->isAdmin() ? 1 : 0 }}
         @endif
     </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>
 </head>
 <body>
