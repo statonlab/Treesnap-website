@@ -1,0 +1,72 @@
+import React, {Component} from 'react'
+import $ from 'jquery'
+import 'datatables.net'
+import '../plugins/dataTables.bulma'
+import {Link} from 'react-router-dom'
+
+export default class Users extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            users: []
+        }
+    }
+
+    componentWillMount() {
+        axios.get('/admin/api/users').then(response => {
+            this.setState({users: response.data.data})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    componentDidUpdate() {
+        $('#users-table').dataTable({
+            autoWidth: false,
+            destroy  : true,
+            language : {
+                search           : '',
+                searchPlaceholder: 'Search'
+            }
+        })
+    }
+
+    _renderRow(user, index) {
+        return (
+            <tr key={index}>
+                <td><Link to={`/user/${user.id}`}>{user.name}</Link></td>
+                <td>{user.email}</td>
+                <td>{user.is_anonymous ? 'Yes' : 'No'}</td>
+                <td>{user.class}</td>
+                <td>{user.observations}</td>
+                <td>{user.is_admin ? 'Admin' : 'User'}</td>
+            </tr>
+        )
+    }
+
+    render() {
+        return (
+            <div>
+                <h1 className="title is-3">Users</h1>
+                <div className="box">
+                    <table className="table is-striped mb-none" id="users-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Anonymous</th>
+                            <th>Class</th>
+                            <th>Observations</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.users.map(this._renderRow.bind(this))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        )
+    }
+}

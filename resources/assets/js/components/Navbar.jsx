@@ -1,18 +1,30 @@
 import React, {Component, PropTypes} from 'react'
-import Modal from './Modal'
+import Path from '../helpers/Path'
 
 export default class Navbar extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            open: false,
-            isActive: false
+            isActive  : false,
+            isLoggedIn: false,
+            isAdmin   : false
         }
     }
 
-    close() {
-        this.setState({open: false})
+    /**
+     * Get user logged in status.
+     */
+    componentDidMount() {
+        axios.get('/user/status').then(response => {
+            let data = response.data.data
+            this.setState({
+                isLoggedIn: data.logged_in,
+                isAdmin   : data.is_admin
+            })
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     toggle() {
@@ -23,64 +35,74 @@ export default class Navbar extends Component {
         return (
             <div>
                 <nav className="nav">
-                    <div className="nav-left nav-brand">
-                        <a href="/" className="nav-item">
-                            <b>Tree</b>Source
-                        </a>
-                        <small className="nav-item">
-                            Citizen science app
-                        </small>
-                    </div>
+                    <div className={this.props.container ? 'container' : 'container is-fluid'}>
+                        <div className="nav-left nav-brand">
+                            <a href="/" className="nav-item">
+                                <b>Tree</b>Source
+                            </a>
+                            <small className="nav-item">
+                                Citizen science app
+                            </small>
+                        </div>
 
-                    <div className="nav-toggle" onClick={this.toggle.bind(this)}>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                        <div className="nav-toggle" onClick={this.toggle.bind(this)}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
 
-                    <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
-                        <a href="/" className="nav-item">
-                            Home
-                        </a>
-                        <a href="#" className="nav-item">
-                            Help
-                        </a>
-                        <a href="#" className="nav-item" onClick={(e) => {
-                            e.preventDefault()
-                            this.modal.open('about')
-                        }}>
-                            About
-                        </a>
+                        <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
+                            <a href="/" className={`nav-item ${Path.isActive('/')}`}>
+                                Home
+                            </a>
 
-                        {!Laravel.loggedIn ?
-                        <a href="/login" className="nav-item">
-                            Login
-                        </a>
-                        : null}
+                            <a href="#" className={`nav-item ${Path.isActive('/help')}`}>
+                                Help
+                            </a>
 
-                        {!Laravel.loggedIn ?
-                        <a href="/register" className="nav-item">
-                            Register
-                        </a>
-                        : null }
+                            <a href="#" className={`nav-item ${Path.isActive('/about')}`}>
+                                About
+                            </a>
 
-                        {Laravel.loggedIn ?
-                        <a href="/register" className="nav-item">
-                            Account
-                        </a>
-                        : null}
+                            {!this.state.isLoggedIn ?
+                                <a href="/login" className={`nav-item ${Path.isActive('/login')}`}>
+                                    Login
+                                </a>
+                                : null}
 
-                        {Laravel.isAdmin ?
-                            <a href="/admin" className="nav-item">Admin</a>
-                        : null}
+                            {!this.state.isLoggedIn ?
+                                <a href="/register" className={`nav-item ${Path.isActive('/register')}`}>
+                                    Register
+                                </a>
+                                : null}
+
+                            {this.state.isLoggedIn ?
+                                <a href="/account" className={`nav-item ${Path.isActive('/account')}`}>
+                                    Account
+                                </a>
+                                : null}
+
+                            {this.state.isAdmin ?
+                                <a href="/admin" className={`nav-item ${Path.isActive('/admin', false)}`}>Admin</a>
+                                : null}
+
+                            {this.state.isLoggedIn ?
+                                <a href="/logout" className="nav-item">
+                                    Logout
+                                </a>
+                                : null}
+                        </div>
                     </div>
                 </nav>
-                <Modal ref={modal => this.modal = modal}/>
             </div>
         )
     }
 }
 
 Navbar.PropTypes = {
-    name: PropTypes.string.isRequired
+    container: PropTypes.bool
+}
+
+Navbar.defaultProps = {
+    container: false
 }

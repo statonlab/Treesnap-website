@@ -22,6 +22,7 @@ class User extends Authenticatable
         'is_over_thirteen',
         'is_anonymous',
         'zipcode',
+        'class'
     ];
 
     /**
@@ -66,12 +67,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user groups.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function groups() {
+        return $this->belongsToMany('App\Group');
+    }
+
+    /**
      * Determine if a user is an admin.
      *
-     * @param User $user
      * @return bool
      */
-    public static function isAdmin(User $user) {
-        return $user->role_id === Role::where('name', 'admin')->first()->id;
+    public function isAdmin() {
+        return $this->role()->first()->is_admin;
     }
 }

@@ -12,7 +12,7 @@ body,
   font-family: $family-primary !important;
 }
 
-.auth-footer {
+.app-footer {
   border-top: 1px solid $laravel-border-color;
   padding: 10px 0;
   color: #666;
@@ -24,20 +24,8 @@ body,
   min-height: calc(100% - 140px);
 }
 
-.flex-grow {
-  flex-grow: 1;
-}
-
-.mb-0 {
-  margin-bottom: .5em;
-}
-
-.mb-1 {
-  margin-bottom: 1em;
-}
-
-.mr-0 {
-  margin-right: .5rem !important;
+.flex-v-center {
+  @include align-items(center)
 }
 
 .button.is-full {
@@ -68,29 +56,6 @@ a.box {
   &,
   > a {
     color: #777;
-  }
-}
-
-.app-footer {
-  background-color: #2d2d2d;
-  position: absolute;
-  left: $sidebar-width;
-  right: 0;
-  bottom: 0;
-  height: 3em;
-  padding: 0 1rem;
-  z-index: 0;
-  display: flex;
-  align-items: center;
-  &,
-  strong {
-    color: #fff;
-  }
-  a {
-    text-decoration: underline;
-  }
-  a:hover {
-    color: #fff;
   }
 }
 
