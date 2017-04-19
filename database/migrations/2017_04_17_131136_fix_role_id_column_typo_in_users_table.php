@@ -14,8 +14,8 @@ class FixRoleIdColumnTypoInUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('role_id')->after('id')->default(1);
             $table->dropColumn('rol_id');
+            $table->integer('role_id')->after('id')->default(1);
         });
     }
 
