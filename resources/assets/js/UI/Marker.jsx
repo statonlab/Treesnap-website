@@ -9,27 +9,29 @@ export default class Marker extends Component {
             // Set the initial state for the callout
             calloutOpen: false,
             // Whether to display the marker
-            show: true
+            show       : true
         }
+
+        this.marker = ''
     }
 
     /**
      * Creates the marker and adds it to the map.
      */
-    componentDidMount() {
+    componentWillMount() {
         // Create a marker
         this.marker = new google.maps.Marker({
-            title: this.props.title,
+            title   : this.props.title,
             position: {
                 lat: this.props.position.latitude,
                 lng: this.props.position.longitude
             },
-            map: this.props.maps
+            map     : this.props.maps
         })
 
         // Create a Callout
         this.callout = new google.maps.InfoWindow({
-            content: this.renderCallout(),
+            content : this.renderCallout(),
             maxWidth: 250
         })
 
@@ -46,6 +48,8 @@ export default class Marker extends Component {
 
             this.setState({calloutOpen: !this.state.calloutOpen})
         })
+
+        this.props.onCreate(this.marker)
     }
 
     /**
@@ -74,18 +78,19 @@ export default class Marker extends Component {
      * @returns {null}
      */
     render() {
-        return (null);
+        return (null)
     }
 }
 
 Marker.PropTypes = {
-    maps: PropTypes.object.isRequired,
+    maps    : PropTypes.object.isRequired,
     position: PropTypes.object.isRequired,
-    title: PropTypes.string,
-    show: PropTypes.boolean
+    title   : PropTypes.string,
+    show    : PropTypes.boolean,
+    onCreate: PropTypes.func.isRequired
 }
 
 Marker.defaultProps = {
     title: '',
-    show: true
+    show : true
 }
