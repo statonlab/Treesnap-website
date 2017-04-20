@@ -99,7 +99,7 @@ export default class App extends Component {
         this.refs.maps.goTo({
             lat: marker.position.latitude,
             lng: marker.position.longitude
-        }, 20)
+        }, 22)
     }
 
     /**
