@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\ObservationCreated;
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Carbon\Carbon;
@@ -47,7 +48,7 @@ class ObservationsController extends Controller
         $user = $request->user();
         $observation = Observation::where('id', $id)->first();
 
-        if (!$observation) {
+        if (! $observation) {
             return $this->notFound('The observation you requested was not found.');
         }
 
@@ -72,7 +73,7 @@ class ObservationsController extends Controller
         // Make sure the user is updating a record that they own
         $observation = Observation::where('id', $id)->first();
 
-        if (!$observation) {
+        if (! $observation) {
             return $this->notFound('The observation you requested was not found.');
         }
 
@@ -82,9 +83,7 @@ class ObservationsController extends Controller
 
         $observation->delete();
 
-        return $this->success([
-          'data' => 'Observation has been deleted successfully',
-        ]);
+        return $this->success('Observation has been deleted successfully');
     }
 
     /**
@@ -107,20 +106,23 @@ class ObservationsController extends Controller
 
         // Create the record
         $observation = Observation::create([
-          'user_id' => $user->id,
-          'observation_category' => $request->observation_category,
-          'data' => json_decode($request->meta_data),
-          'longitude' => $request->longitude,
-          'latitude' => $request->latitude,
-          'location_accuracy' => $request->location_accuracy,
-          'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
-          'images' => $images,
-          'is_private' => $request->is_private,
+            'user_id' => $user->id,
+            'observation_category' => $request->observation_category,
+            'data' => json_decode($request->meta_data),
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
+            'location_accuracy' => $request->location_accuracy,
+            'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
+            'images' => $images,
+            'is_private' => $request->is_private,
         ]);
 
-        if (!$observation) {
+        if (! $observation) {
             return $this->error('Request could not be completed', 100);
         }
+
+        // Fire event
+        event(new ObservationCreated($observation));
 
         return $this->created(['observation_id' => $observation->id]);
     }
@@ -139,7 +141,7 @@ class ObservationsController extends Controller
         // Make sure the user is updating a record that they own
         $observation = Observation::where('id', $id)->first();
 
-        if (!$observation) {
+        if (! $observation) {
             return $this->notFound('The observation you requested was not found.');
         }
 
@@ -157,18 +159,18 @@ class ObservationsController extends Controller
 
         // Create the record
         $observation->update([
-          'user_id' => $user->id,
-          'observation_category' => $request->observation_category,
-          'data' => json_decode($request->meta_data),
-          'longitude' => $request->longitude,
-          'latitude' => $request->latitude,
-          'location_accuracy' => $request->location_accuracy,
-          'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
-          'images' => $images,
-          'is_private' => $request->is_private,
+            'user_id' => $user->id,
+            'observation_category' => $request->observation_category,
+            'data' => json_decode($request->meta_data),
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
+            'location_accuracy' => $request->location_accuracy,
+            'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
+            'images' => $images,
+            'is_private' => $request->is_private,
         ]);
 
-        if (!$observation) {
+        if (! $observation) {
             return $this->error('Request could not be completed', 101);
         }
 
@@ -183,18 +185,18 @@ class ObservationsController extends Controller
     protected function validationRules()
     {
         return [
-          'observation_category' => [
-            'required',
-            Rule::in($this->observation_categories),
-          ],
-          'meta_data' => 'json|nullable',
-          'longitude' => 'required|numeric',
-          'latitude' => 'required|numeric',
-          'location_accuracy' => 'required|numeric',
-          'date' => 'required|date_format:"m-d-Y H:i:s"',
-          'images' => 'nullable',
-          'images.*' => 'required|image|max:2048',
-          'is_private' => 'required|boolean',
+            'observation_category' => [
+                'required',
+                Rule::in($this->observation_categories),
+            ],
+            'meta_data' => 'json|nullable',
+            'longitude' => 'required|numeric',
+            'latitude' => 'required|numeric',
+            'location_accuracy' => 'required|numeric',
+            'date' => 'required|date_format:"m-d-Y H:i:s"',
+            'images' => 'nullable',
+            'images.*' => 'required|image|max:2048',
+            'is_private' => 'required|boolean',
         ];
     }
 
@@ -213,9 +215,9 @@ class ObservationsController extends Controller
         $prefix = '/storage/images/';
         $paths = [];
         foreach ($images as $image) {
-            $name = str_random(5) . uniqid() . '.' . $image->extension();
+            $name = str_random(5).uniqid().'.'.$image->extension();
             $image->storeAs('images', $name, 'public');
-            $paths[] = $prefix . $name;
+            $paths[] = $prefix.$name;
         }
 
         return $paths;

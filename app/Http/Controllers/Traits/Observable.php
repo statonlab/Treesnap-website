@@ -43,11 +43,12 @@ trait Observable
                 'longitude' => $observation->longitude,
                 'latitude' => $observation->latitude,
                 'accuracy' => $observation->location_accuracy,
+                'address' => $observation->address,
             ],
             'images' => $images,
             'date' => $observation->collection_date,
             'is_private' => $observation->is_private,
-            'date_human_diff' => $observation->collection_date->diffForHumans()
+            'date_human_diff' => $observation->collection_date->diffForHumans(),
         ];
     }
 }

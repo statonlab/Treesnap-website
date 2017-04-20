@@ -21,6 +21,7 @@ class Observation extends Model
         'collection_date',
         'location_accuracy',
         'is_private',
+        'address',
     ];
 
     /**
@@ -41,7 +42,8 @@ class Observation extends Model
      */
     protected $casts = [
         'images' => 'array',
-        'data' => 'array'
+        'data' => 'array',
+        'address' => 'array',
     ];
 
     /**
