@@ -15,11 +15,11 @@ export default class Map extends Component {
     componentDidMount() {
         // Initialize the map
         let options = {
-            center: {
+            center : {
                 lat: this.props.center.lat,
                 lng: this.props.center.lng
             },
-            zoom  : this.props.zoom,
+            zoom   : this.props.zoom,
             minZoom: 3
         }
 
