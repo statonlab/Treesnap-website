@@ -13,6 +13,7 @@ import Map from './UI/Map'
 import Marker from './UI/Marker'
 import Modal from './UI/Modal'
 import ImageGallery from 'react-image-gallery'
+import Address from './UI/Address'
 
 export default class App extends Component {
     constructor(props) {
@@ -23,23 +24,23 @@ export default class App extends Component {
                 lat: 40.354388,
                 lng: -95.998237
             },
-            zoom: 4
+            zoom  : 4
         }
 
         this.state = {
-            markers: [],
-            categories: {},
-            center: {
+            markers       : [],
+            categories    : {},
+            center        : {
                 lat: 40.354388,
                 lng: -95.998237
             },
-            zoom: 4,
+            zoom          : 4,
             selectedMarker: null,
-            galleryImages: [],
-            showSidebar: false
+            galleryImages : [],
+            showSidebar   : false
         }
 
-        this.allMarkers = []
+        this.allMarkers       = []
     }
 
     /**
@@ -47,7 +48,6 @@ export default class App extends Component {
      */
     componentDidMount() {
         this.loadObservations()
-
     }
 
     /**
@@ -64,18 +64,19 @@ export default class App extends Component {
                 categories[category] = true
 
                 this.allMarkers.push({
-                    id: observation.observation_id,
-                    title: category,
-                    images: observation.images,
+                    id      : observation.observation_id,
+                    title   : category,
+                    images  : observation.images,
                     position: {
-                        latitude: observation.location.latitude,
+                        latitude : observation.location.latitude,
                         longitude: observation.location.longitude,
-                        accuracy: observation.location.accuracy
+                        accuracy : observation.location.accuracy
                     },
-                    owner: observation.user.name,
-                    show: true,
-                    date: observation.date_human_diff,
-                    data: observation.meta_data
+                    owner   : observation.user.name,
+                    show    : true,
+                    date    : observation.date_human_diff,
+                    data    : observation.meta_data,
+                    ref     : null
                 })
             })
 
@@ -95,13 +96,10 @@ export default class App extends Component {
      * @param marker
      */
     goToSubmission(marker) {
-        this.setState({
-            center: {
-                lat: marker.position.latitude,
-                lng: marker.position.longitude
-            },
-            zoom: 20
-        })
+        this.refs.maps.goTo({
+            lat: marker.position.latitude,
+            lng: marker.position.longitude
+        }, 20)
     }
 
     /**
@@ -126,9 +124,10 @@ export default class App extends Component {
                     }
                     this.setState({
                         selectedMarker: marker,
-                        showSidebar: true
+                        showSidebar   : true
                     })
                     this.goToSubmission.call(this, marker)
+                    marker.ref.openCallout()
                 }}
             >
                 <div className="bar-item-field">
@@ -151,18 +150,18 @@ export default class App extends Component {
      */
     filterByPlant(name) {
         let filteredMarkers = []
-        let categories = this.state.categories
+        let categories      = this.state.categories
 
         this.state.markers.map(marker => {
             if (marker.title == name) {
-                marker.show = !marker.show
+                marker.show      = !marker.show
                 categories[name] = marker.show
             }
             filteredMarkers.push(marker)
         })
 
         this.setState({
-            markers: filteredMarkers,
+            markers   : filteredMarkers,
             categories: categories
         })
     }
@@ -171,10 +170,7 @@ export default class App extends Component {
      * Reset the position to the center and zoom out.
      */
     resetMapPosition() {
-        this.setState({
-            center: this.defaultMapPosition.center,
-            zoom: this.defaultMapPosition.zoom
-        })
+        this.refs.maps.goTo(this.defaultMapPosition.center, this.defaultMapPosition.zoom)
     }
 
     /**
@@ -199,6 +195,25 @@ export default class App extends Component {
     }
 
     /**
+     * Handle map bounds changes.
+     *
+     * @param newBounds
+     */
+    boundsChanged(newBounds) {
+
+        this.allMarkers.map(marker => {
+            let pos = {
+                lat: marker.position.latitude,
+                lng: marker.position.longitude
+            }
+
+            marker.show = newBounds.contains(pos)
+        })
+
+        this.setState({markers: this.allMarkers})
+    }
+
+    /**
      * Render the map.
      *
      * @returns {XML}
@@ -210,6 +225,7 @@ export default class App extends Component {
                  ref="maps"
                  center={this.state.center}
                  zoom={this.state.zoom}
+                 onBoundsChange={this.boundsChanged.bind(this)}
             >
                 {this.state.markers.map((marker, index) => {
                     return (
@@ -217,17 +233,21 @@ export default class App extends Component {
                                 position={marker.position}
                                 title={marker.title}
                                 show={marker.show}
+                                ref={(ref) => marker.ref = ref}
                         >
                             <div className="media callout">
                                 <div className="media-left mr-0">
-                                    <img src={marker.images[0]} alt={marker.title} style={{
-                                        width: 50,
-                                        height: 'auto'
-                                    }}/>
+                                    <img src={marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png'}
+                                         alt={marker.title}
+                                         style={{
+                                             width : 50,
+                                             height: 'auto'
+                                         }}/>
                                 </div>
                                 <div className="media-content">
                                     <div className="mb-0"><strong>{marker.title}</strong></div>
                                     <div className="mb-0">By {marker.owner}</div>
+                                    <Address position={marker.position}/>
                                     <a href={`/observation/${marker.id}`}>See full description</a>
                                 </div>
                             </div>
@@ -239,6 +259,7 @@ export default class App extends Component {
     }
 
     _renderBottomBar() {
+        let rendered = 0
         return (
             <div className="horizontal-bar" id="horizontal-bar-container">
                 <a href="javascript:;" className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
@@ -248,6 +269,8 @@ export default class App extends Component {
                      onScroll={this.setScrollState.bind(this)}>
                     {this.state.markers.map((marker, index) => {
                         if (!marker.show) return
+                        if (rendered >= 50) return
+                        rendered++
                         return this._renderSubmission(marker, index)
                     })}
                 </div>
@@ -259,21 +282,17 @@ export default class App extends Component {
     }
 
     setScrollState() {
-        let bar = document.getElementById('horizontal-bar')
-        let container = document.getElementById('horizontal-bar-container')
-        let width = bar.offsetWidth
+        let bar            = document.getElementById('horizontal-bar')
+        let container      = document.getElementById('horizontal-bar-container')
+        let width          = bar.offsetWidth
         let scrollPosition = bar.scrollLeft
+
         if (width + scrollPosition === bar.scrollWidth) {
             container.style.paddingRight = '65px'
             bar.scrollLeft += 65
         } else {
             container.style.paddingRight = 0
         }
-
-        this.setState({
-            scrollLeft: 'is-disabled',
-            scrollRight: 'is-disabled'
-        })
     }
 
     /**
@@ -282,14 +301,14 @@ export default class App extends Component {
     scrollRight() {
         let scrolled = 0
         let interval
-        let scroll = () => {
+        let scroll   = () => {
             if (scrolled === 200) {
                 clearInterval(interval)
             }
             scrolled += 5
             document.getElementById('horizontal-bar').scrollLeft += 5
         }
-        interval = setInterval(scroll, 5)
+        interval     = setInterval(scroll, 5)
     }
 
     /**
@@ -298,14 +317,14 @@ export default class App extends Component {
     scrollLeft() {
         let scrolled = 0
         let interval
-        let scroll = () => {
+        let scroll   = () => {
             if (scrolled === 200) {
                 clearInterval(interval)
             }
             scrolled += 5
             document.getElementById('horizontal-bar').scrollLeft -= 5
         }
-        interval = setInterval(scroll, 5)
+        interval     = setInterval(scroll, 5)
     }
 
     /**

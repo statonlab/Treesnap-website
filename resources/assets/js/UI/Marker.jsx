@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
+import InfoWindow from '../helpers/InfoWindow'
 
 export default class Marker extends Component {
     constructor(props) {
@@ -7,12 +8,12 @@ export default class Marker extends Component {
 
         this.state = {
             // Set the initial state for the callout
-            calloutOpen: false,
-            // Whether to display the marker
-            show       : true
+            calloutOpen: false
         }
 
         this.marker = ''
+
+        this.shouldUpdate = true
     }
 
     /**
@@ -30,26 +31,24 @@ export default class Marker extends Component {
         })
 
         // Create a Callout
-        this.callout = new google.maps.InfoWindow({
-            content : this.renderCallout(),
-            maxWidth: 250
-        })
+        this.callout = InfoWindow
 
         this.marker.setVisible(this.props.show)
-        this.setState({show: this.props.show})
 
         // Handle click events on the callout
-        this.marker.addListener('click', () => {
-            if (this.state.calloutOpen) {
-                this.callout.close()
-            } else {
-                this.callout.open(this.props.map, this.marker)
-            }
-
-            this.setState({calloutOpen: !this.state.calloutOpen})
-        })
+        this.marker.addListener('click', this.openCallout.bind(this))
 
         this.props.onCreate(this.marker)
+    }
+
+    /**
+     * Open the callout window.
+     */
+    openCallout() {
+        this.callout.close()
+        this.callout.setContent(this.renderCallout())
+        this.callout.open(this.props.map, this.marker)
+        this.setState({calloutOpen: !this.state.calloutOpen})
     }
 
     /**
@@ -58,7 +57,6 @@ export default class Marker extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        this.setState({show: nextProps.show})
         this.marker.setVisible(nextProps.show)
     }
 
