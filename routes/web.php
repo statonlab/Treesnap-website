@@ -16,6 +16,8 @@ Route::get('/', function () {
     return view('landing');
 });
 
+//Route::get('/test', 'HomeController@index');
+
 /**
  * Auth Routes:
  * Login: /login
