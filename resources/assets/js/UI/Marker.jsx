@@ -17,7 +17,7 @@ export default class Marker extends Component {
 
         this.colors = {
             'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-            'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+            'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
             'Hemlock'          : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
             'White Oak'        : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
             'Other'            : 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
