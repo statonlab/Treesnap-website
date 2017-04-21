@@ -62,7 +62,7 @@ export default class Users extends Component {
                             <th>Anonymous</th>
                             <th>Class</th>
                             <th>Observations</th>
-                            <th>Type</th>
+                            <th>Role</th>
                         </tr>
                         </thead>
                         <tbody>

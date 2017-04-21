@@ -13,8 +13,6 @@ export default class Marker extends Component {
 
         this.marker = ''
 
-        this.shouldUpdate = true
-
         this.colors = {
             'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
             'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
