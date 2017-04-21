@@ -57,6 +57,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     Route::get('/api/roles', 'RolesController@index');
 
+    Route::get('/api/analytics/users/count', 'AnalyticsController@usersCount');
+    Route::get('/api/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');
+    Route::get('/api/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
+    Route::get('/api/analytics/observations/count', 'AnalyticsController@observationsCount');
+    Route::get('/api/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
+
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
 });

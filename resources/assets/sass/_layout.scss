@@ -76,7 +76,9 @@ a.box {
 .image-gallery-image {
   margin: 0 auto;
   text-align: center;
-
+  img {
+    max-height: 800px;
+  }
 }
 
 .image-gallery-slide {
