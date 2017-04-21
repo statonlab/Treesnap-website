@@ -430,7 +430,8 @@ export default class User extends Component {
                             <label className="checkbox">
                                 <input type="checkbox"
                                        onChange={e => this.setState({is_anonymous: e.target.checked})}
-                                       value={this.state.is_anonymous}/>
+                                       value={this.state.is_anonymous}
+                                       defaultChecked={this.state.is_anonymous}/>
                                 This user is anonymous
                             </label>
                         </div>
@@ -473,6 +474,12 @@ export default class User extends Component {
         )
     }
 
+    /**
+     * Handle role change.
+     *
+     * @param e
+     * @private
+     */
     _handleRoleChange(e) {
         let selectedRole = {}
         this.state.roles.map(role => {
@@ -483,6 +490,11 @@ export default class User extends Component {
         this.setState({role: selectedRole})
     }
 
+    /**
+     * Update the server info.
+     *
+     * @param e react native event
+     */
     updateUserInfo(e) {
         e.preventDefault()
 
@@ -503,7 +515,7 @@ export default class User extends Component {
             is_anonymous    : this.state.is_anonymous,
             is_over_thirteen: this.state.is_over_thirteen,
             zipcode         : this.state.zipcode
-        }).then(response => {
+        }).then(() => {
             this.setState({editing: false, errors: null})
         }).catch(error => {
             if (error.response && error.response.status === 422) {

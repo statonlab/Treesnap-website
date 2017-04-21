@@ -1,32 +1,46 @@
 import React, {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import Chart from 'chart.js'
+import Spinner from '../../components/Spinner'
 
 export default class DoughnutChart extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            loading: true
+        }
+    }
+
     render() {
-        return React.createElement('canvas', {
-            ref   : 'canvas',
-            style: {
-                height: '100px'
-            }
-        })
+        return (
+            <div>
+                <Spinner visible={this.state.loading} inline={true}/>
+                <canvas ref="canvas" style={{height: '100px'}}></canvas>
+            </div>
+        )
     }
 
     componentDidMount() {
-        let el    = ReactDOM.findDOMNode(this)
+        axios.get(this.props.url).then(response => {
+            let data = response.data.data
+            this.createChart(data.labels, data.dataset)
+        }).catch(error => {
+            console.log(error)
+        }).then(() => {
+            this.setState({loading: false})
+        })
+    }
+
+    createChart(labels, data) {
+        let el    = ReactDOM.findDOMNode(this.refs.canvas)
         let ctx   = el.getContext('2d')
-        let chart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels  : [
-                    'American Chestnut',
-                    'Ash',
-                    'Hemlock',
-                    'White Oak',
-                    'Other'
-                ],
+                labels  : labels,
                 datasets: [{
-                    data                : [300, 150, 100, 400, 20],
+                    data                : data,
                     backgroundColor     : [
                         '#2A9D8F',
                         '#4d7ec8',
@@ -43,4 +57,8 @@ export default class DoughnutChart extends Component {
             }
         })
     }
+}
+
+DoughnutChart.PropTypes = {
+    url: PropTypes.string.isRequired
 }

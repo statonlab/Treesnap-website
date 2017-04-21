@@ -14,6 +14,14 @@ export default class Marker extends Component {
         this.marker = ''
 
         this.shouldUpdate = true
+
+        this.colors = {
+            'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+            'Hemlock'          : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            'White Oak'        : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+            'Other'            : 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+        }
     }
 
     /**
@@ -37,7 +45,7 @@ export default class Marker extends Component {
 
         // Handle click events on the callout
         this.marker.addListener('click', this.openCallout.bind(this))
-
+        this.marker.setIcon(this.colors[this.props.title])
         this.props.onCreate(this.marker)
     }
 
@@ -49,6 +57,7 @@ export default class Marker extends Component {
         this.callout.setContent(this.renderCallout())
         this.callout.open(this.props.map, this.marker)
         this.setState({calloutOpen: !this.state.calloutOpen})
+        this.props.onClick()
     }
 
     /**
@@ -85,10 +94,14 @@ Marker.PropTypes = {
     position: PropTypes.object.isRequired,
     title   : PropTypes.string,
     show    : PropTypes.boolean,
-    onCreate: PropTypes.func.isRequired
+    onCreate: PropTypes.func,
+    onClick : PropTypes.func
 }
 
 Marker.defaultProps = {
-    title: '',
-    show : true
+    title   : '',
+    onCreate: () => {
+    },
+    onClick : () => {
+    }
 }

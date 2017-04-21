@@ -24,8 +24,17 @@ export default class Spinner extends Component {
             return null
         }
 
+        if(this.props.inline) {
+            return (
+                <div className="mt-1" style={this.props.containerStyle}>
+                    <i className="fa fa-refresh fa-spin fa-2x"></i>
+                </div>
+            )
+        }
+
         return (
-            <div className="spinner-overlay">
+            <div className="spinner-overlay"
+                 style={this.props.containerStyle}>
                 <span className="spinner-container">
                     <i className="fa fa-refresh fa-spin"></i>
                 </span>
@@ -35,5 +44,12 @@ export default class Spinner extends Component {
 }
 
 Spinner.PropTypes = {
-    visible: PropTypes.bool.isRequired
+    visible       : PropTypes.bool.isRequired,
+    containerStyle: PropTypes.object,
+    inline        : PropTypes.bool
+}
+
+Spinner.defaultProps = {
+    containerStyle: {},
+    inline        : false
 }

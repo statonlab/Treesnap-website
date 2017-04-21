@@ -78,7 +78,7 @@
   &:active,
   &:focus {
     > .bar-item-field {
-      border-color: $laravel-border-color;
+      background-color: transparent;
     }
   }
 

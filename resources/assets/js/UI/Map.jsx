@@ -44,21 +44,6 @@ export default class Map extends Component {
     }
 
     /**
-     * Deal with changing regions.
-     *
-     * @param nextProps
-     */
-    componentWillReceiveProps(nextProps) {
-        /*if (nextProps.center.lng !== nextProps.center.lat || nextProps.center.lng !== nextProps.center.lng) {
-         this.maps.setCenter(nextProps.center)
-         }
-
-         if (nextProps.zoom !== this.state.center.zoom) {
-         this.maps.setZoom(nextProps.zoom)
-         }*/
-    }
-
-    /**
      * Zoom to location.
      *
      * @param center

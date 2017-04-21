@@ -38,7 +38,7 @@ trait Responds
     /**
      * Successful response.
      *
-     * @param array $data
+     * @param mixed $data
      * @return \Illuminate\Http\JsonResponse
      */
     protected function success($data)

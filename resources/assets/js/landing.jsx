@@ -14,6 +14,7 @@ import Marker from './UI/Marker'
 import Modal from './UI/Modal'
 import ImageGallery from 'react-image-gallery'
 import Address from './UI/Address'
+import Spinner from './components/Spinner'
 
 export default class App extends Component {
     constructor(props) {
@@ -37,10 +38,11 @@ export default class App extends Component {
             zoom          : 4,
             selectedMarker: null,
             galleryImages : [],
-            showSidebar   : false
+            showSidebar   : false,
+            loading       : false
         }
 
-        this.allMarkers       = []
+        this.allMarkers = []
     }
 
     /**
@@ -54,6 +56,8 @@ export default class App extends Component {
      * Gets observations from the API and parses them into markers.
      */
     loadObservations() {
+        this.setState({loading: true})
+
         axios.get('/observations').then(response => {
             let categories = {}
             // Setup the observations to be rendered into markers
@@ -87,6 +91,8 @@ export default class App extends Component {
             })
         }).catch(error => {
             console.log(error)
+        }).then(() => {
+            this.setState({loading: false})
         })
     }
 
@@ -127,7 +133,9 @@ export default class App extends Component {
                         showSidebar   : true
                     })
                     this.goToSubmission.call(this, marker)
-                    marker.ref.openCallout()
+                    if (marker.ref !== null) {
+                        marker.ref.openCallout()
+                    }
                 }}
             >
                 <div className="bar-item-field">
@@ -234,6 +242,12 @@ export default class App extends Component {
                                 title={marker.title}
                                 show={marker.show}
                                 ref={(ref) => marker.ref = ref}
+                                onClick={() => {
+                                    this.setState({
+                                        selectedMarker: this.state.markers[index],
+                                        showSidebar   : true
+                                    })
+                                }}
                         >
                             <div className="media callout">
                                 <div className="media-left mr-0">
@@ -265,7 +279,8 @@ export default class App extends Component {
                 <a href="javascript:;" className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
                     <i className="fa fa-chevron-left"></i>
                 </a>
-                <div className="bar-items-container dragscroll" id="horizontal-bar"
+                <div className="bar-items-container dragscroll"
+                     id="horizontal-bar"
                      onScroll={this.setScrollState.bind(this)}>
                     {this.state.markers.map((marker, index) => {
                         if (!marker.show) return
@@ -445,12 +460,24 @@ export default class App extends Component {
         )
     }
 
+    /**
+     * Render the filter bar and expand button.
+     *
+     * @returns {XML}
+     * @private
+     */
     _renderFilterBar() {
         return (
             <div className="filters-bar"></div>
         )
     }
 
+    /**
+     * Render a gallery image
+     * @param item
+     * @returns {XML}
+     * @private
+     */
     _renderImage(item) {
         return (
             <div className='image-gallery-image'
@@ -464,6 +491,12 @@ export default class App extends Component {
         )
     }
 
+    /**
+     * Render the modal that contains the gallery.
+     *
+     * @returns {XML}
+     * @private
+     */
     _renderImagesModal() {
         if (this.state.galleryImages.length === 0) {
             return (
@@ -515,6 +548,7 @@ export default class App extends Component {
                 {this._renderBottomBar()}
                 {this._renderImagesModal()}
                 <Copyright />
+                <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.2)'}}/>
             </div>
         )
     }

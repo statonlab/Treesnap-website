@@ -13,17 +13,17 @@ export default class ObservationScene extends Component {
 
         this.state = {
             observation_category: '',
-            owner: '',
-            meta_data: {},
-            latitude: 0,
-            longitude: 0,
-            markers: [],
-            images: [],
-            center: {
+            owner               : '',
+            meta_data           : {},
+            latitude            : 0,
+            longitude           : 0,
+            markers             : [],
+            images              : [],
+            center              : {
                 lat: 40.354388,
                 lng: -95.998237
             },
-            zoom: 11
+            zoom                : 11
         }
     }
 
@@ -33,19 +33,27 @@ export default class ObservationScene extends Component {
             this.setState(
                 Object.assign(data, {
                     markers: [{
-                        image: data.images.length > 0 ? data.images[0] : '',
+                        image   : data.images.length > 0 ? data.images[0] : '',
                         position: {
-                            latitude: data.latitude,
+                            latitude : data.latitude,
                             longitude: data.longitude
-                        }
+                        },
                     }],
-                    center: {
+                    center : {
                         lat: data.latitude,
                         lng: data.longitude
                     },
-                    zoom: 20
+                    zoom   : 20
                 })
             )
+
+            setTimeout(() => {
+                this.map.goTo({
+                    lat: data.latitude,
+                    lng: data.longitude
+                }, 20)
+            }, 500)
+
         }).catch(error => {
             //alert("Could not obtain data from the server. Please contact the web admin.")
         })
@@ -53,7 +61,8 @@ export default class ObservationScene extends Component {
 
     _renderImage(item) {
         return (
-            <div className='image-gallery-image' style={{backgroundColor: this.state.images.length > 1 ? '#222' : 'transparent'}}>
+            <div className='image-gallery-image'
+                 style={{backgroundColor: this.state.images.length > 1 ? '#222' : 'transparent'}}>
                 <img
                     src={item.original}
                     alt="Plant Image"
@@ -149,19 +158,19 @@ export default class ObservationScene extends Component {
                                     style={{height: '300px'}}
                                     center={this.state.center}
                                     zoom={this.state.zoom}
+                                    onBoundsChange={(bounds) => {}}
                                 >
                                     {this.state.markers.map((marker, index) => {
                                         return (
                                             <Marker
                                                 key={index}
-                                                maps={this.map}
                                                 position={marker.position}
                                                 show={true}
                                             >
                                                 {marker.image !== '' ?
                                                     <div className="callout">
                                                         <img src={marker.image} alt={marker.title} style={{
-                                                            width: 'auto',
+                                                            width : 'auto',
                                                             height: 100
                                                         }}/>
                                                     </div>
