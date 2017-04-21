@@ -18,10 +18,17 @@ class ObservationsController extends Controller
      */
     public function index()
     {
-        $observations = Observation::with('user')
-            ->where('is_private', false)
-            ->orderby('collection_date', 'desc')
-            ->get();
+        if(auth()->check() && auth()->user()->isAdmin()) {
+            $observations = Observation::with('user')
+                ->orderby('collection_date', 'desc')
+                ->get();
+        } else {
+            $observations = Observation::with('user')
+                ->where('is_private', false)
+                ->orderby('collection_date', 'desc')
+                ->get();
+        }
+
         $data = [];
 
         foreach ($observations as $observation) {
