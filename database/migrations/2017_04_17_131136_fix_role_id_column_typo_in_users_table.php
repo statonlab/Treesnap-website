@@ -14,7 +14,7 @@ class FixRoleIdColumnTypoInUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('rol_id', 'role_id');
+            //$table->renameColumn('rol_id', 'role_id');
         });
     }
 
@@ -26,7 +26,7 @@ class FixRoleIdColumnTypoInUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('role_id', 'rol_id');
+            //$table->renameColumn('role_id', 'rol_id');
         });
     }
 }
