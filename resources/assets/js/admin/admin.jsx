@@ -23,7 +23,6 @@ class Admin extends Component {
                                     <AdminSidebar/>
                                 </div>
                                 <div className="column is-10">
-                                    HERE is MY TEXT
                                     <Route exact={true} path="/" component={Dashboard}/>
                                     <Route path="/users" component={Users}/>
                                     <Route path="/user/:id" component={User}/>
