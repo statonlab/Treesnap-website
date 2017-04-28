@@ -67,5 +67,5 @@ If you disable cookies, some features will be disabled It won't affect the users
 
 ## How to contact us with questions
 
-Treesnap is still in alpha development.  If you have questions, please contact Bradford Condon at bradford.condon@gmail.com. 
+Treesnap is still in alpha development.  If you have questions, please visit our website at www.treesnap.org. 
 
