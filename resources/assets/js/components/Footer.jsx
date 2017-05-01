@@ -9,7 +9,7 @@ export default class Footer extends Component {
         return (
             <div className="app-footer">
                 <div>
-                    Download <strong>TreeSource</strong> from the <a href="#">App Store</a> or <a href="#">Google Play</a>
+                    Download <strong>Tresnap</strong> from the <a href="#">App Store</a> or <a href="#">Google Play</a>
                 </div>
             </div>
         )

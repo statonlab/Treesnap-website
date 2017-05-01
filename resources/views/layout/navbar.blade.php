@@ -2,7 +2,7 @@
     <div class="container">
         <div class="nav-left nav-brand">
             <a href="/" class="nav-item">
-                <b>Tree</b>Source
+                <b>Tree</b>snap
             </a>
             <small class="nav-item">
                 Citizen science app

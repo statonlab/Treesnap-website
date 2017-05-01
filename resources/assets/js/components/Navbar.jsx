@@ -38,7 +38,7 @@ export default class Navbar extends Component {
                     <div className={this.props.container ? 'container' : 'container is-fluid'}>
                         <div className="nav-left nav-brand">
                             <a href="/" className="nav-item">
-                                <b>Tree</b>Source
+                                <b>Tree</b>snap
                             </a>
                             <small className="nav-item">
                                 Citizen science app
