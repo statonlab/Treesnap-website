@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Tree Source',
+    'name' => 'Treesnap',
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://treesource.app'),
+    'url' => env('APP_URL', 'http://treesnap.app'),
 
     /*
     |--------------------------------------------------------------------------

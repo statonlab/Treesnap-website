@@ -1,3 +1,3 @@
-### Tree Source API
+### Treesnap API
 
-Tree Source website repository
+Treesnap website repository
