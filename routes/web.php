@@ -20,10 +20,15 @@ Route::get('/', function () {
 Route::get('/policy', function () {
   return view('policy');
 });
+Route::get('/privacy', function () {
+  return view('policy');
+});
 Route::get('/about', function () {
   return view('about');
 });
-
+Route::get('/help', function () {
+  return view('help');
+});
 
 //Route::get('/test', 'HomeController@index');
 

@@ -104,3 +104,17 @@ a.box {
     left: $sidebar-width;
   }
 }
+h1 {
+  @extend .title;
+  @extend .is-1;
+}
+
+h2 {
+  @extend .title;
+  @extend .is-2;
+}
+
+h3 {
+  @extend .title;
+  @extend .is-3 ;
+}

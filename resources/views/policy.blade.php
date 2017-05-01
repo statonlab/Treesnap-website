@@ -8,9 +8,11 @@
                     @markdown
                     <?php
                       use Illuminate\Support\Facades\Storage;
-                      $contents = Storage::get('docs/aboutUs.md');
+                      $contents = Storage::get('docs/privacyPolicy.md');
                        //$mdObject = (Markdown::parse($contents));
-                     echo($contents)
+                     echo($contents);
+                  $contents = Storage::get('docs/TermsLicense.md');
+                  echo($contents);
                       ?>
                     @endmarkdown
 
