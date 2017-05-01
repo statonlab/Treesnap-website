@@ -10,7 +10,7 @@ const {mix} = require('laravel-mix')
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.browserSync('treesource.app')
+mix.browserSync('treesnap.app')
 
 mix.react('resources/assets/js/app.jsx', 'public/js')
     .react('resources/assets/js/scenes/ObservationScene.jsx', 'public/js/observation.js')

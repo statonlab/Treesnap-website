@@ -1,5 +1,5 @@
 /**
- * TreeSource Website Entry Point JS File
+ * Treesnap Website Entry Point JS File
  */
 // Bootstrap Everything (loads dash and a configured axios)
 import './bootstrap'

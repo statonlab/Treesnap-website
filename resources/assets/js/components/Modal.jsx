@@ -40,24 +40,24 @@ let LoginForm = (
 const aboutModal = (
     <div className="box" style={{padding: '20px'}}>
         <h3 className="title is-4" style={{borderBottom: '1px solid #dedede', paddingBottom: 10}}>
-            <strong>About TreeSource</strong>
+            <strong>About Treesnap</strong>
         </h3>
         <div className="boxItem" style={{padding: '20px'}}>
-            <strong>TreeSource</strong> is collaboration between citizens and scientists to improve breeding efforts for
-            foresters at the University of Kentucky. Participants download the TreeSource app and, with it, tag American
+            <strong>Treesnap</strong> is collaboration between citizens and scientists to improve breeding efforts for
+            foresters at the University of Kentucky. Participants download the Treesnap app and, with it, tag American
             Chestnut, Hemlock, Ash, and White Oak trees out in the field. After taking a photo of the tree and answering
-            a few questions, the tree is added to the TreeSource database. Breeders at the University of Kentucky use
+            a few questions, the tree is added to the Treesnap database. Breeders at the University of Kentucky use
             the tree data collected to track disease and identify candidates for DNA sequencing and breeding efforts.
         </div>
         <div className="boxItem" style={{padding: '20px'}}>
-            If you would like to participate in the <strong>TreeSource</strong> project, create an account and find our
+            If you would like to participate in the <strong>Treesnap</strong> project, create an account and find our
             app on the Android or iOS store.
         </div>
         <h3 className="title is-4" style={{borderBottom: '1px solid #dedede', paddingBottom: 10}}>About the
             creators</h3>
         <div className="boxItem" style={{padding: '20px'}}>
-            TreeSource is written and developed in the Staton laboratory at the University of Tennessee-Knoxville by
-            Abdullah Almsaeed and Bradford Condon. The TreeSource citizen science collection project...
+            Treesnap is written and developed in the Staton laboratory at the University of Tennessee-Knoxville by
+            Abdullah Almsaeed and Bradford Condon. The Treesnap citizen science collection project...
         </div>
         <img src={'../images/Download_on_the_App_Store_Badge_US-UK_135x40.svg'} height="40" width="135"/>
         <img src={'../images/google-play-badge.png'} height="40" width="135"/>
