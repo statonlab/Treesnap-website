@@ -7,7 +7,7 @@
                 <div class="box">
                     <div class="box-body">
                         @markdown
-                       {{ $content }}
+                        {{ $content }}
                         @endmarkdown
                     </div>
                 </div>

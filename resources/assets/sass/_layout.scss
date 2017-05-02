@@ -104,6 +104,7 @@ a.box {
     left: $sidebar-width;
   }
 }
+
 h1 {
   @extend .title;
   @extend .is-1;
@@ -119,7 +120,7 @@ h2 {
 
 h3 {
   @extend .subtitle;
-  @extend .is-3 ;
+  @extend .is-3;
   color: $primary;
 
 }

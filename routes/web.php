@@ -19,11 +19,6 @@ Route::get('/', function () {
 /*
  * Documentation Routes
  */
-
-//Route::get('/about', function () {
-//  return view('about');
-//});
-
 Route::get('/about', 'DocumentController@about');
 Route::get('/policy', 'DocumentController@policy');
 Route::get('/privacy', 'DocumentController@policy');
