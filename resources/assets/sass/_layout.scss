@@ -107,14 +107,19 @@ a.box {
 h1 {
   @extend .title;
   @extend .is-1;
+  color: $primary;
 }
 
 h2 {
-  @extend .title;
+  @extend .subtitle;
   @extend .is-2;
+  color: $primary;
+
 }
 
 h3 {
-  @extend .title;
+  @extend .subtitle;
   @extend .is-3 ;
+  color: $primary;
+
 }

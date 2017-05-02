@@ -1,12 +1,13 @@
-# Software license
+# Licenses
+## Software license
 Both the web and mobile software for treesnap are provided under an Apache distribution license.
 
-# Data license
+## Data license
 This section is under development.
 
 All data, upon submission, is owned by Treesnap.  For anonymous submission, data is kept under an X license.  For non-anonymous data, data is released under a Y license upon publication.
 
-# Agreement
+# Usage Agreement
 By using this app you agree that you will not collect observations for trees on private land.  Observations may only be submitted for trees on public land, or trees present on the user's own private land.
 
 ## Data usage
