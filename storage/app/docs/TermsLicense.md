@@ -6,7 +6,7 @@ Both the web and mobile software for Treesnap are provided under an [Apache dist
 
 By using the Treesnap mobile app, you agree to all terms and conditions described here and in our privacy policy.  In doing so, you give Treesnap and our scientific partners permission to store, access, and distribute all data collected.  
  
- For non-anonymous data, scientific data is released (stripped of user identifying content) under a [Creative Commons by Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) license upon publication.  **Private** submissions are not released under this license, but instead may be viewed or access with expressed permission only.
+ Scientific data is released (stripped of user identifying content) under a [Creative Commons by Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) license upon publication.  **Private** submissions are not released under this license, but instead may be viewed or access with expressed permission only.
 
 # Usage Agreement
 By using this app you agree that *you will not collect observations for trees on private land*.  Observations may only be submitted for trees on public land, or trees present on the user's own private land.
