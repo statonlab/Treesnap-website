@@ -16,19 +16,18 @@ Route::get('/', function () {
     return view('landing');
 });
 
-//Document Routes
-Route::get('/policy', function () {
-  return view('policy');
-});
-Route::get('/privacy', function () {
-  return view('policy');
-});
-Route::get('/about', function () {
-  return view('about');
-});
-Route::get('/help', function () {
-  return view('help');
-});
+/*
+ * Documentation Routes
+ */
+
+//Route::get('/about', function () {
+//  return view('about');
+//});
+
+Route::get('/about', 'DocumentController@about');
+Route::get('/policy', 'DocumentController@policy');
+Route::get('/privacy', 'DocumentController@policy');
+Route::get('/help', 'DocumentController@help');
 
 //Route::get('/test', 'HomeController@index');
 

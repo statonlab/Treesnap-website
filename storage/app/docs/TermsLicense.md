@@ -1,10 +1,3 @@
----
-title: Terms and Licensing
-version: 0.1
-effective date: April 28, 2017
-last updated: April 28, 2017
----
-
 # Software license
 Both the web and mobile software for treesnap are provided under an Apache distribution license.
 
