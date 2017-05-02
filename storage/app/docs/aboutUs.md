@@ -1,10 +1,3 @@
----
-title: About us
-version: 0.1
-effective date: April 28, 2017
-last updated: April 28, 2017
----
-
 # About Us
 
 ## The Treesnap project
@@ -15,9 +8,14 @@ The Treesnap app is a means for participants to record the location and health o
 
 ## The Treesnap team
 
-Treesnap is developed as a collaboration between Scientists at the University of Kentucky, the University of Tennessee Knoxville.  The project is funded in part by the [NSF Plant Genome Research Program](https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338) 
+Treesnap is developed as a collaboration between Scientists at the University of Kentucky and the University of Tennessee Knoxville.  The project is funded in part by the [NSF Plant Genome Research Program](https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338).
 
+To learn more about the Staton laboratory and the genomic resources we provide, please visit the [Hardwoods Genomics Database](http://www.hardwoodgenomics.org/).
 
-## Social media about (255 character)
+## Privacy
 
-Help our nation’s trees! Invasive diseases and pests threaten the health of America’s forests. Tag trees in the wild so scientists can find the them for breeding or sequencing!
+Our privacy and data useage policies are avaialable [here](/privacy).
+
+## More information
+
+* [The American Chestnut Foundation](https://www.acf.org/).

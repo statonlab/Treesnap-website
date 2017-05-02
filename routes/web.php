@@ -16,6 +16,14 @@ Route::get('/', function () {
     return view('landing');
 });
 
+/*
+ * Documentation Routes
+ */
+Route::get('/about', 'DocumentController@about');
+Route::get('/policy', 'DocumentController@policy');
+Route::get('/privacy', 'DocumentController@policy');
+Route::get('/help', 'DocumentController@help');
+
 //Route::get('/test', 'HomeController@index');
 
 /**

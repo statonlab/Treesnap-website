@@ -104,3 +104,23 @@ a.box {
     left: $sidebar-width;
   }
 }
+
+h1 {
+  @extend .title;
+  @extend .is-1;
+  color: $primary;
+}
+
+h2 {
+  @extend .subtitle;
+  @extend .is-2;
+  color: $primary;
+
+}
+
+h3 {
+  @extend .subtitle;
+  @extend .is-3;
+  color: $primary;
+
+}

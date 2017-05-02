@@ -56,11 +56,11 @@ export default class Navbar extends Component {
                                 Home
                             </a>
 
-                            <a href="#" className={`nav-item ${Path.isActive('/help')}`}>
+                            <a href="/help" className={`nav-item ${Path.isActive('/help')}`}>
                                 Help
                             </a>
 
-                            <a href="#" className={`nav-item ${Path.isActive('/about')}`}>
+                            <a href="/about" className={`nav-item ${Path.isActive('/about')}`}>
                                 About
                             </a>
 

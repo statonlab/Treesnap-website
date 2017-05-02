@@ -20,11 +20,11 @@
                 Home
             </a>
 
-            <a href="/" class="nav-item">
+            <a href="/help" class="nav-item">
                 Help
             </a>
 
-            <a href="/" class="nav-item">
+            <a href="/about" class="nav-item">
                 About
             </a>
 

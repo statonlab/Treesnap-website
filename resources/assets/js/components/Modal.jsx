@@ -37,7 +37,7 @@ let LoginForm = (
 )
 
 
-const aboutModal = (
+let aboutModal = (
     <div className="box" style={{padding: '20px'}}>
         <h3 className="title is-4" style={{borderBottom: '1px solid #dedede', paddingBottom: 10}}>
             <strong>About Treesnap</strong>
