@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class FixRoleIdColumnTypoInUsersTable extends Migration
+class AddFuzzyCoordinates extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class FixRoleIdColumnTypoInUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //$table->renameColumn('rol_id', 'role_id');
+        Schema::table('observations', function (Blueprint $table) {
+            $table->json('fuzzy_coords')->nullable();
         });
     }
 
@@ -25,8 +25,9 @@ class FixRoleIdColumnTypoInUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //$table->renameColumn('role_id', 'rol_id');
+        Schema::table('observations', function (Blueprint $table) {
+            $table->dropColumn('fuzzy_coords');
+
         });
     }
 }
