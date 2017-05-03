@@ -116,6 +116,8 @@ class ObservationsController extends Controller
             'images' => $images,
             'is_private' => $request->is_private,
         ]);
+        //Generate fuzzy coords for private records
+        $this->fuzzify();
 
         if (! $observation) {
             return $this->error('Request could not be completed', 100);

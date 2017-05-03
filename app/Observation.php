@@ -44,6 +44,8 @@ class Observation extends Model
         'images' => 'array',
         'data' => 'array',
         'address' => 'array',
+        'fuzzy_coords' => 'array',
+
     ];
 
     /**
@@ -54,5 +56,22 @@ class Observation extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Create noised coordinates based on the real coordinates.  Coordinates are noised by randomly adding a number between -.333 to 0.333: translating to roughly 50miles fuzzying for both latitude and longitude.
+     *
+     */
+
+    protected function fuzzify(Observation $observation, $miles = 50)
+    {
+        $range = $miles / 69 / 2;
+        $latitude = $observation->latitude + mtrand($range * (-1), $range);
+        $longitude = $observation->longitude + mtrand($range * (-1), $range);
+        $observation->fuzzy_coords = [
+            "latitude" => $latitude,
+            "longitude" => $longitude,
+        ];
+        $observation->save();
     }
 }
