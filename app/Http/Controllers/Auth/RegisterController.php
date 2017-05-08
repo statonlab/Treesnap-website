@@ -49,8 +49,9 @@ class RegisterController extends Controller
           'name' => 'required|max:255',
           'email' => 'required|email|max:255|unique:users',
           'password' => 'required|min:6|confirmed',
-          'is_over_thirteen' => 'required|boolean',
-          'is_anonymous' => 'boolean',
+            'agreement' => 'required|boolean',
+            'birth_year' => 'integer',
+            'is_anonymous' => 'boolean',
           'zipcode' => [
             'min:5',
             'max:10',
@@ -71,7 +72,7 @@ class RegisterController extends Controller
           'name' => $data['name'],
           'email' => $data['email'],
           'password' => bcrypt($data['password']),
-          'is_over_thirteen' => !empty($data['is_over_thirteen']),
+          'birth_year' => $data['birth_year'],
           'api_token' => $this->generateAPIToken(),
           'zipcode' => $data['zipcode'],
         ]);

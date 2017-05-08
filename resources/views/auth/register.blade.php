@@ -77,15 +77,45 @@
                             <div class="field">
                                 <label for="zipcode" class="label">Zipcode</label>
                                 <div class="control">
-                                    <input type="text" name="zipcode" class="input" placeholder="Optional" maxlength="10" minlength="5">
+                                    <input type="text" name="zipcode" class="input" placeholder="Optional"
+                                           maxlength="10" minlength="5">
                                 </div>
+                            </div>
+
+                            <div class="field">
+                                <label for="birth_year" class="label">Year of birth</label>
+                                <div class="control">
+                                    <select type="select" name="birth_year" id="birth_year" class="select is-small" value="" {{old('birth_year') ? : ''}}
+                                            onChange="checkAge()">
+                                        <option value=""></option>
+                                        <?php for ($year = date('Y'); $year > date('Y') - 100; $year--) { ?>
+                                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                @if ($errors->has('birth_year'))
+                                    <p class="help is-danger">
+                                        Please indicate your year of birth.
+                                    </p>
+                                @endif
                             </div>
 
                             <div class="field">
                                 <div class="control">
                                     <label class="checkbox">
-                                        <input type="checkbox" name="is_over_thirteen" value="1" {{ old('is_over_thirteen') ? 'checked' : '' }}>
-                                        I am over 13 years old
+                                        <input type="checkbox" name="agreement"
+                                               value="1" {{ old('agreement') ? 'checked' : '' }}>
+                                        I agree to the &nbsp;<a href="/policy">Treesnap license and terms of service</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="field" id="minorBox" style="display: none">
+                                <div class="control">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="minorConsent"
+                                               value="1" {{ old('minorConsent') ? 'checked' : '' }}>
+                                        <strong>Minors:</strong> I affirm that I am registering with parental or guardian consent.
                                     </label>
                                 </div>
                             </div>
@@ -103,4 +133,24 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script>
+        var date = new Date();
+        var currentYear = date.getFullYear();
+        var checkAge = function () {
+            var yearSelect = document.getElementById("birth_year").value;
+            var currentAge = currentYear - yearSelect;
+            if (currentAge <= 13) {
+                console.log("i confirm i am using this app under the guidance of my parent/guardian or something")
+                document.getElementById("minorBox").style = "display: true";
+                return
+            }
+            document.getElementById("minorBox").style = "display: none";
+            return
+        }
+
+
+    </script>
 @endsection
