@@ -13,8 +13,13 @@
 
 // Home Routes
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/map', function () {
     return view('landing');
 });
+
 
 /*
  * Documentation Routes
