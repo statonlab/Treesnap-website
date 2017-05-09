@@ -176,7 +176,6 @@ h3 {
       border-bottom-color: #fff;
       &:hover {
         background-color: transparent;
-
       }
     }
 
@@ -191,6 +190,7 @@ h3 {
     padding-left: 0;
     &:hover {
       border-bottom-color: transparent!important;
+      background-color: transparent!important;
     }
   }
 }
