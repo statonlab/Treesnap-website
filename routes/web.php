@@ -12,19 +12,14 @@
 */
 
 // Home Routes
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', 'HomeController@index');
+Route::get('/map', 'HomeController@map');
 
-/*
- * Documentation Routes
- */
+// Documentation Routes
 Route::get('/about', 'DocumentController@about');
 Route::get('/policy', 'DocumentController@policy');
 Route::get('/privacy', 'DocumentController@policy');
 Route::get('/help', 'DocumentController@help');
-
-//Route::get('/test', 'HomeController@index');
 
 /**
  * Auth Routes:
@@ -47,15 +42,17 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Users
 Route::get('/user/status', 'UsersController@status');
+Route::post('/user/subscribe', 'UsersController@subscribe');
 
-/**
- * Admin Routes
- */
+
+// Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
+    // Users
     Route::get('/api/users', 'UsersController@index');
     Route::get('/api/user/{id}', 'UsersController@show');
     Route::put('/api/user/{id}', 'UsersController@update');
 
+    // Groups
     Route::get('/api/groups', 'GroupsController@index');
     Route::post('/api/groups', 'GroupsController@create');
     Route::get('/api/group/{id}', 'GroupsController@show');
@@ -63,8 +60,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::post('/api/group/attach', 'GroupsController@attach');
     Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
+    // Roles
     Route::get('/api/roles', 'RolesController@index');
 
+    // Analytics
     Route::get('/api/analytics/users/count', 'AnalyticsController@usersCount');
     Route::get('/api/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');
     Route::get('/api/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');

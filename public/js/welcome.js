@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 472);
+/******/ 	return __webpack_require__(__webpack_require__.s = 474);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10222,94 +10222,7 @@ module.exports = g;
 /***/ }),
 /* 91 */,
 /* 92 */,
-/* 93 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Spinner = function (_Component) {
-    _inherits(Spinner, _Component);
-
-    function Spinner(props) {
-        _classCallCheck(this, Spinner);
-
-        var _this = _possibleConstructorReturn(this, (Spinner.__proto__ || Object.getPrototypeOf(Spinner)).call(this, props));
-
-        _this.state = {
-            visible: false
-        };
-        return _this;
-    }
-
-    _createClass(Spinner, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            this.setState({ visible: this.props.visible });
-        }
-    }, {
-        key: "componentWillReceiveProps",
-        value: function componentWillReceiveProps(props) {
-            if (props.visible !== this.state.visible) {
-                this.setState({ visible: props.visible });
-            }
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            if (!this.state.visible) {
-                return null;
-            }
-
-            if (this.props.inline) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "div",
-                    { className: "mt-1", style: this.props.containerStyle },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-refresh fa-spin fa-2x" })
-                );
-            }
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "div",
-                { className: "spinner-overlay",
-                    style: this.props.containerStyle },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "span",
-                    { className: "spinner-container" },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-refresh fa-spin" })
-                )
-            );
-        }
-    }]);
-
-    return Spinner;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Spinner);
-
-
-Spinner.PropTypes = {
-    visible: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].bool.isRequired,
-    containerStyle: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object,
-    inline: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].bool
-};
-
-Spinner.defaultProps = {
-    containerStyle: {},
-    inline: false
-};
-
-/***/ }),
+/* 93 */,
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -40757,2891 +40670,29 @@ module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 214 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_InfoWindow__ = __webpack_require__(218);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-var Marker = function (_Component) {
-    _inherits(Marker, _Component);
-
-    function Marker(props) {
-        _classCallCheck(this, Marker);
-
-        var _this = _possibleConstructorReturn(this, (Marker.__proto__ || Object.getPrototypeOf(Marker)).call(this, props));
-
-        _this.state = {
-            // Set the initial state for the callout
-            calloutOpen: false
-        };
-
-        _this.marker = '';
-
-        _this.colors = {
-            'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-            'Ash': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            'Hemlock': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            'White Oak': 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-            'Other': 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
-        };
-        return _this;
-    }
-
-    /**
-     * Creates the marker and adds it to the map.
-     */
-
-
-    _createClass(Marker, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            // Create a marker
-            this.marker = new google.maps.Marker({
-                title: this.props.title,
-                position: {
-                    lat: this.props.position.latitude,
-                    lng: this.props.position.longitude
-                },
-                map: this.props.maps
-            });
-
-            // Create a Callout
-            this.callout = __WEBPACK_IMPORTED_MODULE_2__helpers_InfoWindow__["a" /* default */];
-
-            this.marker.setVisible(this.props.show);
-
-            // Handle click events on the callout
-            this.marker.addListener('click', this.openCallout.bind(this));
-            this.marker.setIcon(this.colors[this.props.title]);
-            this.props.onCreate(this.marker);
-        }
-
-        /**
-         * Open the callout window.
-         */
-
-    }, {
-        key: 'openCallout',
-        value: function openCallout() {
-            this.callout.close();
-            this.callout.setContent(this.renderCallout());
-            this.callout.open(this.props.map, this.marker);
-            this.setState({ calloutOpen: !this.state.calloutOpen });
-            this.props.onClick();
-        }
-
-        /**
-         * Update properties when needed.
-         *
-         * @param nextProps
-         */
-
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            this.marker.setVisible(nextProps.show);
-        }
-
-        /**
-         * Creates a DOM element for the callout
-         *
-         * @returns {Element}
-         */
-
-    }, {
-        key: 'renderCallout',
-        value: function renderCallout() {
-            var callout = document.createElement('div');
-            __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(this.props.children, callout);
-            return callout;
-        }
-
-        /**
-         * Not needed because we are using Google's JS API
-         * @returns {null}
-         */
-
-    }, {
-        key: 'render',
-        value: function render() {
-            return null;
-        }
-    }]);
-
-    return Marker;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Marker);
-
-
-Marker.PropTypes = {
-    maps: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
-    position: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
-    title: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string,
-    show: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].boolean,
-    onCreate: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func,
-    onClick: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func
-};
-
-Marker.defaultProps = {
-    title: '',
-    onCreate: function onCreate() {},
-    onClick: function onClick() {}
-};
-
-/***/ }),
+/* 214 */,
 /* 215 */,
-/* 216 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Marker__ = __webpack_require__(214);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Map = function (_Component) {
-    _inherits(Map, _Component);
-
-    function Map(props) {
-        _classCallCheck(this, Map);
-
-        var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
-
-        _this.cluster = null;
-        _this.markers = [];
-        return _this;
-    }
-
-    /**
-     * Initializes the map.
-     */
-
-
-    _createClass(Map, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            // Initialize the map
-            var options = {
-                center: {
-                    lat: this.props.center.lat,
-                    lng: this.props.center.lng
-                },
-                zoom: this.props.zoom,
-                minZoom: 3
-            };
-
-            this.maps = new google.maps.Map(this.refs.mapContainer, options);
-
-            this.setState({
-                center: options.center,
-                zoom: options.zoom
-            });
-
-            this.maps.addListener('zoom_changed', function () {
-                _this2.props.onBoundsChange(_this2.maps.getBounds());
-            });
-
-            this.maps.addListener('dragend', function () {
-                _this2.props.onBoundsChange(_this2.maps.getBounds());
-            });
-
-            this.maps.addListener('click', function () {
-                _this2.props.onBoundsChange(_this2.maps.getBounds());
-            });
-        }
-
-        /**
-         * Zoom to location.
-         *
-         * @param center
-         * @param zoom
-         */
-
-    }, {
-        key: 'goTo',
-        value: function goTo(center) {
-            var zoom = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20;
-
-            this.maps.setCenter(center);
-            this.maps.setZoom(zoom);
-            this.props.onBoundsChange(this.maps.getBounds());
-        }
-
-        /**
-         * Render children (markers) by passing the map to them.
-         *
-         * @returns {*}
-         */
-
-    }, {
-        key: 'renderChildren',
-        value: function renderChildren() {
-            var _this3 = this;
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.map(this.props.children, function (child) {
-                if (child.type === __WEBPACK_IMPORTED_MODULE_1__Marker__["a" /* default */]) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.cloneElement(child, {
-                        maps: _this3.maps,
-                        onCreate: function onCreate(marker) {
-                            _this3.markers.push(marker);
-                            _this3.createCluster();
-                        }
-                    });
-                } else {
-                    return child;
-                }
-            });
-        }
-
-        /**
-         * Create Cluster.
-         */
-
-    }, {
-        key: 'createCluster',
-        value: function createCluster() {
-            // Create the cluster after we collect all the markers from the children list
-            // and only if the cluster hasn't been created yet.
-            if (this.cluster !== null) {
-                return;
-            }
-
-            if (this.props.children.length > 0 && this.markers.length === this.props.children.length) {
-                this.cluster = new MarkerClusterer(this.maps, this.markers, {
-                    imagePath: '/images/m'
-                });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                _extends({ ref: 'mapContainer' }, _.omit(this.props, ['center', 'zoom', 'onBoundsChange'])),
-                this.renderChildren()
-            );
-        }
-    }]);
-
-    return Map;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Map);
-
-
-Map.PropTypes = {
-    center: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object,
-    zoom: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number,
-    onBoundsChange: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func
-};
-
-Map.defaultProps = {
-    center: {
-        lat: 40.354388,
-        lng: -95.998237
-    },
-    zoom: 4,
-    onBoundsChange: function onBoundsChange(bounds) {}
-};
-
-/***/ }),
-/* 217 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_Path__ = __webpack_require__(219);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Navbar = function (_Component) {
-    _inherits(Navbar, _Component);
-
-    function Navbar(props) {
-        _classCallCheck(this, Navbar);
-
-        var _this = _possibleConstructorReturn(this, (Navbar.__proto__ || Object.getPrototypeOf(Navbar)).call(this, props));
-
-        _this.state = {
-            isActive: false,
-            isLoggedIn: false,
-            isAdmin: false
-        };
-        return _this;
-    }
-
-    /**
-     * Get user logged in status.
-     */
-
-
-    _createClass(Navbar, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            axios.get('/user/status').then(function (response) {
-                var data = response.data.data;
-                _this2.setState({
-                    isLoggedIn: data.logged_in,
-                    isAdmin: data.is_admin
-                });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }, {
-        key: 'toggle',
-        value: function toggle() {
-            this.setState({ isActive: !this.state.isActive });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'nav',
-                    { className: 'nav' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: this.props.container ? 'container' : 'container is-fluid' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-left nav-brand' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/', className: 'nav-item' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'b',
-                                    null,
-                                    'Tree'
-                                ),
-                                'snap'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'small',
-                                { className: 'nav-item' },
-                                'Citizen science app'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-toggle', onClick: this.toggle.bind(this) },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null)
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-right nav-menu' + (this.state.isActive ? ' is-active' : '') },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/') },
-                                'Home'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/help', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/help') },
-                                'Help'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/about', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/about') },
-                                'About'
-                            ),
-                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/login', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/login') },
-                                'Login'
-                            ) : null,
-                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/register', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/register') },
-                                'Register'
-                            ) : null,
-                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/account', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/account') },
-                                'Account'
-                            ) : null,
-                            this.state.isAdmin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/admin', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/admin', false) },
-                                'Admin'
-                            ) : null,
-                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/logout', className: 'nav-item' },
-                                'Logout'
-                            ) : null
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Navbar;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Navbar);
-
-
-Navbar.PropTypes = {
-    container: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].bool
-};
-
-Navbar.defaultProps = {
-    container: false
-};
-
-/***/ }),
-/* 218 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (new google.maps.InfoWindow());
-
-/***/ }),
-/* 219 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Http = function () {
-    function Http() {
-        _classCallCheck(this, Http);
-
-        this.path = window.location.pathname;
-        if (this.path !== '/') {
-            this.path.replace(/\/$/g, '');
-        }
-    }
-
-    _createClass(Http, [{
-        key: 'isActive',
-        value: function isActive(url) {
-            var exact = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-            var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'is-active';
-
-            if (exact && this.path === url) {
-                return className;
-            } else if (!exact && this.path.indexOf(url) >= 0) {
-                return className;
-            } else {
-                return null;
-            }
-        }
-    }]);
-
-    return Http;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (new Http());
-
-/***/ }),
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
 /* 220 */,
 /* 221 */,
 /* 222 */,
 /* 223 */,
-/* 224 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Modal = function (_Component) {
-    _inherits(Modal, _Component);
-
-    function Modal(props) {
-        _classCallCheck(this, Modal);
-
-        var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
-
-        _this.state = {
-            open: false
-        };
-        return _this;
-    }
-
-    _createClass(Modal, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            if (this.props.show) {
-                this.open();
-            }
-        }
-    }, {
-        key: 'close',
-        value: function close() {
-            this.setState({ open: false });
-        }
-    }, {
-        key: 'open',
-        value: function open() {
-            this.setState({ open: true });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'modal' + (this.state.open ? ' is-active' : '') },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'modal-background', onClick: this.close.bind(this) }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'modal-content image-slider', style: { width: '100%', maxWidth: '700px', maxHeight: 'auto' } },
-                    this.props.children
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('button', { className: 'modal-close', onClick: this.close.bind(this) })
-            );
-        }
-    }]);
-
-    return Modal;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Modal);
-
-
-Modal.PropTypes = {
-    show: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].bool
-};
-
-Modal.defaultProps = {
-    show: false
-};
-
-/***/ }),
-/* 225 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Copyright = function (_Component) {
-    _inherits(Copyright, _Component);
-
-    function Copyright() {
-        _classCallCheck(this, Copyright);
-
-        return _possibleConstructorReturn(this, (Copyright.__proto__ || Object.getPrototypeOf(Copyright)).apply(this, arguments));
-    }
-
-    _createClass(Copyright, [{
-        key: "render",
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "footer",
-                { className: "copyright" },
-                "Data \xA92017 ",
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "a",
-                    { target: "_blank", href: "https://utk.edu" },
-                    "UTK"
-                ),
-                " and ",
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "a",
-                    { target: "_blank", href: "http://www.uky.edu/UKHome/" },
-                    "UKY"
-                )
-            );
-        }
-    }]);
-
-    return Copyright;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Copyright);
-
-
-Copyright.PropTypes = {
-    name: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string.isRequired
-};
-
-/***/ }),
-/* 226 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Sidebar = function (_Component) {
-    _inherits(Sidebar, _Component);
-
-    function Sidebar(props) {
-        _classCallCheck(this, Sidebar);
-
-        return _possibleConstructorReturn(this, (Sidebar.__proto__ || Object.getPrototypeOf(Sidebar)).call(this, props));
-    }
-
-    _createClass(Sidebar, [{
-        key: "render",
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                "div",
-                { className: "sidebar" },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "a",
-                    { className: "close", onClick: this.props.onCloseRequest },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-times" })
-                ),
-                this.props.children
-            );
-        }
-    }]);
-
-    return Sidebar;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Sidebar);
-
-
-Sidebar.PropTypes = {
-    name: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string.isRequired,
-    onCloseRequest: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func
-};
-
-Sidebar.defaultProps = {
-    onCloseRequest: function onCloseRequest() {}
-};
-
-/***/ }),
+/* 224 */,
+/* 225 */,
+/* 226 */,
 /* 227 */,
 /* 228 */,
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/** Used as the `TypeError` message for "Functions" methods. */
-var FUNC_ERROR_TEXT = 'Expected a function';
-
-/** Used as references for various `Number` constants. */
-var NAN = 0 / 0;
-
-/** `Object#toString` result references. */
-var symbolTag = '[object Symbol]';
-
-/** Used to match leading and trailing whitespace. */
-var reTrim = /^\s+|\s+$/g;
-
-/** Used to detect bad signed hexadecimal string values. */
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-/** Used to detect binary string values. */
-var reIsBinary = /^0b[01]+$/i;
-
-/** Used to detect octal string values. */
-var reIsOctal = /^0o[0-7]+$/i;
-
-/** Built-in method references without a dependency on `root`. */
-var freeParseInt = parseInt;
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeMax = Math.max,
-    nativeMin = Math.min;
-
-/**
- * Gets the timestamp of the number of milliseconds that have elapsed since
- * the Unix epoch (1 January 1970 00:00:00 UTC).
- *
- * @static
- * @memberOf _
- * @since 2.4.0
- * @category Date
- * @returns {number} Returns the timestamp.
- * @example
- *
- * _.defer(function(stamp) {
- *   console.log(_.now() - stamp);
- * }, _.now());
- * // => Logs the number of milliseconds it took for the deferred invocation.
- */
-var now = function() {
-  return root.Date.now();
-};
-
-/**
- * Creates a debounced function that delays invoking `func` until after `wait`
- * milliseconds have elapsed since the last time the debounced function was
- * invoked. The debounced function comes with a `cancel` method to cancel
- * delayed `func` invocations and a `flush` method to immediately invoke them.
- * Provide `options` to indicate whether `func` should be invoked on the
- * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
- * with the last arguments provided to the debounced function. Subsequent
- * calls to the debounced function return the result of the last `func`
- * invocation.
- *
- * **Note:** If `leading` and `trailing` options are `true`, `func` is
- * invoked on the trailing edge of the timeout only if the debounced function
- * is invoked more than once during the `wait` timeout.
- *
- * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
- * until to the next tick, similar to `setTimeout` with a timeout of `0`.
- *
- * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
- * for details over the differences between `_.debounce` and `_.throttle`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Function
- * @param {Function} func The function to debounce.
- * @param {number} [wait=0] The number of milliseconds to delay.
- * @param {Object} [options={}] The options object.
- * @param {boolean} [options.leading=false]
- *  Specify invoking on the leading edge of the timeout.
- * @param {number} [options.maxWait]
- *  The maximum time `func` is allowed to be delayed before it's invoked.
- * @param {boolean} [options.trailing=true]
- *  Specify invoking on the trailing edge of the timeout.
- * @returns {Function} Returns the new debounced function.
- * @example
- *
- * // Avoid costly calculations while the window size is in flux.
- * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
- *
- * // Invoke `sendMail` when clicked, debouncing subsequent calls.
- * jQuery(element).on('click', _.debounce(sendMail, 300, {
- *   'leading': true,
- *   'trailing': false
- * }));
- *
- * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
- * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
- * var source = new EventSource('/stream');
- * jQuery(source).on('message', debounced);
- *
- * // Cancel the trailing debounced invocation.
- * jQuery(window).on('popstate', debounced.cancel);
- */
-function debounce(func, wait, options) {
-  var lastArgs,
-      lastThis,
-      maxWait,
-      result,
-      timerId,
-      lastCallTime,
-      lastInvokeTime = 0,
-      leading = false,
-      maxing = false,
-      trailing = true;
-
-  if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  wait = toNumber(wait) || 0;
-  if (isObject(options)) {
-    leading = !!options.leading;
-    maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
-    trailing = 'trailing' in options ? !!options.trailing : trailing;
-  }
-
-  function invokeFunc(time) {
-    var args = lastArgs,
-        thisArg = lastThis;
-
-    lastArgs = lastThis = undefined;
-    lastInvokeTime = time;
-    result = func.apply(thisArg, args);
-    return result;
-  }
-
-  function leadingEdge(time) {
-    // Reset any `maxWait` timer.
-    lastInvokeTime = time;
-    // Start the timer for the trailing edge.
-    timerId = setTimeout(timerExpired, wait);
-    // Invoke the leading edge.
-    return leading ? invokeFunc(time) : result;
-  }
-
-  function remainingWait(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime,
-        result = wait - timeSinceLastCall;
-
-    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
-  }
-
-  function shouldInvoke(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime;
-
-    // Either this is the first call, activity has stopped and we're at the
-    // trailing edge, the system time has gone backwards and we're treating
-    // it as the trailing edge, or we've hit the `maxWait` limit.
-    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
-      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
-  }
-
-  function timerExpired() {
-    var time = now();
-    if (shouldInvoke(time)) {
-      return trailingEdge(time);
-    }
-    // Restart the timer.
-    timerId = setTimeout(timerExpired, remainingWait(time));
-  }
-
-  function trailingEdge(time) {
-    timerId = undefined;
-
-    // Only invoke if we have `lastArgs` which means `func` has been
-    // debounced at least once.
-    if (trailing && lastArgs) {
-      return invokeFunc(time);
-    }
-    lastArgs = lastThis = undefined;
-    return result;
-  }
-
-  function cancel() {
-    if (timerId !== undefined) {
-      clearTimeout(timerId);
-    }
-    lastInvokeTime = 0;
-    lastArgs = lastCallTime = lastThis = timerId = undefined;
-  }
-
-  function flush() {
-    return timerId === undefined ? result : trailingEdge(now());
-  }
-
-  function debounced() {
-    var time = now(),
-        isInvoking = shouldInvoke(time);
-
-    lastArgs = arguments;
-    lastThis = this;
-    lastCallTime = time;
-
-    if (isInvoking) {
-      if (timerId === undefined) {
-        return leadingEdge(lastCallTime);
-      }
-      if (maxing) {
-        // Handle invocations in a tight loop.
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
-      }
-    }
-    if (timerId === undefined) {
-      timerId = setTimeout(timerExpired, wait);
-    }
-    return result;
-  }
-  debounced.cancel = cancel;
-  debounced.flush = flush;
-  return debounced;
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/**
- * Checks if `value` is classified as a `Symbol` primitive or object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
- * @example
- *
- * _.isSymbol(Symbol.iterator);
- * // => true
- *
- * _.isSymbol('abc');
- * // => false
- */
-function isSymbol(value) {
-  return typeof value == 'symbol' ||
-    (isObjectLike(value) && objectToString.call(value) == symbolTag);
-}
-
-/**
- * Converts `value` to a number.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to process.
- * @returns {number} Returns the number.
- * @example
- *
- * _.toNumber(3.2);
- * // => 3.2
- *
- * _.toNumber(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toNumber(Infinity);
- * // => Infinity
- *
- * _.toNumber('3.2');
- * // => 3.2
- */
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject(other) ? (other + '') : other;
-  }
-  if (typeof value != 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, '');
-  var isBinary = reIsBinary.test(value);
-  return (isBinary || reIsOctal.test(value))
-    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-    : (reIsBadHex.test(value) ? NAN : +value);
-}
-
-module.exports = debounce;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(90)))
-
-/***/ }),
-/* 230 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/** Used as the `TypeError` message for "Functions" methods. */
-var FUNC_ERROR_TEXT = 'Expected a function';
-
-/** Used as references for various `Number` constants. */
-var NAN = 0 / 0;
-
-/** `Object#toString` result references. */
-var symbolTag = '[object Symbol]';
-
-/** Used to match leading and trailing whitespace. */
-var reTrim = /^\s+|\s+$/g;
-
-/** Used to detect bad signed hexadecimal string values. */
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-/** Used to detect binary string values. */
-var reIsBinary = /^0b[01]+$/i;
-
-/** Used to detect octal string values. */
-var reIsOctal = /^0o[0-7]+$/i;
-
-/** Built-in method references without a dependency on `root`. */
-var freeParseInt = parseInt;
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeMax = Math.max,
-    nativeMin = Math.min;
-
-/**
- * Gets the timestamp of the number of milliseconds that have elapsed since
- * the Unix epoch (1 January 1970 00:00:00 UTC).
- *
- * @static
- * @memberOf _
- * @since 2.4.0
- * @category Date
- * @returns {number} Returns the timestamp.
- * @example
- *
- * _.defer(function(stamp) {
- *   console.log(_.now() - stamp);
- * }, _.now());
- * // => Logs the number of milliseconds it took for the deferred invocation.
- */
-var now = function() {
-  return root.Date.now();
-};
-
-/**
- * Creates a debounced function that delays invoking `func` until after `wait`
- * milliseconds have elapsed since the last time the debounced function was
- * invoked. The debounced function comes with a `cancel` method to cancel
- * delayed `func` invocations and a `flush` method to immediately invoke them.
- * Provide `options` to indicate whether `func` should be invoked on the
- * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
- * with the last arguments provided to the debounced function. Subsequent
- * calls to the debounced function return the result of the last `func`
- * invocation.
- *
- * **Note:** If `leading` and `trailing` options are `true`, `func` is
- * invoked on the trailing edge of the timeout only if the debounced function
- * is invoked more than once during the `wait` timeout.
- *
- * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
- * until to the next tick, similar to `setTimeout` with a timeout of `0`.
- *
- * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
- * for details over the differences between `_.debounce` and `_.throttle`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Function
- * @param {Function} func The function to debounce.
- * @param {number} [wait=0] The number of milliseconds to delay.
- * @param {Object} [options={}] The options object.
- * @param {boolean} [options.leading=false]
- *  Specify invoking on the leading edge of the timeout.
- * @param {number} [options.maxWait]
- *  The maximum time `func` is allowed to be delayed before it's invoked.
- * @param {boolean} [options.trailing=true]
- *  Specify invoking on the trailing edge of the timeout.
- * @returns {Function} Returns the new debounced function.
- * @example
- *
- * // Avoid costly calculations while the window size is in flux.
- * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
- *
- * // Invoke `sendMail` when clicked, debouncing subsequent calls.
- * jQuery(element).on('click', _.debounce(sendMail, 300, {
- *   'leading': true,
- *   'trailing': false
- * }));
- *
- * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
- * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
- * var source = new EventSource('/stream');
- * jQuery(source).on('message', debounced);
- *
- * // Cancel the trailing debounced invocation.
- * jQuery(window).on('popstate', debounced.cancel);
- */
-function debounce(func, wait, options) {
-  var lastArgs,
-      lastThis,
-      maxWait,
-      result,
-      timerId,
-      lastCallTime,
-      lastInvokeTime = 0,
-      leading = false,
-      maxing = false,
-      trailing = true;
-
-  if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  wait = toNumber(wait) || 0;
-  if (isObject(options)) {
-    leading = !!options.leading;
-    maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
-    trailing = 'trailing' in options ? !!options.trailing : trailing;
-  }
-
-  function invokeFunc(time) {
-    var args = lastArgs,
-        thisArg = lastThis;
-
-    lastArgs = lastThis = undefined;
-    lastInvokeTime = time;
-    result = func.apply(thisArg, args);
-    return result;
-  }
-
-  function leadingEdge(time) {
-    // Reset any `maxWait` timer.
-    lastInvokeTime = time;
-    // Start the timer for the trailing edge.
-    timerId = setTimeout(timerExpired, wait);
-    // Invoke the leading edge.
-    return leading ? invokeFunc(time) : result;
-  }
-
-  function remainingWait(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime,
-        result = wait - timeSinceLastCall;
-
-    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
-  }
-
-  function shouldInvoke(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime;
-
-    // Either this is the first call, activity has stopped and we're at the
-    // trailing edge, the system time has gone backwards and we're treating
-    // it as the trailing edge, or we've hit the `maxWait` limit.
-    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
-      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
-  }
-
-  function timerExpired() {
-    var time = now();
-    if (shouldInvoke(time)) {
-      return trailingEdge(time);
-    }
-    // Restart the timer.
-    timerId = setTimeout(timerExpired, remainingWait(time));
-  }
-
-  function trailingEdge(time) {
-    timerId = undefined;
-
-    // Only invoke if we have `lastArgs` which means `func` has been
-    // debounced at least once.
-    if (trailing && lastArgs) {
-      return invokeFunc(time);
-    }
-    lastArgs = lastThis = undefined;
-    return result;
-  }
-
-  function cancel() {
-    if (timerId !== undefined) {
-      clearTimeout(timerId);
-    }
-    lastInvokeTime = 0;
-    lastArgs = lastCallTime = lastThis = timerId = undefined;
-  }
-
-  function flush() {
-    return timerId === undefined ? result : trailingEdge(now());
-  }
-
-  function debounced() {
-    var time = now(),
-        isInvoking = shouldInvoke(time);
-
-    lastArgs = arguments;
-    lastThis = this;
-    lastCallTime = time;
-
-    if (isInvoking) {
-      if (timerId === undefined) {
-        return leadingEdge(lastCallTime);
-      }
-      if (maxing) {
-        // Handle invocations in a tight loop.
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
-      }
-    }
-    if (timerId === undefined) {
-      timerId = setTimeout(timerExpired, wait);
-    }
-    return result;
-  }
-  debounced.cancel = cancel;
-  debounced.flush = flush;
-  return debounced;
-}
-
-/**
- * Creates a throttled function that only invokes `func` at most once per
- * every `wait` milliseconds. The throttled function comes with a `cancel`
- * method to cancel delayed `func` invocations and a `flush` method to
- * immediately invoke them. Provide `options` to indicate whether `func`
- * should be invoked on the leading and/or trailing edge of the `wait`
- * timeout. The `func` is invoked with the last arguments provided to the
- * throttled function. Subsequent calls to the throttled function return the
- * result of the last `func` invocation.
- *
- * **Note:** If `leading` and `trailing` options are `true`, `func` is
- * invoked on the trailing edge of the timeout only if the throttled function
- * is invoked more than once during the `wait` timeout.
- *
- * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
- * until to the next tick, similar to `setTimeout` with a timeout of `0`.
- *
- * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
- * for details over the differences between `_.throttle` and `_.debounce`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Function
- * @param {Function} func The function to throttle.
- * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
- * @param {Object} [options={}] The options object.
- * @param {boolean} [options.leading=true]
- *  Specify invoking on the leading edge of the timeout.
- * @param {boolean} [options.trailing=true]
- *  Specify invoking on the trailing edge of the timeout.
- * @returns {Function} Returns the new throttled function.
- * @example
- *
- * // Avoid excessively updating the position while scrolling.
- * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
- *
- * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
- * var throttled = _.throttle(renewToken, 300000, { 'trailing': false });
- * jQuery(element).on('click', throttled);
- *
- * // Cancel the trailing throttled invocation.
- * jQuery(window).on('popstate', throttled.cancel);
- */
-function throttle(func, wait, options) {
-  var leading = true,
-      trailing = true;
-
-  if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  if (isObject(options)) {
-    leading = 'leading' in options ? !!options.leading : leading;
-    trailing = 'trailing' in options ? !!options.trailing : trailing;
-  }
-  return debounce(func, wait, {
-    'leading': leading,
-    'maxWait': wait,
-    'trailing': trailing
-  });
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/**
- * Checks if `value` is classified as a `Symbol` primitive or object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
- * @example
- *
- * _.isSymbol(Symbol.iterator);
- * // => true
- *
- * _.isSymbol('abc');
- * // => false
- */
-function isSymbol(value) {
-  return typeof value == 'symbol' ||
-    (isObjectLike(value) && objectToString.call(value) == symbolTag);
-}
-
-/**
- * Converts `value` to a number.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to process.
- * @returns {number} Returns the number.
- * @example
- *
- * _.toNumber(3.2);
- * // => 3.2
- *
- * _.toNumber(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toNumber(Infinity);
- * // => Infinity
- *
- * _.toNumber('3.2');
- * // => 3.2
- */
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject(other) ? (other + '') : other;
-  }
-  if (typeof value != 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, '');
-  var isBinary = reIsBinary.test(value);
-  return (isBinary || reIsOctal.test(value))
-    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-    : (reIsBadHex.test(value) ? NAN : +value);
-}
-
-module.exports = throttle;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(90)))
-
-/***/ }),
-/* 231 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(9);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactSwipeable = __webpack_require__(236);
-
-var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
-
-var _lodash = __webpack_require__(230);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _lodash3 = __webpack_require__(229);
-
-var _lodash4 = _interopRequireDefault(_lodash3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var screenChangeEvents = ['fullscreenchange', 'msfullscreenchange', 'mozfullscreenchange', 'webkitfullscreenchange'];
-
-var ImageGallery = function (_React$Component) {
-  _inherits(ImageGallery, _React$Component);
-
-  function ImageGallery(props) {
-    _classCallCheck(this, ImageGallery);
-
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ImageGallery).call(this, props));
-
-    _this.state = {
-      currentIndex: props.startIndex,
-      thumbsTranslate: 0,
-      offsetPercentage: 0,
-      galleryWidth: 0,
-      thumbnailsWrapperWidth: 0,
-      thumbnailsWrapperHeight: 0,
-      isFullscreen: false,
-      isPlaying: false
-    };
-
-    if (props.lazyLoad) {
-      _this._lazyLoaded = [];
-    }
-    return _this;
-  }
-
-  _createClass(ImageGallery, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (this.props.disableArrowKeys !== nextProps.disableArrowKeys) {
-        if (nextProps.disableArrowKeys) {
-          window.removeEventListener('keydown', this._handleKeyDown);
-        } else {
-          window.addEventListener('keydown', this._handleKeyDown);
-        }
-      }
-
-      if (nextProps.lazyLoad && (!this.props.lazyLoad || this.props.items !== nextProps.items)) {
-        this._lazyLoaded = [];
-      }
-
-      if (this.state.currentIndex >= nextProps.items.length) {
-        this.slideToIndex(0);
-      }
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps, prevState) {
-      if (prevProps.thumbnailPosition !== this.props.thumbnailPosition || prevProps.showThumbnails !== this.props.showThumbnails || prevState.thumbnailsWrapperHeight !== this.state.thumbnailsWrapperHeight || prevState.thumbnailsWrapperWidth !== this.state.thumbnailsWrapperWidth) {
-        this._handleResize();
-      }
-
-      if (prevState.currentIndex !== this.state.currentIndex) {
-        if (this.props.onSlide) {
-          this.props.onSlide(this.state.currentIndex);
-        }
-
-        this._updateThumbnailTranslate(prevState);
-      }
-
-      if (prevProps.slideDuration !== this.props.slideDuration) {
-        this.slideToIndex = (0, _lodash2.default)(this._unthrottledSlideToIndex, this.props.slideDuration, { trailing: false });
-      }
-    }
-  }, {
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      // Used to update the throttle if slideDuration changes
-      this._unthrottledSlideToIndex = this.slideToIndex.bind(this);
-      this.slideToIndex = (0, _lodash2.default)(this._unthrottledSlideToIndex, this.props.slideDuration, { trailing: false });
-
-      this._handleResize = this._handleResize.bind(this);
-      this._debounceResize = (0, _lodash4.default)(this._handleResize, 500);
-      this._handleScreenChange = this._handleScreenChange.bind(this);
-      this._handleKeyDown = this._handleKeyDown.bind(this);
-      this._thumbnailDelay = 300;
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this._handleResize();
-
-      if (this.props.autoPlay) {
-        this.play();
-      }
-      if (!this.props.disableArrowKeys) {
-        window.addEventListener('keydown', this._handleKeyDown);
-      }
-      window.addEventListener('resize', this._debounceResize);
-      this._onScreenChangeEvent();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (!this.props.disableArrowKeys) {
-        window.removeEventListener('keydown', this._handleKeyDown);
-      }
-
-      if (this._debounceResize) {
-        window.removeEventListener('resize', this._debounceResize);
-      }
-
-      this._offScreenChangeEvent();
-
-      if (this._intervalId) {
-        window.clearInterval(this._intervalId);
-        this._intervalId = null;
-      }
-
-      if (this._resizeTimer) {
-        window.clearTimeout(this._resizeTimer);
-      }
-    }
-  }, {
-    key: 'play',
-    value: function play() {
-      var _this2 = this;
-
-      var callback = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
-
-      if (!this._intervalId) {
-        var _props = this.props;
-        var slideInterval = _props.slideInterval;
-        var slideDuration = _props.slideDuration;
-
-        this.setState({ isPlaying: true });
-        this._intervalId = window.setInterval(function () {
-          if (!_this2.state.hovering) {
-            if (!_this2.props.infinite && !_this2._canSlideRight()) {
-              _this2.pause();
-            } else {
-              _this2.slideToIndex(_this2.state.currentIndex + 1);
-            }
-          }
-        }, Math.max(slideInterval, slideDuration));
-
-        if (this.props.onPlay && callback) {
-          this.props.onPlay(this.state.currentIndex);
-        }
-      }
-    }
-  }, {
-    key: 'pause',
-    value: function pause() {
-      var callback = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
-
-      if (this._intervalId) {
-        window.clearInterval(this._intervalId);
-        this._intervalId = null;
-        this.setState({ isPlaying: false });
-
-        if (this.props.onPause && callback) {
-          this.props.onPause(this.state.currentIndex);
-        }
-      }
-    }
-  }, {
-    key: 'setModalFullscreen',
-    value: function setModalFullscreen(state) {
-      this.setState({ modalFullscreen: state });
-      // manually call because browser does not support screenchange events
-      if (this.props.onScreenChange) {
-        this.props.onScreenChange(state);
-      }
-    }
-  }, {
-    key: 'fullScreen',
-    value: function fullScreen() {
-      var gallery = this._imageGallery;
-
-      if (this.props.useBrowserFullscreen) {
-        if (gallery.requestFullscreen) {
-          gallery.requestFullscreen();
-        } else if (gallery.msRequestFullscreen) {
-          gallery.msRequestFullscreen();
-        } else if (gallery.mozRequestFullScreen) {
-          gallery.mozRequestFullScreen();
-        } else if (gallery.webkitRequestFullscreen) {
-          gallery.webkitRequestFullscreen();
-        } else {
-          // fallback to fullscreen modal for unsupported browsers
-          this.setModalFullscreen(true);
-        }
-      } else {
-        this.setModalFullscreen(true);
-      }
-
-      this.setState({ isFullscreen: true });
-    }
-  }, {
-    key: 'exitFullScreen',
-    value: function exitFullScreen() {
-      if (this.state.isFullscreen) {
-        if (this.props.useBrowserFullscreen) {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-          } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-          } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-          } else {
-            // fallback to fullscreen modal for unsupported browsers
-            this.setModalFullscreen(false);
-          }
-        } else {
-          this.setModalFullscreen(false);
-        }
-
-        this.setState({ isFullscreen: false });
-      }
-    }
-  }, {
-    key: 'slideToIndex',
-    value: function slideToIndex(index, event) {
-      var currentIndex = this.state.currentIndex;
-
-
-      if (event) {
-        if (this._intervalId) {
-          // user triggered event while ImageGallery is playing, reset interval
-          this.pause(false);
-          this.play(false);
-        }
-      }
-
-      var slideCount = this.props.items.length - 1;
-      var nextIndex = index;
-
-      if (index < 0) {
-        nextIndex = slideCount;
-      } else if (index > slideCount) {
-        nextIndex = 0;
-      }
-
-      this.setState({
-        previousIndex: currentIndex,
-        currentIndex: nextIndex,
-        offsetPercentage: 0,
-        style: {
-          transition: 'all ' + this.props.slideDuration + 'ms ease-out'
-        }
-      });
-    }
-  }, {
-    key: 'getCurrentIndex',
-    value: function getCurrentIndex() {
-      return this.state.currentIndex;
-    }
-  }, {
-    key: '_handleScreenChange',
-    value: function _handleScreenChange() {
-      /*
-        handles screen change events that the browser triggers e.g. esc key
-      */
-      var fullScreenElement = document.fullscreenElement || document.msFullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
-
-      if (this.props.onScreenChange) {
-        this.props.onScreenChange(fullScreenElement);
-      }
-
-      this.setState({ isFullscreen: !!fullScreenElement });
-    }
-  }, {
-    key: '_onScreenChangeEvent',
-    value: function _onScreenChangeEvent() {
-      var _this3 = this;
-
-      screenChangeEvents.map(function (eventName) {
-        document.addEventListener(eventName, _this3._handleScreenChange);
-      });
-    }
-  }, {
-    key: '_offScreenChangeEvent',
-    value: function _offScreenChangeEvent() {
-      var _this4 = this;
-
-      screenChangeEvents.map(function (eventName) {
-        document.removeEventListener(eventName, _this4._handleScreenChange);
-      });
-    }
-  }, {
-    key: '_toggleFullScreen',
-    value: function _toggleFullScreen() {
-      if (this.state.isFullscreen) {
-        this.exitFullScreen();
-      } else {
-        this.fullScreen();
-      }
-    }
-  }, {
-    key: '_togglePlay',
-    value: function _togglePlay() {
-      if (this._intervalId) {
-        this.pause();
-      } else {
-        this.play();
-      }
-    }
-  }, {
-    key: '_handleResize',
-    value: function _handleResize() {
-      var _this5 = this;
-
-      // delay initial resize to get the accurate this._imageGallery height/width
-      this._resizeTimer = window.setTimeout(function () {
-        if (_this5._imageGallery) {
-          _this5.setState({
-            galleryWidth: _this5._imageGallery.offsetWidth
-          });
-        }
-
-        // adjust thumbnail container when thumbnail width or height is adjusted
-        _this5._setThumbsTranslate(-_this5._getThumbsTranslate(_this5.state.currentIndex > 0 ? 1 : 0) * _this5.state.currentIndex);
-
-        if (_this5._imageGallerySlideWrapper) {
-          _this5.setState({
-            gallerySlideWrapperHeight: _this5._imageGallerySlideWrapper.offsetHeight
-          });
-        }
-
-        if (_this5._thumbnailsWrapper) {
-          if (_this5._isThumbnailHorizontal()) {
-            _this5.setState({ thumbnailsWrapperHeight: _this5._thumbnailsWrapper.offsetHeight });
-          } else {
-            _this5.setState({ thumbnailsWrapperWidth: _this5._thumbnailsWrapper.offsetWidth });
-          }
-        }
-      }, 500);
-    }
-  }, {
-    key: '_isThumbnailHorizontal',
-    value: function _isThumbnailHorizontal() {
-      var thumbnailPosition = this.props.thumbnailPosition;
-
-      return thumbnailPosition === 'left' || thumbnailPosition === 'right';
-    }
-  }, {
-    key: '_handleKeyDown',
-    value: function _handleKeyDown(event) {
-      var LEFT_ARROW = 37;
-      var RIGHT_ARROW = 39;
-      var key = parseInt(event.keyCode || event.which || 0);
-
-      switch (key) {
-        case LEFT_ARROW:
-          if (this._canSlideLeft() && !this._intervalId) {
-            this._slideLeft();
-          }
-          break;
-        case RIGHT_ARROW:
-          if (this._canSlideRight() && !this._intervalId) {
-            this._slideRight();
-          }
-          break;
-      }
-    }
-  }, {
-    key: '_handleMouseOverThumbnails',
-    value: function _handleMouseOverThumbnails(index) {
-      var _this6 = this;
-
-      if (this.props.slideOnThumbnailHover) {
-        this.setState({ hovering: true });
-        if (this._thumbnailTimer) {
-          window.clearTimeout(this._thumbnailTimer);
-          this._thumbnailTimer = null;
-        }
-        this._thumbnailTimer = window.setTimeout(function () {
-          _this6.slideToIndex(index);
-        }, this._thumbnailDelay);
-      }
-    }
-  }, {
-    key: '_handleMouseLeaveThumbnails',
-    value: function _handleMouseLeaveThumbnails() {
-      if (this._thumbnailTimer) {
-        window.clearTimeout(this._thumbnailTimer);
-        this._thumbnailTimer = null;
-        if (this.props.autoPlay === true) {
-          this.play(false);
-        }
-      }
-      this.setState({ hovering: false });
-    }
-  }, {
-    key: '_handleImageError',
-    value: function _handleImageError(event) {
-      if (this.props.defaultImage && event.target.src.indexOf(this.props.defaultImage) === -1) {
-        event.target.src = this.props.defaultImage;
-      }
-    }
-  }, {
-    key: '_handleOnSwiped',
-    value: function _handleOnSwiped(ev, x, y, isFlick) {
-      this.setState({ isFlick: isFlick });
-    }
-  }, {
-    key: '_shouldSlideOnSwipe',
-    value: function _shouldSlideOnSwipe() {
-      var shouldSlide = Math.abs(this.state.offsetPercentage) > 30 || this.state.isFlick;
-
-      if (shouldSlide) {
-        // reset isFlick state after so data is not persisted
-        this.setState({ isFlick: false });
-      }
-      return shouldSlide;
-    }
-  }, {
-    key: '_handleOnSwipedTo',
-    value: function _handleOnSwipedTo(index) {
-      var slideTo = this.state.currentIndex;
-
-      if (this._shouldSlideOnSwipe()) {
-        slideTo += index;
-      }
-
-      if (index < 0) {
-        if (!this._canSlideLeft()) {
-          slideTo = this.state.currentIndex;
-        }
-      } else {
-        if (!this._canSlideRight()) {
-          slideTo = this.state.currentIndex;
-        }
-      }
-
-      this._unthrottledSlideToIndex(slideTo);
-    }
-  }, {
-    key: '_handleSwiping',
-    value: function _handleSwiping(index, _, delta) {
-      var swipingTransitionDuration = this.props.swipingTransitionDuration;
-      var galleryWidth = this.state.galleryWidth;
-
-
-      var offsetPercentage = index * (delta / galleryWidth * 100);
-      if (Math.abs(offsetPercentage) >= 100) {
-        offsetPercentage = index * 100;
-      }
-
-      var swipingTransition = {
-        transition: 'transform ' + swipingTransitionDuration + 'ms ease-out'
-      };
-
-      this.setState({
-        offsetPercentage: offsetPercentage,
-        style: swipingTransition
-      });
-    }
-  }, {
-    key: '_canNavigate',
-    value: function _canNavigate() {
-      return this.props.items.length >= 2;
-    }
-  }, {
-    key: '_canSlideLeft',
-    value: function _canSlideLeft() {
-      return this.props.infinite || this.state.currentIndex > 0;
-    }
-  }, {
-    key: '_canSlideRight',
-    value: function _canSlideRight() {
-      return this.props.infinite || this.state.currentIndex < this.props.items.length - 1;
-    }
-  }, {
-    key: '_updateThumbnailTranslate',
-    value: function _updateThumbnailTranslate(prevState) {
-      if (this.state.currentIndex === 0) {
-        this._setThumbsTranslate(0);
-      } else {
-        var indexDifference = Math.abs(prevState.currentIndex - this.state.currentIndex);
-        var scroll = this._getThumbsTranslate(indexDifference);
-        if (scroll > 0) {
-          if (prevState.currentIndex < this.state.currentIndex) {
-            this._setThumbsTranslate(this.state.thumbsTranslate - scroll);
-          } else if (prevState.currentIndex > this.state.currentIndex) {
-            this._setThumbsTranslate(this.state.thumbsTranslate + scroll);
-          }
-        }
-      }
-    }
-  }, {
-    key: '_setThumbsTranslate',
-    value: function _setThumbsTranslate(thumbsTranslate) {
-      this.setState({ thumbsTranslate: thumbsTranslate });
-    }
-  }, {
-    key: '_getThumbsTranslate',
-    value: function _getThumbsTranslate(indexDifference) {
-      if (this.props.disableThumbnailScroll) {
-        return 0;
-      }
-
-      var _state = this.state;
-      var thumbnailsWrapperWidth = _state.thumbnailsWrapperWidth;
-      var thumbnailsWrapperHeight = _state.thumbnailsWrapperHeight;
-
-      var totalScroll = void 0;
-
-      if (this._thumbnails) {
-
-        // total scroll required to see the last thumbnail
-        if (this._isThumbnailHorizontal()) {
-          if (this._thumbnails.scrollHeight <= thumbnailsWrapperHeight) {
-            return 0;
-          }
-          totalScroll = this._thumbnails.scrollHeight - thumbnailsWrapperHeight;
-        } else {
-          if (this._thumbnails.scrollWidth <= thumbnailsWrapperWidth) {
-            return 0;
-          }
-          totalScroll = this._thumbnails.scrollWidth - thumbnailsWrapperWidth;
-        }
-
-        var totalThumbnails = this._thumbnails.children.length;
-        // scroll-x required per index change
-        var perIndexScroll = totalScroll / (totalThumbnails - 1);
-
-        return indexDifference * perIndexScroll;
-      }
-    }
-  }, {
-    key: '_getAlignmentClassName',
-    value: function _getAlignmentClassName(index) {
-      // LEFT, and RIGHT alignments are necessary for lazyLoad
-      var currentIndex = this.state.currentIndex;
-
-      var alignment = '';
-      var LEFT = 'left';
-      var CENTER = 'center';
-      var RIGHT = 'right';
-
-      switch (index) {
-        case currentIndex - 1:
-          alignment = ' ' + LEFT;
-          break;
-        case currentIndex:
-          alignment = ' ' + CENTER;
-          break;
-        case currentIndex + 1:
-          alignment = ' ' + RIGHT;
-          break;
-      }
-
-      if (this.props.items.length >= 3 && this.props.infinite) {
-        if (index === 0 && currentIndex === this.props.items.length - 1) {
-          // set first slide as right slide if were sliding right from last slide
-          alignment = ' ' + RIGHT;
-        } else if (index === this.props.items.length - 1 && currentIndex === 0) {
-          // set last slide as left slide if were sliding left from first slide
-          alignment = ' ' + LEFT;
-        }
-      }
-
-      return alignment;
-    }
-  }, {
-    key: '_getTranslateXForTwoSlide',
-    value: function _getTranslateXForTwoSlide(index) {
-      // For taking care of infinite swipe when there are only two slides
-      var _state2 = this.state;
-      var currentIndex = _state2.currentIndex;
-      var offsetPercentage = _state2.offsetPercentage;
-      var previousIndex = _state2.previousIndex;
-
-      var baseTranslateX = -100 * currentIndex;
-      var translateX = baseTranslateX + index * 100 + offsetPercentage;
-
-      // keep track of user swiping direction
-      if (offsetPercentage > 0) {
-        this.direction = 'left';
-      } else if (offsetPercentage < 0) {
-        this.direction = 'right';
-      }
-
-      // when swiping make sure the slides are on the correct side
-      if (currentIndex === 0 && index === 1 && offsetPercentage > 0) {
-        translateX = -100 + offsetPercentage;
-      } else if (currentIndex === 1 && index === 0 && offsetPercentage < 0) {
-        translateX = 100 + offsetPercentage;
-      }
-
-      if (currentIndex !== previousIndex) {
-        // when swiped move the slide to the correct side
-        if (previousIndex === 0 && index === 0 && offsetPercentage === 0 && this.direction === 'left') {
-          translateX = 100;
-        } else if (previousIndex === 1 && index === 1 && offsetPercentage === 0 && this.direction === 'right') {
-          translateX = -100;
-        }
-      } else {
-        // keep the slide on the correct slide even when not a swipe
-        if (currentIndex === 0 && index === 1 && offsetPercentage === 0 && this.direction === 'left') {
-          translateX = -100;
-        } else if (currentIndex === 1 && index === 0 && offsetPercentage === 0 && this.direction === 'right') {
-          translateX = 100;
-        }
-      }
-
-      return translateX;
-    }
-  }, {
-    key: '_getThumbnailBarHeight',
-    value: function _getThumbnailBarHeight() {
-      if (this._isThumbnailHorizontal()) {
-        return {
-          height: this.state.gallerySlideWrapperHeight
-        };
-      }
-      return {};
-    }
-  }, {
-    key: '_getSlideStyle',
-    value: function _getSlideStyle(index) {
-      var _state3 = this.state;
-      var currentIndex = _state3.currentIndex;
-      var offsetPercentage = _state3.offsetPercentage;
-      var _props2 = this.props;
-      var infinite = _props2.infinite;
-      var items = _props2.items;
-
-      var baseTranslateX = -100 * currentIndex;
-      var totalSlides = items.length - 1;
-
-      // calculates where the other slides belong based on currentIndex
-      var translateX = baseTranslateX + index * 100 + offsetPercentage;
-
-      // adjust zIndex so that only the current slide and the slide were going
-      // to is at the top layer, this prevents transitions from flying in the
-      // background when swiping before the first slide or beyond the last slide
-      var zIndex = 1;
-      if (index === currentIndex) {
-        zIndex = 3;
-      } else if (index === this.state.previousIndex) {
-        zIndex = 2;
-      } else if (index === 0 || index === totalSlides) {
-        zIndex = 0;
-      }
-
-      if (infinite && items.length > 2) {
-        if (currentIndex === 0 && index === totalSlides) {
-          // make the last slide the slide before the first
-          translateX = -100 + offsetPercentage;
-        } else if (currentIndex === totalSlides && index === 0) {
-          // make the first slide the slide after the last
-          translateX = 100 + offsetPercentage;
-        }
-      }
-
-      // Special case when there are only 2 items with infinite on
-      if (infinite && items.length === 2) {
-        translateX = this._getTranslateXForTwoSlide(index);
-      }
-
-      var translate = 'translate(' + translateX + '%, 0)';
-
-      return {
-        WebkitTransform: translate,
-        MozTransform: translate,
-        msTransform: translate,
-        OTransform: translate,
-        transform: translate,
-        zIndex: zIndex
-      };
-    }
-  }, {
-    key: '_getThumbnailStyle',
-    value: function _getThumbnailStyle() {
-      var translate = void 0;
-
-      if (this._isThumbnailHorizontal()) {
-        translate = 'translate(0, ' + this.state.thumbsTranslate + 'px)';
-      } else {
-        translate = 'translate(' + this.state.thumbsTranslate + 'px, 0)';
-      }
-      return {
-        WebkitTransform: translate,
-        MozTransform: translate,
-        msTransform: translate,
-        OTransform: translate,
-        transform: translate
-      };
-    }
-  }, {
-    key: '_slideLeft',
-    value: function _slideLeft(event) {
-      this.slideToIndex(this.state.currentIndex - 1, event);
-    }
-  }, {
-    key: '_slideRight',
-    value: function _slideRight(event) {
-      this.slideToIndex(this.state.currentIndex + 1, event);
-    }
-  }, {
-    key: '_renderItem',
-    value: function _renderItem(item) {
-      var onImageError = this.props.onImageError || this._handleImageError;
-
-      return _react2.default.createElement(
-        'div',
-        { className: 'image-gallery-image' },
-        _react2.default.createElement('img', {
-          src: item.original,
-          alt: item.originalAlt,
-          srcSet: item.srcSet,
-          sizes: item.sizes,
-          onLoad: this.props.onImageLoad,
-          onError: onImageError.bind(this)
-        }),
-        item.description && _react2.default.createElement(
-          'span',
-          { className: 'image-gallery-description' },
-          item.description
-        )
-      );
-    }
-  }, {
-    key: '_renderThumbInner',
-    value: function _renderThumbInner(item) {
-      var onThumbnailError = this._handleImageError;
-      if (this.props.onThumbnailError) {
-        onThumbnailError = this.props.onThumbnailError;
-      }
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement('img', {
-          src: item.thumbnail,
-          alt: item.thumbnailAlt,
-          onError: onThumbnailError.bind(this)
-        }),
-        _react2.default.createElement(
-          'div',
-          { className: 'image-gallery-thumbnail-label' },
-          item.thumbnailLabel
-        )
-      );
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this7 = this;
-
-      var _state4 = this.state;
-      var currentIndex = _state4.currentIndex;
-      var isFullscreen = _state4.isFullscreen;
-      var modalFullscreen = _state4.modalFullscreen;
-      var isPlaying = _state4.isPlaying;
-
-
-      var thumbnailStyle = this._getThumbnailStyle();
-      var thumbnailPosition = this.props.thumbnailPosition;
-
-      var slideLeft = this._slideLeft.bind(this);
-      var slideRight = this._slideRight.bind(this);
-
-      var slides = [];
-      var thumbnails = [];
-      var bullets = [];
-
-      this.props.items.map(function (item, index) {
-        var alignment = _this7._getAlignmentClassName(index);
-        var originalClass = item.originalClass ? ' ' + item.originalClass : '';
-        var thumbnailClass = item.thumbnailClass ? ' ' + item.thumbnailClass : '';
-
-        var renderItem = item.renderItem || _this7.props.renderItem || _this7._renderItem.bind(_this7);
-
-        var renderThumbInner = item.renderThumbInner || _this7.props.renderThumbInner || _this7._renderThumbInner.bind(_this7);
-
-        var showItem = !_this7.props.lazyLoad || alignment || _this7._lazyLoaded[index];
-        if (showItem && _this7.props.lazyLoad) {
-          _this7._lazyLoaded[index] = true;
-        }
-
-        var slide = _react2.default.createElement(
-          'div',
-          {
-            key: index,
-            className: 'image-gallery-slide' + alignment + originalClass,
-            style: _extends(_this7._getSlideStyle(index), _this7.state.style),
-            onClick: _this7.props.onClick
-          },
-          showItem ? renderItem(item) : _react2.default.createElement('div', { style: { height: '100%' } })
-        );
-
-        slides.push(slide);
-
-        if (_this7.props.showThumbnails) {
-          thumbnails.push(_react2.default.createElement(
-            'a',
-            {
-              onMouseOver: _this7._handleMouseOverThumbnails.bind(_this7, index),
-              onMouseLeave: _this7._handleMouseLeaveThumbnails.bind(_this7, index),
-              key: index,
-              role: 'button',
-              'aria-pressed': currentIndex === index ? 'true' : 'false',
-              'aria-label': 'Go to Slide ' + (index + 1),
-              className: 'image-gallery-thumbnail' + (currentIndex === index ? ' active' : '') + thumbnailClass,
-              onClick: function onClick(event) {
-                return _this7.slideToIndex.call(_this7, index, event);
-              }
-            },
-            renderThumbInner(item)
-          ));
-        }
-
-        if (_this7.props.showBullets) {
-          bullets.push(_react2.default.createElement('button', {
-            key: index,
-            type: 'button',
-            className: 'image-gallery-bullet ' + (currentIndex === index ? 'active' : ''),
-
-            onClick: function onClick(event) {
-              return _this7.slideToIndex.call(_this7, index, event);
-            },
-            'aria-pressed': currentIndex === index ? 'true' : 'false',
-            'aria-label': 'Go to Slide ' + (index + 1)
-          }));
-        }
-      });
-
-      var slideWrapper = _react2.default.createElement(
-        'div',
-        {
-          ref: function ref(i) {
-            return _this7._imageGallerySlideWrapper = i;
-          },
-          className: 'image-gallery-slide-wrapper ' + thumbnailPosition
-        },
-        this.props.renderCustomControls && this.props.renderCustomControls(),
-        this.props.showFullscreenButton && this.props.renderFullscreenButton(this._toggleFullScreen.bind(this), isFullscreen),
-        this.props.showPlayButton && this.props.renderPlayPauseButton(this._togglePlay.bind(this), isPlaying),
-        this._canNavigate() ? [this.props.showNav && _react2.default.createElement(
-          'span',
-          { key: 'navigation' },
-          this.props.renderLeftNav(slideLeft, !this._canSlideLeft()),
-          this.props.renderRightNav(slideRight, !this._canSlideRight())
-        ), this.props.disableSwipe ? _react2.default.createElement(
-          'div',
-          { className: 'image-gallery-slides', key: 'slides' },
-          slides
-        ) : _react2.default.createElement(
-          _reactSwipeable2.default,
-          {
-            className: 'image-gallery-swipe',
-            key: 'swipeable',
-            delta: 1,
-            onSwipingLeft: this._handleSwiping.bind(this, -1),
-            onSwipingRight: this._handleSwiping.bind(this, 1),
-            onSwiped: this._handleOnSwiped.bind(this),
-            onSwipedLeft: this._handleOnSwipedTo.bind(this, 1),
-            onSwipedRight: this._handleOnSwipedTo.bind(this, -1),
-            onSwipedDown: this._handleOnSwipedTo.bind(this, 0),
-            onSwipedUp: this._handleOnSwipedTo.bind(this, 0)
-          },
-          _react2.default.createElement(
-            'div',
-            { className: 'image-gallery-slides' },
-            slides
-          )
-        )] : _react2.default.createElement(
-          'div',
-          { className: 'image-gallery-slides' },
-          slides
-        ),
-        this.props.showBullets && _react2.default.createElement(
-          'div',
-          { className: 'image-gallery-bullets' },
-          _react2.default.createElement(
-            'ul',
-            {
-              className: 'image-gallery-bullets-container',
-              role: 'navigation',
-              'aria-label': 'Bullet Navigation'
-            },
-            bullets
-          )
-        ),
-        this.props.showIndex && _react2.default.createElement(
-          'div',
-          { className: 'image-gallery-index' },
-          _react2.default.createElement(
-            'span',
-            { className: 'image-gallery-index-current' },
-            this.state.currentIndex + 1
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: 'image-gallery-index-separator' },
-            this.props.indexSeparator
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: 'image-gallery-index-total' },
-            this.props.items.length
-          )
-        )
-      );
-
-      return _react2.default.createElement(
-        'section',
-        {
-          ref: function ref(i) {
-            return _this7._imageGallery = i;
-          },
-          className: 'image-gallery' + (modalFullscreen ? ' fullscreen-modal' : ''),
-          'aria-live': 'polite'
-        },
-        _react2.default.createElement(
-          'div',
-          {
-            className: 'image-gallery-content' + (isFullscreen ? ' fullscreen' : '')
-          },
-          (thumbnailPosition === 'bottom' || thumbnailPosition === 'right') && slideWrapper,
-          this.props.showThumbnails && _react2.default.createElement(
-            'div',
-            {
-              className: 'image-gallery-thumbnails-wrapper ' + thumbnailPosition,
-              style: this._getThumbnailBarHeight()
-            },
-            _react2.default.createElement(
-              'div',
-              {
-                className: 'image-gallery-thumbnails',
-                ref: function ref(i) {
-                  return _this7._thumbnailsWrapper = i;
-                }
-              },
-              _react2.default.createElement(
-                'div',
-                {
-                  ref: function ref(t) {
-                    return _this7._thumbnails = t;
-                  },
-                  className: 'image-gallery-thumbnails-container',
-                  style: thumbnailStyle,
-                  role: 'navigation',
-                  'aria-label': 'Thumbnail Navigation'
-                },
-                thumbnails
-              )
-            )
-          ),
-          (thumbnailPosition === 'top' || thumbnailPosition === 'left') && slideWrapper
-        )
-      );
-    }
-  }]);
-
-  return ImageGallery;
-}(_react2.default.Component);
-
-ImageGallery.propTypes = {
-  items: _react2.default.PropTypes.array.isRequired,
-  showNav: _react2.default.PropTypes.bool,
-  autoPlay: _react2.default.PropTypes.bool,
-  lazyLoad: _react2.default.PropTypes.bool,
-  infinite: _react2.default.PropTypes.bool,
-  showIndex: _react2.default.PropTypes.bool,
-  showBullets: _react2.default.PropTypes.bool,
-  showThumbnails: _react2.default.PropTypes.bool,
-  showPlayButton: _react2.default.PropTypes.bool,
-  showFullscreenButton: _react2.default.PropTypes.bool,
-  slideOnThumbnailHover: _react2.default.PropTypes.bool,
-  disableThumbnailScroll: _react2.default.PropTypes.bool,
-  disableArrowKeys: _react2.default.PropTypes.bool,
-  disableSwipe: _react2.default.PropTypes.bool,
-  useBrowserFullscreen: _react2.default.PropTypes.bool,
-  defaultImage: _react2.default.PropTypes.string,
-  indexSeparator: _react2.default.PropTypes.string,
-  thumbnailPosition: _react2.default.PropTypes.string,
-  startIndex: _react2.default.PropTypes.number,
-  slideDuration: _react2.default.PropTypes.number,
-  slideInterval: _react2.default.PropTypes.number,
-  swipingTransitionDuration: _react2.default.PropTypes.number,
-  onSlide: _react2.default.PropTypes.func,
-  onScreenChange: _react2.default.PropTypes.func,
-  onPause: _react2.default.PropTypes.func,
-  onPlay: _react2.default.PropTypes.func,
-  onClick: _react2.default.PropTypes.func,
-  onImageLoad: _react2.default.PropTypes.func,
-  onImageError: _react2.default.PropTypes.func,
-  onThumbnailError: _react2.default.PropTypes.func,
-  renderCustomControls: _react2.default.PropTypes.func,
-  renderLeftNav: _react2.default.PropTypes.func,
-  renderRightNav: _react2.default.PropTypes.func,
-  renderPlayPauseButton: _react2.default.PropTypes.func,
-  renderFullscreenButton: _react2.default.PropTypes.func,
-  renderItem: _react2.default.PropTypes.func
-};
-ImageGallery.defaultProps = {
-  items: [],
-  showNav: true,
-  autoPlay: false,
-  lazyLoad: false,
-  infinite: true,
-  showIndex: false,
-  showBullets: false,
-  showThumbnails: true,
-  showPlayButton: true,
-  showFullscreenButton: true,
-  slideOnThumbnailHover: false,
-  disableThumbnailScroll: false,
-  disableArrowKeys: false,
-  disableSwipe: false,
-  useBrowserFullscreen: true,
-  indexSeparator: ' / ',
-  thumbnailPosition: 'bottom',
-  startIndex: 0,
-  slideDuration: 450,
-  swipingTransitionDuration: 0,
-  slideInterval: 3000,
-  renderLeftNav: function renderLeftNav(onClick, disabled) {
-    return _react2.default.createElement('button', {
-      type: 'button',
-      className: 'image-gallery-left-nav',
-      disabled: disabled,
-      onClick: onClick,
-      'aria-label': 'Previous Slide'
-    });
-  },
-  renderRightNav: function renderRightNav(onClick, disabled) {
-    return _react2.default.createElement('button', {
-      type: 'button',
-      className: 'image-gallery-right-nav',
-      disabled: disabled,
-      onClick: onClick,
-      'aria-label': 'Next Slide'
-    });
-  },
-  renderPlayPauseButton: function renderPlayPauseButton(onClick, isPlaying) {
-    return _react2.default.createElement('button', {
-      type: 'button',
-      className: 'image-gallery-play-button' + (isPlaying ? ' active' : ''),
-      onClick: onClick,
-      'aria-label': 'Play or Pause Slideshow'
-    });
-  },
-  renderFullscreenButton: function renderFullscreenButton(onClick, isFullscreen) {
-    return _react2.default.createElement('button', {
-      type: 'button',
-      className: 'image-gallery-fullscreen-button' + (isFullscreen ? ' active' : ''),
-      onClick: onClick,
-      'aria-label': 'Open Fullscreen'
-    });
-  }
-};
-exports.default = ImageGallery;
-
-/***/ }),
+/* 229 */,
+/* 230 */,
+/* 231 */,
 /* 232 */,
 /* 233 */,
 /* 234 */,
 /* 235 */,
-/* 236 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var React = __webpack_require__(9);
-
-function getInitialState() {
-  return {
-    x: null,
-    y: null,
-    swiping: false,
-    start: 0
-  };
-}
-
-var Swipeable = React.createClass({
-  displayName: 'Swipeable',
-
-  propTypes: {
-    onSwiped: React.PropTypes.func,
-    onSwiping: React.PropTypes.func,
-    onSwipingUp: React.PropTypes.func,
-    onSwipingRight: React.PropTypes.func,
-    onSwipingDown: React.PropTypes.func,
-    onSwipingLeft: React.PropTypes.func,
-    onSwipedUp: React.PropTypes.func,
-    onSwipedRight: React.PropTypes.func,
-    onSwipedDown: React.PropTypes.func,
-    onSwipedLeft: React.PropTypes.func,
-    onTap: React.PropTypes.func,
-    flickThreshold: React.PropTypes.number,
-    delta: React.PropTypes.number,
-    preventDefaultTouchmoveEvent: React.PropTypes.bool,
-    stopPropagation: React.PropTypes.bool,
-    nodeName: React.PropTypes.string,
-    trackMouse: React.PropTypes.bool,
-    children: React.PropTypes.node
-  },
-
-  getDefaultProps: function getDefaultProps() {
-    return {
-      flickThreshold: 0.6,
-      delta: 10,
-      preventDefaultTouchmoveEvent: true,
-      stopPropagation: false,
-      nodeName: 'div'
-    };
-  },
-  componentWillMount: function componentWillMount() {
-    this.swipeable = getInitialState();
-  },
-  calculatePos: function calculatePos(e) {
-    var x = void 0;
-    var y = void 0;
-
-    if (e.changedTouches) {
-      x = e.changedTouches[0].clientX;
-      y = e.changedTouches[0].clientY;
-    } else {
-      x = e.clientX;
-      y = e.clientY;
-    }
-
-    var xd = this.swipeable.x - x;
-    var yd = this.swipeable.y - y;
-
-    var axd = Math.abs(xd);
-    var ayd = Math.abs(yd);
-
-    var time = Date.now() - this.swipeable.start;
-    var velocity = Math.sqrt(axd * axd + ayd * ayd) / time;
-
-    return {
-      deltaX: xd,
-      deltaY: yd,
-      absX: axd,
-      absY: ayd,
-      velocity: velocity
-    };
-  },
-  eventStart: function eventStart(e) {
-    if (typeof this.props.onMouseDown === 'function') {
-      this.props.onMouseDown(e);
-    }
-
-    if (e.type === 'mousedown' && !this.props.trackMouse) {
-      return;
-    }
-
-    if (e.touches && e.touches.length > 1) {
-      return;
-    }
-
-    var touches = e.touches;
-    if (!touches) {
-      touches = [{ clientX: e.clientX, clientY: e.clientY }];
-    }
-    if (this.props.stopPropagation) e.stopPropagation();
-
-    this.swipeable = {
-      start: Date.now(),
-      x: touches[0].clientX,
-      y: touches[0].clientY,
-      swiping: false
-    };
-  },
-  eventMove: function eventMove(e) {
-    if (typeof this.props.onMouseMove === 'function') {
-      this.props.onMouseMove(e);
-    }
-
-    if (e.type === 'mousemove' && !this.props.trackMouse) {
-      return;
-    }
-
-    if (!this.swipeable.x || !this.swipeable.y || e.touches && e.touches.length > 1) {
-      return;
-    }
-
-    var cancelPageSwipe = false;
-    var pos = this.calculatePos(e);
-
-    if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
-      return;
-    }
-
-    if (this.props.stopPropagation) e.stopPropagation();
-
-    if (this.props.onSwiping) {
-      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
-    }
-
-    if (pos.absX > pos.absY) {
-      if (pos.deltaX > 0) {
-        if (this.props.onSwipingLeft || this.props.onSwipedLeft) {
-          this.props.onSwipingLeft && this.props.onSwipingLeft(e, pos.absX);
-          cancelPageSwipe = true;
-        }
-      } else if (this.props.onSwipingRight || this.props.onSwipedRight) {
-        this.props.onSwipingRight && this.props.onSwipingRight(e, pos.absX);
-        cancelPageSwipe = true;
-      }
-    } else if (pos.deltaY > 0) {
-      if (this.props.onSwipingUp || this.props.onSwipedUp) {
-        this.props.onSwipingUp && this.props.onSwipingUp(e, pos.absY);
-        cancelPageSwipe = true;
-      }
-    } else if (this.props.onSwipingDown || this.props.onSwipedDown) {
-      this.props.onSwipingDown && this.props.onSwipingDown(e, pos.absY);
-      cancelPageSwipe = true;
-    }
-
-    this.swipeable.swiping = true;
-
-    if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
-      e.preventDefault();
-    }
-  },
-  eventEnd: function eventEnd(e) {
-    if (typeof this.props.onMouseUp === 'function') {
-      this.props.onMouseUp(e);
-    }
-
-    if (e.type === 'mouseup' && !this.props.trackMouse) {
-      return;
-    }
-
-    if (this.swipeable.swiping) {
-      var pos = this.calculatePos(e);
-
-      if (this.props.stopPropagation) e.stopPropagation();
-
-      var isFlick = pos.velocity > this.props.flickThreshold;
-
-      this.props.onSwiped && this.props.onSwiped(e, pos.deltaX, pos.deltaY, isFlick, pos.velocity);
-
-      if (pos.absX > pos.absY) {
-        if (pos.deltaX > 0) {
-          this.props.onSwipedLeft && this.props.onSwipedLeft(e, pos.deltaX, isFlick);
-        } else {
-          this.props.onSwipedRight && this.props.onSwipedRight(e, pos.deltaX, isFlick);
-        }
-      } else if (pos.deltaY > 0) {
-        this.props.onSwipedUp && this.props.onSwipedUp(e, pos.deltaY, isFlick);
-      } else {
-        this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick);
-      }
-    } else {
-      this.props.onTap && this.props.onTap(e);
-    }
-
-    this.swipeable = getInitialState();
-  },
-  render: function render() {
-    var newProps = _extends({}, this.props, {
-      onTouchStart: this.eventStart,
-      onTouchMove: this.eventMove,
-      onTouchEnd: this.eventEnd,
-      onMouseDown: this.eventStart,
-      onMouseMove: this.eventMove,
-      onMouseUp: this.eventEnd
-    });
-
-    delete newProps.onSwiped;
-    delete newProps.onSwiping;
-    delete newProps.onSwipingUp;
-    delete newProps.onSwipingRight;
-    delete newProps.onSwipingDown;
-    delete newProps.onSwipingLeft;
-    delete newProps.onSwipedUp;
-    delete newProps.onSwipedRight;
-    delete newProps.onSwipedDown;
-    delete newProps.onSwipedLeft;
-    delete newProps.onTap;
-    delete newProps.flickThreshold;
-    delete newProps.delta;
-    delete newProps.preventDefaultTouchmoveEvent;
-    delete newProps.stopPropagation;
-    delete newProps.nodeName;
-    delete newProps.children;
-    delete newProps.trackMouse;
-
-    return React.createElement(this.props.nodeName, newProps, this.props.children);
-  }
-});
-
-module.exports = Swipeable;
-
-/***/ }),
+/* 236 */,
 /* 237 */,
 /* 238 */,
 /* 239 */,
@@ -43770,29 +40821,24 @@ module.exports = Swipeable;
 /* 362 */,
 /* 363 */,
 /* 364 */,
-/* 365 */
+/* 365 */,
+/* 366 */,
+/* 367 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dragscroll__ = __webpack_require__(433);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dragscroll___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_dragscroll__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Sidebar__ = __webpack_require__(226);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Navbar__ = __webpack_require__(217);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Copyright__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__UI_Map__ = __webpack_require__(216);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__UI_Marker__ = __webpack_require__(214);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__UI_Modal__ = __webpack_require__(224);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_react_image_gallery__ = __webpack_require__(231);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_react_image_gallery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_react_image_gallery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__UI_Address__ = __webpack_require__(369);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Spinner__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_HomeNavbar__ = __webpack_require__(384);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_HomeJumbotron__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_SubscribeRow__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_FeaturesList__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_HomeFooter__ = __webpack_require__(382);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43802,9 +40848,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Treesnap Website Entry Point JS File
+ * Treesnap Welcome splash screen
  */
-// Bootstrap Everything (loads dash and a configured axios)
 
 
 
@@ -43814,844 +40859,52 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+var Welcome = function (_Component) {
+    _inherits(Welcome, _Component);
 
+    function Welcome() {
+        _classCallCheck(this, Welcome);
 
-
-
-
-var App = function (_Component) {
-    _inherits(App, _Component);
-
-    function App(props) {
-        _classCallCheck(this, App);
-
-        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-
-        _this.defaultMapPosition = {
-            center: {
-                lat: 40.354388,
-                lng: -95.998237
-            },
-            zoom: 4
-        };
-
-        _this.state = {
-            markers: [],
-            categories: {},
-            center: {
-                lat: 40.354388,
-                lng: -95.998237
-            },
-            zoom: 4,
-            selectedMarker: null,
-            galleryImages: [],
-            showSidebar: false,
-            loading: false
-        };
-
-        _this.allMarkers = [];
-        return _this;
+        return _possibleConstructorReturn(this, (Welcome.__proto__ || Object.getPrototypeOf(Welcome)).apply(this, arguments));
     }
 
-    /**
-     * Set the maps and load observations into the state.
-     */
+    _createClass(Welcome, [{
+        key: 'render',
 
-
-    _createClass(App, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.loadObservations();
-        }
-
-        /**
-         * Gets observations from the API and parses them into markers.
-         */
-
-    }, {
-        key: 'loadObservations',
-        value: function loadObservations() {
-            var _this2 = this;
-
-            this.setState({ loading: true });
-
-            axios.get('/observations').then(function (response) {
-                var categories = {};
-                // Setup the observations to be rendered into markers
-                response.data.data.map(function (observation, index) {
-                    var category = observation.observation_category;
-
-                    // Set the category
-                    categories[category] = true;
-
-                    _this2.allMarkers.push({
-                        id: observation.observation_id,
-                        title: category,
-                        images: observation.images,
-                        position: {
-                            latitude: observation.location.latitude,
-                            longitude: observation.location.longitude,
-                            accuracy: observation.location.accuracy
-                        },
-                        owner: observation.user.name,
-                        show: true,
-                        date: observation.date_human_diff,
-                        data: observation.meta_data,
-                        ref: null
-                    });
-                });
-
-                // Add the markers to the state
-                _this2.setState({
-                    markers: _this2.allMarkers,
-                    categories: categories
-                });
-            }).catch(function (error) {
-                console.log(error);
-            }).then(function () {
-                _this2.setState({ loading: false });
-            });
-        }
-
-        /**
-         * Zoom to marker.
-         *
-         * @param marker
-         */
-
-    }, {
-        key: 'goToSubmission',
-        value: function goToSubmission(marker) {
-            this.refs.maps.goTo({
-                lat: marker.position.latitude,
-                lng: marker.position.longitude
-            }, 24);
-        }
-
-        /**
-         * Render individual submission.
-         *
-         * @param marker
-         * @param index
-         * @returns {XML}
-         */
-
-    }, {
-        key: '_renderSubmission',
-        value: function _renderSubmission(marker, index) {
-            var _this3 = this;
-
-            var image = marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png';
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                'a',
-                {
-                    href: '#',
-                    role: 'button',
-                    className: 'bar-item',
-                    style: { backgroundImage: 'url(' + image + ')' },
-                    key: index,
-                    onClick: function onClick(e) {
-                        if (e.nativeEvent) {
-                            e.nativeEvent.preventDefault();
-                        }
-                        _this3.setState({
-                            selectedMarker: marker,
-                            showSidebar: true
-                        });
-                        _this3.goToSubmission.call(_this3, marker);
-                        if (marker.ref !== null) {
-                            marker.ref.openCallout();
-                        }
-                    }
-                },
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'div',
-                    { className: 'bar-item-field' },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'strong',
-                        { style: { color: '#fff' } },
-                        marker.title
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'p',
-                        { style: { color: '#eee', fontWeight: '500', fontSize: '14px' } },
-                        marker.owner
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'p',
-                        { style: { color: '#eee', fontWeight: '500', fontSize: '14px' } },
-                        marker.date
-                    )
-                )
-            );
-        }
-
-        /**
-         * Allow users to filter submissions by plant.
-         *
-         * @param name
-         */
-
-    }, {
-        key: 'filterByPlant',
-        value: function filterByPlant(name) {
-            var filteredMarkers = [];
-            var categories = this.state.categories;
-
-            this.state.markers.map(function (marker) {
-                if (marker.title == name) {
-                    marker.show = !marker.show;
-                    categories[name] = marker.show;
-                }
-                filteredMarkers.push(marker);
-            });
-
-            this.setState({
-                markers: filteredMarkers,
-                categories: categories
-            });
-        }
-
-        /**
-         * Reset the position to the center and zoom out.
-         */
-
-    }, {
-        key: 'resetMapPosition',
-        value: function resetMapPosition() {
-            this.refs.maps.goTo(this.defaultMapPosition.center, this.defaultMapPosition.zoom);
-        }
-
-        /**
-         * search by plant name or username.
-         *
-         * @param term
-         */
-
-    }, {
-        key: 'search',
-        value: function search(event) {
-            var term = event.target.value;
-            if (term.length === 0) {
-                this.setState({ markers: this.allMarkers });
-                return;
-            }
-
-            term = term.toLowerCase();
-
-            var markers = this.allMarkers.filter(function (marker) {
-                return marker.title.toLowerCase().indexOf(term) > -1 || marker.owner.toLowerCase().indexOf(term) > -1;
-            });
-
-            this.setState({ markers: markers });
-        }
-
-        /**
-         * Handle map bounds changes.
-         *
-         * @param newBounds
-         */
-
-    }, {
-        key: 'boundsChanged',
-        value: function boundsChanged(newBounds) {
-
-            this.allMarkers.map(function (marker) {
-                var pos = {
-                    lat: marker.position.latitude,
-                    lng: marker.position.longitude
-                };
-
-                marker.show = newBounds.contains(pos);
-            });
-
-            this.setState({ markers: this.allMarkers });
-        }
-
-        /**
-         * Render the map.
-         *
-         * @returns {XML}
-         * @private
-         */
-
-    }, {
-        key: '_renderMap',
-        value: function _renderMap() {
-            var _this4 = this;
-
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_7__UI_Map__["a" /* default */],
-                { id: 'map2',
-                    ref: 'maps',
-                    center: this.state.center,
-                    zoom: this.state.zoom,
-                    onBoundsChange: this.boundsChanged.bind(this)
-                },
-                this.state.markers.map(function (marker, index) {
-                    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_8__UI_Marker__["a" /* default */],
-                        { key: index,
-                            position: marker.position,
-                            title: marker.title,
-                            show: marker.show,
-                            ref: function ref(_ref) {
-                                return marker.ref = _ref;
-                            },
-                            onClick: function onClick() {
-                                _this4.setState({
-                                    selectedMarker: _this4.state.markers[index],
-                                    showSidebar: true
-                                });
-                            }
-                        },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'div',
-                            { className: 'media callout' },
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'div',
-                                { className: 'media-left mr-0' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', { src: marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png',
-                                    alt: marker.title,
-                                    style: {
-                                        width: 50,
-                                        height: 'auto'
-                                    } })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'div',
-                                { className: 'media-content' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'div',
-                                    { className: 'mb-0' },
-                                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                        'strong',
-                                        null,
-                                        marker.title
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'div',
-                                    { className: 'mb-0' },
-                                    'By ',
-                                    marker.owner
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__UI_Address__["a" /* default */], { position: marker.position }),
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'a',
-                                    { href: '/observation/' + marker.id },
-                                    'See full description'
-                                )
-                            )
-                        )
-                    );
-                })
-            );
-        }
-    }, {
-        key: '_renderBottomBar',
-        value: function _renderBottomBar() {
-            var _this5 = this;
-
-            var rendered = 0;
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                'div',
-                { className: 'horizontal-bar', id: 'horizontal-bar-container' },
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'a',
-                    { href: 'javascript:;', className: 'scroll scroll-left', onClick: this.scrollLeft.bind(this) },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-chevron-left' })
-                ),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'div',
-                    { className: 'bar-items-container dragscroll',
-                        id: 'horizontal-bar',
-                        onScroll: this.setScrollState.bind(this) },
-                    this.state.markers.map(function (marker, index) {
-                        if (!marker.show) return;
-                        if (rendered >= 50) return;
-                        rendered++;
-                        return _this5._renderSubmission(marker, index);
-                    })
-                ),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'a',
-                    { href: 'javascript:;', className: 'scroll scroll-right', onClick: this.scrollRight.bind(this) },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-chevron-right' })
-                )
-            );
-        }
-    }, {
-        key: 'setScrollState',
-        value: function setScrollState() {
-            var bar = document.getElementById('horizontal-bar');
-            var container = document.getElementById('horizontal-bar-container');
-            var width = bar.offsetWidth;
-            var scrollPosition = bar.scrollLeft;
-
-            if (width + scrollPosition === bar.scrollWidth) {
-                container.style.paddingRight = '65px';
-                bar.scrollLeft += 65;
-            } else {
-                container.style.paddingRight = 0;
-            }
-        }
-
-        /**
-         * Scroll the horizontal bar to the right
-         */
-
-    }, {
-        key: 'scrollRight',
-        value: function scrollRight() {
-            var scrolled = 0;
-            var interval = void 0;
-            var scroll = function scroll() {
-                if (scrolled === 200) {
-                    clearInterval(interval);
-                }
-                scrolled += 5;
-                document.getElementById('horizontal-bar').scrollLeft += 5;
-            };
-            interval = setInterval(scroll, 5);
-        }
-
-        /**
-         * Scroll the horizontal bar to the left
-         */
-
-    }, {
-        key: 'scrollLeft',
-        value: function scrollLeft() {
-            var scrolled = 0;
-            var interval = void 0;
-            var scroll = function scroll() {
-                if (scrolled === 200) {
-                    clearInterval(interval);
-                }
-                scrolled += 5;
-                document.getElementById('horizontal-bar').scrollLeft -= 5;
-            };
-            interval = setInterval(scroll, 5);
-        }
-
-        /**
-         * Render sidebar filters.
-         *
-         * @returns {XML}
-         * @private
-         */
-
-    }, {
-        key: '_renderFilters',
-        value: function _renderFilters() {
-            var _this6 = this;
-
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'form',
-                    { action: '#', method: 'get', className: 'mb-1', onSubmit: function onSubmit(e) {
-                            e.nativeEvent ? e.nativeEvent.preventDefault() : null;
-                        } },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'p',
-                        { className: 'mb-0 text-underline' },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'strong',
-                            null,
-                            'Search'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'div',
-                        { className: 'field' },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'p',
-                            { className: 'control has-icon has-icon-right' },
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', { className: 'input', type: 'search', placeholder: 'Search', onChange: this.search }),
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'div',
-                                { className: 'icon is-small' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-search' })
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'p',
-                    { className: 'mb-0 text-underline' },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'strong',
-                        null,
-                        'Filter by Plant'
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'div',
-                    { className: 'checkbox-container' },
-                    Object.keys(this.state.categories).map(function (name, index) {
-                        return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'a',
-                            { key: index,
-                                href: '#',
-                                className: 'button is-full checkbox-button' + (_this6.state.categories[name] ? ' is-active' : ''),
-                                onClick: function onClick(e) {
-                                    if (e.nativeEvent) {
-                                        e.nativeEvent.preventDefault();
-                                    }
-                                    _this6.filterByPlant.call(_this6, name);
-                                } },
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'span',
-                                { className: 'icon' },
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-check' })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'span',
-                                null,
-                                name
-                            )
-                        );
-                    })
-                )
-            );
-        }
-
-        /**
-         * Render the sidebar.
-         *
-         * @returns {XML}
-         * @private
-         */
-
-    }, {
-        key: '_renderSidebar',
-        value: function _renderSidebar() {
-            var _this7 = this;
-
-            var marker = this.state.selectedMarker;
-            if (marker === null) {
-                return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Sidebar__["a" /* default */], null);
-            }
-
-            var data = marker.data;
-
-            /*
-             {
-             images: observation.images
-             }
-             */
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_4__components_Sidebar__["a" /* default */],
-                { onCloseRequest: function onCloseRequest() {
-                        return _this7.setState({ showSidebar: false });
-                    } },
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('div', { className: 'sidebar-img',
-                    style: { backgroundImage: marker.images.length > 0 ? 'url(\'' + marker.images[0] + '\')' : 'url("//' + window.location.hostname + '/images/placeholder.png")' } }),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'div',
-                    { className: 'sidebar-icons-container' },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'a',
-                        { href: 'javascript:;', className: 'sidebar-icon', onClick: function onClick() {
-                                _this7.setState({ galleryImages: marker.images });
-                                _this7.modal.open();
-                            } },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('i', { className: 'fa fa-picture-o' }),
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'span',
-                            null,
-                            'See all images'
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'div',
-                    { className: 'sidebar-content' },
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'h3',
-                        { className: 'title is-4' },
-                        marker.title
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'div',
-                        { className: 'sidebar-item' },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'h5',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'strong',
-                                null,
-                                'Location'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'p',
-                            { className: 'ml-1' },
-                            marker.position.latitude.toFixed(5),
-                            ', ',
-                            marker.position.longitude.toFixed(5)
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'div',
-                        { className: 'sidebar-item' },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'h5',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'strong',
-                                null,
-                                'Location Accuracy'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'p',
-                            { className: 'ml-1' },
-                            marker.position.accuracy,
-                            ' meters'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                        'div',
-                        { className: 'sidebar-item' },
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'h5',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'strong',
-                                null,
-                                'Collection Date'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'p',
-                            { className: 'ml-1' },
-                            marker.date
-                        )
-                    ),
-                    Object.keys(data).map(function (key) {
-                        return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                            'div',
-                            { className: 'sidebar-item', key: key },
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'h5',
-                                null,
-                                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                    'strong',
-                                    null,
-                                    key
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                                'p',
-                                { className: 'ml-1' },
-                                data[key]
-                            )
-                        );
-                    })
-                )
-            );
-        }
-
-        /**
-         * Render the filter bar and expand button.
-         *
-         * @returns {XML}
-         * @private
-         */
-
-    }, {
-        key: '_renderFilterBar',
-        value: function _renderFilterBar() {
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('div', { className: 'filters-bar' });
-        }
-
-        /**
-         * Render a gallery image
-         * @param item
-         * @returns {XML}
-         * @private
-         */
-
-    }, {
-        key: '_renderImage',
-        value: function _renderImage(item) {
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                'div',
-                { className: 'image-gallery-image',
-                    style: { backgroundColor: this.state.galleryImages.length > 1 ? '#222' : 'transparent' } },
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('img', {
-                    src: item.original,
-                    alt: 'Plant Image',
-                    style: { height: window.innerHeight * .9, width: 'auto' }
-                })
-            );
-        }
-
-        /**
-         * Render the modal that contains the gallery.
-         *
-         * @returns {XML}
-         * @private
-         */
-
-    }, {
-        key: '_renderImagesModal',
-        value: function _renderImagesModal() {
-            var _this8 = this;
-
-            if (this.state.galleryImages.length === 0) {
-                return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__UI_Modal__["a" /* default */], { ref: function ref(_ref2) {
-                        return _this8.modal = _ref2;
-                    } });
-            }
-
-            var images = [];
-
-            this.state.galleryImages.map(function (image) {
-                images.push({
-                    original: image
-                });
-            });
-
-            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_9__UI_Modal__["a" /* default */],
-                { ref: function ref(_ref3) {
-                        return _this8.modal = _ref3;
-                    } },
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_react_image_gallery___default.a, {
-                    items: images,
-                    showThumbnails: false,
-                    showFullscreenButton: false,
-                    showPlayButton: false,
-                    renderItem: this._renderImage.bind(this)
-                })
-            );
-        }
 
         /**
          * Render the scene.
          *
          * @returns {XML}
          */
-
-    }, {
-        key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                 'div',
-                { className: this.state.showSidebar ? 'sidebar-visible' : '' },
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_Navbar__["a" /* default */], null),
-                this._renderSidebar(),
+                null,
                 __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
-                    'button',
-                    {
-                        type: 'button',
-                        className: 'button reset-map-button',
-                        onClick: this.resetMapPosition.bind(this) },
-                    'Reset Position'
+                    'div',
+                    { className: 'home' },
+                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_HomeNavbar__["a" /* default */], null),
+                    __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_HomeJumbotron__["a" /* default */], null)
                 ),
-                this._renderMap(),
-                this._renderFilterBar(),
-                this._renderBottomBar(),
-                this._renderImagesModal(),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_Copyright__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__components_Spinner__["a" /* default */], { visible: this.state.loading, containerStyle: { backgroundColor: 'rgba(255,255,255,0.2)' } })
+                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_SubscribeRow__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_FeaturesList__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_HomeFooter__["a" /* default */], null)
             );
         }
     }]);
 
-    return App;
+    return Welcome;
 }(__WEBPACK_IMPORTED_MODULE_2_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (App);
+/* harmony default export */ __webpack_exports__["default"] = (Welcome);
 
 
-__WEBPACK_IMPORTED_MODULE_3_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(App, null), document.getElementById('app-root'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(Welcome, null), document.getElementById('welcome'));
 
 /***/ }),
-/* 366 */,
-/* 367 */,
 /* 368 */,
-/* 369 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_GeoCoder__ = __webpack_require__(386);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Address = function (_Component) {
-    _inherits(Address, _Component);
-
-    function Address(props) {
-        _classCallCheck(this, Address);
-
-        var _this = _possibleConstructorReturn(this, (Address.__proto__ || Object.getPrototypeOf(Address)).call(this, props));
-
-        _this.state = {
-            address: []
-        };
-        return _this;
-    }
-
-    _createClass(Address, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            var lat = this.props.position.latitude;
-            var lng = this.props.position.longitude;
-
-            __WEBPACK_IMPORTED_MODULE_1__helpers_GeoCoder__["a" /* default */].geocode({ location: { lat: lat, lng: lng } }, function (results, status) {
-                if (status === 'OK' && results[0]) {
-                    var full_address = results[0].formatted_address.split(',');
-                    var address = [full_address.shift(), full_address.join(',')];
-                    _this2.setState({ address: address });
-                }
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'mb-0' },
-                this.state.address.map(function (part, index) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { key: index },
-                        part
-                    );
-                })
-            );
-        }
-    }]);
-
-    return Address;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Address);
-
-
-Address.PropTypes = {
-    position: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
-};
-
-/***/ }),
+/* 369 */,
 /* 370 */,
 /* 371 */,
 /* 372 */,
@@ -44663,18 +40916,655 @@ Address.PropTypes = {
 /* 378 */,
 /* 379 */,
 /* 380 */,
-/* 381 */,
-/* 382 */,
-/* 383 */,
-/* 384 */,
-/* 385 */,
-/* 386 */
+/* 381 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (new google.maps.Geocoder());
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var FeaturesList = function (_Component) {
+    _inherits(FeaturesList, _Component);
+
+    function FeaturesList() {
+        _classCallCheck(this, FeaturesList);
+
+        return _possibleConstructorReturn(this, (FeaturesList.__proto__ || Object.getPrototypeOf(FeaturesList)).apply(this, arguments));
+    }
+
+    _createClass(FeaturesList, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'home-section', style: { backgroundColor: '#fff', padding: '4rem 0' } },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'container is-small' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h2',
+                        { className: 'title is-3 featured-title' },
+                        'Application Features'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'tile is-ancestor' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'tile is-parent' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'tile is-child box feature-tile' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-left' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/earth-globe.png',
+                                            alt: 'Man Icon',
+                                            className: 'feature-icon' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-content' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'title' },
+                                            'Availability'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'feature-text' },
+                                            'Treesnap is available for iOS and Android smart phones, and is',
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'b',
+                                                null,
+                                                ' completely free'
+                                            ),
+                                            '. The app will be available on the Apple AppStore and Google Play.'
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'tile is-parent' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'tile is-child box feature-tile' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-left' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/folder.png',
+                                            alt: 'Man Icon',
+                                            className: 'feature-icon' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-content' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'title' },
+                                            'It\'s a Snap'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'feature-text' },
+                                            'Come across an Ash, Hemlock, Chestnut, or White Oak in the woods? Record it with Treesnap and its geolocation will be shared with scientists to study it.'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'tile is-ancestor' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'tile is-parent' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'tile is-child box feature-tile' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-left' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/archives.png',
+                                            alt: 'Man Icon',
+                                            className: 'feature-icon' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-content' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'title' },
+                                            'Data Collection'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'feature-text' },
+                                            'Treesnap is easy to use. Snap a photo, answer a few questions and be done in a couple of taps.'
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'tile is-parent' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'tile is-child box feature-tile' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-left' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/transfer.png',
+                                            alt: 'Man Icon',
+                                            className: 'feature-icon' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-content' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'title' },
+                                            'Sync'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'feature-text' },
+                                            'Create an account and sync your observations with the Treesnap server wirelessly.'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'columns' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'column' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'box feature-tile' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'media' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-left' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
+                                            alt: 'Man Icon',
+                                            className: 'feature-icon' })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'media-content' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'title' },
+                                            'Contribute'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { className: 'feature-text' },
+                                            'Information reported in Treesnap is used by real scientists. That Ash you\'ve found might be the start of a completely new breeding program.'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return FeaturesList;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (FeaturesList);
 
 /***/ }),
+/* 382 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var HomeFooter = function (_Component) {
+    _inherits(HomeFooter, _Component);
+
+    function HomeFooter() {
+        _classCallCheck(this, HomeFooter);
+
+        return _possibleConstructorReturn(this, (HomeFooter.__proto__ || Object.getPrototypeOf(HomeFooter)).apply(this, arguments));
+    }
+
+    _createClass(HomeFooter, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "home-footer" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "container is-small" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
+                        { className: "mb-1" },
+                        "Copyright \xA9 2017 University of Tennessee Knoxville and University of Kentucky."
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/privacy" },
+                            "Privacy Policy and Terms of Use"
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "columns logos" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                { href: "https://www.utk.edu/" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/ut3.png", alt: "University of Tennessee Logo" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column has-text-centered" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                { href: "https://uky.edu" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/uky3.png", alt: "University of Kentucky Logo" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column has-text-centered" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                { href: "https://www.nsf.gov/" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/nsf1.png", alt: "NSF Logo" })
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return HomeFooter;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (HomeFooter);
+
+/***/ }),
+/* 383 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var HomeJumbotron = function (_Component) {
+    _inherits(HomeJumbotron, _Component);
+
+    function HomeJumbotron() {
+        _classCallCheck(this, HomeJumbotron);
+
+        return _possibleConstructorReturn(this, (HomeJumbotron.__proto__ || Object.getPrototypeOf(HomeJumbotron)).apply(this, arguments));
+    }
+
+    _createClass(HomeJumbotron, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "container is-small" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "home-inner" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "columns" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "home-text" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "h3",
+                                    { className: "title is-4" },
+                                    "COMING SOON"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "h1",
+                                    { className: "title is-1" },
+                                    "Help Our Nation\u2019s Trees!"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    null,
+                                    "Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild to help us understand Forest health! The Treesnap app is a means for participants to record the location and health of particular tree species of interest. Scientists use the collected information to locate candidates for genetic sequencing and breeding programs. To learn more about the Treesnap project, visit our website."
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column is-3 has-text-right mock-container is-hidden-mobile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/mock.png", alt: "Mock Device" })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return HomeJumbotron;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (HomeJumbotron);
+
+/***/ }),
+/* 384 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var NavbarHome = function (_Component) {
+    _inherits(NavbarHome, _Component);
+
+    function NavbarHome() {
+        _classCallCheck(this, NavbarHome);
+
+        return _possibleConstructorReturn(this, (NavbarHome.__proto__ || Object.getPrototypeOf(NavbarHome)).apply(this, arguments));
+    }
+
+    _createClass(NavbarHome, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "nav",
+                { className: "nav home-nav" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "container is-small" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "nav-left" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/", className: "nav-item logo" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "b",
+                                null,
+                                "Tree"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { style: { fontWeight: 300 } },
+                                "Snap"
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "nav-center" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "https://www.facebook.com/treesnapapp/", className: "nav-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { className: "icon" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-facebook" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "https://twitter.com/Treesnapapp", className: "nav-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { className: "icon" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-twitter" })
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "nav-toggle" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null)
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "nav-right nav-menu" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/", className: "nav-item active" },
+                            "Home"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/map", className: "nav-item" },
+                            "Submissions Map"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/register", className: "nav-item" },
+                            "Register"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/login", className: "nav-item" },
+                            "Login"
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return NavbarHome;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (NavbarHome);
+
+/***/ }),
+/* 385 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var SubscribeRow = function (_Component) {
+    _inherits(SubscribeRow, _Component);
+
+    function SubscribeRow(props) {
+        _classCallCheck(this, SubscribeRow);
+
+        var _this = _possibleConstructorReturn(this, (SubscribeRow.__proto__ || Object.getPrototypeOf(SubscribeRow)).call(this, props));
+
+        _this.state = {
+            email: '',
+            message: '',
+            errors: {
+                email: []
+            }
+        };
+        return _this;
+    }
+
+    _createClass(SubscribeRow, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'home-section' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'container is-small' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'columns' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'column is-6 is-offset-3' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'h4',
+                                { className: 'title is-4' },
+                                'Get a notification once TreeSnap gets released'
+                            ),
+                            this.state.message !== '' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'mb-1 has-text-success' },
+                                this.state.message
+                            ) : null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'field has-addons' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'p',
+                                    { className: 'control' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'input' + (this.state.errors.email.length ? ' is-danger' : ''),
+                                        type: 'email',
+                                        placeholder: 'Email',
+                                        value: this.state.email,
+                                        onChange: function onChange(e) {
+                                            return _this2.setState({ email: e.target.value });
+                                        } }),
+                                    this.state.errors.email.map(function (error, index) {
+                                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'p',
+                                            { key: index, className: 'help is-danger' },
+                                            error
+                                        );
+                                    })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'p',
+                                    { className: 'control' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'button',
+                                        { type: 'submit',
+                                            onClick: this.submit.bind(this),
+                                            className: 'button is-primary' },
+                                        'Get Notified!'
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'submit',
+        value: function submit(event) {
+            var _this3 = this;
+
+            event.preventDefault();
+
+            axios.post('/user/subscribe', {
+                email: this.state.email
+            }).then(function (response) {
+                _this3.setState({
+                    email: '',
+                    message: 'Thank you for subscribing!',
+                    errors: {
+                        email: []
+                    }
+                });
+            }).catch(function (error) {
+                if (error.response && error.response.status === 422) {
+                    _this3.setState({
+                        errors: error.response.data
+                    });
+                }
+            });
+        }
+    }]);
+
+    return SubscribeRow;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (SubscribeRow);
+
+/***/ }),
+/* 386 */,
 /* 387 */,
 /* 388 */,
 /* 389 */,
@@ -44721,15 +41611,7 @@ Address.PropTypes = {
 /* 430 */,
 /* 431 */,
 /* 432 */,
-/* 433 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!function(e,n){ true?!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (n),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):n("undefined"!=typeof exports?exports:e.dragscroll={})}(this,function(e){var n,t,o=window,l=document,c="mousemove",r="mouseup",i="mousedown",m="EventListener",d="add"+m,s="remove"+m,f=[],u=function(e,m){for(e=0;e<f.length;)m=f[e++],m=m.container||m,m[s](i,m.md,0),o[s](r,m.mu,0),o[s](c,m.mm,0);for(f=[].slice.call(l.getElementsByClassName("dragscroll")),e=0;e<f.length;)!function(e,m,s,f,u,a){(a=e.container||e)[d](i,a.md=function(n){e.hasAttribute("nochilddrag")&&l.elementFromPoint(n.pageX,n.pageY)!=a||(f=1,m=n.clientX,s=n.clientY,n.preventDefault())},0),o[d](r,a.mu=function(){f=0},0),o[d](c,a.mm=function(o){f&&((u=e.scroller||e).scrollLeft-=n=-m+(m=o.clientX),u.scrollTop-=t=-s+(s=o.clientY),e==l.body&&((u=l.documentElement).scrollLeft-=n,u.scrollTop-=t))},0)}(f[e++])};"complete"==l.readyState?u():o[d]("load",u,0),e.reset=u});
-
-/***/ }),
+/* 433 */,
 /* 434 */,
 /* 435 */,
 /* 436 */,
@@ -44768,10 +41650,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /* 469 */,
 /* 470 */,
 /* 471 */,
-/* 472 */
+/* 472 */,
+/* 473 */,
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(365);
+module.exports = __webpack_require__(367);
 
 
 /***/ })
