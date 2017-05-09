@@ -108,6 +108,11 @@
                                         I agree to the &nbsp;<a href="/policy">Treesnap license and terms of service</a>
                                     </label>
                                 </div>
+                                @if ($errors->has('agreement'))
+                                    <p class="help is-danger">
+                                        {{ $errors->first('agreement') }}
+                                    </p>
+                                @endif
                             </div>
 
                             <div class="field" id="minorBox" style="display: none">
@@ -119,6 +124,11 @@
                                     </label>
                                 </div>
                             </div>
+                            @if ($errors->has('minorConsent'))
+                                <p class="help is-danger">
+                                    {{ $errors->first('minorConsent') }}
+                                </p>
+                            @endif
 
                             <div class="field">
                                 <div class="control">

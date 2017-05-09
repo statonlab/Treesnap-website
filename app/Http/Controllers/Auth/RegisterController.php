@@ -45,19 +45,40 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $current_date = date("Y");
+
+        if ($data['birth_year'] - $current_date < 13) {
+
+            return Validator::make($data, [
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|min:6|confirmed',
+                'agreement' => 'required|boolean|in:1',
+                'birth_year' => 'integer',
+                'is_anonymous' => 'boolean',
+                'minorConsent' => 'required|boolean|in:1',
+                'zipcode' => [
+                    'min:5',
+                    'max:10',
+                    'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
+                ],
+            ]);
+        }
         return Validator::make($data, [
-          'name' => 'required|max:255',
-          'email' => 'required|email|max:255|unique:users',
-          'password' => 'required|min:6|confirmed',
-            'agreement' => 'required|boolean',
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'agreement' => 'required|boolean|in:1',
             'birth_year' => 'integer',
             'is_anonymous' => 'boolean',
-          'zipcode' => [
-            'min:5',
-            'max:10',
-            'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
-          ],
+            'zipcode' => [
+                'min:5',
+                'max:10',
+                'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
+            ],
         ]);
+
+
     }
 
     /**
