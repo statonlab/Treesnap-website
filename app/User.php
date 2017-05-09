@@ -19,10 +19,10 @@ class User extends Authenticatable
         'email',
         'password',
         'api_token',
-        'is_over_thirteen',
         'is_anonymous',
         'zipcode',
-        'class'
+        'class',
+        'birth_year'
     ];
 
     /**
@@ -41,7 +41,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'is_over_thirteen' => 'boolean',
         'is_anonymous' => 'boolean',
         'zipcode' => 'string',
     ];

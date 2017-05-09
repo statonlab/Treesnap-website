@@ -15,16 +15,16 @@ class UsersTableSeeder extends Seeder
           'name' => 'Abdullah Almsaeed',
           'email' => 'almasaeed2010@gmail.com',
           'password' => bcrypt('testpass'),
-          'is_over_thirteen' => true,
           'api_token' => str_random(60),
+            'birth_year'=> 1974
         ]);
 
         \App\User::create([
           'name' => 'Bradford Condon',
           'email' => 'bradford.condon@uky.edu',
           'password' => bcrypt('testpass'),
-          'is_over_thirteen' => true,
           'api_token' => str_random(60),
+            'birth_year' => 1984
         ]);
     }
 }

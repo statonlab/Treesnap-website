@@ -3,5 +3,6 @@
   "/js/landing.js": "/js/landing.js",
   "/js/app.js": "/js/app.js",
   "/css/app.css": "/css/app.css",
-  "/js/observation.js": "/js/observation.js"
+  "/js/observation.js": "/js/observation.js",
+  "/js/welcome.js": "/js/welcome.js"
 }
