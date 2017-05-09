@@ -28,7 +28,7 @@ class ObservationsAPITest extends TestCase
         $response->assertJsonStructure([
           'data' => [
             [
-              'id',
+              'observation_id',
               'user_id',
               'observation_category',
               'meta_data',
@@ -60,7 +60,7 @@ class ObservationsAPITest extends TestCase
 
         $response->assertJsonStructure([
           'data' => [
-            'id',
+            'observation_id',
             'user_id',
             'observation_category',
             'meta_data',
@@ -179,7 +179,7 @@ class ObservationsAPITest extends TestCase
      */
     public function testDeletingARecord()
     {
-        $user = User::first();
+        $user = User::has('observations')->first();
         $this->actingAs($user);
         $observation = $user->observations()->orderby('id', 'desc')->first();
 
@@ -193,9 +193,10 @@ class ObservationsAPITest extends TestCase
      */
     public function testDeletingUnauthorizedRecord()
     {
-        $user = User::first();
+        $user = User::has('observations')->first();
         $this->actingAs($user);
         $observation = Observation::where('user_id', '!=', $user->id)->first();
+        var_dump($observation);
 
         $response = $this->delete("/api/v1/observation/{$observation->id}");
 
