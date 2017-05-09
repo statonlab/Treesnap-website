@@ -124,3 +124,74 @@ h3 {
   color: $primary;
 
 }
+
+.mock-container {
+  @include align-items(flex-end);
+  @include justify-content(flex-end);
+}
+
+.mockup-img {
+  max-height: 600px;
+}
+
+.home {
+  background: $primary url('/images/bg4.png') repeat center center;
+  &,
+  .title {
+    color: #fff;
+  }
+}
+
+.home-text {
+  margin-top: 10%;
+
+  h1 {
+    font-weight: bolder;
+  }
+}
+
+.home-inner {
+  padding: 2rem 0;
+}
+
+.container.is-small {
+  max-width: 1024px;
+
+  @include tablet-only() {
+    padding: 0 16px;
+  }
+}
+
+.home .nav.home-nav {
+  background-color: transparent;
+  box-shadow: none;
+
+  a.nav-item {
+    border-bottom: 2px solid transparent;
+  }
+
+  a.nav-item {
+    margin-left: 1px;
+    &.active,
+    &:hover {
+      border-bottom-color: #fff;
+      background-color: transparent;
+    }
+  }
+
+  .logo {
+    font-size: 1.6rem;
+    padding-left: 0;
+    &:hover {
+      border-bottom-color: transparent!important;
+    }
+  }
+}
+
+.home-section {
+  padding: 2rem 0;
+}
+
+.control:first-of-type {
+  width: 100%;
+}

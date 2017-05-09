@@ -17,6 +17,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "Devices.css": "github:marvelapp/devices.css",
     "bulma": "^0.4.0",
     "camelizer": "^0.1.0",
     "chart.js": "^2.5.0",
