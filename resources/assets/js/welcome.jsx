@@ -1,6 +1,7 @@
 /**
  * Treesnap Welcome splash screen
  */
+import './bootstrap'
 import ReactDOM from 'react-dom'
 import React, {Component} from 'react'
 import HomeNavbar from './components/HomeNavbar'

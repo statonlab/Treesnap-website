@@ -42,6 +42,7 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Users
 Route::get('/user/status', 'UsersController@status');
+Route::post('/user/subscribe', 'UsersController@subscribe');
 
 
 // Admin Route Group

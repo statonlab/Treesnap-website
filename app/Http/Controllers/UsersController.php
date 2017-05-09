@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Email;
 use App\Http\Controllers\Traits\Responds;
 use Illuminate\Http\Request;
 
@@ -31,5 +32,24 @@ class UsersController extends Controller
         }
 
         return $this->success($data);
+    }
+
+    /**
+     * Subscribe users to the mailing list.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function subscribe(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email|unique:emails,email',
+        ]);
+
+        Email::create([
+            'email' => $request->email,
+        ]);
+
+        return $this->success('Subscribed successfully');
     }
 }

@@ -227,7 +227,7 @@ h3 {
 .home-footer {
   background: #222;
   color: #eee;
-  padding: 1rem 0;
+  padding: 2rem 0;
   img {
     max-height: 100px;
   }
@@ -243,5 +243,21 @@ h3 {
       color: #fff;
       text-decoration: underline;
     }
+  }
+}
+
+.featured-title {
+  display: inline-block;
+  position: relative;
+  border-bottom: 2px solid #dbdbdb;
+  padding-bottom: 8px;
+  &:before {
+    position: absolute;
+    content: ' ';
+    background: $primary;
+    left: 0;
+    bottom: -2px;
+    height: 2px;
+    width: 50px;
   }
 }
