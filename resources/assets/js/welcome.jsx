@@ -6,7 +6,8 @@ import React, {Component} from 'react'
 import HomeNavbar from './components/HomeNavbar'
 import HomeJumbotron from './components/HomeJumbotron'
 import SubscribeRow from './components/SubscribeRow'
-
+import FeaturesList from './components/FeaturesList'
+import HomeFooter from './components/HomeFooter'
 
 export default class Welcome extends Component {
 
@@ -23,6 +24,8 @@ export default class Welcome extends Component {
                     <HomeJumbotron/>
                 </div>
                 <SubscribeRow/>
+                <FeaturesList/>
+                <HomeFooter/>
             </div>
         )
     }

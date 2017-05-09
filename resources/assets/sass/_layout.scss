@@ -174,10 +174,15 @@ h3 {
     margin-left: 1px;
     &.active {
       border-bottom-color: #fff;
+      &:hover {
+        background-color: transparent;
+
+      }
     }
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
+
     }
   }
 
@@ -196,4 +201,38 @@ h3 {
 
 .control:first-of-type {
   width: 100%;
+}
+
+.feature-icon {
+  width: 100px;
+  height: auto;
+}
+
+.feature-tile {
+  box-shadow: 1px 1px 0 2px rgba(0, 0, 0, .1);
+
+  .media-left {
+    padding-right: 10px;
+  }
+
+  .media-right {
+    paddint-left: 10px;
+  }
+}
+
+.feature-text {
+  color: #444;
+}
+
+.home-footer {
+  background: #222;
+  color: #eee;
+  padding: 1rem 0;
+  img {
+    max-height: 100px;
+  }
+
+  .logos {
+    margin-top: 1rem;
+  }
 }
