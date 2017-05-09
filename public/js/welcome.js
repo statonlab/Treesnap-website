@@ -22007,209 +22007,9 @@ module.exports = traverseAllChildren;
 
 /***/ }),
 /* 216 */,
-/* 217 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_Path__ = __webpack_require__(219);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Navbar = function (_Component) {
-    _inherits(Navbar, _Component);
-
-    function Navbar(props) {
-        _classCallCheck(this, Navbar);
-
-        var _this = _possibleConstructorReturn(this, (Navbar.__proto__ || Object.getPrototypeOf(Navbar)).call(this, props));
-
-        _this.state = {
-            isActive: false,
-            isLoggedIn: false,
-            isAdmin: false
-        };
-        return _this;
-    }
-
-    /**
-     * Get user logged in status.
-     */
-
-
-    _createClass(Navbar, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            axios.get('/user/status').then(function (response) {
-                var data = response.data.data;
-                _this2.setState({
-                    isLoggedIn: data.logged_in,
-                    isAdmin: data.is_admin
-                });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }, {
-        key: 'toggle',
-        value: function toggle() {
-            this.setState({ isActive: !this.state.isActive });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'nav',
-                    { className: 'nav' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: this.props.container ? 'container' : 'container is-fluid' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-left nav-brand' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/', className: 'nav-item' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'b',
-                                    null,
-                                    'Tree'
-                                ),
-                                'snap'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'small',
-                                { className: 'nav-item' },
-                                'Citizen science app'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-toggle', onClick: this.toggle.bind(this) },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null)
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-right nav-menu' + (this.state.isActive ? ' is-active' : '') },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/') },
-                                'Home'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/help', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/help') },
-                                'Help'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/about', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/about') },
-                                'About'
-                            ),
-                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/login', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/login') },
-                                'Login'
-                            ) : null,
-                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/register', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/register') },
-                                'Register'
-                            ) : null,
-                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/account', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/account') },
-                                'Account'
-                            ) : null,
-                            this.state.isAdmin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/admin', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/admin', false) },
-                                'Admin'
-                            ) : null,
-                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/logout', className: 'nav-item' },
-                                'Logout'
-                            ) : null
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Navbar;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Navbar);
-
-
-Navbar.PropTypes = {
-    container: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].bool
-};
-
-Navbar.defaultProps = {
-    container: false
-};
-
-/***/ }),
+/* 217 */,
 /* 218 */,
-/* 219 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Http = function () {
-    function Http() {
-        _classCallCheck(this, Http);
-
-        this.path = window.location.pathname;
-        if (this.path !== '/') {
-            this.path.replace(/\/$/g, '');
-        }
-    }
-
-    _createClass(Http, [{
-        key: 'isActive',
-        value: function isActive(url) {
-            var exact = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-            var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'is-active';
-
-            if (exact && this.path === url) {
-                return className;
-            } else if (!exact && this.path.indexOf(url) >= 0) {
-                return className;
-            } else {
-                return null;
-            }
-        }
-    }]);
-
-    return Http;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (new Http());
-
-/***/ }),
+/* 219 */,
 /* 220 */,
 /* 221 */,
 /* 222 */,
@@ -22366,7 +22166,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Navbar__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_HomeNavbar__ = __webpack_require__(476);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_HomeJumbotron__ = __webpack_require__(474);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_SubscribeRow__ = __webpack_require__(475);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22378,6 +22180,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * Treesnap Welcome splash screen
  */
+
+
 
 
 
@@ -22400,7 +22204,6 @@ var Welcome = function (_Component) {
          *
          * @returns {XML}
          */
-
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
@@ -22408,165 +22211,10 @@ var Welcome = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'home' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'nav',
-                        { className: 'nav home-nav' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'div',
-                            { className: 'container is-small' },
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'div',
-                                { className: 'nav-left' },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: '/', className: 'nav-item logo' },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'b',
-                                        null,
-                                        'Tree'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'span',
-                                        { style: { fontWeight: 300 } },
-                                        'Snap'
-                                    )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'div',
-                                { className: 'nav-center' },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: 'https://www.facebook.com/treesnapapp/', className: 'nav-item' },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'span',
-                                        { className: 'icon' },
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fa fa-facebook' })
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: 'https://twitter.com/Treesnapapp', className: 'nav-item' },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'span',
-                                        { className: 'icon' },
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fa fa-twitter' })
-                                    )
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'span',
-                                { className: 'nav-toggle' },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('span', null),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('span', null),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('span', null)
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'div',
-                                { className: 'nav-right nav-menu' },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: '/', className: 'nav-item active' },
-                                    'Home'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: '/map', className: 'nav-item' },
-                                    'Map'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: '/register', className: 'nav-item' },
-                                    'Register'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'a',
-                                    { href: '/login', className: 'nav-item' },
-                                    'Login'
-                                )
-                            )
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'div',
-                        { className: 'container is-small' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'div',
-                            { className: 'home-inner' },
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'div',
-                                { className: 'columns' },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'div',
-                                    { className: 'column' },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'div',
-                                        { className: 'home-text' },
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                            'h3',
-                                            { className: 'title is-4' },
-                                            'COMING SOON'
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                            'h1',
-                                            { className: 'title is-1' },
-                                            'Help Our Nation\u2019s Trees!'
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                            'p',
-                                            null,
-                                            'Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild to help us understand Forest health! The Treesnap app is a means for participants to record the location and health of particular tree species of interest. Scientists use the collected information to locate candidates for genetic sequencing and breeding programs. To learn more about the Treesnap project, visit our website.'
-                                        )
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'div',
-                                    { className: 'column is-3 has-text-right mock-container is-hidden-mobile' },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/mock.png', alt: 'Mock Device' })
-                                )
-                            )
-                        )
-                    )
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_HomeNavbar__["a" /* default */], null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_HomeJumbotron__["a" /* default */], null)
                 ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'div',
-                    { className: 'container is-small' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'div',
-                        { className: 'home-section' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'div',
-                            { className: 'columns' },
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'div',
-                                { className: 'column is-6 is-offset-3' },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'h4',
-                                    { className: 'title is-4 has-text-centered' },
-                                    'Get a notification once TreeSnap gets released'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'div',
-                                    { className: 'field has-addons' },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'p',
-                                        { className: 'control' },
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { className: 'input', type: 'text', placeholder: 'Email' })
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                        'p',
-                                        { className: 'control' },
-                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                            'button',
-                                            { type: 'submit', className: 'button is-primary' },
-                                            'Get Notified!'
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_SubscribeRow__["a" /* default */], null)
             );
         }
     }]);
@@ -22686,6 +22334,279 @@ __WEBPACK_IMPORTED_MODULE_0_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 module.exports = __webpack_require__(367);
 
+
+/***/ }),
+/* 470 */,
+/* 471 */,
+/* 472 */,
+/* 473 */,
+/* 474 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var HomeJumbotron = function (_Component) {
+    _inherits(HomeJumbotron, _Component);
+
+    function HomeJumbotron() {
+        _classCallCheck(this, HomeJumbotron);
+
+        return _possibleConstructorReturn(this, (HomeJumbotron.__proto__ || Object.getPrototypeOf(HomeJumbotron)).apply(this, arguments));
+    }
+
+    _createClass(HomeJumbotron, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "container is-small" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "home-inner" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "columns" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "home-text" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "h3",
+                                    { className: "title is-4" },
+                                    "COMING SOON"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "h1",
+                                    { className: "title is-1" },
+                                    "Help Our Nation\u2019s Trees!"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    null,
+                                    "Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild to help us understand Forest health! The Treesnap app is a means for participants to record the location and health of particular tree species of interest. Scientists use the collected information to locate candidates for genetic sequencing and breeding programs. To learn more about the Treesnap project, visit our website."
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column is-3 has-text-right mock-container is-hidden-mobile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/mock.png", alt: "Mock Device" })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return HomeJumbotron;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (HomeJumbotron);
+
+/***/ }),
+/* 475 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var SubscribeRow = function (_Component) {
+    _inherits(SubscribeRow, _Component);
+
+    function SubscribeRow() {
+        _classCallCheck(this, SubscribeRow);
+
+        return _possibleConstructorReturn(this, (SubscribeRow.__proto__ || Object.getPrototypeOf(SubscribeRow)).apply(this, arguments));
+    }
+
+    _createClass(SubscribeRow, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "container is-small" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "home-section" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "columns" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "column is-6 is-offset-3" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "h4",
+                                { className: "title is-4 has-text-centered" },
+                                "Get a notification once TreeSnap gets released"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "field has-addons" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    { className: "control" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "input", type: "text", placeholder: "Email" })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    { className: "control" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "button",
+                                        { type: "submit", className: "button is-primary" },
+                                        "Get Notified!"
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SubscribeRow;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (SubscribeRow);
+
+/***/ }),
+/* 476 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var NavbarHome = function (_Component) {
+    _inherits(NavbarHome, _Component);
+
+    function NavbarHome() {
+        _classCallCheck(this, NavbarHome);
+
+        return _possibleConstructorReturn(this, (NavbarHome.__proto__ || Object.getPrototypeOf(NavbarHome)).apply(this, arguments));
+    }
+
+    _createClass(NavbarHome, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "nav",
+                { className: "nav home-nav" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "container is-small" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "nav-left" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/", className: "nav-item logo" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "b",
+                                null,
+                                "Tree"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { style: { fontWeight: 300 } },
+                                "Snap"
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "nav-center" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "https://www.facebook.com/treesnapapp/", className: "nav-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { className: "icon" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-facebook" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "https://twitter.com/Treesnapapp", className: "nav-item" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "span",
+                                { className: "icon" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-twitter" })
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "nav-toggle" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null)
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "nav-right nav-menu" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/", className: "nav-item active" },
+                            "Home"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/map", className: "nav-item" },
+                            "Submissions Map"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/register", className: "nav-item" },
+                            "Register"
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/login", className: "nav-item" },
+                            "Login"
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return NavbarHome;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (NavbarHome);
 
 /***/ })
 /******/ ]);
