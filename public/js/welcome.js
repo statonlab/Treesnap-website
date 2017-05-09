@@ -22453,10 +22453,10 @@ var SubscribeRow = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                { className: "container is-small" },
+                { className: "home-section" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
-                    { className: "home-section" },
+                    { className: "container is-small" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "div",
                         { className: "columns" },
@@ -22465,7 +22465,7 @@ var SubscribeRow = function (_Component) {
                             { className: "column is-6 is-offset-3" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "h4",
-                                { className: "title is-4 has-text-centered" },
+                                { className: "title is-4" },
                                 "Get a notification once TreeSnap gets released"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -22883,8 +22883,17 @@ var HomeFooter = function (_Component) {
                     { className: "container is-small" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "p",
+                        { className: "mb-1" },
+                        "Copyright \xA9 2017 University of Tennessee Knoxville and University of Kentucky."
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
                         null,
-                        "Copyright \xA9 2017 University of Tennessee and University of Kentucky."
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "/privacy" },
+                            "Privacy Policy and Terms of Use"
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "div",
@@ -22892,17 +22901,29 @@ var HomeFooter = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "column" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/ut3.png", alt: "University of Tennessee Logo" })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                { href: "https://www.utk.edu/" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/ut3.png", alt: "University of Tennessee Logo" })
+                            )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
-                            { className: "column" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/uky2.png", alt: "University of Kentucky Logo" })
+                            { className: "column has-text-centered" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                { href: "https://uky.edu" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/uky3.png", alt: "University of Kentucky Logo" })
+                            )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
-                            { className: "column" },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/nsf1.png", alt: "NSF Logo" })
+                            { className: "column has-text-centered" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "a",
+                                { href: "https://www.nsf.gov/" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/nsf1.png", alt: "NSF Logo" })
+                            )
                         )
                     )
                 )

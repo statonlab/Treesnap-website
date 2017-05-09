@@ -235,4 +235,13 @@ h3 {
   .logos {
     margin-top: 1rem;
   }
+
+  a {
+    color: #ddd;
+    font-weight: $weight-bold;
+    &:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
 }
