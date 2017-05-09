@@ -22,16 +22,16 @@ class UsersController extends Controller
     public function show(Request $request)
     {
         $user = $request->user();
+
         return $this->success([
-          'id' => $user->id,
-          'name' => $user->name,
-          'is_over_thirteen' => $user->is_over_thirteen,
-          'zipcode' => $user->zipcode,
-          'email' => $user->email,
-          'is_anonymous' => $user->is_anonymous,
+            'id' => $user->id,
+            'name' => $user->name,
+            'zipcode' => $user->zipcode,
+            'email' => $user->email,
+            'is_anonymous' => $user->is_anonymous,
+            'birth_year' => $user->birth_year,
         ]);
     }
-
 
     /**
      * Create a new user.
@@ -51,27 +51,28 @@ class UsersController extends Controller
         $api_token = $this->generateAPIToken();
 
         $user = User::create([
-          'name' => $request->name,
-          'email' => $request->email,
-          'password' => bcrypt($request->password),
-          'is_over_thirteen' => $request->is_over_thirteen,
-          'is_anonymous' => $request->is_anonymous,
-          'zipcode' => $request->zipcode,
-          'api_token' => $api_token,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'is_anonymous' => $request->is_anonymous,
+            'zipcode' => $request->zipcode,
+            'api_token' => $api_token,
+            'birth_year' => $request->birth_year,
+
         ]);
 
-        if (!$user) {
+        if (! $user) {
             return $this->error('Unable to create new user.', 100);
         }
 
         return $this->created([
-          'user_id' => $user->id,
-          'name' => $user->name,
-          'email' => $user->email,
-          'is_over_thirteen' => $user->is_over_thirteen,
-          'is_anonymous' => $user->is_anonymous,
-          'zipcode' => $user->zipcode,
-          'api_token' => $api_token,
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_anonymous' => $user->is_anonymous,
+            'zipcode' => $user->zipcode,
+            'birth_year' => $user->birth_year,
+            'api_token' => $api_token,
         ]);
     }
 
@@ -92,23 +93,23 @@ class UsersController extends Controller
         }
 
         $update = $user->update([
-          'name' => $request->name,
-          'email' => $request->email,
-          'is_over_thirteen' => $request->is_over_thirteen,
-          'is_anonymous' => $request->is_anonymous,
-          'zipcode' => $request->zipcode,
+            'name' => $request->name,
+            'email' => $request->email,
+            'is_anonymous' => $request->is_anonymous,
+            'birth_year' => $request->birth_year,
+            'zipcode' => $request->zipcode,
         ]);
 
-        if (!$update) {
+        if (! $update) {
             return $this->error('Unable to update record.', 101);
         }
 
         return $this->created([
-          'name' => $user->name,
-          'email' => $user->email,
-          'is_over_thirteen' => $user->is_over_thirteen,
-          'is_anonymous' => $user->is_anonymous,
-          'zipcode' => $user->zipcode,
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_anonymous' => $user->is_anonymous,
+            'birth_year' => $user->birth_year,
+            'zipcode' => $user->zipcode,
         ]);
     }
 
@@ -123,7 +124,7 @@ class UsersController extends Controller
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
-          'password' => 'required|min:6',
+            'password' => 'required|min:6',
         ]);
 
         if ($validator->fails()) {
@@ -131,12 +132,11 @@ class UsersController extends Controller
         }
 
         $user->update([
-          'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
         ]);
 
         return $this->created('Password updated');
     }
-
 
     /**
      * Authenticates a user using email and password.
@@ -148,8 +148,8 @@ class UsersController extends Controller
     {
         // Validate the request
         $validator = Validator::make($request->all(), [
-          'email' => 'required|email',
-          'password' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -157,9 +157,9 @@ class UsersController extends Controller
         }
 
         // Authenticate the user using email and password
-        if (!auth()->attempt([
-          'email' => $request->email,
-          'password' => $request->password,
+        if (! auth()->attempt([
+            'email' => $request->email,
+            'password' => $request->password,
         ])
         ) {
             return $this->error('Invalid Credentials', 200);
@@ -167,13 +167,14 @@ class UsersController extends Controller
 
         // Return the api token to the user on success
         $user = auth()->user();
+
         return $this->success([
-          'name' => $user->name,
-          'api_token' => $user->api_token,
-          'email' => $user->email,
-          'zipcode' => $user->zipcode,
-          'is_anonymous' => $user->is_anonymous,
-          'is_over_thirteen' => $user->is_over_thirteen,
+            'name' => $user->name,
+            'api_token' => $user->api_token,
+            'email' => $user->email,
+            'zipcode' => $user->zipcode,
+            'birth_year' => $user->birth_year,
+            'is_anonymous' => $user->is_anonymous,
         ]);
     }
 
@@ -188,7 +189,7 @@ class UsersController extends Controller
     protected function makeValidation($data, $is_update = false, $user = null)
     {
         $rules = [
-          'email' => 'required|email',
+            'email' => 'required|email',
         ];
 
         if ($is_update) {
@@ -201,27 +202,27 @@ class UsersController extends Controller
         }
 
         return Validator::make($data, array_merge([
-          'name' => 'required|min:3',
-          'is_over_thirteen' => 'required|boolean',
-          'is_anonymous' => 'boolean|nullable',
-          'zipcode' => [
-            'nullable',
-            'min:5',
-            'max:10',
-            'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
-          ],
+            'name' => 'required|min:3',
+            'is_anonymous' => 'boolean|nullable',
+            'zipcode' => [
+                'nullable',
+                'min:5',
+                'max:10',
+                'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
+            ],
         ], $rules));
     }
 
     /**
      * Generates a unique API Token
+     *
      * @return string
      */
     protected function generateAPIToken()
     {
         // Make sure the random string is 100% unique to our database
         $str = str_random(60);
-        while (!User::where('api_token', $str)->get()->isEmpty()) {
+        while (! User::where('api_token', $str)->get()->isEmpty()) {
             $str = str_random(60);
         }
 
