@@ -23,7 +23,6 @@ class UsersController extends Controller
             'users.id',
             'users.name',
             'email',
-            'is_over_thirteen',
             'class',
             'zipcode',
             'is_anonymous',
@@ -56,7 +55,6 @@ class UsersController extends Controller
             'email' => 'required|email',
             'class' => 'required|min:3|max:50',
             'is_anonymous' => 'required|boolean',
-            'is_over_thirteen' => 'required|boolean',
             'groups.*' => 'nullable|exists:groups,id',
             'role' => 'required|exists:roles,id',
             'zipcode' => [
@@ -73,7 +71,6 @@ class UsersController extends Controller
             'email' => $request->email,
             'class' => $request->class,
             'is_anonymous' => $request->is_anonymous,
-            'is_over_thirteen' => $request->is_over_thirteen,
             'zipcode' => $request->zipcode,
         ])->save();
 
@@ -83,7 +80,6 @@ class UsersController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'is_over_thirteen' => $user->is_over_thirteen,
             'class' => $user->class,
             'zipcode' => $user->zipcode,
             'is_admin' => $user->role->is_admin,
