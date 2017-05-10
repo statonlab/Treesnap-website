@@ -52,4 +52,19 @@ class UsersController extends Controller
 
         return $this->success('Subscribed successfully');
     }
+
+    /**
+     * Get authenticated user information.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    public function show(Request $request)
+    {
+       $user = $request->user()->toArray();
+
+        unset($user['api_token']);
+
+       return $this->success($user);
+    }
 }

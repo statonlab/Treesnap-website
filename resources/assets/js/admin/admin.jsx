@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import AdminSidebar from './components/AdminSidebar'
-import Navbar from '../components/Navbar'
+import AdminNavbar from '../components/AdminNavbar'
 import Dashboard from './scenes/Dashboard'
 import Users from './scenes/Users'
 import User from './scenes/User'
@@ -14,7 +14,7 @@ class Admin extends Component {
     render() {
         return (
             <div>
-                <Navbar />
+                <AdminNavbar />
                 <Router basename="/admin">
                     <div className="main-content admin-content">
                         <div className="container is-fluid">

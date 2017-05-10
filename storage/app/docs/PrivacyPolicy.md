@@ -1,4 +1,4 @@
-#Privacy policy
+# Privacy policy
 
 ## What information do we collect?
 
