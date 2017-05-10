@@ -45407,168 +45407,7 @@ module.exports = warning;
 
 /***/ }),
 /* 216 */,
-/* 217 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_Path__ = __webpack_require__(219);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var Navbar = function (_Component) {
-    _inherits(Navbar, _Component);
-
-    function Navbar(props) {
-        _classCallCheck(this, Navbar);
-
-        var _this = _possibleConstructorReturn(this, (Navbar.__proto__ || Object.getPrototypeOf(Navbar)).call(this, props));
-
-        _this.state = {
-            isActive: false,
-            isLoggedIn: false,
-            isAdmin: false
-        };
-        return _this;
-    }
-
-    /**
-     * Get user logged in status.
-     */
-
-
-    _createClass(Navbar, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            axios.get('/user/status').then(function (response) {
-                var data = response.data.data;
-                _this2.setState({
-                    isLoggedIn: data.logged_in,
-                    isAdmin: data.is_admin
-                });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }, {
-        key: 'toggle',
-        value: function toggle() {
-            this.setState({ isActive: !this.state.isActive });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'nav',
-                    { className: 'nav' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: this.props.container ? 'container' : 'container is-fluid' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-left nav-brand' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/', className: 'nav-item' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'b',
-                                    null,
-                                    'Tree'
-                                ),
-                                'snap'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'small',
-                                { className: 'nav-item' },
-                                'Citizen science app'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-toggle', onClick: this.toggle.bind(this) },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null)
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'nav-right nav-menu' + (this.state.isActive ? ' is-active' : '') },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/') },
-                                'Home'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/help', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/help') },
-                                'Help'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/about', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/about') },
-                                'About'
-                            ),
-                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/login', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/login') },
-                                'Login'
-                            ) : null,
-                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/register', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/register') },
-                                'Register'
-                            ) : null,
-                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/account', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/account') },
-                                'Account'
-                            ) : null,
-                            this.state.isAdmin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/admin', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_1__helpers_Path__["a" /* default */].isActive('/admin', false) },
-                                'Admin'
-                            ) : null,
-                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: '/logout', className: 'nav-item' },
-                                'Logout'
-                            ) : null
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Navbar;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Navbar);
-
-
-Navbar.PropTypes = {
-    container: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].bool
-};
-
-Navbar.defaultProps = {
-    container: false
-};
-
-/***/ }),
+/* 217 */,
 /* 218 */,
 /* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -84833,7 +84672,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_router_dom__ = __webpack_require__(220);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AdminSidebar__ = __webpack_require__(370);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Navbar__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_AdminNavbar__ = __webpack_require__(480);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__scenes_Dashboard__ = __webpack_require__(376);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__scenes_Users__ = __webpack_require__(380);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__scenes_User__ = __webpack_require__(379);
@@ -84874,7 +84713,7 @@ var Admin = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 null,
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_Navbar__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_AdminNavbar__["a" /* default */], null),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["a" /* BrowserRouter */],
                     { basename: '/admin' },
@@ -103623,6 +103462,181 @@ module.exports = exports['default'];
 
 module.exports = __webpack_require__(363);
 
+
+/***/ }),
+/* 471 */,
+/* 472 */,
+/* 473 */,
+/* 474 */,
+/* 475 */,
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_Path__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_router_dom__ = __webpack_require__(220);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+var Navbar = function (_Component) {
+    _inherits(Navbar, _Component);
+
+    function Navbar(props) {
+        _classCallCheck(this, Navbar);
+
+        var _this = _possibleConstructorReturn(this, (Navbar.__proto__ || Object.getPrototypeOf(Navbar)).call(this, props));
+
+        _this.state = {
+            isActive: false,
+            isLoggedIn: false,
+            isAdmin: false
+        };
+        return _this;
+    }
+
+    /**
+     * Get user logged in status.
+     */
+
+
+    _createClass(Navbar, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            axios.get('/user/status').then(function (response) {
+                var data = response.data.data;
+                _this2.setState({
+                    isLoggedIn: data.logged_in,
+                    isAdmin: data.is_admin
+                });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({ isActive: !this.state.isActive });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'nav',
+                    { className: 'nav' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: this.props.container ? 'container' : 'container is-fluid' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'nav-left nav-brand' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/', className: 'nav-item' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'b',
+                                    null,
+                                    'Tree'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { style: { fontWeight: 300 } },
+                                    'snap'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'small',
+                                { className: 'nav-item' },
+                                'Citizen science app'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'nav-toggle', onClick: this.toggle.bind(this) },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null)
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'nav-right nav-menu' + (this.state.isActive ? ' is-active' : '') },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_2__helpers_Path__["a" /* default */].isActive('/') },
+                                'Home'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/about', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_2__helpers_Path__["a" /* default */].isActive('/about') },
+                                'About'
+                            ),
+                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/login', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_2__helpers_Path__["a" /* default */].isActive('/login') },
+                                'Login'
+                            ) : null,
+                            !this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/register', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_2__helpers_Path__["a" /* default */].isActive('/register') },
+                                'Register'
+                            ) : null,
+                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/account', className: 'nav-item' },
+                                'Account'
+                            ) : null,
+                            this.state.isAdmin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/admin', className: 'nav-item ' + __WEBPACK_IMPORTED_MODULE_2__helpers_Path__["a" /* default */].isActive('/admin', false) },
+                                'Admin'
+                            ) : null,
+                            this.state.isLoggedIn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: '/logout', className: 'nav-item' },
+                                'Logout'
+                            ) : null
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Navbar;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Navbar);
+
+
+Navbar.PropTypes = {
+    container: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool
+};
+
+Navbar.defaultProps = {
+    container: false
+};
 
 /***/ })
 /******/ ]);

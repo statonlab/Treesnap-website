@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\Responds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
+    use Responds;
+
     /**
      * Show the about page.
      *
@@ -14,9 +17,7 @@ class DocumentController extends Controller
      */
     public function about()
     {
-        $contents = Storage::get("docs/aboutUs.md");
-
-        return view('document')->with(['content' => $contents]);
+        return $this->success(Storage::get("docs/aboutUs.md"));
     }
 
     /**
@@ -29,7 +30,7 @@ class DocumentController extends Controller
         $contents = Storage::get("docs/PrivacyPolicy.md");
         $contentTwo = Storage::get('docs/TermsLicense.md');
 
-        return view('document')->with(['content' => $contents.$contentTwo]);
+        return $this->success($contents.$contentTwo);
     }
 
     public function help()

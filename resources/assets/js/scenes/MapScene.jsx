@@ -2,19 +2,18 @@
  * Treesnap Website Entry Point JS File
  */
 // Bootstrap Everything (loads dash and a configured axios)
-import './bootstrap'
+import '../bootstrap'
 import 'dragscroll'
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import Sidebar from './components/Sidebar'
-import Navbar from './components/Navbar'
-import Copyright from './components/Copyright'
-import Map from './UI/Map'
-import Marker from './UI/Marker'
-import Modal from './UI/Modal'
+import Sidebar from '../components/Sidebar'
+import Navbar from '../components/Navbar'
+import Copyright from '../components/Copyright'
+import Map from '../UI/Map'
+import Marker from '../UI/Marker'
+import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
-import Address from './UI/Address'
-import Spinner from './components/Spinner'
+import Address from '../UI/Address'
+import Spinner from '../components/Spinner'
 
 export default class App extends Component {
     constructor(props) {
@@ -533,7 +532,7 @@ export default class App extends Component {
     render() {
         return (
             <div className={this.state.showSidebar ? 'sidebar-visible' : ''}>
-                <Navbar />
+                <Navbar container={true}/>
 
                 {this._renderSidebar()}
 
@@ -553,5 +552,3 @@ export default class App extends Component {
         )
     }
 }
-
-ReactDOM.render(<App/>, document.getElementById('app-root'))

@@ -187,5 +187,3 @@ export default class ObservationScene extends Component {
         )
     }
 }
-
-ReactDOM.render(<ObservationScene />, document.getElementById('observation-root'))

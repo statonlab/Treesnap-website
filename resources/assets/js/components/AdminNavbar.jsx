@@ -8,8 +8,25 @@ export default class Navbar extends Component {
         super(props)
 
         this.state = {
-            isActive: false
+            isActive  : false,
+            isLoggedIn: false,
+            isAdmin   : false
         }
+    }
+
+    /**
+     * Get user logged in status.
+     */
+    componentDidMount() {
+        axios.get('/user/status').then(response => {
+            let data = response.data.data
+            this.setState({
+                isLoggedIn: data.logged_in,
+                isAdmin   : data.is_admin
+            })
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     toggle() {
@@ -19,25 +36,15 @@ export default class Navbar extends Component {
     render() {
         return (
             <div>
-                <nav className={`nav${this.props.home ? ' home-nav' : ''}`}>
-                    <div className={`${!this.props.container ? 'container' : 'container is-fluid'}`}>
+                <nav className="nav">
+                    <div className={this.props.container ? 'container' : 'container is-fluid'}>
                         <div className="nav-left nav-brand">
                             <a href="/" className="nav-item">
                                 <b>Tree</b><span style={{fontWeight: 300}}>snap</span>
                             </a>
-                        </div>
-
-                        <div className="nav-center">
-                            <a href="https://www.facebook.com/treesnapapp/" className="nav-item">
-                                <span className="icon">
-                                    <i className="fa fa-facebook"></i>
-                                </span>
-                            </a>
-                            <a href="https://twitter.com/Treesnapapp" className="nav-item">
-                                <span className="icon">
-                                    <i className="fa fa-twitter"></i>
-                                </span>
-                            </a>
+                            <small className="nav-item">
+                                Citizen science app
+                            </small>
                         </div>
 
                         <div className="nav-toggle" onClick={this.toggle.bind(this)}>
@@ -47,41 +54,37 @@ export default class Navbar extends Component {
                         </div>
 
                         <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
-                            <NavLink exact={true} to="/" className={`nav-item`} activeClassName={'is-active'}>
+                            <a href="/" className={`nav-item ${Path.isActive('/')}`}>
                                 Home
-                            </NavLink>
+                            </a>
 
-                            <NavLink to="/map" className={`nav-item`} activeClassName={'is-active'}>
-                                Map
-                            </NavLink>
-
-                            <NavLink to="/about" className={`nav-item`} activeClassName={'is-active'}>
+                            <a href="/about" className={`nav-item ${Path.isActive('/about')}`}>
                                 About
-                            </NavLink>
+                            </a>
 
-                            {window.Laravel.loggedIn ?
-                                <NavLink to="/account" className={`nav-item`} activeClassName={'is-active'}>
-                                    Account
-                                </NavLink>
-                                : null}
-
-                            {!window.Laravel.loggedIn ?
+                            {!this.state.isLoggedIn ?
                                 <a href="/login" className={`nav-item ${Path.isActive('/login')}`}>
                                     Login
                                 </a>
                                 : null}
 
-                            {!window.Laravel.loggedIn ?
+                            {!this.state.isLoggedIn ?
                                 <a href="/register" className={`nav-item ${Path.isActive('/register')}`}>
                                     Register
                                 </a>
                                 : null}
 
-                            {window.Laravel.isAdmin ?
+                            {this.state.isLoggedIn ?
+                                <a href="/account" className="nav-item">
+                                    Account
+                                </a>
+                                : null}
+
+                            {this.state.isAdmin ?
                                 <a href="/admin" className={`nav-item ${Path.isActive('/admin', false)}`}>Admin</a>
                                 : null}
 
-                            {window.Laravel.loggedIn ?
+                            {this.state.isLoggedIn ?
                                 <a href="/logout" className="nav-item">
                                     Logout
                                 </a>
@@ -95,11 +98,9 @@ export default class Navbar extends Component {
 }
 
 Navbar.PropTypes = {
-    container: PropTypes.bool,
-    home     : PropTypes.bool
+    container: PropTypes.bool
 }
 
 Navbar.defaultProps = {
-    container: false,
-    home     : false
+    container: false
 }
