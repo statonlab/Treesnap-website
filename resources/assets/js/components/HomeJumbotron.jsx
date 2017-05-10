@@ -8,7 +8,7 @@ export default class HomeJumbotron extends Component {
                     <div className="columns">
                         <div className="column">
                             <div className="home-text">
-                                <h3 className="title is-4">COMING SOON</h3>
+                                <h3 className="title is-4 mb-none">COMING SOON</h3>
                                 <h1 className="title is-1">Help Our Nation’s Trees!</h1>
                                 <p>
                                     Invasive diseases and pests threaten the health of America’s forests. Scientists are
