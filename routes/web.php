@@ -13,13 +13,12 @@
 
 // Home Routes
 Route::get('/', 'HomeController@index');
-Route::get('/map', 'HomeController@map');
 
 // Documentation Routes
-Route::get('/about', 'DocumentController@about');
-Route::get('/policy', 'DocumentController@policy');
-Route::get('/privacy', 'DocumentController@policy');
-Route::get('/help', 'DocumentController@help');
+Route::get('/docs/about', 'DocumentController@about');
+//Route::get('/docs/policy', 'DocumentController@policy');
+Route::get('/docs/privacy', 'DocumentController@policy');
+Route::get('/docs/help', 'DocumentController@help');
 
 /**
  * Auth Routes:
@@ -44,6 +43,10 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');
 
+// Authenticated User Routes
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/account', 'UsersController@show');
+});
 
 // Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
@@ -73,3 +76,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
 });
+
+// Other React Routes
+// (All react routes go to the index method of the Home Controller)
+Route::get('/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
