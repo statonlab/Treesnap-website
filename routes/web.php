@@ -45,7 +45,9 @@ Route::post('/user/subscribe', 'UsersController@subscribe');
 
 // Authenticated User Routes
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/account', 'UsersController@show');
+    Route::get('/user', 'UsersController@show');
+    Route::put('/user', 'UsersController@update');
+    Route::patch('/user/password', 'UsersController@updatePassword');
 });
 
 // Admin Route Group

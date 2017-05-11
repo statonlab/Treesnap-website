@@ -532,7 +532,7 @@ export default class App extends Component {
     render() {
         return (
             <div className={this.state.showSidebar ? 'sidebar-visible' : ''}>
-                <Navbar container={true}/>
+                <Navbar/>
 
                 {this._renderSidebar()}
 
