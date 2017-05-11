@@ -36,6 +36,7 @@ return [
     ],
 
     'google' => [
-        'maps' => env('MAPS_API_KEY')
-    ]
+        'maps' => env('MAPS_API_KEY'),
+        'recaptcha' => env('RECAPTCHA_SECRET'),
+    ],
 ];
