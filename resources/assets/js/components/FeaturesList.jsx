@@ -4,7 +4,7 @@ export default class FeaturesList extends Component {
     render() {
         return (
             <div className="home-section" style={{backgroundColor: '#fff', padding: '4rem 0'}}>
-                <div className="container is-small">
+                <div className="container">
                     <h2 className="title is-3 featured-title">Application Features</h2>
                     <div className="tile is-ancestor">
                         <div className="tile is-parent">

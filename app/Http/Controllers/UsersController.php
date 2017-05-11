@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Email;
 use App\Http\Controllers\Traits\Responds;
+use App\User;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -61,10 +62,71 @@ class UsersController extends Controller
      */
     public function show(Request $request)
     {
-       $user = $request->user()->toArray();
+        $user = $request->user();
 
-        unset($user['api_token']);
+        return $this->success([
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_anonymous' => $user->is_anonymous,
+        ]);
+    }
 
-       return $this->success($user);
+    /**
+     * Update user info.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        $rules = '';
+
+        if ($user->email !== $request->email) {
+            $rules = '|unique:users,email';
+        }
+
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'email' => 'required|email'.$rules,
+            'is_anonymous' => 'required|boolean',
+        ]);
+
+        $user->fill([
+            'name' => $request->name,
+            'email' => $request->email,
+            'is_anonymous' => $request->is_anonymous,
+        ])->save();
+
+        return $this->success([
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_anonymous' => $user->is_anonymous,
+        ]);
+    }
+
+    /**
+     * Update user password.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = $request->user();
+
+        $this->validate($request, [
+            'old_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        if (auth()->attempt(['email' => $user->email, 'password' => $request->old_password])) {
+            $user->password = bcrypt($request->new_password);
+
+            return $this->success('Password updated successfully.');
+        }
+
+        return $this->validationError(['password' => ['Incorrect old password']]);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Traits;
 
 /**
@@ -19,7 +20,7 @@ trait Responds
     protected function notFound($message)
     {
         return response()->json([
-          'error' => $message,
+            'error' => $message,
         ], 404);
     }
 
@@ -31,7 +32,7 @@ trait Responds
     protected function unauthorized()
     {
         return response()->json([
-          'error' => 'Unauthorized request',
+            'error' => 'Unauthorized request',
         ], 401);
     }
 
@@ -44,7 +45,7 @@ trait Responds
     protected function success($data)
     {
         return response()->json([
-          'data' => $data,
+            'data' => $data,
         ], 200);
     }
 
@@ -55,12 +56,12 @@ trait Responds
      * @param Integer $error_code Internal application error code.
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function error($message, $error_code = 100)
+    protected function error($message, $error_code = 100, $http_error_code = 422)
     {
         return response()->json([
-          'error' => $message,
-          'code' => $error_code
-        ], 400);
+            'error' => $message,
+            'code' => $error_code,
+        ], $http_error_code);
     }
 
     /**
@@ -72,9 +73,21 @@ trait Responds
      * @param  Mixed $message (optional)
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function created($message = null) {
+    protected function created($message = null)
+    {
         return response()->json([
-          'data' => $message ?: 'The record has been saved successfully'
+            'data' => $message ?: 'The record has been saved successfully',
         ], 201);
+    }
+
+    /**
+     * Custom validation errors.
+     *
+     * @param Mixed $errors
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function validationError($errors)
+    {
+        return response()->json($errors, 422);
     }
 }

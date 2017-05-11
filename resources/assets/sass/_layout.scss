@@ -134,40 +134,12 @@ a.box {
 }
 
 .container {
-  //max-width: 1024px;
+  &.is-small {
+    max-width: 1024px;
+  }
 
   @include tablet-only() {
     padding: 0 16px;
-  }
-}
-
-.home .nav.home-nav {
-  background-color: transparent;
-  box-shadow: none;
-
-  a.nav-item {
-    border-bottom: 2px solid transparent;
-  }
-
-  a.nav-item {
-    margin-left: 1px;
-    &.is-active {
-      border-bottom-color: #fff;
-      background-color: transparent;
-    }
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-  }
-
-  .logo {
-    font-size: 1.6rem;
-    padding-left: 0;
-    &:hover {
-      border-bottom-color: transparent !important;
-      background-color: transparent !important;
-    }
   }
 }
 

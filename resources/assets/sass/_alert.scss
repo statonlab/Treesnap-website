@@ -8,4 +8,9 @@
     background-color: $danger;
     color: #fff;
   }
+
+  &.is-success {
+    background-color: $success;
+    color: #fff;
+  }
 }

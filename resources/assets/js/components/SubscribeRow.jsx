@@ -5,11 +5,12 @@ export default class SubscribeRow extends Component {
         super(props)
 
         this.state = {
-            email  : '',
-            message: '',
-            errors : {
+            email   : '',
+            message : '',
+            errors  : {
                 email: []
-            }
+            },
+            disabled: false
         }
     }
 
@@ -20,15 +21,15 @@ export default class SubscribeRow extends Component {
                     <div className="columns">
                         <div className="column is-6 is-offset-3">
                             <h4 className="title is-4 has-text-centered">Get a notification once TreeSnap gets released</h4>
-                            {this.state.message !== '' ?
-                                <p className="mb-1 has-text-success">{this.state.message}</p> : null}
                             <div className="field has-addons">
                                 <p className="control">
                                     <input className={`input${this.state.errors.email.length ? ' is-danger' : ''}`}
                                            type="email"
                                            placeholder="Email"
                                            value={this.state.email}
-                                           onChange={(e) => this.setState({email: e.target.value})}/>
+                                           onChange={(e) => this.setState({email: e.target.value})}
+                                           disabled={this.state.disabled}
+                                    />
                                     {this.state.errors.email.map((error, index) => {
                                         return (
                                             <p key={index} className="help is-danger">
@@ -45,6 +46,8 @@ export default class SubscribeRow extends Component {
                                     </button>
                                 </p>
                             </div>
+                            {this.state.message !== '' ?
+                                <p className="mb-1 has-text-success">{this.state.message}</p> : null}
                         </div>
                     </div>
                 </div>
@@ -63,10 +66,11 @@ export default class SubscribeRow extends Component {
                 message: 'Thank you for subscribing!',
                 errors : {
                     email: []
-                }
+                },
+                disabled: true
             })
         }).catch(error => {
-            if(error.response && error.response.status === 422) {
+            if (error.response && error.response.status === 422) {
                 this.setState({
                     errors: error.response.data
                 })

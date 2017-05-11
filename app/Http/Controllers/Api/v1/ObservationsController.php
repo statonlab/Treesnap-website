@@ -70,7 +70,7 @@ class ObservationsController extends Controller
     {
         $user = $request->user();
 
-        // Make sure the user is updating a record that they own
+        // Make sure the user is deleting a record that they own
         $observation = Observation::where('id', $id)->first();
 
         if (! $observation) {
