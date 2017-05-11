@@ -3,19 +3,47 @@ import marked from 'marked'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import KnowledgeSidebar from '../components/KnowledgeSidebar'
+import ReCaptcha from 'react-google-recaptcha'
 
 export default class ContactUsScene extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            content: ''
+            name     : '',
+            email    : '',
+            subject  : '',
+            recaptcha: '',
+            message  : ''
         }
+    }
+
+    submit(e) {
+        e.preventDefault()
+
+        axios.post('/contact', {
+            name     : this.state.name,
+            subject  : this.state.subject,
+            email    : this.state.email,
+            recaptcha: this.state.recaptcha
+        }).then(response => {
+            this.setState({
+                name     : '',
+                subject  : '',
+                email    : '',
+                recaptcha: '',
+                message  : 'Email sent successfully. We\'ll get back to you as soon as possible.'
+            })
+        }).catch(error => {
+            this.setState({
+                message: ''
+            })
+        })
     }
 
     render() {
         return (
-            <div className="document">
+            <div>
                 <Navbar/>
                 <div className="home-section">
                     <div className="container">
@@ -31,28 +59,52 @@ export default class ContactUsScene extends Component {
                                             <div className="field">
                                                 <label className="label">Name</label>
                                                 <div className="control">
-                                                    <input type="text" className="input" placeholder="Name"/>
+                                                    <input type="text"
+                                                           className="input"
+                                                           placeholder="Name"
+                                                           value={this.state.name}
+                                                           onChange={e => this.setState({name: e.target.value})}/>
                                                 </div>
                                             </div>
 
                                             <div className="field">
                                                 <label className="label">Email</label>
                                                 <div className="control">
-                                                    <input type="email" className="input" placeholder="Email"/>
+                                                    <input type="email"
+                                                           className="input"
+                                                           placeholder="Email"
+                                                           value={this.state.email}
+                                                           onChange={e => this.setState({email: e.target.value})}/>
                                                 </div>
                                             </div>
 
                                             <div className="field">
                                                 <label className="label">Subject</label>
                                                 <div className="control">
-                                                    <input type="text" className="input" placeholder="Subject"/>
+                                                    <input type="text"
+                                                           className="input"
+                                                           placeholder="Subject"
+                                                           value={this.state.subject}
+                                                           onChange={e => this.setState({subject: e.target.value})}/>
                                                 </div>
                                             </div>
 
                                             <div className="field">
                                                 <label className="label">Message</label>
                                                 <div className="control">
-                                                    <textarea className="textarea" placeholder="Message"></textarea>
+                                                    <textarea className="textarea"
+                                                              placeholder="Message"
+                                                              value={this.state.message}
+                                                              onChange={e => this.setState({message: e.target.value})}>
+                                                    </textarea>
+                                                </div>
+                                            </div>
+
+                                            <div className="field">
+                                                <div className="control">
+                                                    <ReCaptcha
+                                                        sitekey="6Lfg5yAUAAAAAI1zWo0wO1b1YPbcIAjj_GDcLeaY"
+                                                        onChange={value => this.setState({recaptcha: value})}/>
                                                 </div>
                                             </div>
 

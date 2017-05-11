@@ -20,7 +20,7 @@ Route::group([
     Route::post('/observations', 'ObservationsController@create');
     Route::get('/observation/{id}', 'ObservationsController@show');
     Route::delete('/observation/{id}', 'ObservationsController@delete');
-    Route::put('/observation/{id}', 'ObservationsController@update');
+    Route::post('/observation/{id}', 'ObservationsController@update');
 
     // Users Controller
     Route::get('/user', 'UsersController@show');
