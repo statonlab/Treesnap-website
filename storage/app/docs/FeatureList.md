@@ -13,5 +13,9 @@ Create an account and sync your observations with the Treesnap server wirelessly
 
 Information reported in Treesnap is used by real scientists.  That Ash you've found might be the start of a completely new breeding program.
 
+##Privacy
+
+The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.
+
 ## Availability
 Treesnap is available for iOS and Android smart phones, and is *completely free.*
