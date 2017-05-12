@@ -54,7 +54,7 @@ export default class Marker extends Component {
                 path        : google.maps.SymbolPath.CIRCLE,
                 fillColor   : 'green',
                 fillOpacity : 0.8,
-                scale       : 10 * zoom,
+                scale       : zoom < 10 ? 2 * zoom : 10 * zoom,
                 strokeColor : 'rgba(0,0,0,.3)',
                 strokeWeight: 1
             }
