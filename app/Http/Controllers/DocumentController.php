@@ -42,4 +42,9 @@ class DocumentController extends Controller
 
         return $this->success($contents);
     }
+    public function faq() {
+        $contents = Storage::get('docs/FAQ.md');
+
+        return $this->success($contents);
+    }
 }

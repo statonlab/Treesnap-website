@@ -4,8 +4,9 @@ import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import KnowledgeSidebar from '../components/KnowledgeSidebar'
 import Spinner from '../components/Spinner'
+import PropTypes from 'prop-types'
 
-export default class AboutScene extends Component {
+export default class KnowledgeScene extends Component {
     constructor(props) {
         super(props)
 
@@ -16,7 +17,7 @@ export default class AboutScene extends Component {
     }
 
     componentDidMount() {
-        axios.get('/docs/about').then(response => {
+        axios.get(this.props.docPath).then(response => {
             this.setState({content: response.data.data})
         }).catch(error => {
             console.log(error)
@@ -29,6 +30,7 @@ export default class AboutScene extends Component {
         return (
             <div className="document">
                 <Navbar/>
+                <Spinner visible={this.state.loading}/>
                 <div className="home-section">
                     <div className="container">
                         <div className="columns">
@@ -48,4 +50,7 @@ export default class AboutScene extends Component {
             </div>
         )
     }
+}
+KnowledgeScene.PropTypes = {
+    docPath: PropTypes.string.isRequired
 }

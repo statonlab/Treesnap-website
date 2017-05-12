@@ -18,6 +18,8 @@ Route::get('/', 'HomeController@index');
 Route::get('/docs/about', 'DocumentController@about');
 Route::get('/docs/terms', 'DocumentController@terms');
 Route::get('/docs/privacy', 'DocumentController@policy');
+Route::get('/docs/faq', 'DocumentController@faq');
+
 
 // Contact
 Route::post('/contact', 'ContactController@send');

@@ -13,6 +13,11 @@ export default class KnowledgeSidebar extends Component {
                         </NavLink>
                     </li>
                     <li>
+                        <NavLink to="/faq" activeClassName={'is-active'}>
+                            <i className="fa fa-question-circle-o"></i> Frequently Asked Questions
+                        </NavLink>
+                    </li>
+                    <li>
                         <NavLink to="/privacy-policy" activeClassName={'is-active'}>
                             <i className="fa fa-eye-slash"></i> Privacy Policy
                         </NavLink>
