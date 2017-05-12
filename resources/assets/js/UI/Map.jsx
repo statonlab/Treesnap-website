@@ -7,6 +7,13 @@ export default class Map extends Component {
 
         this.cluster = null
         this.markers = []
+        this.colors  = {
+            'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            'Hemlock'          : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            'White Oak'        : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+            'Other'            : 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+        }
     }
 
     /**
@@ -20,7 +27,8 @@ export default class Map extends Component {
                 lng: this.props.center.lng
             },
             zoom   : this.props.zoom,
-            minZoom: 3
+            minZoom: 3,
+            maxZoom: window.Laravel.isAdmin ? null : 16
         }
 
         this.maps = new google.maps.Map(this.refs.mapContainer, options)
@@ -33,16 +41,27 @@ export default class Map extends Component {
         this.maps.addListener('zoom_changed', () => {
             this.props.onBoundsChange(this.maps.getBounds())
             let zoom = this.maps.getZoom()
-            console.log(zoom)
             this.markers.map(marker => {
-                marker.setIcon({
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: 'green',
-                    fillOpacity: 0.8,
-                    scale: 2 * zoom,
-                    strokeColor: 'rgba(0,0,0,.3)',
-                    strokeWeight: 1
-                })
+                let icon
+                if (window.Laravel.isAdmin) {
+                    icon = this.colors[marker.title]
+                } else {
+                    icon = {
+                        path        : google.maps.SymbolPath.CIRCLE,
+                        fillColor   : 'green',
+                        fillOpacity : 0.8,
+                        scale       : 10 * zoom,
+                        strokeColor : 'rgba(0,0,0,.3)',
+                        strokeWeight: 1
+                    }
+
+                    if (zoom > 15) {
+                        marker.setLabel(marker.title)
+                    } else {
+                        marker.setLabel('')
+                    }
+                }
+                marker.setIcon(icon)
             })
         })
 
@@ -100,7 +119,8 @@ export default class Map extends Component {
 
         if (this.props.children.length > 0 && this.markers.length === this.props.children.length) {
             this.cluster = new MarkerClusterer(this.maps, this.markers, {
-                imagePath: '/images/m'
+                imagePath: '/images/m',
+                maxZoom  : window.Laravel.isAdmin ? 18 : 15
             })
         }
     }
