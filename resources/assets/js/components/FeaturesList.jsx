@@ -37,7 +37,7 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">It's a Snap</p>
                                         <p className="feature-text">
-                                            Come across an Ash, Hemlock, Chestnut, or White Oak in the woods?
+                                            Come across an ash, hemlock, chestnut, or white oak in the woods?
                                             Record it with Treesnap and its geolocation will be shared with scientists to study it.
                                         </p>
                                     </div>
@@ -58,7 +58,8 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Data Collection</p>
                                         <p className="feature-text">
-                                            Treesnap is easy to use. Snap a photo, answer a few questions and be done in a couple of taps.
+                                            Treesnap is easy to use.  Snap a photo, answer a few questions and be done in a couple of taps.
+
                                         </p>
                                     </div>
                                 </div>
@@ -95,7 +96,8 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Privacy</p>
                                         <p className="feature-text">
-                                            The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.
+
+                                            The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.  Only Treesnap related research programs will have access to this information.
                                         </p>
                                     </div>
                                 </div>
@@ -112,7 +114,7 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Contribute</p>
                                         <p className="feature-text">
-                                            Information reported in Treesnap is used by real scientists. That Ash you've found might be the start of a completely new breeding program.
+                                            Information reported in Treesnap is used by real scientists.  That ash you've found might be the start of a completely new breeding program.
                                         </p>
                                     </div>
                                 </div>

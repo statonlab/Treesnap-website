@@ -6,14 +6,14 @@ When you create a user account for this app, we will collect your name, email ad
 
 ### How do we use this information?
 
-To personalize user's experience and to allow us to deliver the type of content and product offerings in which you are most interested.
-To allow us to better service you in responding to your customer service requests.
-To send periodic emails regarding our products and services.
-To contact you regarding submissions of scientific interest.
+We will use the information we collect from you for several purposes.  
+First, the tree information you provide (your observations) will be added to a database for scientists to access.  Information (such as tree locations, size, and condition) will be available for vetted researchers but not made available to the general public.  In addition, your contact information may be provided in the event that these researchers need to contact you regarding submissions of scientific interest.
+Second, we will work to better service you in responding to your customer service requests. We will personalize your user experience and to allow us to deliver the type of content and product offerings in which you are most interested. As a part of this we may send periodic emails regarding our products and services.
+
 
 ### E-mail address
 
-To create an account, you must provide a valid email address, which will be used to validate your account and send important information about the Treesnap project.  Your email address will not be shown, disseminated, or sold to any third parties.  Your email will only be used to manage your Treesnap account and for the scientists using the Treesnap dataset to contact you with questions regarding your submitted observations.
+To create an account, you must provide a valid email address, which will be used to validate your account and send important information about the Treesnap project.  Your email address will not be shown, disseminated, or sold to any third parties not affiliated with tree research programs.  Your email will only be used to manage your Treesnap account and for the scientists using the Treesnap dataset to contact you with questions regarding your submitted observations.
 You are able to delete your Treesnap account or opt out of receiving emails at any time.
 
 ### How do we use the submitted observations?
@@ -27,7 +27,7 @@ Your privacy settings can be changed in the settings section of the mobile app. 
 
 ### Will this policy change?
 
-As Treesnap evolves, we may make changes to our data usage and privacy policy.  We will never show, sell, or disseminate your personal information to any outside parties.
+As Treesnap evolves, we may make changes to our data usage and privacy policy. We will never show, sell, or disseminate your personal information to any outside parties not affiliated with tree research programs.
 
 Users will receive an email notification upon any change to the privacy policy if they have not opted out of email notifications.
 

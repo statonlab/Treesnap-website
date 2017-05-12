@@ -14962,7 +14962,7 @@ var Marker = function (_Component) {
                     path: google.maps.SymbolPath.CIRCLE,
                     fillColor: 'green',
                     fillOpacity: 0.8,
-                    scale: 10 * zoom,
+                    scale: zoom < 10 ? 2 * zoom : 10 * zoom,
                     strokeColor: 'rgba(0,0,0,.3)',
                     strokeWeight: 1
                 };
@@ -46915,7 +46915,7 @@ var Map = function (_Component) {
                             path: google.maps.SymbolPath.CIRCLE,
                             fillColor: 'green',
                             fillOpacity: 0.8,
-                            scale: 10 * zoom,
+                            scale: zoom < 10 ? 2 * zoom : 10 * zoom,
                             strokeColor: 'rgba(0,0,0,.3)',
                             strokeWeight: 1
                         };
@@ -48992,7 +48992,7 @@ var FeaturesList = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'p',
                                             { className: 'feature-text' },
-                                            'Come across an Ash, Hemlock, Chestnut, or White Oak in the woods? Record it with Treesnap and its geolocation will be shared with scientists to study it.'
+                                            'Come across an ash, hemlock, chestnut, or white oak in the woods? Record it with Treesnap and its geolocation will be shared with scientists to study it.'
                                         )
                                     )
                                 )
@@ -49029,7 +49029,7 @@ var FeaturesList = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'p',
                                             { className: 'feature-text' },
-                                            'Treesnap is easy to use. Snap a photo, answer a few questions and be done in a couple of taps.'
+                                            'Treesnap is easy to use.  Snap a photo, answer a few questions and be done in a couple of taps.'
                                         )
                                     )
                                 )
@@ -49099,7 +49099,7 @@ var FeaturesList = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'p',
                                             { className: 'feature-text' },
-                                            'The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.'
+                                            'The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.  Only Treesnap related research programs will have access to this information.'
                                         )
                                     )
                                 )
@@ -49132,7 +49132,7 @@ var FeaturesList = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'p',
                                             { className: 'feature-text' },
-                                            'Information reported in Treesnap is used by real scientists. That Ash you\'ve found might be the start of a completely new breeding program.'
+                                            'Information reported in Treesnap is used by real scientists.  That ash you\'ve found might be the start of a completely new breeding program.'
                                         )
                                     )
                                 )
@@ -49206,7 +49206,7 @@ var HomeJumbotron = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "p",
                                     null,
-                                    "Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using Treesnap to help us understand Forest health! Scientists use the collected information to locate candidates for genetic sequencing and breeding programs. The location, photos, and data for submitted trees is made available on our submission map. Treesnap is currently in closed beta."
+                                    "Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using Treesnap! Scientists will use the data you collect to locate trees for research projects like studying the genetic diversity of tree species and building better tree breeding programs. Treesnap is currently in closed beta."
                                 )
                             )
                         ),
@@ -49339,7 +49339,7 @@ var SubscribeRow = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'h4',
                                 { className: 'title is-4 has-text-centered' },
-                                'Get a notification once TreeSnap gets released'
+                                'Get a notification once Treesnap gets released'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
