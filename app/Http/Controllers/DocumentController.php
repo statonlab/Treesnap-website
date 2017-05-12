@@ -13,7 +13,7 @@ class DocumentController extends Controller
     /**
      * Show the about page.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
     public function about()
     {
@@ -23,20 +23,23 @@ class DocumentController extends Controller
     /**
      * Show the policy page.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
     public function policy()
     {
         $contents = Storage::get("docs/PrivacyPolicy.md");
-        $contentTwo = Storage::get('docs/TermsLicense.md');
 
-        return $this->success($contents.$contentTwo);
+        return $this->success($contents);
     }
 
-    public function help()
-    {
-        $contents = Storage::get("docs/aboutUs.md");
+    /**
+     * Show terms and licenses page.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function terms() {
+        $contents = Storage::get('docs/TermsLicense.md');
 
-        return view('document')->with(['content' => $contents]);
+        return $this->success($contents);
     }
 }

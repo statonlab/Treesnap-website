@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\Responds;
+use App\Mail\ContactRequest;
 use Illuminate\Http\Request;
 use ReCaptcha\ReCaptcha;
 use Mail;
@@ -22,14 +23,15 @@ class ContactController extends Controller
         ]);
 
         $recaptcha = new ReCaptcha(config('services.google.recaptcha'));
-        $verify = $recaptcha->verify($recaptcha->recaptcha, $request->ip());
+        $verify = $recaptcha->verify($request->recaptcha, $request->ip());
 
         if (! $verify->isSuccess()) {
             return $this->validationError([
-                'recaptcha' => 'Please verify you are not a robot.',
+                'recaptcha' => ['Please verify you are not a robot.'],
             ]);
         }
 
-        Mail::to(config('mail.from.address'))->send('emails.contact');
+        Mail::to(config('mail.from.address'))
+            ->queue(new ContactRequest((object)$request->all()));
     }
 }

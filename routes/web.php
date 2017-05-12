@@ -16,9 +16,11 @@ Route::get('/', 'HomeController@index');
 
 // Documentation Routes
 Route::get('/docs/about', 'DocumentController@about');
-//Route::get('/docs/policy', 'DocumentController@policy');
+Route::get('/docs/terms', 'DocumentController@terms');
 Route::get('/docs/privacy', 'DocumentController@policy');
-Route::get('/docs/help', 'DocumentController@help');
+
+// Contact
+Route::post('/contact', 'ContactController@send');
 
 /**
  * Auth Routes:

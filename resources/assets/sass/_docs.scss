@@ -11,6 +11,10 @@
   h1 {
     @extend .title;
     @extend .is-2;
+    margin-top: 2rem;
+    &:first-of-type {
+      margin-top: 0;
+    }
   }
 
   h2 {
@@ -21,6 +25,16 @@
   h3 {
     @extend .title;
     @extend .is-4;
+  }
+
+  h4 {
+    @extend .title;
+    @extend .is-5;
+  }
+
+  h5 {
+    @extend .title;
+    @extend .is-6;
   }
 
   p {

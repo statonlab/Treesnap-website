@@ -13,8 +13,13 @@ export default class KnowledgeSidebar extends Component {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/privacy" activeClassName={'is-active'}>
+                        <NavLink to="/privacy-policy" activeClassName={'is-active'}>
                             <i className="fa fa-eye-slash"></i> Privacy Policy
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/terms-of-use" activeClassName={'is-active'}>
+                            <i className="fa fa-file-text-o"></i> Terms of Use
                         </NavLink>
                     </li>
                     <li>

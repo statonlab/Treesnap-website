@@ -3,13 +3,15 @@ import marked from 'marked'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import KnowledgeSidebar from '../components/KnowledgeSidebar'
+import Spinner from '../components/Spinner'
 
 export default class PolicyScene extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            content: ''
+            content: '',
+            loading: true
         }
     }
 
@@ -18,6 +20,8 @@ export default class PolicyScene extends Component {
             this.setState({content: response.data.data})
         }).catch(error => {
             console.log(error)
+        }).then(() => {
+            this.setState({loading: false})
         })
     }
 
@@ -25,15 +29,17 @@ export default class PolicyScene extends Component {
         return (
             <div className="document">
                 <Navbar/>
+                <Spinner visible={this.state.loading}/>
                 <div className="home-section">
                     <div className="container">
                         <div className="columns">
-                            <div className="column is-3-tablet is-2-desktop">
+                            <div className="column is-3">
                                 <KnowledgeSidebar/>
                             </div>
                             <div className="column">
-                                <div className="box"
-                                     dangerouslySetInnerHTML={{__html: marked(this.state.content)}}>
+                                <div className="box">
+                                    <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}}></div>
+                                    <Spinner visible={this.state.loading} inline={true}/>
                                 </div>
                             </div>
                         </div>
