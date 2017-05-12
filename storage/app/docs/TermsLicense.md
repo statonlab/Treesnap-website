@@ -9,10 +9,10 @@ By using the Treesnap mobile app, you agree to all terms and conditions describe
  Scientific data is released (stripped of user identifying content) under a [Creative Commons by Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) license upon publication.  **Private** submissions are not released under this license, but instead may be viewed or access with expressed permission only.
 
 ## Usage Agreement
-By using this app you agree that *you will not collect observations for trees on private land*.  Observations may only be submitted for trees on public land, or trees present on the user's own private land.
+By using this app you agree that *you will not collect observations for trees on private land without permission*.  Observations may only be submitted for trees on public land, or trees present on the user's own private land.
 
 ### Data usage
-By submitting observations using the Treesnap app, you affirm that the tree is on public land, or that you own the private land the tree is located on.
+By submitting observations using the Treesnap app, you affirm that the tree is on public lan, or that you own the private land the tree is located on (or have permission to use this land).
 
 All data submitted to the Treesnap server is considered the property of Treesnap and subject to Treesnap data licensing.  Data stripped of identifying material may be included in promotional material or scientific publication.  Upon publication, all data will be made available via our API according to our data licensing policy.
 

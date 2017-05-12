@@ -20,7 +20,7 @@ export default class SubscribeRow extends Component {
                 <div className="container is-small">
                     <div className="columns">
                         <div className="column is-6 is-offset-3">
-                            <h4 className="title is-4 has-text-centered">Get a notification once TreeSnap gets released</h4>
+                            <h4 className="title is-4 has-text-centered">Get a notification once Treesnap gets released</h4>
                             <div className="field has-addons">
                                 <p className="control">
                                     <input className={`input${this.state.errors.email.length ? ' is-danger' : ''}`}
