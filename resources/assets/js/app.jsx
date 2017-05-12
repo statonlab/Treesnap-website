@@ -10,11 +10,9 @@ import WelcomeScene from './scenes/WelcomeScene'
 import AccountScene from './scenes/AccountScene'
 import ObservationScene from './scenes/ObservationScene'
 import MapScene from './scenes/MapScene'
-import PolicyScene from './scenes/PolicyScene'
-import AboutScene from './scenes/AboutScene'
 import ContactUsScene from './scenes/ContactUsScene'
-import TermsScene from './scenes/TermsScene'
 import NotFoundScene from './scenes/NotFoundScene'
+import KnowledgeScene from "./scenes/KnowledgeScene";
 
 class App extends Component {
     render() {
@@ -25,10 +23,11 @@ class App extends Component {
                     <Route path={'/account'} component={AccountScene}/>
                     <Route path={'/observation/:id'} component={ObservationScene}/>
                     <Route path={'/map'} component={MapScene}/>
-                    <Route path={'/about'} component={AboutScene}/>
-                    <Route path={'/privacy-policy'} component={PolicyScene}/>
+                    <Route path={'/about'} component={() => (<KnowledgeScene docPath='/docs/about'/>) }/>
+                    <Route path={'/privacy-policy'} component={() => (<KnowledgeScene docPath='/docs/privacy'/>)}/>
                     <Route path={'/contact'} component={ContactUsScene}/>
-                    <Route path={'/terms-of-use'} component={TermsScene}/>
+                    <Route path={'/terms-of-use'} component={() => (<KnowledgeScene docPath='/docs/terms'/>)}/>
+                    <Route path={'/faq'} component={() => (<KnowledgeScene docPath='/docs/faq'/>)}/>
                     <Route component={NotFoundScene}/>
                 </Switch>
             </Router>

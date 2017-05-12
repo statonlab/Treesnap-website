@@ -25,6 +25,7 @@
     "dragscroll": "0.0.8",
     "google-maps-react": "^1.0.19",
     "jquery": "^3.2.1",
+    "prop-types": "^15.5.10",
     "react": "^15.4.2",
     "react-addons-update": "^15.5.2",
     "react-async-script": "^0.9.1",
