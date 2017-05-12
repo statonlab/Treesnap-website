@@ -43,7 +43,14 @@ export default class Marker extends Component {
 
         // Handle click events on the callout
         this.marker.addListener('click', this.openCallout.bind(this))
-        this.marker.setIcon(this.colors[this.props.title])
+        this.marker.setIcon({
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'green',
+            fillOpacity: 0.8,
+            scale: 10,
+            strokeColor: 'rgba(0,0,0,.3)',
+            strokeWeight: 1
+        })
         this.props.onCreate(this.marker)
     }
 

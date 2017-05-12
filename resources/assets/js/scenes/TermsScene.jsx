@@ -5,7 +5,7 @@ import HomeFooter from '../components/HomeFooter'
 import KnowledgeSidebar from '../components/KnowledgeSidebar'
 import Spinner from '../components/Spinner'
 
-export default class AboutScene extends Component {
+export default class TermsScene extends Component {
     constructor(props) {
         super(props)
 
@@ -16,7 +16,7 @@ export default class AboutScene extends Component {
     }
 
     componentDidMount() {
-        axios.get('/docs/about').then(response => {
+        axios.get('/docs/terms').then(response => {
             this.setState({content: response.data.data})
         }).catch(error => {
             console.log(error)
@@ -29,6 +29,7 @@ export default class AboutScene extends Component {
         return (
             <div className="document">
                 <Navbar/>
+                <Spinner visible={this.state.loading}/>
                 <div className="home-section">
                     <div className="container">
                         <div className="columns">

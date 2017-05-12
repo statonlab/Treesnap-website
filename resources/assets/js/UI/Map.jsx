@@ -32,6 +32,18 @@ export default class Map extends Component {
 
         this.maps.addListener('zoom_changed', () => {
             this.props.onBoundsChange(this.maps.getBounds())
+            let zoom = this.maps.getZoom()
+            console.log(zoom)
+            this.markers.map(marker => {
+                marker.setIcon({
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: 'green',
+                    fillOpacity: 0.8,
+                    scale: 2 * zoom,
+                    strokeColor: 'rgba(0,0,0,.3)',
+                    strokeWeight: 1
+                })
+            })
         })
 
         this.maps.addListener('dragend', () => {

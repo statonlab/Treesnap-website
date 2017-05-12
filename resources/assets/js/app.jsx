@@ -5,7 +5,7 @@
 import './bootstrap'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import WelcomeScene from './scenes/WelcomeScene'
 import AccountScene from './scenes/AccountScene'
 import ObservationScene from './scenes/ObservationScene'
@@ -13,20 +13,24 @@ import MapScene from './scenes/MapScene'
 import PolicyScene from './scenes/PolicyScene'
 import AboutScene from './scenes/AboutScene'
 import ContactUsScene from './scenes/ContactUsScene'
+import TermsScene from './scenes/TermsScene'
+import NotFoundScene from './scenes/NotFoundScene'
 
 class App extends Component {
     render() {
         return (
             <Router history={'browser'}>
-                <div>
+                <Switch>
                     <Route exact={true} path={'/'} component={WelcomeScene}/>
                     <Route path={'/account'} component={AccountScene}/>
                     <Route path={'/observation/:id'} component={ObservationScene}/>
                     <Route path={'/map'} component={MapScene}/>
                     <Route path={'/about'} component={AboutScene}/>
-                    <Route path={'/privacy'} component={PolicyScene}/>
+                    <Route path={'/privacy-policy'} component={PolicyScene}/>
                     <Route path={'/contact'} component={ContactUsScene}/>
-                </div>
+                    <Route path={'/terms-of-use'} component={TermsScene}/>
+                    <Route component={NotFoundScene}/>
+                </Switch>
             </Router>
         )
     }

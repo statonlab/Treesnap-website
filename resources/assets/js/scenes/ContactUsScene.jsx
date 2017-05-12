@@ -14,10 +14,17 @@ export default class ContactUsScene extends Component {
             email    : '',
             subject  : '',
             recaptcha: '',
-            message  : ''
+            message  : '',
+            form_message: '',
+            errors   : {}
         }
     }
 
+    /**
+     * Submit a new entry.
+     *
+     * @param e
+     */
     submit(e) {
         e.preventDefault()
 
@@ -25,22 +32,64 @@ export default class ContactUsScene extends Component {
             name     : this.state.name,
             subject  : this.state.subject,
             email    : this.state.email,
-            recaptcha: this.state.recaptcha
+            recaptcha: this.state.recaptcha,
+            message: this.state.message
         }).then(response => {
             this.setState({
                 name     : '',
                 subject  : '',
                 email    : '',
                 recaptcha: '',
-                message  : 'Email sent successfully. We\'ll get back to you as soon as possible.'
+                message: '',
+                form_message  : 'Email sent successfully. We\'ll get back to you as soon as possible.',
+                errors   : {}
             })
         }).catch(error => {
-            this.setState({
-                message: ''
-            })
+            if (error.response && error.response.status === 422) {
+                this.setState({
+                    errors : error.response.data,
+                    form_message: ''
+                })
+            }
         })
     }
 
+    /**
+     * Render help errors.
+     *
+     * @param key
+     * @returns {null}
+     * @private
+     */
+    _renderError(key) {
+        if (!this.state.errors[key]) {
+            return null
+        }
+
+        return this.state.errors[key].map((error, index) => {
+            return (
+                <p key={index} className="help is-danger">{error}</p>
+            )
+        })
+    }
+
+    _renderSuccessMessage() {
+        if(this.state.form_message === '') {
+            return null
+        }
+
+        return (
+            <div className="alert is-success">
+                {this.state.form_message}
+            </div>
+        )
+    }
+
+    /**
+     * Render the page.
+     *
+     * @returns {XML}
+     */
     render() {
         return (
             <div>
@@ -48,22 +97,24 @@ export default class ContactUsScene extends Component {
                 <div className="home-section">
                     <div className="container">
                         <div className="columns">
-                            <div className="column is-3-tablet is-2-desktop">
+                            <div className="column is-3">
                                 <KnowledgeSidebar/>
                             </div>
                             <div className="column">
                                 <div className="box">
                                     <h1 className="title is-3">Contact Us</h1>
                                     <div className="limit-width">
-                                        <form action="#" method="post">
+                                        {this._renderSuccessMessage()}
+                                        <form action="#" method="post" onSubmit={this.submit.bind(this)}>
                                             <div className="field">
                                                 <label className="label">Name</label>
                                                 <div className="control">
                                                     <input type="text"
-                                                           className="input"
+                                                           className={`input${this.state.errors.name ? ' is-danger' : ''}`}
                                                            placeholder="Name"
                                                            value={this.state.name}
                                                            onChange={e => this.setState({name: e.target.value})}/>
+                                                    {this._renderError('name')}
                                                 </div>
                                             </div>
 
@@ -71,10 +122,11 @@ export default class ContactUsScene extends Component {
                                                 <label className="label">Email</label>
                                                 <div className="control">
                                                     <input type="email"
-                                                           className="input"
+                                                           className={`input${this.state.errors.email ? ' is-danger' : ''}`}
                                                            placeholder="Email"
                                                            value={this.state.email}
                                                            onChange={e => this.setState({email: e.target.value})}/>
+                                                    {this._renderError('email')}
                                                 </div>
                                             </div>
 
@@ -82,21 +134,23 @@ export default class ContactUsScene extends Component {
                                                 <label className="label">Subject</label>
                                                 <div className="control">
                                                     <input type="text"
-                                                           className="input"
+                                                           className={`input${this.state.errors.subject ? ' is-danger' : ''}`}
                                                            placeholder="Subject"
                                                            value={this.state.subject}
                                                            onChange={e => this.setState({subject: e.target.value})}/>
+                                                    {this._renderError('subject')}
                                                 </div>
                                             </div>
 
                                             <div className="field">
                                                 <label className="label">Message</label>
                                                 <div className="control">
-                                                    <textarea className="textarea"
+                                                    <textarea className={`textarea${this.state.errors.message ? ' is-danger' : ''}`}
                                                               placeholder="Message"
                                                               value={this.state.message}
                                                               onChange={e => this.setState({message: e.target.value})}>
                                                     </textarea>
+                                                    {this._renderError('message')}
                                                 </div>
                                             </div>
 
@@ -105,6 +159,7 @@ export default class ContactUsScene extends Component {
                                                     <ReCaptcha
                                                         sitekey="6Lfg5yAUAAAAAI1zWo0wO1b1YPbcIAjj_GDcLeaY"
                                                         onChange={value => this.setState({recaptcha: value})}/>
+                                                    {this._renderError('recaptcha')}
                                                 </div>
                                             </div>
 
