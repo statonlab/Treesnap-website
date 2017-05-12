@@ -83,9 +83,26 @@ export default class FeaturesList extends Component {
                         </div>
                     </div>
 
-                    <div className="columns">
-                        <div className="column">
-                            <div className="box feature-tile">
+                    <div className="tile is-ancestor">
+                        <div className="tile is-parent">
+                            <div className="tile is-child box feature-tile">
+                                <div className="media">
+                                    <div className="media-left">
+                                        <img src="/images/flat-icons/padlock.png"
+                                             alt="Man Icon"
+                                             className="feature-icon"/>
+                                    </div>
+                                    <div className="media-content">
+                                        <p className="title">Privacy</p>
+                                        <p className="feature-text">
+                                            The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="tile is-parent">
+                            <div className="tile is-child box feature-tile">
                                 <div className="media">
                                     <div className="media-left">
                                         <img src="/images/flat-icons/teamwork-3.png"
@@ -102,6 +119,8 @@ export default class FeaturesList extends Component {
                             </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         )
