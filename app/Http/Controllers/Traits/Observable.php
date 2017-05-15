@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Traits;
 
-use App\Observation;
-
 trait Observable
 {
     /**

@@ -10,6 +10,7 @@ export default class AccountScene extends Component {
             name                     : '',
             email                    : '',
             is_anonymous             : 0,
+            birth_year               : '',
             errors                   : {
                 name        : [],
                 email       : [],
@@ -33,7 +34,8 @@ export default class AccountScene extends Component {
             this.setState({
                 name        : user.name,
                 email       : user.email,
-                is_anonymous: user.is_anonymous ? 1 : 0
+                is_anonymous: user.is_anonymous ? 1 : 0,
+                birth_year  : user.birth_year
             })
         }).catch(error => {
             console.log(error)
@@ -95,8 +97,8 @@ export default class AccountScene extends Component {
             old_password             : this.state.old_password
         }).then(response => {
             this.setState({
-                password_message: response.data.data,
-                password_errors : [],
+                password_message         : response.data.data,
+                password_errors          : [],
                 new_password             : '',
                 new_password_confirmation: '',
                 old_password             : ''
@@ -188,7 +190,10 @@ export default class AccountScene extends Component {
                                         <div className="field">
                                             <label className="label">Year of Birth</label>
                                             <div className="control">
-                                                <input type="text" className="input" disabled={true} value='2012'/>
+                                                <input type="text"
+                                                       className="input"
+                                                       disabled={true}
+                                                       value={this.state.birth_year}/>
                                             </div>
                                         </div>
 
