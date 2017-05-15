@@ -104,6 +104,16 @@ class ObservationsController extends Controller
         // Upload images
         $images = $this->uploadImages($request->images);
 
+        //Generate fuzzified coordinates
+        $miles = 5;
+        $range = $miles / 69 / 2;
+        $latitude = $request->latitude + mt_rand($range * (-1), $range);
+        $longitude = $request->longitude + mt_rand($range * (-1), $range);
+        $fuzzy_coords = [
+            "latitude" => $latitude,
+            "longitude" => $longitude,
+        ];
+
         // Create the record
         $observation = Observation::create([
             'user_id' => $user->id,
@@ -114,8 +124,10 @@ class ObservationsController extends Controller
             'location_accuracy' => $request->location_accuracy,
             'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
             'images' => $images,
+            'fuzzy_coords' => $fuzzy_coords,
             'is_private' => $request->is_private,
         ]);
+
 
         if (! $observation) {
             return $this->error('Request could not be completed', 100);
