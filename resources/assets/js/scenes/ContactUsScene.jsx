@@ -10,13 +10,13 @@ export default class ContactUsScene extends Component {
         super(props)
 
         this.state = {
-            name     : '',
-            email    : '',
-            subject  : '',
-            recaptcha: '',
-            message  : '',
+            name        : '',
+            email       : '',
+            subject     : '',
+            recaptcha   : '',
+            message     : '',
             form_message: '',
-            errors   : {}
+            errors      : {}
         }
     }
 
@@ -33,21 +33,21 @@ export default class ContactUsScene extends Component {
             subject  : this.state.subject,
             email    : this.state.email,
             recaptcha: this.state.recaptcha,
-            message: this.state.message
+            message  : this.state.message
         }).then(response => {
             this.setState({
-                name     : '',
-                subject  : '',
-                email    : '',
-                recaptcha: '',
-                message: '',
-                form_message  : 'Email sent successfully. We\'ll get back to you as soon as possible.',
-                errors   : {}
+                name        : '',
+                subject     : '',
+                email       : '',
+                recaptcha   : '',
+                message     : '',
+                form_message: 'Email sent successfully. We\'ll get back to you as soon as possible.',
+                errors      : {}
             })
         }).catch(error => {
             if (error.response && error.response.status === 422) {
                 this.setState({
-                    errors : error.response.data,
+                    errors      : error.response.data,
                     form_message: ''
                 })
             }
@@ -74,7 +74,7 @@ export default class ContactUsScene extends Component {
     }
 
     _renderSuccessMessage() {
-        if(this.state.form_message === '') {
+        if (this.state.form_message === '') {
             return null
         }
 
