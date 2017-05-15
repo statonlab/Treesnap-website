@@ -157,11 +157,7 @@ class UsersController extends Controller
         }
 
         // Authenticate the user using email and password
-        if (! auth()->attempt([
-            'email' => $request->email,
-            'password' => $request->password,
-        ])
-        ) {
+        if (! auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             return $this->error('Invalid Credentials', 200);
         }
 
