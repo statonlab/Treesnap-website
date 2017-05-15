@@ -68,6 +68,7 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'is_anonymous' => $user->is_anonymous,
+            'birth_year' => $user->birth_year,
         ]);
     }
 
