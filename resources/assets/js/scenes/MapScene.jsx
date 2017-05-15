@@ -432,16 +432,6 @@ export default class App extends Component {
                     </h3>
 
                     <div className="sidebar-item">
-                        <h5><strong>Location</strong></h5>
-                        <p className="ml-1">{marker.position.latitude.toFixed(5)}, {marker.position.longitude.toFixed(5)}</p>
-                    </div>
-
-                    <div className="sidebar-item">
-                        <h5><strong>Location Accuracy</strong></h5>
-                        <p className="ml-1">{marker.position.accuracy} meters</p>
-                    </div>
-
-                    <div className="sidebar-item">
                         <h5><strong>Collection Date</strong></h5>
                         <p className="ml-1">{marker.date}</p>
                     </div>
