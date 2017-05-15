@@ -106,7 +106,7 @@ class ObservationsController extends Controller
 
         //Generate fuzzified coordinates
         $miles = 5;
-        $range = $miles / 69 / 2;
+        $range = $miles / 69;
         $latitude = $request->latitude + mt_rand($range * (-1), $range);
         $longitude = $request->longitude + mt_rand($range * (-1), $range);
         $fuzzy_coords = [
