@@ -105,7 +105,7 @@ class ObservationsController extends Controller
         $images = $this->uploadImages($request->images);
 
         //Generate fuzzified coordinates
-        $miles = 50;
+        $miles = 5;
         $range = $miles / 69 / 2;
         $latitude = $request->latitude + mt_rand($range * (-1), $range);
         $longitude = $request->longitude + mt_rand($range * (-1), $range);
