@@ -23,10 +23,10 @@ trait Observable
     /**
      * Formats the observation record into the expected response.
      *
-     * @param \App\Observation $observation
+     * @param  $observation
      * @return array
      */
-    protected function getObservationJson(Observation $observation, $admin = false)
+    protected function getObservationJson($observation, $admin = false)
     {
         // Set Image Urls
         $images = [];
@@ -40,8 +40,8 @@ trait Observable
             'observation_category' => $observation->observation_category,
             'meta_data' => $observation->data,
             'location' => [
-                'longitude' => $admin ? $observation->longitude : $observation->fuzzy_coords->longitude,
-                'latitude' => $admin ? $observation->latitude : $observation->fuzzy_coords->latitude,
+                'longitude' => $admin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
+                'latitude' => $admin ? $observation->latitude : $observation->fuzzy_coords['latitude'],
                 'accuracy' => $observation->location_accuracy,
                 'address' => $admin ? $observation->address : [],
             ],

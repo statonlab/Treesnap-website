@@ -22,6 +22,7 @@ class Observation extends Model
         'location_accuracy',
         'is_private',
         'address',
+        'fuzzy_coords',
     ];
 
     /**
