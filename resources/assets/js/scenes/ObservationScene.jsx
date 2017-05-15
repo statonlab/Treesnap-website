@@ -1,6 +1,5 @@
 import '../bootstrap'
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
 import Map from '../UI/Map'
 import Marker from '../UI/Marker'
 import Modal from '../UI/Modal'
@@ -111,13 +110,6 @@ export default class ObservationScene extends Component {
                                 <tr>
                                     <th style={{width: 150}}>Submitted By</th>
                                     <td>{ this.state.owner }</td>
-                                </tr>
-                                <tr>
-                                    <th>Location</th>
-                                    <td>
-                                        {this.state.latitude}, {this.state.longitude} with accuracy
-                                        of {this.state.location_accuracy } meters.
-                                    </td>
                                 </tr>
                                 {
                                     Object.keys(this.state.meta_data).map((key) => {

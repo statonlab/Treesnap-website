@@ -44,6 +44,7 @@ class Observation extends Model
         'images' => 'array',
         'data' => 'array',
         'address' => 'array',
+        'fuzzy_coords' => 'array',
     ];
 
     /**

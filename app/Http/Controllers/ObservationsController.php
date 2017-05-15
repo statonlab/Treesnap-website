@@ -18,10 +18,14 @@ class ObservationsController extends Controller
      */
     public function index()
     {
-        if(auth()->check() && auth()->user()->isAdmin()) {
-            $observations = Observation::with('user')
-                ->orderby('collection_date', 'desc')
-                ->get();
+        $is_admin = false;
+
+        if (auth()->check()) {
+            $is_admin = auth()->user()->isAdmin();
+        }
+
+        if ($is_admin) {
+            $observations = Observation::with('user')->orderby('collection_date', 'desc')->get();
         } else {
             $observations = Observation::with('user')
                 ->where('is_private', false)
@@ -34,7 +38,7 @@ class ObservationsController extends Controller
         foreach ($observations as $observation) {
             // Compile the data into a standardized response
             // Remove the is_private value from the response
-            $data[] = array_merge(array_except($this->getObservationJson($observation), ['is_private']), [
+            $data[] = array_merge(array_except($this->getObservationJson($observation, $is_admin), ['is_private']), [
                 'user' => [
                     'name' => $observation->user->is_anonymous ? 'Anonymous' : $observation->user->name,
                 ],
