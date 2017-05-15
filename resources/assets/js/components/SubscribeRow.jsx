@@ -42,7 +42,7 @@ export default class SubscribeRow extends Component {
                                     <button type="submit"
                                             onClick={this.submit.bind(this)}
                                             className="button is-primary">
-                                        Get Notified!
+                                        Notify Me!
                                     </button>
                                 </p>
                             </div>

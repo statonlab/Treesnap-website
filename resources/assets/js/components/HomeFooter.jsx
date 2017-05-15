@@ -10,8 +10,8 @@ export default class HomeFooter extends Component {
                     </p>
 
                     <p>
-                        <a href="/privacy">Privacy Policy and Terms of Use</a> | Icons by
-                        <a href="http://www.flaticon.com/authors/vectors-market">Vectors Market</a>
+                        <a href="/privacy-policy">Privacy Policy and Terms of Use</a> | Icons by
+                        <a href="http://www.flaticon.com/authors/vectors-market"> Vectors Market</a>
                     </p>
                     <div className="columns logos">
                         <div className="column has-text-centered">
