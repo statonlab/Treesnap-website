@@ -25,6 +25,13 @@
       width: 100%;
     }
   }
+
+  .logo-img {
+    margin-right: 5px;
+    height: $nav-height / 2;
+    width: auto;
+    line-height: $nav-height;
+  }
 }
 
 .nav-brand {
@@ -59,6 +66,7 @@
 }
 
 .home .nav.home-nav {
+  position: relative;
   background-color: transparent;
   box-shadow: none;
 
@@ -88,12 +96,18 @@
     }
   }
 
-  .logo {
+  .nav-brand > .nav-item {
     font-size: 1.6rem;
     padding-left: 0;
     &:hover {
       border-bottom-color: transparent !important;
       background-color: transparent !important;
     }
+  }
+
+  .logo-img {
+    height: 48px!important;
+    max-height: 48px;
+    margin-right: 10px;
   }
 }

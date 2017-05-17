@@ -2,11 +2,9 @@
     <div class="container">
         <div class="nav-left nav-brand">
             <a href="/" class="nav-item">
-                <b>Tree</b>snap
+                <img src="/logo/ts-logo-96.png" alt="Logo" class="logo-img"/>
+                <span class="logo-text"><b>Tree</b><span style="font-weight: 300">snap</span></span>
             </a>
-            <small class="nav-item">
-                Citizen science app
-            </small>
         </div>
 
         <div class="nav-toggle">
