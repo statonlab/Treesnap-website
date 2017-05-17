@@ -66,6 +66,7 @@
 }
 
 .home .nav.home-nav {
+  position: relative;
   background-color: transparent;
   box-shadow: none;
 
@@ -102,5 +103,11 @@
       border-bottom-color: transparent !important;
       background-color: transparent !important;
     }
+  }
+
+  .logo-img {
+    height: 48px!important;
+    max-height: 48px;
+    margin-right: 10px;
   }
 }
