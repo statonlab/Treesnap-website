@@ -22,6 +22,7 @@ export default class Navbar extends Component {
                 <div className={`${!this.props.container ? 'container' : 'container is-fluid'}`}>
                     <div className="nav-left nav-brand">
                         <NavLink to="/" className="nav-item">
+                            <img src="/logo/ts-logo-57.png" alt="Logo" className="logo-img"/>
                             <b>Tree</b><span style={{fontWeight: 300}}>snap</span>
                         </NavLink>
                     </div>

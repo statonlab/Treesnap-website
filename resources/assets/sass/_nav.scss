@@ -25,6 +25,13 @@
       width: 100%;
     }
   }
+
+  .logo-img {
+    margin-right: 5px;
+    height: $nav-height / 2;
+    width: auto;
+    line-height: $nav-height;
+  }
 }
 
 .nav-brand {
@@ -88,7 +95,7 @@
     }
   }
 
-  .logo {
+  .nav-brand > .nav-item {
     font-size: 1.6rem;
     padding-left: 0;
     &:hover {

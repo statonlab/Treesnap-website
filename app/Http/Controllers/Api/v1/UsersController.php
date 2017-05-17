@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
 use Validator;
-use DB;
 
 class UsersController extends Controller
 {
@@ -131,9 +130,7 @@ class UsersController extends Controller
             return $this->error($validator->errors(), 200);
         }
 
-        $user->update([
-            'password' => bcrypt($request->password),
-        ]);
+        $user->update(['password' => bcrypt($request->password)]);
 
         return $this->created('Password updated');
     }
