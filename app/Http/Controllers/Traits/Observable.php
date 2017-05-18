@@ -28,8 +28,10 @@ trait Observable
     {
         // Set Image Urls
         $images = [];
-        foreach ($observation->images as $image) {
-            $images[] = url($image);
+        foreach ($observation->images as $key => $list) {
+            foreach ($list as $image) {
+                $images[$key][] = url($image);
+            }
         }
 
         return [

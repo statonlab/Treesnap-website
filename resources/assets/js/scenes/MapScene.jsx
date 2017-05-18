@@ -66,10 +66,18 @@ export default class App extends Component {
                 // Set the category
                 categories[category] = true
 
+                // parse images
+                let images = []
+                Object.keys(observation.images).map(key => {
+                    observation.images[key].map(image => {
+                        images.push(image)
+                    })
+                })
+
                 this.allMarkers.push({
                     id      : observation.observation_id,
                     title   : category,
-                    images  : observation.images,
+                    images  : images,
                     position: {
                         latitude : observation.location.latitude,
                         longitude: observation.location.longitude,
@@ -381,9 +389,9 @@ export default class App extends Component {
                                    }
                                    this.filterByPlant.call(this, name)
                                }}>
-                                    <span className="icon">
-                                        <i className="fa fa-check"></i>
-                                    </span>
+                                <span className="icon">
+                                    <i className="fa fa-check"></i>
+                                </span>
                                 <span>{name}</span>
                             </a>
                         )
@@ -407,11 +415,6 @@ export default class App extends Component {
 
         let data = marker.data
 
-        /*
-         {
-         images: observation.images
-         }
-         */
         return (
             <Sidebar onCloseRequest={() => this.setState({showSidebar: false})}>
                 <div className="sidebar-img"
