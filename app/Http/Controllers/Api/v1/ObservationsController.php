@@ -126,6 +126,8 @@ class ObservationsController extends Controller
             'images' => $images,
             'fuzzy_coords' => $fuzzy_coords,
             'is_private' => $request->is_private,
+            'mobile_id' => $request->mobile_id,
+
         ]);
 
         if (! $observation) {
@@ -179,6 +181,8 @@ class ObservationsController extends Controller
             'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
             'images' => $images,
             'is_private' => $request->is_private,
+            'mobile_id' => $request->mobile_id,
+
         ]);
 
         if (! $observation) {
@@ -208,6 +212,8 @@ class ObservationsController extends Controller
             'images' => 'nullable',
             'images.*.*' => 'required|image|max:2048',
             'is_private' => 'required|boolean',
+            'mobile_id' => 'required|numeric',
+
         ];
     }
 
