@@ -27,7 +27,9 @@ trait Observable
     protected function getObservationJson($observation, $admin = false)
     {
         // Set Image Urls
-        $images = [];
+        $images = [
+            'images' => [],
+        ];
         foreach ($observation->images as $key => $list) {
             foreach ($list as $image) {
                 $images[$key][] = url($image);
