@@ -28,6 +28,7 @@ class UsersController extends Controller
             'zipcode' => $user->zipcode,
             'email' => $user->email,
             'is_anonymous' => $user->is_anonymous,
+            'is_private' => $user->is_private,
             'birth_year' => $user->birth_year,
         ]);
     }
@@ -54,6 +55,7 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'is_anonymous' => $request->is_anonymous,
+            'is_private' => $request->is_private,
             'zipcode' => $request->zipcode,
             'api_token' => $api_token,
             'birth_year' => $request->birth_year,
@@ -69,6 +71,7 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'is_anonymous' => $user->is_anonymous,
+            'is_private' => $user->is_private,
             'zipcode' => $user->zipcode,
             'birth_year' => $user->birth_year,
             'api_token' => $api_token,
@@ -95,6 +98,7 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'is_anonymous' => $request->is_anonymous,
+            'is_private' => $request->is_private,
             'birth_year' => $request->birth_year,
             'zipcode' => $request->zipcode,
         ]);
@@ -107,6 +111,7 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'is_anonymous' => $user->is_anonymous,
+            'is_private' => $user->is_private,
             'birth_year' => $user->birth_year,
             'zipcode' => $user->zipcode,
         ]);
@@ -168,6 +173,8 @@ class UsersController extends Controller
             'zipcode' => $user->zipcode,
             'birth_year' => $user->birth_year,
             'is_anonymous' => $user->is_anonymous,
+            'is_private' => $user->is_private,
+
         ]);
     }
 
@@ -197,6 +204,7 @@ class UsersController extends Controller
         return Validator::make($data, array_merge([
             'name' => 'required|min:3',
             'is_anonymous' => 'boolean|nullable',
+            'is_private' => 'boolean|nullable',
             'zipcode' => [
                 'nullable',
                 'min:5',

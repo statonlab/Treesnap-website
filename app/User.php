@@ -20,6 +20,7 @@ class User extends Authenticatable
         'password',
         'api_token',
         'is_anonymous',
+        'is_private',
         'zipcode',
         'class',
         'birth_year'
@@ -42,6 +43,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'is_anonymous' => 'boolean',
+        'is_private' => 'boolean',
         'zipcode' => 'string',
     ];
 
