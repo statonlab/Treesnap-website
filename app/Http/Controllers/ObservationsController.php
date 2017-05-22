@@ -27,10 +27,7 @@ class ObservationsController extends Controller
         if ($is_admin) {
             $observations = Observation::with('user')->orderby('collection_date', 'desc')->get();
         } else {
-            $observations = Observation::with('user')
-                ->where('is_private', false)
-                ->orderby('collection_date', 'desc')
-                ->get();
+            $observations = Observation::with('user')->where('is_private', false)->orderby('collection_date', 'desc')->get();
         }
 
         $data = [];
@@ -84,7 +81,7 @@ class ObservationsController extends Controller
                 'meta_data' => $observation->data,
                 'images' => $observation->images,
                 'collection_date' => $observation->collection_date->diffForHumans(),
-                'mobile_id' => $observation->mobile_id
+                'mobile_id' => $observation->mobile_id,
             ]);
         }
 
