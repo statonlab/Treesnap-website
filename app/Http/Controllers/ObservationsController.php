@@ -84,6 +84,7 @@ class ObservationsController extends Controller
                 'meta_data' => $observation->data,
                 'images' => $observation->images,
                 'collection_date' => $observation->collection_date->diffForHumans(),
+                'mobile_id' => $observation->mobile_id
             ]);
         }
 
