@@ -23,6 +23,7 @@ class Observation extends Model
         'is_private',
         'address',
         'fuzzy_coords',
+        'mobile_id',
     ];
 
     /**

@@ -20,9 +20,10 @@ class User extends Authenticatable
         'password',
         'api_token',
         'is_anonymous',
+        'is_private',
         'zipcode',
         'class',
-        'birth_year'
+        'birth_year',
     ];
 
     /**
@@ -42,6 +43,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'is_anonymous' => 'boolean',
+        'is_private' => 'boolean',
         'zipcode' => 'string',
     ];
 
@@ -70,7 +72,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function groups() {
+    public function groups()
+    {
         return $this->belongsToMany('App\Group');
     }
 
@@ -79,7 +82,8 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->role()->first()->is_admin;
     }
 }
