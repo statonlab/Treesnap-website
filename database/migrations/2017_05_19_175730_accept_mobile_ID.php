@@ -15,7 +15,7 @@ class AcceptMobileID extends Migration
     {
         Schema::table('observations', function (Blueprint $table) {
 
-            $table->integer('mobile_id');
+            $table->integer('mobile_id')->default(0);
 
         });
     }
@@ -28,7 +28,7 @@ class AcceptMobileID extends Migration
     public function down()
     {
         Schema::table('observations', function (Blueprint $table) {
-            $table->dropColumn('mobile_d');
+            $table->dropColumn('mobile_id');
 
         });
     }
