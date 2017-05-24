@@ -84,7 +84,7 @@ class RegisterController extends Controller
             'birth_year' => $data['birth_year'],
             'api_token' => $this->generateAPIToken(),
             'zipcode' => $data['zipcode'],
-            'is_private' => true
+            'is_private' => false
         ]);
 
         return $user;
