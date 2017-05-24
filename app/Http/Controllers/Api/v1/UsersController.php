@@ -44,7 +44,7 @@ class UsersController extends Controller
         $validator = $this->makeValidation($request->all());
 
         if ($validator->fails()) {
-            return $this->error($validator->errors(), 200);
+            return $this->validationError($validator->errors());
         }
 
         $api_token = $this->generateAPIToken();
@@ -88,7 +88,7 @@ class UsersController extends Controller
 
         $validator = $this->makeValidation($request->all(), true, $user);
         if ($validator->fails()) {
-            return $this->error($validator->errors(), 200);
+            return $this->validationError($validator->errors());
         }
 
         $update = $user->update([
@@ -123,16 +123,24 @@ class UsersController extends Controller
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
-            'password' => 'required|min:6',
+            'new_password' => 'required|min:6|confirmed',
+            'old_password' => 'required|min:6',
         ]);
 
         if ($validator->fails()) {
-            return $this->error($validator->errors(), 200);
+            return $this->validationError($validator->errors());
         }
 
-        $user->update(['password' => bcrypt($request->password)]);
+        if (! auth('web')->once(['email' => $user->email, 'password' => $request->old_password])) {
+            return $this->validationError(['old_password' => ['Password does not match our records']]);
+        }
 
-        return $this->created('Password updated');
+        $user->update([
+            'password' => bcrypt($request->new_password),
+            'api_token' => $this->generateAPIToken(),
+        ]);
+
+        return $this->created(['api_token' => $user->api_token]);
     }
 
     /**
