@@ -162,7 +162,7 @@ class UsersController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->error($validator->errors(), 200);
+            return $this->validationError($validator->errors());
         }
 
         // Authenticate the user using email and password
