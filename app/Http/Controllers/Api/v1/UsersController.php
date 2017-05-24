@@ -55,11 +55,10 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'is_anonymous' => $request->is_anonymous,
-            'is_private' => $request->is_private,
+            'is_private' => $request->is_private ? 1 : 0,
             'zipcode' => $request->zipcode,
             'api_token' => $api_token,
             'birth_year' => $request->birth_year,
-
         ]);
 
         if (! $user) {
