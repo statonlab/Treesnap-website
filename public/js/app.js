@@ -50351,7 +50351,7 @@ var KnowledgeScene = function (_Component) {
                                 { className: 'column' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
-                                    { className: 'box' },
+                                    { className: 'box body' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { dangerouslySetInnerHTML: { __html: __WEBPACK_IMPORTED_MODULE_1_marked___default()(this.state.content) } }),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
                                 )
