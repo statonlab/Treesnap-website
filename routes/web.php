@@ -70,6 +70,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::post('/api/group/attach', 'GroupsController@attach');
     Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
+    //Collections
+    Route::get('/api/collections', 'CollectionsController@index');
+    Route::post('/api/collections', 'CollectionsController@create');
+    Route::get('/api/collection/{id}', 'CollectionsController@show');
+    Route::delete('/api/collection/detach', 'CollectionsController@detach');
+
+
     // Roles
     Route::get('/api/roles', 'RolesController@index');
 

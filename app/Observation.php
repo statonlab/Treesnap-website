@@ -76,14 +76,14 @@ class Observation extends Model
         $observation->save();
     }
 
-  /**
-   * Return lists observation belongs to.
-   *
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-   *
-   */
-  public function collections()
-  {
-    return $this->belongsToMany('App\Collection');
-  }
+    /**
+     * Return lists observation belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
+     */
+    public function collections()
+    {
+        return $this->belongsToMany('App\Collection');
+    }
 }

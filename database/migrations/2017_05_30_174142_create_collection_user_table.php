@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCollectionObservationTable extends Migration
+class CreateCollectionUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateCollectionObservationTable extends Migration
      */
     public function up()
     {
-        //Pivot table between tree_list and observation
-
-        Schema::create('collection_observation', function (Blueprint $table) {
+        Schema::create('collection_user', function (Blueprint $table) {
             $table->integer('collection_id');
-            $table->integer('observation_id');
+            $table->integer('user_id');
         });
     }
 
@@ -28,6 +26,6 @@ class CreateCollectionObservationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collection_observation');
+        Schema::dropIfExists('collection_user');
     }
 }
