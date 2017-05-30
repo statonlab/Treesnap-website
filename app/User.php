@@ -86,4 +86,17 @@ class User extends Authenticatable
     {
         return $this->role()->first()->is_admin;
     }
+
+  /**
+   * Get user lists
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+
+
+  public function treeCollections()
+  {
+    return $this->hasMany('App\Collection');
+  }
+
 }
