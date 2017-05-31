@@ -1,8 +1,7 @@
 /**
- * Treesnap Website Entry Point JS File
+ * TreeSnap Map
  */
 // Bootstrap Everything (loads dash and a configured axios)
-import '../bootstrap'
 import 'dragscroll'
 import React, {Component} from 'react'
 import Sidebar from '../components/Sidebar'
@@ -12,7 +11,6 @@ import Map from '../UI/Map'
 import Marker from '../UI/Marker'
 import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
-import Address from '../UI/Address'
 import Spinner from '../components/Spinner'
 
 export default class App extends Component {
@@ -168,7 +166,7 @@ export default class App extends Component {
         let categories      = this.state.categories
 
         this.state.markers.map(marker => {
-            if (marker.title == name) {
+            if (marker.title === name) {
                 marker.show      = !marker.show
                 categories[name] = marker.show
             }
@@ -268,7 +266,6 @@ export default class App extends Component {
                                 <div className="media-content">
                                     <div className="mb-0"><strong>{marker.title}</strong></div>
                                     <div className="mb-0">By {marker.owner}</div>
-                                    <Address position={marker.position}/>
                                     <a href={`/observation/${marker.id}`}>See full description</a>
                                 </div>
                             </div>

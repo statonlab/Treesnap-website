@@ -147,7 +147,7 @@ export default class AccountScene extends Component {
                 <div className="home-section">
                     <div className="container">
                         <div className="columns">
-                            <div className="column is-8 is-offset-2">
+                            <div className="column">
                                 <div className="box">
                                     <h1 className="title is-4">Personal Information</h1>
 
@@ -221,7 +221,9 @@ export default class AccountScene extends Component {
                                         </div>
                                     </form>
                                 </div>
+                            </div>
 
+                            <div className="column">
                                 <div className="box">
                                     <h1 className="title is-4">Password</h1>
                                     <form action="#" method="post" onSubmit={this.submitPassword.bind(this)}>
