@@ -42,9 +42,28 @@ class DocumentController extends Controller
 
         return $this->success($contents);
     }
+
+  /**
+   * Show frequently asked questions FAQ page.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+
     public function faq() {
         $contents = Storage::get('docs/FAQ.md');
 
         return $this->success($contents);
     }
+
+/**
+ * Show Trees page.
+ *
+ * @return \Illuminate\Http\JsonResponse
+ */
+
+public function trees() {
+  $contents = Storage::get('docs/Trees.md');
+
+  return $this->success($contents);
+}
 }

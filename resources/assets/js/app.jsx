@@ -28,6 +28,8 @@ class App extends Component {
                     <Route path={'/privacy-policy'} component={() => (<KnowledgeScene docPath='/docs/privacy'/>)}/>
                     <Route path={'/terms-of-use'} component={() => (<KnowledgeScene docPath='/docs/terms'/>)}/>
                     <Route path={'/faq'} component={() => (<KnowledgeScene docPath='/docs/faq'/>)}/>
+                    <Route path={'/trees'} component={() => (<KnowledgeScene docPath='/docs/trees'/>)}/>
+
                     <Route component={NotFoundScene}/>
                 </Switch>
             </Router>

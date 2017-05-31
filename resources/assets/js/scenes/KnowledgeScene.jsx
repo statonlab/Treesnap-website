@@ -38,7 +38,7 @@ export default class KnowledgeScene extends Component {
                                 <KnowledgeSidebar/>
                             </div>
                             <div className="column">
-                                <div className="box">
+                                <div className="box body">
                                     <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}}></div>
                                     <Spinner visible={this.state.loading} inline={true}/>
                                 </div>
