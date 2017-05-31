@@ -23,7 +23,7 @@ export default class Navbar extends Component {
                     <div className="nav-left nav-brand">
                         <NavLink to="/" className="nav-item">
                             <img src={`/logo/ts-logo-${this.props.home ? '96' : '32'}.png`} alt="Logo" className="logo-img"/>
-                            <span className="logo-text"><b>Tree</b><span style={{fontWeight: 300}}>snap</span></span>
+                            <span className="logo-text"><b>Tree</b><span style={{fontWeight: 300}}>Snap</span></span>
                         </NavLink>
                     </div>
 

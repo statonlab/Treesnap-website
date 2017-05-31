@@ -40,7 +40,6 @@ Route::get('/logout', function () {
 
 // Observations
 Route::get('/observations', 'ObservationsController@index');
-Route::get('/observation/{id}', 'ObservationsController@show');
 Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Users
@@ -81,6 +80,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
+});
+
+// Authenticated Users Only
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/account', 'HomeController@index');
 });
 
 // Other React Routes

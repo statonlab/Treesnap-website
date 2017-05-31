@@ -3,7 +3,7 @@
 <head>
     @include('partials.meta')
 
-    <title>{{ $title or 'Treesnap' }}</title>
+    <title>{{ $title or 'TreeSnap' }}</title>
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
