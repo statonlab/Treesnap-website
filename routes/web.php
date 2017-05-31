@@ -57,6 +57,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/user/password', 'UsersController@updatePassword');
 });
 
+
+//Collections
+Route::get('/collections', 'CollectionsController@index');
+Route::post('/collections', 'CollectionsController@create');
+Route::get('/collection/{id}', 'CollectionsController@show');
+Route::get('/collection/detach', 'CollectionsController@detach'); //remove an observation from collection
+Route::delete('/collection/delete', 'CollectionsController@delete');//delete a collection
+Route::get('/collection/attach', 'CollectionsController@attach');//Add an observation t a collection
+Route::get('/collection/share', 'CollectionsController@share');//Share collection with user
+Route::get('/collection/unshare', 'CollectionsController@unshare');//Share collection with user
+//Fake routes for testing  TODO: delete!
+Route::get('/test', 'CollectionsController@unshare');
+
+
 // Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
     // Users
@@ -71,17 +85,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::delete('/api/group/detach', 'GroupsController@detach');
     Route::post('/api/group/attach', 'GroupsController@attach');
     Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
-
-    //Collections
-    Route::get('/api/collections', 'CollectionsController@index');
-    Route::post('/api/collections', 'CollectionsController@create');
-    Route::get('/api/collection/{id}', 'CollectionsController@show');
-    Route::delete('/api/collection/detach', 'CollectionsController@detach'); //remove an observation from collection
-    Route::delete('/api/collection/delete', 'CollectionsController@delete');//delete a collection
-
-    //Fake routes for testing  TODO: delete!
-    Route::get('/test', 'CollectionsController@index');
-
 
     // Roles
     Route::get('/api/roles', 'RolesController@index');

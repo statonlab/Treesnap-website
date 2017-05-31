@@ -93,7 +93,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-    public function treeCollections()
+    public function collections()
     {
         return $this->belongsToMany('App\Collection');
     }

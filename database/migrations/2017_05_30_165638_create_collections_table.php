@@ -18,6 +18,7 @@ class CreateCollectionsTable extends Migration
             $table->integer('user_id');
             $table->string('label');
             $table->string('description');
+            $table->timestamps();
         });
     }
 

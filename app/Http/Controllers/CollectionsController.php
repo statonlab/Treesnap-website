@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Observation;
 use App\Collection;
 use App\User;
 use Illuminate\Support\Facades\DB;
@@ -19,11 +19,12 @@ class CollectionsController extends Controller
      */
     public function index(Request $request)
     {
+        //collections shared
         $user = $request->user();
-        $collections = $user->collections()->get();
-        dd($request->all());
+        //TODO: I think the get() here is an n+1 query
 
-        return $this->success($collections);
+        $collectionsShared = $user->collections()->get();
+        return $this->success($collectionsShared);
     }
 
     /**
@@ -35,12 +36,17 @@ class CollectionsController extends Controller
 
     public function create(Request $request)
     {
-        $user = $request->user();
 
-        $this->validate($request, [
-            'user' => 'required',
-            'label' => 'required|min:3|max:255',
-            'description' => 'nullable',
+        $user = $request->user();
+        // $this->validate($request, [
+        //     'user' => 'required',
+        //     'label' => 'required|min:3|max:255',
+        //     'description' => 'nullable',
+        // ]);
+        $collection = Collection::create([
+            'user_id' => $user->id,
+            'label' => "test",
+            'description' => "its a test, genius",
         ]);
 
         $collection = Collection::create([
@@ -48,7 +54,8 @@ class CollectionsController extends Controller
             'label' => $request->label,
             'description' => $request->description,
         ]);
-
+        //Attach the creator to the collection
+        $collection->users()->attach($user->id);
         return $this->created($collection);
     }
 
@@ -58,25 +65,27 @@ class CollectionsController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $collection = Collection::with([
-            'users' => function ($query) {
-                $query->select('id', 'name');
-            },
-            'observations' => function ($query) {
-                $query->select('id', 'observation_category');
-            },
-        ])->findOrFail($id);
+        $user = $request->user();
+        $collection = Collection::where('id', $id)->first();
+        //$collection = Collection::with([
+        //    'users' => function ($query) {
+        //        $query->select('id', 'name');
+        //    },
+        //    'observations' => function ($query) {
+        //        $query->select('id', 'observation');
+        //    },
+        //])->findOrFail($id);
 
         if (! $collection) {
             return $this->notFound('The collection you requested was not found.');
         }
 
         return $this->success([
-            'name' => $collection->name,
-            'users' => $collection->users,
-            'observations' => $collection->observations,
+            'label' => $collection->label,
+            'user_id' => $collection->user_id,
+            'description' => $collection->observations,
         ]);
     }
 
@@ -94,19 +103,20 @@ class CollectionsController extends Controller
             //this field must exist in the id column of the collection table
         ]);
 
+
+        $collection = Collection::findOrFail($request->collection_id);
         $observations = json_decode($request->observations);
-        $collection = $request->collection_id;
 
         foreach ($observations as $id) {
             if ($id) {
+                //TO DO: prevent double attachment.
                 $collection->observations()->attach($id);
-                //$id->collections()->attach($request->collection_id);
-                //Need to attach the observation to the collection, not vice versa.
             }
         }
 
         return $this->success([
-            'name' => $collection->name,
+            'id' => $collection->id,
+            'label' => $collection->label,
         ]);
     }
 
@@ -117,13 +127,19 @@ class CollectionsController extends Controller
      * @return mixed
      */
 
-    public function grantAccess(Request $request)
+    public function share(Request $request)
     {
+
         $collection = Collection::findOrFail($request->collection_id);
-        $collection->users()->attach($request->user_id);
+
+        //Dont attach if already attached TODO: Does not work as intended
+        if (! $collection->users()->find($request->user_id)) {
+            $collection->users()->attach($request->user_id);
+        }
 
         return $this->success([
-            'name' => $collection->name,
+            'id' => $collection->id,
+            'label' => $collection->label,
         ]);
     }
 
@@ -136,7 +152,6 @@ class CollectionsController extends Controller
         $collection = Collection::findOrFail($request->collection_id);
         $observations = json_decode($request->observations);
 
-        $collection->detach($request->observation_id);
         foreach ($observations as $id) {
             if ($id) {
                 $collection->observations()->detach($id);
@@ -153,8 +168,45 @@ class CollectionsController extends Controller
      * Remove access for user from the collection
      */
 
+    public function unshare(Request $request)
+    {
+        $request->user_id = 2;
+        $request->collection_id = 1;
+
+        $collection = Collection::findOrFail($request->collection_id);
+        $collection->users()->detach($request->user_id);
+        //
+        //if (!$request->user_id === $collection->user_id) { //Don't detach self
+        //    $collection->users()->detach($request->user_id);
+        //}
+
+        return $this->success([
+            'id' => $collection->id,
+            'label' => $collection->label,
+            'Owner' => $collection->user_id,
+
+        ]);
+    }
+
     /**
-     * Delete the collection
+     * Delete a specified collection
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
+
+    public function delete(Request $request){
+        $id = $request->collection_id;
+        $label = $request->label;
+        $collection = Collection::find($id);
+        $collection->delete();
+
+
+        return $this->success([
+            'id' => $id,
+            'label' => $label,
+        ]);
+
+    }
 
 }
