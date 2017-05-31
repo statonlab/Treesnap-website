@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\CollectionsController;
+
 // Home Routes
 Route::get('/', 'HomeController@index');
 
@@ -74,7 +76,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/api/collections', 'CollectionsController@index');
     Route::post('/api/collections', 'CollectionsController@create');
     Route::get('/api/collection/{id}', 'CollectionsController@show');
-    Route::delete('/api/collection/detach', 'CollectionsController@detach');
+    Route::delete('/api/collection/detach', 'CollectionsController@detach'); //remove an observation from collection
+    Route::delete('/api/collection/delete', 'CollectionsController@delete');//delete a collection
+
+    //Fake routes for testing  TODO: delete!
+    Route::get('/test', 'CollectionsController@index');
 
 
     // Roles

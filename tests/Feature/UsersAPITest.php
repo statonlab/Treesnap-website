@@ -98,7 +98,6 @@ class UsersAPITest extends TestCase
           'data' => [
             'id',
             'name',
-            'is_over_thirteen',
             'zipcode',
             'email',
             'is_anonymous',

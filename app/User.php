@@ -88,13 +88,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user collections
+     * Get user collections that are shared with them
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
     public function treeCollections()
     {
-        return $this->hasMany('App\Collection');
+        return $this->belongsToMany('App\Collection');
     }
 }

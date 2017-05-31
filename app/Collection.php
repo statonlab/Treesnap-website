@@ -17,7 +17,7 @@ class Collection extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
 
-    public function user()
+    public function owner()
     {
         return $this->belongsTo('App\User');
     }
@@ -28,7 +28,7 @@ class Collection extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      *
      */
-    public function shared()
+    public function users()
     {
         return $this->hasMany('App\User');
     }
@@ -41,6 +41,6 @@ class Collection extends Model
 
     public function observations()
     {
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\Observation');
     }
 }

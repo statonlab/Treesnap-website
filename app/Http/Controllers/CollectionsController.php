@@ -6,6 +6,7 @@ use App\Collection;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Traits\Responds;
 
 class CollectionsController extends Controller
 {
@@ -20,14 +21,9 @@ class CollectionsController extends Controller
     {
         $user = $request->user();
         $collections = $user->collections()->get();
-        $data = [];
+        dd($request->all());
 
-        foreach ($collections as $collection) {
-            //something
-
-        }
-
-        return $this->success($data);
+        return $this->success($collections);
     }
 
     /**
@@ -65,13 +61,17 @@ class CollectionsController extends Controller
     public function show($id)
     {
         $collection = Collection::with([
-                'users' => function ($query) {
-                    $query->select('id', 'name');
-                },
-                'observations' => function ($query) {
-                    $query->select('id', 'observation_category');
-                },
-            ])->findOrFail($id);
+            'users' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'observations' => function ($query) {
+                $query->select('id', 'observation_category');
+            },
+        ])->findOrFail($id);
+
+        if (! $collection) {
+            return $this->notFound('The collection you requested was not found.');
+        }
 
         return $this->success([
             'name' => $collection->name,
@@ -95,41 +95,66 @@ class CollectionsController extends Controller
         ]);
 
         $observations = json_decode($request->observations);
+        $collection = $request->collection_id;
 
         foreach ($observations as $id) {
-
             if ($id) {
-                $id->collections()->attach($request->collection_id);
+                $collection->observations()->attach($id);
+                //$id->collections()->attach($request->collection_id);
+                //Need to attach the observation to the collection, not vice versa.
             }
         }
 
-        $collection = Collection::with([
-            'users' => function ($query) {
-                $query->select('id', 'name');
-            },
-        ])->findOrFail($request->group_id);
-
         return $this->success([
             'name' => $collection->name,
-            'users' => $collection->users,
         ]);
     }
 
     /**
-     * Grant access to collection.
+     * Grant access to collection, given a userID and collection ID.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
      */
 
     public function grantAccess(Request $request)
     {
-        Collection::find($request->request_id)->users()->where('user_id', $request->user_id)->firstOrFail();
+        $collection = Collection::findOrFail($request->collection_id);
+        $collection->users()->attach($request->user_id);
+
+        return $this->success([
+            'name' => $collection->name,
+        ]);
     }
+
+    /**
+     * Remove tree from the collection
+     */
+
+    public function detach(Request $request)
+    {
+        $collection = Collection::findOrFail($request->collection_id);
+        $observations = json_decode($request->observations);
+
+        $collection->detach($request->observation_id);
+        foreach ($observations as $id) {
+            if ($id) {
+                $collection->observations()->detach($id);
+            }
+        }
+
+        return $this->success([
+            'name' => $collection->name,
+        ]);
+    }
+
+
+    /**
+     * Remove access for user from the collection
+     */
 
     /**
      * Delete the collection
      */
 
-    public function detach($id)
-    {
-        return null;
-    }
 }
