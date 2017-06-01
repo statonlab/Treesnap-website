@@ -19,7 +19,7 @@ class CollectionsController extends Controller
     {
         //collections shared
         $user = $request->user();
-        $collectionsShared = $user->collections()->get();
+        $collectionsShared = $user->collections;
 
         return $this->success($collectionsShared);
     }
@@ -30,28 +30,22 @@ class CollectionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function create(Request $request)
     {
-
         $user = $request->user();
-        // $this->validate($request, [
-        //     'user' => 'required',
-        //     'label' => 'required|min:3|max:255',
-        //     'description' => 'nullable',
-        // ]);
-        $collection = Collection::create([
-            'user_id' => $user->id,
-            'label' => "test",
-            'description' => "its a test, genius",
+
+        $this->validate($request, [
+            'label' => 'required|min:3|max:255',
+            'description' => 'nullable|max:255',
         ]);
 
         $collection = Collection::create([
             'user_id' => $user->id,
             'label' => $request->label,
-            'description' => $request->description,
+            'description' => ! empty($request->description) ? $request->description : '',
         ]);
-        //Attach the creator to the collection
+
+        // Attach the creator to the collection
         $collection->users()->attach($user->id);
 
         return $this->created($collection);
@@ -66,50 +60,63 @@ class CollectionsController extends Controller
     public function show($id, Request $request)
     {
         $user = $request->user();
-        $collection = Collection::where('id', $id)->first();
-        //$collection = Collection::with([
-        //    'users' => function ($query) {
-        //        $query->select('id', 'name');
-        //    },
-        //    'observations' => function ($query) {
-        //        $query->select('id', 'observation');
-        //    },
-        //])->findOrFail($id);
 
-        if (! $collection) {
-            return $this->notFound('The collection you requested was not found.');
+        $collection = Collection::with([
+            'users' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'observations' => function ($query) {
+                $query->select('id', 'observation_category');
+            },
+        ])->findOrFail($id);
+
+        /** Not Needed Since We Are Using Find Or Fail **/
+        //if (! $collection) {
+        //    return $this->notFound('The collection you requested was not found.');
+        //}
+
+        // Make sure the user has access to this observation
+        if (! $collection->users->contains($user->id)) {
+            return $this->unauthorized();
         }
 
         return $this->success([
+            'is_owner' => $user->id === $collection->user_id,
             'label' => $collection->label,
             'user_id' => $collection->user_id,
-            'description' => $collection->observations,
+            'users' => $collection->users,
+            'description' => $collection->description,
+            'observations' => $collection->observations,
         ]);
     }
 
     /**
-     * Add observation to collection
+     * Add observation to collection.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function attach(Request $request)
     {
+        $user = $request->user();
 
         $this->validate($request, [
             'observations' => 'required|json',
             'collection_id' => 'required|exists:collections,id',
-            //this field must exist in the id column of the collection table
         ]);
 
         $collection = Collection::findOrFail($request->collection_id);
-        $observations = json_decode($request->observations);
 
+        // Prevent non owners from adding to the collection
+        if ($collection->user_id !== $user->id) {
+            return $this->unauthorized();
+        }
+
+        $observations = json_decode($request->observations);
         foreach ($observations as $id) {
-            if ($id) {
-                //TO DO: prevent double attachment.
-                $collection->observations()->attach($id);
+            // Make sure that all observations exists before attaching
+            if (Collection::find($id)) {
+                $collection->observations()->syncWithoutDetaching($id);
             }
         }
 
@@ -125,11 +132,22 @@ class CollectionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return mixed
      */
-
     public function share(Request $request)
     {
+        $user = $request->user();
+
+        $this->validate($request, [
+            'collection_id' => 'required|exists:collections,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
 
         $collection = Collection::findOrFail($request->collection_id);
+
+        // Allow only owners to share
+        if ($collection->user_id !== $user->id) {
+            return $this->unauthorized();
+        }
+
         $collection->users()->syncWithoutDetaching($request->user_id);
 
         return $this->success([
@@ -145,16 +163,25 @@ class CollectionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function detach(Request $request)
     {
-        $collection = Collection::findOrFail($request->collection_id);
-        $observations = json_decode($request->observations);
+        $this->validate($request, [
+            'collection_id' => 'required|exists:collections,id',
+            'observations' => 'required|json'
+        ]);
 
+        $user = $request->user();
+
+        $collection = Collection::findOrFail($request->collection_id);
+
+        // Allow only owners to remove from the collection
+        if ($collection->user_id !== $user->id) {
+            return $this->unauthorized();
+        }
+
+        $observations = json_decode($request->observations);
         foreach ($observations as $id) {
-            if ($id) {
-                $collection->observations()->detach($id);
-            }
+            $collection->observations()->detach($id);
         }
 
         return $this->success([
@@ -162,22 +189,27 @@ class CollectionsController extends Controller
         ]);
     }
 
-    /**Detach users from collection (unshare)
+    /**
+     * Detach users from collection (unshare)
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function unshare(Request $request)
     {
-        $request->user_id = 2;
-        $request->collection_id = 1;
+        // TODO: Validation needed
+
 
         $collection = Collection::findOrFail($request->collection_id);
-        $collection->users()->detach($request->user_id);
-        //
-        //if (!$request->user_id === $collection->user_id) { //Don't detach self
+
+        // TODO: GOOD THINKING, THIS SHOULD BE DONE
+        //if (!$request->user_id === $collection->user_id) { // Don't detach self
         //    $collection->users()->detach($request->user_id);
         //}
+
+        // TODO: Allow only owners to detach
+
+        $collection->users()->detach($request->user_id);
 
         return $this->success([
             'id' => $collection->id,
@@ -193,12 +225,16 @@ class CollectionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function delete(Request $request)
     {
+        // TODO: Validation needed here
+
+        // TODO: should be consistent and use $request->*
         $id = $request->collection_id;
         $label = $request->label;
-        $collection = Collection::find($id);
+        $collection = Collection::findOrFail($id);
+
+        // TODO: Allow only owners to delete
         $collection->delete();
 
         return $this->success([
@@ -206,4 +242,6 @@ class CollectionsController extends Controller
             'label' => $label,
         ]);
     }
+
+    // TODO: Need a method to allow users to unshare themselves if they are non owners.
 }

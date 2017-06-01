@@ -11,7 +11,7 @@
 |
 */
 
-use App\Http\Controllers\CollectionsController;
+Route::get('/test/{id}', 'CollectionsController@show');
 
 // Home Routes
 Route::get('/', 'HomeController@index');
