@@ -86,4 +86,26 @@ class User extends Authenticatable
     {
         return $this->role()->first()->is_admin;
     }
+
+    /**
+     * Determine if a user is a scientist.
+     *
+     * @return bool
+     */
+    public function isScientist()
+    {
+        return $this->role()->first()->name === 'Scientist';
+    }
+
+    /**
+     * Checks a user's role.
+     *
+     * @param $role
+     * @param $user
+     * @return bool
+     */
+    public static function hasRole($role, $user)
+    {
+        return strtolower($user->role()->first()->name) === strtolower(trim($role));
+    }
 }
