@@ -88,10 +88,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user collections that are shared with them
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+    public function collections()
+    {
+        return $this->belongsToMany('App\Collection');
+    }
+
+    /**
      * Determine if a user is a scientist.
      *
      * @return bool
      */
+
     public function isScientist()
     {
         return $this->role()->first()->name === 'Scientist';

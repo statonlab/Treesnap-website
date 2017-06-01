@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIsPrivateColumn extends Migration
+class CreateCollectionObservationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddIsPrivateColumn extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_private')->default(false);
+        //Pivot table between tree_list and observation
+
+        Schema::create('collection_observation', function (Blueprint $table) {
+            $table->integer('collection_id');
+            $table->integer('observation_id');
         });
     }
 
@@ -25,8 +28,6 @@ class AddIsPrivateColumn extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_private');
-        });
+        Schema::dropIfExists('collection_observation');
     }
 }

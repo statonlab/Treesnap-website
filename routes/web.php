@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/test/{id}', 'CollectionsController@show');
+
 // Home Routes
 Route::get('/', 'HomeController@index');
 
@@ -20,7 +22,6 @@ Route::get('/docs/terms', 'DocumentController@terms');
 Route::get('/docs/privacy', 'DocumentController@policy');
 Route::get('/docs/faq', 'DocumentController@faq');
 Route::get('/docs/trees', 'DocumentController@trees');
-
 
 // Contact
 Route::post('/contact', 'ContactController@send');
@@ -53,6 +54,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
 });
+
+//Collections
+Route::get('/collections', 'CollectionsController@index');
+Route::post('/collections', 'CollectionsController@create');
+Route::get('/collection/{id}', 'CollectionsController@show');
+Route::get('/collection/attach', 'CollectionsController@attach');//Add an observation t a collection
+Route::get('/collection/detach', 'CollectionsController@detach'); //remove an observation from collection
+Route::delete('/collection/delete', 'CollectionsController@delete');//delete a collection
+Route::get('/collection/share', 'CollectionsController@share');//Share collection with user
+Route::get('/collection/unshare', 'CollectionsController@unshare');//Share collection with user
 
 // Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
