@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
+import moment from 'moment'
 
 export default class AccountScene extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ export default class AccountScene extends Component {
             errors                   : {
                 name        : [],
                 email       : [],
-                is_anonymous: []
+                is_anonymous: [],
+                birth_year  : []
             },
             message                  : '',
             new_password             : '',
@@ -37,6 +39,8 @@ export default class AccountScene extends Component {
                 is_anonymous: user.is_anonymous ? 1 : 0,
                 birth_year  : user.birth_year
             })
+
+            window.fixHeight()
         }).catch(error => {
             console.log(error)
         })
@@ -53,7 +57,8 @@ export default class AccountScene extends Component {
         axios.put('/user', {
             name        : this.state.name,
             email       : this.state.email,
-            is_anonymous: this.state.is_anonymous
+            is_anonymous: this.state.is_anonymous,
+            birth_year  : this.state.birth_year
         }).then(response => {
             let user = response.data.data
 
@@ -65,7 +70,8 @@ export default class AccountScene extends Component {
                 errors      : {
                     name        : [],
                     email       : [],
-                    is_anonymous: []
+                    is_anonymous: [],
+                    birth_year  : []
                 }
             })
         }).catch(error => {
@@ -74,9 +80,10 @@ export default class AccountScene extends Component {
                 this.setState({
                     message: '',
                     errors : {
-                        name        : errors.name ? errors.name : [],
-                        email       : errors.email ? errors.email : [],
-                        is_anonymous: errors.is_anonymous ? errors.is_anonymous : []
+                        name        : errors.name || [],
+                        email       : errors.email || [],
+                        is_anonymous: errors.is_anonymous || [],
+                        birth_year  : errors.birth_year || []
                     }
                 })
             }
@@ -136,6 +143,22 @@ export default class AccountScene extends Component {
     }
 
     /**
+     * Generate birth years.
+     * @returns {Array}
+     * @private
+     */
+    _generateBirthDateOptions() {
+        let today = parseInt(moment().format('YYYY').toString())
+        let dates = []
+        for (let i = today; i > today - 101; i--) {
+            dates.push(i)
+        }
+        return dates.map((v, i) => {
+            return (<option key={i} value={v}>{v}</option>)
+        })
+    }
+
+    /**
      * render.
      *
      * @returns {XML}
@@ -144,7 +167,7 @@ export default class AccountScene extends Component {
         return (
             <div>
                 <Navbar/>
-                <div className="home-section">
+                <div className="home-section short-content">
                     <div className="container">
                         <div className="columns">
                             <div className="column">
@@ -189,12 +212,18 @@ export default class AccountScene extends Component {
 
                                         <div className="field">
                                             <label className="label">Year of Birth</label>
-                                            <div className="control">
-                                                <input type="text"
-                                                       className="input"
-                                                       disabled={true}
-                                                       value={this.state.birth_year}/>
+                                            <div className={`select${this.state.errors.birth_year.length > 0 ? ' is-danger' : ''}`}>
+                                                <select type="text"
+                                                        className="input"
+                                                        value={this.state.birth_year}
+                                                        onChange={(e) => this.setState({birth_year: e.target.value})}
+                                                >
+                                                    {this._generateBirthDateOptions()}
+                                                </select>
                                             </div>
+                                            {this.state.errors.birth_year.map((error, index) => {
+                                                return <p className="help is-danger" key={index}>{error}</p>
+                                            })}
                                         </div>
 
                                         <div className="field">

@@ -1,3 +1,8 @@
+<?php
+/**
+ * This file is used for static HTML pages such as register and login.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
