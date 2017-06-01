@@ -189,7 +189,7 @@ class ObservationsController extends Controller
             return $this->error('Request could not be completed', 101);
         }
 
-sesss    }
+   }
 
     /**
      * Returns the validation rules for observation create/update requests.
