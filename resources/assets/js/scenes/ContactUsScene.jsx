@@ -20,6 +20,10 @@ export default class ContactUsScene extends Component {
         }
     }
 
+    componentDidMount() {
+        window.fixHeight()
+    }
+
     /**
      * Submit a new entry.
      *
@@ -94,7 +98,7 @@ export default class ContactUsScene extends Component {
         return (
             <div>
                 <Navbar/>
-                <div className="home-section">
+                <div className="home-section short-content">
                     <div className="container">
                         <div className="columns">
                             <div className="column is-3">

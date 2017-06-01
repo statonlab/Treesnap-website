@@ -15,15 +15,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
-    }
-
-    /**
-     * Show the map page.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function map() {
-        return view('map');
+        return view('home');
     }
 }

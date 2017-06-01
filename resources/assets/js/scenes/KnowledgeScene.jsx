@@ -23,6 +23,7 @@ export default class KnowledgeScene extends Component {
             console.log(error)
         }).then(() => {
             this.setState({loading: false})
+            window.fixHeight()
         })
     }
 
@@ -31,7 +32,7 @@ export default class KnowledgeScene extends Component {
             <div className="document">
                 <Navbar/>
                 <Spinner visible={this.state.loading}/>
-                <div className="home-section">
+                <div className="home-section short-content">
                     <div className="container">
                         <div className="columns">
                             <div className="column is-3">
