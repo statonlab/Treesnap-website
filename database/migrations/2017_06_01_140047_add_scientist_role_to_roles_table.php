@@ -13,10 +13,12 @@ class AddScientistRoleToRolesTable extends Migration
      */
     public function up()
     {
-        \App\Role::create([
-            'name' => 'Scientist',
-            'is_admin' => false,
-        ]);
+        if (! \App\Role::where('name', 'Scientist')->first()) {
+            \App\Role::create([
+                'name' => 'Scientist',
+                'is_admin' => false,
+            ]);
+        }
     }
 
     /**
@@ -26,7 +28,9 @@ class AddScientistRoleToRolesTable extends Migration
      */
     public function down()
     {
-        $role = \App\Role::where('name', 'Scientist');
-        $role->delete();
+        if (\App\Role::where('name', 'Scientist')->count() > 1) {
+            $role = \App\Role::where('name', 'Scientist')->first();
+            $role->delete();
+        }
     }
 }

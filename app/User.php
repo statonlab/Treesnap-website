@@ -112,12 +112,18 @@ class User extends Authenticatable
     /**
      * Checks a user's role.
      *
-     * @param $role
+     * @param string|array $role the possible role
      * @param $user
      * @return bool
      */
     public static function hasRole($role, $user)
     {
+        if (is_array($role)) {
+            return in_array(strtolower($user->role()->first()->name), array_map(function ($r) {
+                return strtolower($r);
+            }, $role));
+        }
+
         return strtolower($user->role()->first()->name) === strtolower(trim($role));
     }
 }

@@ -1,22 +1,22 @@
 import '../bootstrap'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import AdminSidebar from './components/AdminSidebar'
 import AdminNavbar from '../components/AdminNavbar'
-import Dashboard from './scenes/Dashboard'
-import Users from './scenes/Users'
-import User from './scenes/User'
-import Groups from './scenes/Groups'
-import Group from './scenes/Group'
-import Observations from './scenes/Observations'
+import DashboardScene from './scenes/DashboardScene'
+import UsersScene from './scenes/UsersScene'
+import UserScene from './scenes/UserScene'
+import GroupsScene from './scenes/GroupsScene'
+import GroupScene from './scenes/GroupScene'
+import ObservationsScene from './scenes/ObservationsScene'
 
 class Admin extends Component {
     render() {
         return (
             <div>
                 <AdminNavbar />
-                <Router basename="/admin">
+                <Router basename="/admin" onChange={() => alert('changed')}>
                     <div className="main-content admin-content">
                         <div className="container is-fluid">
                             <div className="columns">
@@ -24,12 +24,14 @@ class Admin extends Component {
                                     <AdminSidebar/>
                                 </div>
                                 <div className="column is-10">
-                                    <Route exact={true} path="/" component={Dashboard}/>
-                                    <Route path="/users" component={Users}/>
-                                    <Route path="/user/:id" component={User}/>
-                                    <Route path="/groups" component={Groups}/>
-                                    <Route path="/group/:id" component={Group}/>
-                                    <Route path="/observations" component={Observations}/>
+                                    <Switch>
+                                        <Route exact={true} path="/" component={DashboardScene}/>
+                                        <Route path="/users" component={UsersScene}/>
+                                        <Route path="/user/:id" component={UserScene}/>
+                                        <Route path="/groups" component={GroupsScene}/>
+                                        <Route path="/group/:id" component={GroupScene}/>
+                                        <Route path="/observations" component={ObservationsScene}/>
+                                    </Switch>
                                     <div className="app-footer admin-footer">
                                         Copyright &copy; 2017 University of Tennessee at Knoxville
                                     </div>

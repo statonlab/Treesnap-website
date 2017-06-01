@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
         window.Laravel = {
-            csrfToken    : '{{ csrf_token() }}',
-            observationID: {{  $id or 0 }},
+            csrfToken    : '{{ csrf_token() }}'
         }
     </script>
     @yield('head')

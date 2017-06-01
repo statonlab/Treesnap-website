@@ -31,7 +31,7 @@ export default class ObservationScene extends Component {
 
     componentDidMount() {
         this.setState({loading: true})
-
+        window.fixHeight()
         let id = this.props.match.params.id
         axios.get(`/web/observation/${id}`).then(response => {
             let data = response.data.data
@@ -108,12 +108,11 @@ export default class ObservationScene extends Component {
     }
 
     render() {
-        console.log(this.state.observation_category)
         return (
             <div>
                 <Navbar/>
                 <Spinner visible={this.state.loading}/>
-                <div className="home-section">
+                <div className="home-section short-content">
                     <div className="container">
                         <div className="box">
                             <h3 className="title is-4">{this.state.observation_category}</h3>

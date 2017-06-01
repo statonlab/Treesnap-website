@@ -1,9 +1,9 @@
+<!DOCTYPE html>
 <?php
 /**
  * This file is used for React-enabled pages such as the landing and the map pages.
  */
 ?>
-        <!DOCTYPE html>
 <html lang="en">
 <head>
     @include('partials.meta')
@@ -18,7 +18,7 @@
             isAdmin  : false
         }
         @if(auth()->check())
-            window.Laravel.isAdmin = '{{ auth()->user()->isAdmin() ? '1' : '0' }}' === '1'
+            window.Laravel.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
         @endif
     </script>
     <script src="/js/plugins/mapcluster.js"></script>
@@ -28,8 +28,6 @@
 
 <div id="app-root"></div>
 
-<script src="{{ mix('js/app.js') }}"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
     window.fixHeight = function () {
         var windowHeight = window.innerHeight
@@ -43,5 +41,7 @@
         }
     }
 </script>
+<script src="{{ mix('js/app.js') }}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 </html>
