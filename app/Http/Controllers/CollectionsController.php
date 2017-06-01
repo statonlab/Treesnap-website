@@ -162,7 +162,7 @@ class CollectionsController extends Controller
     {
         $this->validate($request, [
             'collection_id' => 'required|exists:collections,id',
-            'observations' => 'required|json'
+            'observations' => 'required|json',
         ]);
 
         $user = $request->user();
@@ -201,9 +201,10 @@ class CollectionsController extends Controller
 
         $collection = Collection::findOrFail($request->collection_id);
 
-        //Allow non-owners to detach themselves only
-        if ($request->user_id === $user->id  && $request->user_id !== $collection->user_id) {
+        // Allow non-owners to detach themselves only
+        if ($request->user_id === $user->id && $request->user_id !== $collection->user_id) {
             $collection->users()->detach($request->user_id);
+
             return $this->success([
                 'id' => $collection->id,
                 'label' => $collection->label,
@@ -214,7 +215,8 @@ class CollectionsController extends Controller
         if ($collection->user_id !== $user->id) {
             return $this->unauthorized();
         }
-        //don't detach owner
+        
+        // Don't detach owner
         if ($request->user_id !== $collection->user_id) {
             $collection->users()->detach($request->user_id);
         }
@@ -235,10 +237,9 @@ class CollectionsController extends Controller
      */
     public function delete(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'collection_id' => 'required|exists:collections,id',
-                ]
-        );
+        ]);
 
         $collection = Collection::findOrFail($request->collection_id);
 
