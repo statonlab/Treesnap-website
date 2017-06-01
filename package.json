@@ -17,10 +17,10 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
-    "bulma": "^0.4.1",
+    "bulma": "^0.4.2",
     "camelizer": "^0.1.0",
-    "chart.js": "^2.5.0",
-    "datatables-bulma": "^1.0.0",
+    "chart.js": "^2.6.0",
+    "datatables-bulma": "^1.0.1",
     "datatables.net": "^1.10.14",
     "dragscroll": "0.0.8",
     "google-maps-react": "^1.0.19",
@@ -34,7 +34,7 @@
     "react-icons": "^2.2.3",
     "react-image-gallery": "^0.7.15",
     "react-router-dom": "^4.1.1",
-    "react-select": "^1.0.0-rc.3",
+    "react-select": "^1.0.0-rc.5",
     "slick-carousel": "^1.6.0"
   }
 }

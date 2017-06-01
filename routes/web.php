@@ -48,14 +48,13 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');
 
-// Authenticated User Routes
+// // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
-});
-
-//Collections
+  
+  //Collections
 Route::get('/collections', 'CollectionsController@index');
 Route::post('/collections', 'CollectionsController@create');
 Route::get('/collection/{id}', 'CollectionsController@show');
@@ -64,6 +63,8 @@ Route::get('/collection/detach', 'CollectionsController@detach'); //remove an ob
 Route::delete('/collection/delete', 'CollectionsController@delete');//delete a collection
 Route::get('/collection/share', 'CollectionsController@share');//Share collection with user
 Route::get('/collection/unshare', 'CollectionsController@unshare');//Share collection with user
+  Route::get('/account', 'HomeController@index');
+});
 
 // Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
@@ -89,14 +90,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/api/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
     Route::get('/api/analytics/observations/count', 'AnalyticsController@observationsCount');
     Route::get('/api/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
+});
+
+// Admin or Scientist Only Route Group
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['scientist']], function () {
+    // Groups
+    Route::get('/api/groups', 'GroupsController@index');
+    Route::post('/api/groups', 'GroupsController@create');
+    Route::get('/api/group/{id}', 'GroupsController@show');
+    Route::delete('/api/group/detach', 'GroupsController@detach');
+    Route::post('/api/group/attach', 'GroupsController@attach');
+    Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
-});
-
-// Authenticated Users Only
-Route::group(['middleware' => ['auth']], function() {
-    Route::get('/account', 'HomeController@index');
 });
 
 // Other React Routes
