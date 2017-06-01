@@ -11,7 +11,7 @@ class CollectionsController extends Controller
     use Responds;
 
     /**
-     * Get list of collections.
+     * Get list of collections user has access to (owned and shared)
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -69,11 +69,6 @@ class CollectionsController extends Controller
                 $query->select('id', 'observation_category');
             },
         ])->findOrFail($id);
-
-        /** Not Needed Since We Are Using Find Or Fail **/
-        //if (! $collection) {
-        //    return $this->notFound('The collection you requested was not found.');
-        //}
 
         // Make sure the user has access to this observation
         if (! $collection->users->contains($user->id)) {
@@ -197,19 +192,32 @@ class CollectionsController extends Controller
      */
     public function unshare(Request $request)
     {
-        // TODO: Validation needed
+        $user = $request->user();
 
+        $this->validate($request, [
+            'collection_id' => 'required|exists:collections,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
 
         $collection = Collection::findOrFail($request->collection_id);
 
-        // TODO: GOOD THINKING, THIS SHOULD BE DONE
-        //if (!$request->user_id === $collection->user_id) { // Don't detach self
-        //    $collection->users()->detach($request->user_id);
-        //}
+        //Allow non-owners to detach themselves only
+        if ($request->user_id === $user->id  && $request->user_id !== $collection->user_id) {
+            $collection->users()->detach($request->user_id);
+            return $this->success([
+                'id' => $collection->id,
+                'label' => $collection->label,
+                'Owner' => $collection->user_id,
+            ]);
+        }
 
-        // TODO: Allow only owners to detach
-
-        $collection->users()->detach($request->user_id);
+        if ($collection->user_id !== $user->id) {
+            return $this->unauthorized();
+        }
+        //don't detach owner
+        if ($request->user_id !== $collection->user_id) {
+            $collection->users()->detach($request->user_id);
+        }
 
         return $this->success([
             'id' => $collection->id,
@@ -227,21 +235,22 @@ class CollectionsController extends Controller
      */
     public function delete(Request $request)
     {
-        // TODO: Validation needed here
+        $this->validate($request,[
+            'collection_id' => 'required|exists:collections,id',
+                ]
+        );
 
-        // TODO: should be consistent and use $request->*
-        $id = $request->collection_id;
-        $label = $request->label;
-        $collection = Collection::findOrFail($id);
+        $collection = Collection::findOrFail($request->collection_id);
 
-        // TODO: Allow only owners to delete
+        if ($request->user() !== $collection->user_id) {
+            return $this->unauthorized();
+        }
+
         $collection->delete();
 
         return $this->success([
-            'id' => $id,
-            'label' => $label,
+            'id' => $request->id,
+            'label' => $request->label,
         ]);
     }
-
-    // TODO: Need a method to allow users to unshare themselves if they are non owners.
 }
