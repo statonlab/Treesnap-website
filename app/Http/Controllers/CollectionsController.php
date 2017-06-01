@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\Observation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\Responds;
 
@@ -110,7 +111,7 @@ class CollectionsController extends Controller
         $observations = json_decode($request->observations);
         foreach ($observations as $id) {
             // Make sure that all observations exists before attaching
-            if (Collection::find($id)) {
+            if (Observation::find($id)) {
                 $collection->observations()->syncWithoutDetaching($id);
             }
         }
