@@ -1,9 +1,14 @@
+<?php
+/**
+ * This file is used for static HTML pages such as register and login.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     @include('partials.meta')
 
-    <title>{{ $title or 'Treesnap' }}</title>
+    <title>{{ $title or 'TreeSnap' }}</title>
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>

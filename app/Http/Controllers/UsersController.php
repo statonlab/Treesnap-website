@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Email;
 use App\Http\Controllers\Traits\Responds;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -88,16 +89,21 @@ class UsersController extends Controller
             $rules = '|unique:users,email';
         }
 
+        $today = Carbon::now()->year;
+        $century = $today - 101;
+
         $this->validate($request, [
             'name' => 'required|min:3',
             'email' => 'required|email'.$rules,
             'is_anonymous' => 'required|boolean',
+            'birth_year' => "required|integer|max:{$today}|min:{$century}",
         ]);
 
         $user->fill([
             'name' => $request->name,
             'email' => $request->email,
             'is_anonymous' => $request->is_anonymous,
+            'birth_year' => $request->birth_year
         ])->save();
 
         return $this->success([

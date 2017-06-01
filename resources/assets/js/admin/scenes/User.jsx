@@ -205,7 +205,7 @@ export default class User extends Component {
                             <div className="column is-6-tablet is-4-desktop" key={index}>
                                 <div className="card has-bg-image">
                                     <div className="card-image"
-                                         style={{backgroundImage: `url(${observation.images[0] || '/images/placeholder.png'})`}}>
+                                         style={{backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`}}>
                                     </div>
                                     <div className="card-content">
                                         <div className="content">

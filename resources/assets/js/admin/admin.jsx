@@ -9,6 +9,7 @@ import Users from './scenes/Users'
 import User from './scenes/User'
 import Groups from './scenes/Groups'
 import Group from './scenes/Group'
+import Observations from './scenes/Observations'
 
 class Admin extends Component {
     render() {
@@ -28,6 +29,7 @@ class Admin extends Component {
                                     <Route path="/user/:id" component={User}/>
                                     <Route path="/groups" component={Groups}/>
                                     <Route path="/group/:id" component={Group}/>
+                                    <Route path="/observations" component={Observations}/>
                                     <div className="app-footer admin-footer">
                                         Copyright &copy; 2017 University of Tennessee at Knoxville
                                     </div>

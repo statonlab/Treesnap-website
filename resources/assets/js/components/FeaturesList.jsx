@@ -18,7 +18,7 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Availability</p>
                                         <p className="feature-text">
-                                            Treesnap is available for iOS and Android smart phones, and is
+                                            TreeSnap is available for iOS and Android smart phones, and is
                                             <b> completely free</b>. The app will be available on the Apple AppStore
                                             and Google Play.
                                         </p>
@@ -38,7 +38,7 @@ export default class FeaturesList extends Component {
                                         <p className="title">It's a Snap</p>
                                         <p className="feature-text">
                                             Come across an ash, hemlock, chestnut, or white oak in the woods?
-                                            Record it with Treesnap and its geolocation will be shared with scientists to study it.
+                                            Record it with TreeSnap and its geolocation will be shared with scientists to study it.
                                         </p>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Data Collection</p>
                                         <p className="feature-text">
-                                            Treesnap is easy to use.  Snap a photo, answer a few questions and be done in a couple of taps.
+                                            TreeSnap is easy to use.  Snap a photo, answer a few questions and be done in a couple of taps.
 
                                         </p>
                                     </div>
@@ -76,7 +76,7 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Sync</p>
                                         <p className="feature-text">
-                                            Create an account and sync your observations with the Treesnap server wirelessly.
+                                            Create an account and sync your observations with the TreeSnap server wirelessly.
                                         </p>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@ export default class FeaturesList extends Component {
                                         <p className="title">Privacy</p>
                                         <p className="feature-text">
 
-                                            The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.  Only Treesnap related research programs will have access to this information.
+                                            The GPS location of your trees is protected, and not revealed to outside parties.  Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely.  Only TreeSnap related research programs will have access to this information.
                                         </p>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@ export default class FeaturesList extends Component {
                                     <div className="media-content">
                                         <p className="title">Contribute</p>
                                         <p className="feature-text">
-                                            Information reported in Treesnap is used by real scientists.  That ash you've found might be the start of a completely new breeding program.
+                                            Information reported in TreeSnap is used by real scientists.  That ash you've found might be the start of a completely new breeding program.
                                         </p>
                                     </div>
                                 </div>

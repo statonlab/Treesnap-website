@@ -181,7 +181,6 @@ class UsersController extends Controller
             'birth_year' => $user->birth_year,
             'is_anonymous' => $user->is_anonymous,
             'is_private' => $user->is_private,
-
         ]);
     }
 

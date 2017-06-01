@@ -138,16 +138,19 @@ export default class Group extends Component {
     _renderForm() {
         return (
             <form action="#" onSubmit={this.addUser.bind(this)}>
-                <div className="field">
-                    <Select.Async loadOptions={this.getUsers.bind(this)}
-                                  multi={true}
-                                  value={this.state.form_users}
-                                  onChange={(value) => {
-                                      this.setState({form_users: value})
-                                  }}/>
-                </div>
-                <div className="box-footer">
-                    <button type="submit" className="button is-primary">Add Users</button>
+                <div className="field has-addons mb-none">
+                    <div className="control">
+                        <Select.Async loadOptions={this.getUsers.bind(this)}
+                                      multi={true}
+                                      value={this.state.form_users}
+                                      onChange={(value) => {
+                                          this.setState({form_users: value})
+                                      }}
+                        />
+                    </div>
+                    <div className="control">
+                        <button type="submit" className="button is-primary">Add Users</button>
+                    </div>
                 </div>
             </form>
         )
@@ -219,15 +222,17 @@ export default class Group extends Component {
                 <h1 className="title is-3">{this.state.name}</h1>
 
                 <div className="box">
-                    <h4 className="title is-4">Users</h4>
+                    <div className="columns mb-none">
+                        <div className="column">
+                            <h4 className="title is-4">Users</h4>
+                        </div>
+                        <div className="column">
+                            {this._renderForm()}
+                        </div>
+                    </div>
 
-                    {this._renderUsersTable()}
-                </div>
-
-                <div className="box">
-                    <h4 className="title is-4">Add Users to Group</h4>
                     {this._renderFormErrors()}
-                    {this._renderForm()}
+                    {this._renderUsersTable()}
                 </div>
                 <Spinner visible={this.state.loading}/>
             </div>

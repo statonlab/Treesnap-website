@@ -1,5 +1,5 @@
 /**
- * Treesnap Website Entry Point JS File
+ * TreeSnap Website Entry Point JS File
  */
 // Bootstrap Everything (loads dash and a configured axios)
 import './bootstrap'
@@ -29,7 +29,6 @@ class App extends Component {
                     <Route path={'/terms-of-use'} component={() => (<KnowledgeScene docPath='/docs/terms'/>)}/>
                     <Route path={'/faq'} component={() => (<KnowledgeScene docPath='/docs/faq'/>)}/>
                     <Route path={'/trees'} component={() => (<KnowledgeScene docPath='/docs/trees'/>)}/>
-
                     <Route component={NotFoundScene}/>
                 </Switch>
             </Router>

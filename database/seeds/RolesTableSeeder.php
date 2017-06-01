@@ -20,5 +20,10 @@ class RolesTableSeeder extends Seeder
             'name' => 'Admin',
             'is_admin' => true,
         ]);
+
+        \App\Role::create([
+            'name' => 'Scientist',
+            'is_admin' => false,
+        ]);
     }
 }
