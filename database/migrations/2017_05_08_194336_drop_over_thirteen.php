@@ -26,7 +26,7 @@ class DropOverThirteen extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('birth_year');
+            $table->boolean('is_over_thirteen');
         });
     }
 }
