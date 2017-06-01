@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Observation;
+
 use App\Collection;
-use App\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\Responds;
 
@@ -21,9 +19,8 @@ class CollectionsController extends Controller
     {
         //collections shared
         $user = $request->user();
-        //TODO: I think the get() here is an n+1 query
-
         $collectionsShared = $user->collections()->get();
+
         return $this->success($collectionsShared);
     }
 
@@ -56,6 +53,7 @@ class CollectionsController extends Controller
         ]);
         //Attach the creator to the collection
         $collection->users()->attach($user->id);
+
         return $this->created($collection);
     }
 
@@ -90,8 +88,10 @@ class CollectionsController extends Controller
     }
 
     /**
-     * Add trees to an existing collection.
+     * Add observation to collection
      *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
 
     public function attach(Request $request)
@@ -102,7 +102,6 @@ class CollectionsController extends Controller
             'collection_id' => 'required|exists:collections,id',
             //this field must exist in the id column of the collection table
         ]);
-
 
         $collection = Collection::findOrFail($request->collection_id);
         $observations = json_decode($request->observations);
@@ -131,20 +130,20 @@ class CollectionsController extends Controller
     {
 
         $collection = Collection::findOrFail($request->collection_id);
-
-        //Dont attach if already attached TODO: Does not work as intended
-        if (! $collection->users()->find($request->user_id)) {
-            $collection->users()->attach($request->user_id);
-        }
+        $collection->users()->syncWithoutDetaching($request->user_id);
 
         return $this->success([
             'id' => $collection->id,
             'label' => $collection->label,
+            'added' => $request->user_id,
         ]);
     }
 
     /**
-     * Remove tree from the collection
+     * Remove observation(s) from collection
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
 
     public function detach(Request $request)
@@ -163,11 +162,11 @@ class CollectionsController extends Controller
         ]);
     }
 
-
-    /**
-     * Remove access for user from the collection
+    /**Detach users from collection (unshare)
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-
     public function unshare(Request $request)
     {
         $request->user_id = 2;
@@ -190,23 +189,21 @@ class CollectionsController extends Controller
 
     /**
      * Delete a specified collection
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $id = $request->collection_id;
         $label = $request->label;
         $collection = Collection::find($id);
         $collection->delete();
 
-
         return $this->success([
             'id' => $id,
             'label' => $label,
         ]);
-
     }
-
 }
