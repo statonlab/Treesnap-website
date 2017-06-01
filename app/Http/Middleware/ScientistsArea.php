@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class AdminArea
+class ScientistsArea
 {
     /**
      * Handle an incoming request.
@@ -21,7 +21,7 @@ class AdminArea
             return redirect('/login');
         }
 
-        if (! $user->isAdmin()) {
+        if (! $user->isAdmin() && ! $user->isScietist()) {
             return abort(401, 'Unauthorized');
         }
 

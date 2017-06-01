@@ -21,7 +21,6 @@ Route::get('/docs/privacy', 'DocumentController@policy');
 Route::get('/docs/faq', 'DocumentController@faq');
 Route::get('/docs/trees', 'DocumentController@trees');
 
-
 // Contact
 Route::post('/contact', 'ContactController@send');
 
@@ -54,7 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/user/password', 'UsersController@updatePassword');
 });
 
-// Admin Route Group
+// Admin Only Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
     // Users
     Route::get('/api/users', 'UsersController@index');
@@ -78,13 +77,24 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/api/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
     Route::get('/api/analytics/observations/count', 'AnalyticsController@observationsCount');
     Route::get('/api/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
+});
+
+// Admin or Scientist Only Route Group
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['scientist']], function () {
+    // Groups
+    Route::get('/api/groups', 'GroupsController@index');
+    Route::post('/api/groups', 'GroupsController@create');
+    Route::get('/api/group/{id}', 'GroupsController@show');
+    Route::delete('/api/group/detach', 'GroupsController@detach');
+    Route::post('/api/group/attach', 'GroupsController@attach');
+    Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
 });
 
-// Authenticated Users Only
-Route::group(['middleware' => ['auth']], function() {
+// Authenticated Users Only (could be admin, scientist or user)
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/account', 'HomeController@index');
 });
 
