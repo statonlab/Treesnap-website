@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/test/{id}', 'CollectionsController@show');
+
 // Home Routes
 Route::get('/', 'HomeController@index');
 
@@ -46,14 +48,25 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');
 
-// Authenticated User Routes
+// // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
+  
+  //Collections
+Route::get('/collections', 'CollectionsController@index');
+Route::post('/collections', 'CollectionsController@create');
+Route::get('/collection/{id}', 'CollectionsController@show');
+Route::get('/collection/attach', 'CollectionsController@attach');//Add an observation t a collection
+Route::get('/collection/detach', 'CollectionsController@detach'); //remove an observation from collection
+Route::delete('/collection/delete', 'CollectionsController@delete');//delete a collection
+Route::get('/collection/share', 'CollectionsController@share');//Share collection with user
+Route::get('/collection/unshare', 'CollectionsController@unshare');//Share collection with user
+  Route::get('/account', 'HomeController@index');
 });
 
-// Admin Only Route Group
+// Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
     // Users
     Route::get('/api/users', 'UsersController@index');
@@ -91,11 +104,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
-});
-
-// Authenticated Users Only (could be admin, scientist or user)
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/account', 'HomeController@index');
 });
 
 // Other React Routes

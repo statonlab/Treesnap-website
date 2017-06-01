@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropOverThirteen extends Migration
+class CreateCollectionUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class DropOverThirteen extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_over_thirteen');
+        Schema::create('collection_user', function (Blueprint $table) {
+            $table->integer('collection_id');
+            $table->integer('user_id');
         });
     }
 
@@ -25,8 +26,6 @@ class DropOverThirteen extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_over_thirteen');
-        });
+        Schema::dropIfExists('collection_user');
     }
 }
