@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Dropdown, DropdownItem} from './Dropdown'
+import Tooltip from './Tooltip'
 import moment from 'moment'
 
 export default class ObservationCard extends Component {
@@ -44,20 +45,26 @@ export default class ObservationCard extends Component {
                     </div>
                 </div>
                 <footer className="card-footer">
-                    <a href="javascript:;" className="card-footer-item" onClick={() => this.setState({flipped: true})}>
-                        <span className="icon is-small is-marginless">
-                            <i className="fa fa-plus"></i>
-                        </span>
+                    <a href="javascript:;" className="card-footer-item is-paddingless">
+                        <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
+                            <span className="icon is-small is-marginless">
+                                <i className="fa fa-plus"></i>
+                            </span>
+                        </Tooltip>
                     </a>
-                    <a href="javascript:;" className="card-footer-item">
-                        <span className="icon is-small is-marginless">
-                            <i className="fa fa-flag"></i>
-                        </span>
+                    <a href="javascript:;" className="card-footer-item is-paddingless">
+                        <Tooltip label="Flag as Inappropriate" style={{padding: '0.75rem'}}>
+                            <span className="icon is-small is-marginless">
+                                <i className="fa fa-flag"></i>
+                            </span>
+                        </Tooltip>
                     </a>
-                    <a href="javascript:;" className="card-footer-item">
-                        <span className="icon is-small is-marginless">
-                            <i className="fa fa-map"></i>
-                        </span>
+                    <a href="javascript:;" className="card-footer-item is-paddingless">
+                        <Tooltip label="Show on Map" style={{padding: '0.75rem'}}>
+                            <span className="icon is-small is-marginless">
+                                <i className="fa fa-map"></i>
+                            </span>
+                        </Tooltip>
                     </a>
                 </footer>
             </div>
