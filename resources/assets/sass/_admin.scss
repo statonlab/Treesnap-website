@@ -40,19 +40,25 @@
   }
 }
 
+.pagination {
+  a {
+    background-color: #fff;
+  }
+}
+
 .admin-content {
   padding-top: 1rem;
   margin-bottom: 0;
 }
 
 .admin-footer {
- margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .container.is-fluid {
-  @include tablet-only() {
-    padding: 0 16px;
-  }
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px !important;
 }
 
 .limit-width {
@@ -63,6 +69,22 @@
   background: no-repeat center center;
   background-size: 100%;
   height: 200px;
+}
+
+.has-bg-image .card-header-icon {
+  margin: .5rem;
+  border: 0;
+  box-shadow: 0 0 3px rgba(10, 10, 10, 0.4);
+  border-radius: 7px;
+  background-color: #fff;
+  padding: .5rem;
+  color: #212121;
+  font-size: 14px !important;
+}
+
+.dropdown.show .card-header-icon {
+  color: #444;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, .3);
 }
 
 .border-top {
@@ -90,18 +112,18 @@ select[multiple].multi-select {
   }
 }
 
-$select-input-bg:                   #fff;
-$select-input-bg-disabled:          #f9f9f9;
-$select-input-border-color:         #ccc;
-$select-input-border-radius:        $radius;
-$select-input-border-focus:         $primary;
-$select-input-border-width:         1px;
-$select-input-height:               36px;
-$select-input-internal-height:      ($select-input-height - ($select-input-border-width * 2));
-$select-input-placeholder:          #aaa;
-$select-text-color:                 #333;
-$select-link-hover-color:           $select-input-border-focus;
+$select-input-bg: #fff;
+$select-input-bg-disabled: #f9f9f9;
+$select-input-border-color: #ccc;
+$select-input-border-radius: $radius;
+$select-input-border-focus: $primary;
+$select-input-border-width: 1px;
+$select-input-height: 36px;
+$select-input-internal-height: ($select-input-height - ($select-input-border-width * 2));
+$select-input-placeholder: #aaa;
+$select-text-color: #333;
+$select-link-hover-color: $select-input-border-focus;
 
-$select-padding-vertical:           8px;
-$select-padding-horizontal:         10px;
+$select-padding-vertical: 8px;
+$select-padding-horizontal: 10px;
 @import "node_modules/react-select/scss/default";

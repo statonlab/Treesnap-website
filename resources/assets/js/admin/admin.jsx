@@ -20,10 +20,10 @@ class Admin extends Component {
                     <div className="main-content admin-content">
                         <div className="container is-fluid">
                             <div className="columns">
-                                <div className="column is-2 admin-sidebar">
+                                <div className="column is-narrow admin-sidebar">
                                     <AdminSidebar/>
                                 </div>
-                                <div className="column is-10">
+                                <div className="column">
                                     <Switch>
                                         <Route exact={true} path="/" component={DashboardScene}/>
                                         <Route path="/users" component={UsersScene}/>

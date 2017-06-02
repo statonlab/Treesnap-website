@@ -24,7 +24,13 @@ body,
 }
 
 .flex-v-center {
-  @include align-items(center)
+  @include align-items(center);
+}
+
+.flex-right {
+  @include flex-direction(row);
+  @include justify-content(flex-end);
+  text-align: right;
 }
 
 .button.is-full {
