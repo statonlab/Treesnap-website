@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Path from '../helpers/Path'
 import {NavLink} from 'react-router-dom'
 
-export default class Navbar extends Component {
+export default class AdminNavbar extends Component {
     constructor(props) {
         super(props)
 
@@ -97,10 +97,10 @@ export default class Navbar extends Component {
     }
 }
 
-Navbar.PropTypes = {
+AdminNavbar.PropTypes = {
     container: PropTypes.bool
 }
 
-Navbar.defaultProps = {
+AdminNavbar.defaultProps = {
     container: false
 }

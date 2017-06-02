@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom'
 export default class Sidebar extends Component {
     render() {
         return (
-            <aside className="menu" role="navigation">
+            <aside className="menu" role="navigation" style={{minWidth: 200}}>
                 <p className="menu-heading">Administration</p>
                 <ul className="menu-list">
                     <li><NavLink exact={true} to="/" activeClassName="is-active"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li>

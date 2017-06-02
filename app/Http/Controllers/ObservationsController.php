@@ -14,14 +14,15 @@ class ObservationsController extends Controller
     /**
      * Get all public observations.
      *
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $is_admin = false;
-
-        if (auth()->check()) {
-            $is_admin = auth()->user()->isAdmin();
+        $user = $request->user();
+        if ($user) {
+            $is_admin = $user->isAdmin() || $user->isScientist();
         }
 
         if ($is_admin) {
@@ -37,7 +38,7 @@ class ObservationsController extends Controller
             // Remove the is_private value from the response
             $data[] = array_merge(array_except($this->getObservationJson($observation, $is_admin), ['is_private']), [
                 'user' => [
-                    'name' => $observation->user->is_anonymous ? 'Anonymous' : $observation->user->name,
+                    'name' => !$is_admin && $observation->user->is_anonymous ? 'Anonymous' : $observation->user->name,
                 ],
             ]);
         }
