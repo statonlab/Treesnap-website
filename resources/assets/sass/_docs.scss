@@ -1,0 +1,50 @@
+.document {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem!important;
+  }
+
+  h1 {
+    @extend .title;
+    @extend .is-2;
+    margin-top: 2rem;
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  h2 {
+    @extend .title;
+    @extend .is-3;
+  }
+
+  h3 {
+    @extend .title;
+    @extend .is-4;
+  }
+
+  h4 {
+    @extend .title;
+    @extend .is-5;
+  }
+
+  h5 {
+    @extend .title;
+    @extend .is-6;
+  }
+
+  p {
+    margin-bottom: .5rem;
+  }
+  .body {
+    ul {
+      margin-left: 20px;
+      list-style-type: circle;
+    }
+  }
+
+}
