@@ -48,22 +48,30 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');
 
-// // Authenticated Users Only (could be admin, scientist or user)
+// Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
+    // Users controller
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
-  
-  //Collections
-Route::get('/collections', 'CollectionsController@index');
-Route::post('/collections', 'CollectionsController@create');
-Route::get('/collection/{id}', 'CollectionsController@show');
-Route::get('/collection/attach', 'CollectionsController@attach');//Add an observation t a collection
-Route::get('/collection/detach', 'CollectionsController@detach'); //remove an observation from collection
-Route::delete('/collection/delete', 'CollectionsController@delete');//delete a collection
-Route::get('/collection/share', 'CollectionsController@share');//Share collection with user
-Route::get('/collection/unshare', 'CollectionsController@unshare');//Share collection with user
-  Route::get('/account', 'HomeController@index');
+
+    // Allow only authenticated users to access Account Page
+    Route::get('/account', 'HomeController@index');
+
+    // Collections
+    Route::get('/collections', 'CollectionsController@index');
+    Route::post('/collections', 'CollectionsController@create');
+    Route::get('/collection/{id}', 'CollectionsController@show');
+    Route::post('/collection/attach', 'CollectionsController@attach');
+    Route::delete('/collection/detach', 'CollectionsController@detach');
+    Route::delete('/collection/delete', 'CollectionsController@delete');
+    Route::post('/collection/share', 'CollectionsController@share');
+    Route::delete('/collection/unshare', 'CollectionsController@unshare');
+
+
+    // Flags
+    Route::post('/flag', 'FlagsController@create');
+    Route::delete('flag/{id}', 'FlagsController@delete');
 });
 
 // Admin Route Group
@@ -90,6 +98,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/api/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
     Route::get('/api/analytics/observations/count', 'AnalyticsController@observationsCount');
     Route::get('/api/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
+
+    // Flags
+    Route::get('/api/flags', 'FlagsController@index');
 });
 
 // Admin or Scientist Only Route Group

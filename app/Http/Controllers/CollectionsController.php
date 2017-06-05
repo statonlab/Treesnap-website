@@ -97,24 +97,32 @@ class CollectionsController extends Controller
         $user = $request->user();
 
         $this->validate($request, [
-            'observations' => 'required|json',
-            'collection_id' => 'required|exists:collections,id',
+            'observation_id' => 'required|integer|exists:observations,id',
+            'collection_id' => 'nullable|integer|exists:collections,id',
+            'label' => 'nullable|max:255',
         ]);
 
-        $collection = Collection::findOrFail($request->collection_id);
+        // Deal with new collections.
+        if (! empty($request->label)) {
+            $collection = Collection::firstOrCreate([
+                'label' => $request->label,
+                'user_id' => $user->id,
+            ]);
+            $collection->users()->attach($request->user());
+        } else {
+            if (empty($request->collection_d)) {
+                return $this->validationError(['label' => ['At least on item is required. Please select an existing collection or create a new one.']]);
+            }
 
-        // Prevent non owners from adding to the collection
-        if ($collection->user_id !== $user->id) {
-            return $this->unauthorized();
-        }
+            $collection = Collection::firstOrFail($request->collection_id);
 
-        $observations = json_decode($request->observations);
-        foreach ($observations as $id) {
-            // Make sure that all observations exists before attaching
-            if (Observation::find($id)) {
-                $collection->observations()->syncWithoutDetaching($id);
+            // Prevent non owners from adding to the collection
+            if ($collection->user_id !== $user->id) {
+                return $this->unauthorized();
             }
         }
+
+        $collection->observations()->syncWithoutDetaching($request->observation_id);
 
         return $this->success([
             'id' => $collection->id,
@@ -216,7 +224,7 @@ class CollectionsController extends Controller
         if ($collection->user_id !== $user->id) {
             return $this->unauthorized();
         }
-        
+
         // Don't detach owner
         if ($request->user_id !== $collection->user_id) {
             $collection->users()->detach($request->user_id);

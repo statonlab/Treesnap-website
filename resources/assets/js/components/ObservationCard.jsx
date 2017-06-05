@@ -13,8 +13,10 @@ export default class ObservationCard extends Component {
         super(props)
 
         this.state = {
-            slide       : false,
-            slideContent: ''
+            slide            : false,
+            slideContent     : '',
+            flagged          : false,
+            addedToCollection: false
         }
 
         this.timeoutWatcher = null
@@ -69,7 +71,7 @@ export default class ObservationCard extends Component {
 
     renderMap() {
         const observation = this.props.observation
-        const image = observation.images.images ? observation.images.images[0] : '/images/placeholder.png'
+        const image       = observation.images.images ? observation.images.images[0] : '/images/placeholder.png'
         return (
             <Map style={{height: '100%', zIndex: '0'}}
                  center={{
@@ -107,8 +109,19 @@ export default class ObservationCard extends Component {
                 return (
                     <div>
                         <h3 className="title is-5">Add to Collection</h3>
-                        <CollectionForm observationId={this.props.observation.observation_id}
-                                        collections={[{label: 'Favorites', value: 1}]}/>
+                        {this.state.addedToCollection ?
+                            <div>
+                                <div className="notification is-success">
+                                    Observation was successfully added to your collection.
+                                </div>
+
+                                <button type="button" className="button" onClick={() => this.setState({addedToCollection: false})}>Add to Another Collection</button>
+                            </div>
+                            :
+                            <CollectionForm observationId={this.props.observation.observation_id}
+                                            collections={[{label: 'Favorites', value: 1}]}
+                                            onSubmit={() => this.setState({addedToCollection: true})}/>
+                        }
                     </div>
                 )
                 break
@@ -130,7 +143,7 @@ export default class ObservationCard extends Component {
 
     render() {
         let observation = this.props.observation
-        let name = observation.observation_category + (observation.observation_category === 'Other' ? `(${observation.meta_data.otherLabel})` : '')
+        let name        = observation.observation_category + (observation.observation_category === 'Other' ? `(${observation.meta_data.otherLabel})` : '')
         return (
             <div className="card">
                 <div className="relative-block">
