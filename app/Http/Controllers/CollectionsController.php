@@ -14,13 +14,29 @@ class CollectionsController extends Controller
     /**
      * Get list of collections user has access to (owned and shared)
      *
+     * @param Request $request
+     * @param boolean $paired if true, data will be mapped to json object of label value
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $paired = false)
     {
         $user = $request->user();
 
-        return $this->success($user->collections);
+        $collections = $user->collections;
+
+        if (! $paired) {
+            return $this->success($collections);
+        }
+
+        $mapped = [];
+        foreach ($collections as $collection) {
+            $mapped[] = [
+                'label' => $collection->label,
+                'value' => $collection->id
+            ];
+        }
+
+        return $this->success($mapped);
     }
 
     /**

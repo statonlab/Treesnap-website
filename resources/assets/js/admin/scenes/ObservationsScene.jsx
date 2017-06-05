@@ -13,7 +13,8 @@ export default class ObservationsScene extends Component {
             total       : 0,
             page        : 0,
             perPage     : 6,
-            pages       : []
+            pages       : [],
+            collections : []
         }
     }
 
@@ -24,12 +25,21 @@ export default class ObservationsScene extends Component {
         axios.get('/observations').then(response => {
             this.setState({loading: false})
             this.paginate(response.data.data)
+            this.loadCollections()
         }).catch(error => {
             this.setState({loading: false})
             console.log(error)
         })
 
         this.history = this.props.history
+    }
+
+    loadCollections() {
+        axios.get('/collections/mapped').then(response => {
+            this.setState({collections: response.data.data})
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     /**
@@ -191,7 +201,8 @@ export default class ObservationsScene extends Component {
         this.setState({
             perPage,
             observations: this.getPage(0, perPage),
-            page        : 0
+            page        : 0,
+            pages       : this.generatePages(this.allObservations.length, perPage)
         })
         this.history.replace(`/observations?page=1&view=${perPage}`)
     }
@@ -237,6 +248,7 @@ export default class ObservationsScene extends Component {
                                  className="column is-4-widescreen is-6-desktop is-12-tablet">
                                 <ObservationCard
                                     observation={observation}
+                                    collections={this.state.collections}
                                     onFlagChange={(event, data) => {
                                         if (event === 'removed') {
                                             let flags = []
@@ -249,8 +261,14 @@ export default class ObservationsScene extends Component {
                                             observation.flags = flags
                                             return
                                         }
-
                                         observation.flags.push(data)
+                                    }}
+                                    onCollectionCreated={(data) => {
+                                        let collections = this.state.collections
+                                        collections.push({
+                                            label: data.label,
+                                            value: data.id
+                                        })
                                     }}
                                 />
                             </div>
