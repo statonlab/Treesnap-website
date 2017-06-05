@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import Marker from './Marker'
 
 export default class Map extends Component {
@@ -20,7 +21,6 @@ export default class Map extends Component {
      * Initializes the map.
      */
     componentDidMount() {
-        // Initialize the map
         let options = {
             center : {
                 lat: this.props.center.lat,
@@ -92,19 +92,23 @@ export default class Map extends Component {
      * @returns {*}
      */
     renderChildren() {
-        return React.Children.map(this.props.children, child => {
-            if (child.type === Marker) {
-                return React.cloneElement(child, {
-                    maps    : this.maps,
-                    onCreate: (marker) => {
-                        this.markers.push(marker)
-                        this.createCluster()
-                    }
-                })
-            } else {
-                return child
-            }
-        })
+        if (this.refs && this.refs.mapContainer) {
+            return React.Children.map(this.props.children, child => {
+                if (child.type === Marker) {
+                    return React.cloneElement(child, {
+                        maps    : this.maps,
+                        onCreate: (marker) => {
+                            this.markers.push(marker)
+                            this.createCluster()
+                        }
+                    })
+                } else {
+                    return child
+                }
+            })
+        }
+
+        return null
     }
 
     /**

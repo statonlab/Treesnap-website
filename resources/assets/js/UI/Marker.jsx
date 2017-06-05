@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import InfoWindow from '../helpers/InfoWindow'
 
@@ -48,7 +49,7 @@ export default class Marker extends Component {
 
         let icon
         if (window.Laravel.isAdmin) {
-            icon = this.colors[this.marker.title]
+            icon = this.colors[this.marker.title] || 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
         } else {
             icon = {
                 path        : google.maps.SymbolPath.CIRCLE,
