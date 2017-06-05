@@ -32,7 +32,7 @@ class CollectionsController extends Controller
         foreach ($collections as $collection) {
             $mapped[] = [
                 'label' => $collection->label,
-                'value' => $collection->id
+                'value' => $collection->id,
             ];
         }
 
@@ -124,11 +124,11 @@ class CollectionsController extends Controller
             ]);
             $collection->users()->attach($request->user());
         } else {
-            if (empty($request->collection_d)) {
+            if (empty($request->collection_id)) {
                 return $this->validationError(['label' => ['At least on item is required. Please select an existing collection or create a new one.']]);
             }
 
-            $collection = Collection::firstOrFail($request->collection_id);
+            $collection = Collection::findOrFail($request->collection_id);
 
             // Prevent non owners from adding to the collection
             if ($collection->user_id !== $user->id) {
