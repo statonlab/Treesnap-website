@@ -64,6 +64,8 @@ class FlagsController extends Controller
 
         $flag->delete();
 
-        return $this->success('Flag Removed');
+        return $this->success([
+            'id' => $id
+        ]);
     }
 }

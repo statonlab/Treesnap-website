@@ -32,13 +32,18 @@ export default class ObservationsScene extends Component {
         this.history = this.props.history
     }
 
+    /**
+     * Create page links.
+     *
+     * @param observations
+     */
     paginate(observations) {
         this.allObservations       = observations
         let total                  = observations.length
         let {page, perPage, pages} = this.preLoadPage(total)
 
         this.setState({
-            observations: this.getPage(page),
+            observations: this.getPage(page, perPage),
             total,
             page,
             perPage,
@@ -46,6 +51,12 @@ export default class ObservationsScene extends Component {
         })
     }
 
+    /**
+     * Load the page based on the URL.
+     *
+     * @param total
+     * @returns {{page: number, perPage: number, pages: *}}
+     */
     preLoadPage(total) {
         let params  = Path.parseUrl(this.history.location.search)
         let page    = 0
@@ -53,6 +64,11 @@ export default class ObservationsScene extends Component {
 
         if (typeof params.view !== 'undefined') {
             params.view = parseInt(params.view)
+
+            if (isNaN(params.view)) {
+                params.view = 6
+            }
+
             if (params.view > 100 || params.view < 6) {
                 perPage = 6
             } else {
@@ -61,11 +77,17 @@ export default class ObservationsScene extends Component {
         }
 
         let pages = this.generatePages(total, perPage)
-        let max = pages.length
+        let max   = pages.length
 
 
         if (typeof params.page !== 'undefined') {
-            page = parseInt(params.page) - 1
+            page = parseInt(params.page)
+
+            if (!isNaN(page)) {
+                page = page - 1
+            } else {
+                page = 0
+            }
 
             if (page > max || page < 0) {
                 page = 0
@@ -81,6 +103,13 @@ export default class ObservationsScene extends Component {
         }
     }
 
+    /**
+     * Generate page numbers.
+     *
+     * @param total
+     * @param perPage
+     * @returns {Array}
+     */
     generatePages(total, perPage) {
         let pages = []
 
@@ -99,13 +128,20 @@ export default class ObservationsScene extends Component {
         return pages
     }
 
-    getPage(page) {
-        let perPage = this.state.perPage
-        let start   = perPage * page
-        let end     = start + perPage
+    /**
+     * Get the current set of observations
+     * @param page
+     */
+    getPage(page, perPage) {
+        perPage   = perPage || this.state.perPage
+        let start = perPage * page
+        let end   = start + perPage
         return this.allObservations.slice(start, end)
     }
 
+    /**
+     * Navigate to next page.
+     */
     nextPage() {
         // Don't flip forward if we reached the last page
         if (this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1) {
@@ -116,6 +152,9 @@ export default class ObservationsScene extends Component {
         this.goToPage(page)
     }
 
+    /**
+     * Navigate to next page.
+     */
     previousPage() {
         // Don't flip back if we are at the first page
         if (this.state.page === 0) {
@@ -126,6 +165,11 @@ export default class ObservationsScene extends Component {
         this.goToPage(page)
     }
 
+    /**
+     * Navigate to a certain page.
+     *
+     * @param page
+     */
     goToPage(page) {
         // Don't compute unless the page actually changed
         if (this.state.page === page) {
@@ -140,10 +184,27 @@ export default class ObservationsScene extends Component {
         this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}`)
     }
 
+    renderFilters() {
+    }
+
+    changePerPage(perPage) {
+        this.setState({
+            perPage,
+            observations: this.getPage(0, perPage),
+            page        : 0
+        })
+        this.history.replace(`/observations?page=1&view=${perPage}`)
+    }
+
+    /**
+     * Render.
+     *
+     * @returns {XML}
+     */
     render() {
         let isLastPage  = this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1
         let isFirstPage = this.state.page === 0
-        this.generatePages()
+
         return (
             <div>
                 <Spinner visible={this.state.loading}/>
@@ -152,15 +213,46 @@ export default class ObservationsScene extends Component {
                         <h1 className="title is-3"> Observations</h1>
                     </div>
                     <div className="column has-text-right">
-                        <p>{this.state.total} Total Observations</p>
+                        <span className="mr-0">{this.state.total} Total Observations. Showing</span>
+                        <span className="select is-small">
+                            <select value={this.state.perPage}
+                                    onChange={({target}) => this.changePerPage.call(this, target.value)}>
+                                <option value="6">6</option>
+                                <option value="12">12</option>
+                                <option value="24">24</option>
+                                <option value="48">48</option>
+                                <option value="96">96</option>
+                            </select>
+                        </span>
+                        <span className="ml-0">per page</span>
                     </div>
                 </div>
 
+                {this.renderFilters()}
+
                 <div className="columns is-multiline">
-                    {this.state.observations.map((observation, index) => {
+                    {this.state.observations.map(observation => {
                         return (
-                            <div key={index} className="column is-4-widescreen is-6-desktop is-12-tablet">
-                                <ObservationCard observation={observation}/>
+                            <div key={observation.observation_id}
+                                 className="column is-4-widescreen is-6-desktop is-12-tablet">
+                                <ObservationCard
+                                    observation={observation}
+                                    onFlagChange={(event, data) => {
+                                        if (event === 'removed') {
+                                            let flags = []
+                                            observation.flags.map(flag => {
+                                                console.log(flag, data)
+                                                if (flag.id !== parseInt(data.id)) {
+                                                    flags.push(flag)
+                                                }
+                                            })
+                                            observation.flags = flags
+                                            return
+                                        }
+
+                                        observation.flags.push(data)
+                                    }}
+                                />
                             </div>
                         )
                     })}

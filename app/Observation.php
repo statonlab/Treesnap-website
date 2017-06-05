@@ -86,4 +86,14 @@ class Observation extends Model
     {
         return $this->belongsToMany('App\Collection');
     }
+
+    /**
+     * Get all flags.
+     *
+     * @return mixed
+     */
+    public function flags()
+    {
+        return $this->hasMany('App\Flag');
+    }
 }

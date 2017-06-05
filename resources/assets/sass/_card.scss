@@ -4,6 +4,15 @@
   height: 100%;
 }
 
+.fade {
+  transition: opacity 1s ease;
+  opacity: 0;
+
+  &.in {
+    opacity: 1;
+  }
+}
+
 .card-slide-content {
   transition: all 0.5s ease-in-out;
   position: absolute;

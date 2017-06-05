@@ -1,11 +1,15 @@
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
 // Variables
 @import "variables";
+
 // Mixins
 @import "flex-mixins";
+
 // Bulma
 @import "node_modules/bulma/bulma";
+
 // Components
 @import "layout";
 @import "nav";
@@ -19,6 +23,7 @@
 @import "dropdown";
 @import "tooltip";
 @import "card";
+
 // Elements
 @import "form";
 @import "table";
@@ -26,6 +31,8 @@
 @import "tiles";
 @import "docs";
 @import "error-pages";
+@import "font";
+
 // Plugins
 @import "node_modules/react-image-gallery/styles/scss/image-gallery.scss";
 
