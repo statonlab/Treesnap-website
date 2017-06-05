@@ -145,11 +145,23 @@ export default class ObservationCard extends Component {
                                         className="button"
                                         onClick={() => this.setState({addedToCollection: false})}>Add to Another Collection
                                 </button>
-                            </div>
-                            :
+                            </div> :
                             <CollectionForm observationId={this.props.observation.observation_id}
-                                            collections={[{label: 'Favorites', value: 1}]}
-                                            onSubmit={() => this.setState({addedToCollection: true})}/>
+                                            collections={this.props.collections}
+                                            onSubmit={(data) => {
+                                                this.setState({addedToCollection: true})
+                                                let found = false
+                                                this.props.collections.map(collection => {
+                                                    if (collection.value === data.id) {
+                                                        found = true
+                                                    }
+                                                })
+
+                                                if (!found) {
+                                                    this.props.onCollectionCreated(data)
+                                                }
+                                            }}
+                            />
                         }
                     </div>
                 )
@@ -258,10 +270,16 @@ export default class ObservationCard extends Component {
 }
 
 ObservationCard.PropTypes = {
-    observation: PropTypes.object.isRequired,
-    onFlagChange: PropTypes.func
+    observation        : PropTypes.object.isRequired,
+    onFlagChange       : PropTypes.func,
+    onCollectionCreated: PropTypes.func,
+    collections        : PropTypes.array
 }
 
 ObservationCard.defaultProps = {
-    onFlagChange() {}
+    onFlagChange() {
+    },
+    onCollectionCreated() {
+    },
+    collections: []
 }

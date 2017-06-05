@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/account', 'HomeController@index');
 
     // Collections
-    Route::get('/collections', 'CollectionsController@index');
+    Route::get('/collections/{paired?}', 'CollectionsController@index');
     Route::post('/collections', 'CollectionsController@create');
     Route::get('/collection/{id}', 'CollectionsController@show');
     Route::post('/collection/attach', 'CollectionsController@attach');
