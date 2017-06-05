@@ -16,10 +16,23 @@ export default class ObservationCard extends Component {
             slide            : false,
             slideContent     : '',
             flagged          : false,
-            addedToCollection: false
+            flag_id          : 0,
+            addedToCollection: false,
+            observationId    : 0
         }
 
         this.timeoutWatcher = null
+    }
+
+    componentWillMount() {
+        const observation = this.props.observation
+
+        if (observation.flags.length > 0) {
+            this.setState({
+                flagged: true,
+                flag_id: observation.flags[0].id
+            })
+        }
     }
 
     /**
@@ -56,6 +69,9 @@ export default class ObservationCard extends Component {
         })
     }
 
+    /**
+     * Hide content with a timeout after the content sliding animation finishes.
+     */
     slowCloseSlideContent() {
         this.setState({
             slide: false
@@ -69,6 +85,11 @@ export default class ObservationCard extends Component {
         }, 500)
     }
 
+    /**
+     * Render the map.
+     *
+     * @returns {XML}
+     */
     renderMap() {
         const observation = this.props.observation
         const image       = observation.images.images ? observation.images.images[0] : '/images/placeholder.png'
@@ -103,6 +124,11 @@ export default class ObservationCard extends Component {
         )
     }
 
+    /**
+     * Render the content of the
+     * @param label
+     * @returns {*}
+     */
     renderSlideContent(label) {
         switch (label) {
             case 'addToCollection':
@@ -115,7 +141,10 @@ export default class ObservationCard extends Component {
                                     Observation was successfully added to your collection.
                                 </div>
 
-                                <button type="button" className="button" onClick={() => this.setState({addedToCollection: false})}>Add to Another Collection</button>
+                                <button type="button"
+                                        className="button"
+                                        onClick={() => this.setState({addedToCollection: false})}>Add to Another Collection
+                                </button>
                             </div>
                             :
                             <CollectionForm observationId={this.props.observation.observation_id}
@@ -129,7 +158,17 @@ export default class ObservationCard extends Component {
                 return (
                     <div>
                         <h3 className="title is-5">Flag Observation</h3>
-                        <FlagForm observationId={this.props.observation.observation_id}/>
+                        <FlagForm observationId={this.props.observation.observation_id}
+                                  onSubmit={(data) => {
+                                      this.setState({flagged: true, flag_id: data.id})
+                                      this.props.onFlagChange('added', data)
+                                  }}
+                                  onUndo={(data) => {
+                                      this.setState({flagged: false, flag_id: 0})
+                                      this.props.onFlagChange('removed', data)
+                                  }}
+                                  flagged={this.state.flagged}
+                                  flagId={this.state.flag_id}/>
                     </div>
                 )
                 break
@@ -208,7 +247,7 @@ export default class ObservationCard extends Component {
                        onClick={() => this.shouldSlide('flag')}>
                         <Tooltip label="Flag as Inappropriate" style={{padding: '0.75rem'}}>
                             <span className="icon is-small is-marginless">
-                                <i className="fa fa-flag"></i>
+                                <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
                             </span>
                         </Tooltip>
                     </a>
@@ -219,5 +258,10 @@ export default class ObservationCard extends Component {
 }
 
 ObservationCard.PropTypes = {
-    observation: PropTypes.object.isRequired
+    observation: PropTypes.object.isRequired,
+    onFlagChange: PropTypes.func
+}
+
+ObservationCard.defaultProps = {
+    onFlagChange() {}
 }

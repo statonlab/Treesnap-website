@@ -18,7 +18,7 @@ class CreateFlagsTable extends Migration
             $table->integer('observation_id');
             $table->integer('user_id')->default(0);
             $table->string('reason');
-            $table->text('comments');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

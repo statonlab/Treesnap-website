@@ -18,11 +18,9 @@ class CollectionsController extends Controller
      */
     public function index(Request $request)
     {
-        //collections shared
         $user = $request->user();
-        $collectionsShared = $user->collections;
 
-        return $this->success($collectionsShared);
+        return $this->success($user->collections);
     }
 
     /**
