@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
 {
+    /**
+     * Table columns.
+     *
+     * @var array
+     */
     protected $fillable = [
         'user_id',
         'recipient_id',
@@ -17,6 +22,11 @@ class Contact extends Model
         'include_observation',
     ];
 
+    /**
+     * Auto cast.
+     *
+     * @var array
+     */
     protected $casts = [
         'cc' => 'array'
     ];

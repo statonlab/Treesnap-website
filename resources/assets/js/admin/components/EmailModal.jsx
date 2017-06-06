@@ -333,39 +333,41 @@ export default class EmailModal extends Component {
             <div className={`modal${this.state.visible ? ' is-active' : ''}`}>
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-card modal-card-lg">
-                    <form action="#" method="POST" onSubmit={this.send.bind(this)}>
-                        <Spinner visible={this.state.loading}/>
-                        <header className="modal-card-head">
-                            <p className="modal-card-title">Contact {contact.name}</p>
-                            <button type="button" className="delete" onClick={this.close.bind(this)}></button>
-                        </header>
-                        <section className="modal-card-body">
-                            <div className="columns">
-                                {this.renderFormColumn()}
-                                {this.renderPreviewColumn()}
-                                {this.renderSentColumn()}
-                            </div>
-                        </section>
-                        <footer className="modal-card-foot flex-space-between">
-                            {!this.state.sent ?
-                                <div>
-                                    <button type="submit" className="button is-success">Send</button>
-                                    <button type="button"
-                                            className="button"
-                                            onClick={this.close.bind(this)}>
-                                        Cancel
-                                    </button>
-                                </div>
-                                :
+                    <Spinner visible={this.state.loading}/>
+                    <header className="modal-card-head">
+                        <p className="modal-card-title">Contact {contact.name}</p>
+                        <button type="button" className="delete" onClick={this.close.bind(this)}></button>
+                    </header>
+                    <section className="modal-card-body">
+                        <div className="columns">
+                            {this.renderFormColumn()}
+                            {this.renderPreviewColumn()}
+                            {this.renderSentColumn()}
+                        </div>
+                    </section>
+                    <footer className="modal-card-foot">
+                        {!this.state.sent ?
+                            <div className="flexbox flex-space-between">
                                 <button type="button"
                                         className="button is-success"
-                                        onClick={this.close.bind(this)}>
-                                    Done
+                                        onClick={this.send.bind(this)}>
+                                    Send
                                 </button>
-                            }
+                                <button type="button"
+                                        className="button"
+                                        onClick={this.close.bind(this)}>
+                                    Cancel
+                                </button>
+                            </div>
+                            :
+                            <button type="button"
+                                    className="button is-success"
+                                    onClick={this.close.bind(this)}>
+                                Done
+                            </button>
+                        }
 
-                        </footer>
-                    </form>
+                    </footer>
                 </div>
             </div>
         )

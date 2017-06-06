@@ -15,6 +15,7 @@ trait Observable
         'Ash',
         'Hemlock',
         'White Oak',
+        'American Elm',
         'Other',
     ];
 

@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'noreply@treesnap.org'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@mail.treesnap.org'),
         'name' => env('MAIL_FROM_NAME', 'TreeSnap'),
     ],
 

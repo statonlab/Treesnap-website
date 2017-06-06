@@ -3,6 +3,7 @@ import Spinner from '../../components/Spinner'
 import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
+import ObservationsFilter from '../../helpers/ObservationsFilter'
 
 export default class ObservationsScene extends Component {
     constructor(props) {
@@ -35,6 +36,10 @@ export default class ObservationsScene extends Component {
     componentWillMount() {
         axios.get('/observations').then(response => {
             this.setState({loading: false})
+
+            this.allObservations = response.data.data
+            this.filter          = new ObservationsFilter(this.allObservations)
+
             this.paginate(response.data.data)
             this.loadCollections()
             this.loadUser()
@@ -213,7 +218,7 @@ export default class ObservationsScene extends Component {
 
         this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}`)
 
-        document.scrollTop = 0
+        window.scroll(0, 0)
     }
 
     renderFilters() {
