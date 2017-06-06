@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Contact;
 use App\Http\Controllers\Traits\Responds;
 use App\Mail\ContactRequest;
+use App\Mail\ContactUser;
 use Illuminate\Http\Request;
 use ReCaptcha\ReCaptcha;
 use Mail;
@@ -12,7 +14,13 @@ class ContactController extends Controller
 {
     use Responds;
 
-    protected function send(Request $request)
+    /**
+     * Contact administrators.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function send(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3',
@@ -31,7 +39,6 @@ class ContactController extends Controller
             ]);
         }
 
-        Mail::to(config('mail.from.address'))
-            ->queue(new ContactRequest((object)$request->all()));
+        Mail::to(config('mail.from.address'))->queue(new ContactRequest((object) $request->all()));
     }
 }

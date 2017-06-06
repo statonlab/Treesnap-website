@@ -203,16 +203,6 @@ export default class ObservationCard extends Component {
                              style={{
                                  backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`
                              }}>
-                            <Dropdown right={true} className="is-pulled-right">
-                                <a className="card-header-icon">
-                                    <span className="icon">
-                                        <i className="fa fa-angle-down"></i>
-                                    </span>
-                                </a>
-                                <DropdownItem onClick={() => console.log('hi')}>Contact Submitter</DropdownItem>
-                                <DropdownItem onClick={() => console.log('hi')}>Add to a Collection</DropdownItem>
-                                <DropdownItem onClick={() => console.log('hi')}>Report an Issue</DropdownItem>
-                            </Dropdown>
                         </div>
                     </div>
                     <div className="card-content">
@@ -227,7 +217,8 @@ export default class ObservationCard extends Component {
                     </div>
                     <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
                         <div className="p-1 relative-block">
-                            <button className="close button"
+                            <button href="javascript:;"
+                                    className="close button"
                                     type="button"
                                     onClick={this.slowCloseSlideContent.bind(this)}>
                                 <i className="fa fa-times"></i></button>
@@ -254,6 +245,18 @@ export default class ObservationCard extends Component {
                             </span>
                         </Tooltip>
                     </a>
+                    {window.Laravel.isAdmin &&
+                    <a href="javascript:;"
+                       className="card-footer-item is-paddingless"
+                       onClick={() => {
+                           this.props.onEmailRequest(observation)
+                       }}>
+                        <Tooltip label="Contact Submitter" style={{padding: '0.75rem'}}>
+                            <span className="icon is-small is-marginless">
+                                <i className="fa fa-envelope"></i>
+                            </span>
+                        </Tooltip>
+                    </a>}
                     <a href="javascript:;"
                        className="card-footer-item is-paddingless"
                        onClick={() => this.shouldSlide('flag')}>
@@ -273,6 +276,7 @@ ObservationCard.PropTypes = {
     observation        : PropTypes.object.isRequired,
     onFlagChange       : PropTypes.func,
     onCollectionCreated: PropTypes.func,
+    onEmailRequest     : PropTypes.func,
     collections        : PropTypes.array
 }
 
@@ -280,6 +284,8 @@ ObservationCard.defaultProps = {
     onFlagChange() {
     },
     onCollectionCreated() {
+    },
+    onEmailRequest(observation){
     },
     collections: []
 }

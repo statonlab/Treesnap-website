@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Spinner from '../../components/Spinner'
 import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
+import EmailModal from '../components/EmailModal'
 
 export default class ObservationsScene extends Component {
     constructor(props) {
@@ -14,7 +15,17 @@ export default class ObservationsScene extends Component {
             page        : 0,
             perPage     : 6,
             pages       : [],
-            collections : []
+            collections : [],
+            showEmail   : false,
+            contact     : {
+                to         : {
+                    user_id: 0,
+                    email  : ''
+                },
+                from       : '',
+                observation: {}
+            },
+            user        : {}
         }
     }
 
@@ -26,6 +37,7 @@ export default class ObservationsScene extends Component {
             this.setState({loading: false})
             this.paginate(response.data.data)
             this.loadCollections()
+            this.loadUser()
         }).catch(error => {
             this.setState({loading: false})
             console.log(error)
@@ -37,6 +49,14 @@ export default class ObservationsScene extends Component {
     loadCollections() {
         axios.get('/collections/mapped').then(response => {
             this.setState({collections: response.data.data})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    loadUser() {
+        axios.get('/user').then(response => {
+            this.setState({user: response.data.data})
         }).catch(error => {
             console.log(error)
         })
@@ -192,6 +212,8 @@ export default class ObservationsScene extends Component {
         })
 
         this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}`)
+
+        document.scrollTop = 0
     }
 
     renderFilters() {
@@ -219,6 +241,10 @@ export default class ObservationsScene extends Component {
         return (
             <div>
                 <Spinner visible={this.state.loading}/>
+                <EmailModal visible={this.state.showEmail}
+                            contact={this.state.contact}
+                            observation={this.state.contact.observation}
+                            onCloseRequest={() => this.setState({showEmail: false})}/>
                 <div className="columns flex-v-center">
                     <div className="column">
                         <h1 className="title is-3"> Observations</h1>
@@ -249,6 +275,19 @@ export default class ObservationsScene extends Component {
                                 <ObservationCard
                                     observation={observation}
                                     collections={this.state.collections}
+                                    onEmailRequest={(observation) => {
+                                        this.setState({
+                                            showEmail: true,
+                                            contact  : {
+                                                to  : {
+                                                    user_id: observation.user.id,
+                                                    name   : observation.user.name
+                                                },
+                                                from: this.state.user.email,
+                                                observation
+                                            }
+                                        })
+                                    }}
                                     onFlagChange={(event, data) => {
                                         if (event === 'removed') {
                                             let flags = []

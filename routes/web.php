@@ -113,6 +113,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     Route::post('/api/group/attach', 'GroupsController@attach');
     Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
+    // Contact Controller
+    Route::post('/api/contact/user', 'ContactController@contactUser');
+
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
 });

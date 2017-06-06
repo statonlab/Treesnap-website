@@ -33,6 +33,10 @@ body,
   text-align: right;
 }
 
+.flex-space-between {
+  @include justify-content(space-between);
+}
+
 .button.is-full {
   width: 100%;
   justify-content: flex-start;

@@ -44,9 +44,11 @@ class ObservationsController extends Controller
         foreach ($observations as $observation) {
             // Compile the data into a standardized response
             // Remove the is_private value from the response
+            $user = $observation->user;
             $data[] = array_merge(array_except($this->getObservationJson($observation, $is_admin), ['is_private']), [
                 'user' => [
-                    'name' => ! $is_admin && $observation->user->is_anonymous ? 'Anonymous' : $observation->user->name,
+                    'id' => $user->id,
+                    'name' => ! $is_admin && $user->is_anonymous ? 'Anonymous' : $user->name,
                 ],
             ]);
         }

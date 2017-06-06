@@ -12,10 +12,10 @@ export default class Tooltip extends Component {
 
     render() {
         return (
-            <div className="tooltip top"
+            <div className={`tooltip ${this.props.position}`}
                  onMouseEnter={() => this.setState({show: true})}
                  onMouseLeave={() => this.setState({show: false})}
-                 {...this.props}
+                 {..._.omit(this.props, Object.keys(Tooltip.PropTypes))}
             >
                 {this.props.children}
                 <div className={`tooltip-text${this.state.show ? ' show' : ''}`}>
@@ -27,5 +27,10 @@ export default class Tooltip extends Component {
 }
 
 Tooltip.PropTypes = {
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    position: PropTypes.string
+}
+
+Tooltip.defaultProps = {
+    position: 'top'
 }
