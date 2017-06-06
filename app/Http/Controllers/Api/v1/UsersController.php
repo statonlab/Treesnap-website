@@ -97,7 +97,7 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'is_anonymous' => $request->is_anonymous,
-            'is_private' => $request->is_private,
+            'is_private' => $request->is_private ? 1 : 0,
             'birth_year' => $request->birth_year,
             'zipcode' => $request->zipcode,
         ]);
@@ -209,8 +209,8 @@ class UsersController extends Controller
 
         return Validator::make($data, array_merge([
             'name' => 'required|min:3',
-            'is_anonymous' => 'boolean|nullable',
-            'is_private' => 'boolean|nullable',
+            'is_anonymous' => 'nullable|boolean',
+            'is_private' => 'nullable|boolean',
             'zipcode' => [
                 'nullable',
                 'min:5',

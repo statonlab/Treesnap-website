@@ -66,6 +66,7 @@ class UsersController extends Controller
         $user = $request->user();
 
         return $this->success([
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'is_anonymous' => $user->is_anonymous,
@@ -103,7 +104,7 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'is_anonymous' => $request->is_anonymous,
-            'birth_year' => $request->birth_year
+            'birth_year' => $request->birth_year,
         ])->save();
 
         return $this->success([

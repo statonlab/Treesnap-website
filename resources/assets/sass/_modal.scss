@@ -1,0 +1,13 @@
+.modal {
+  transition: opacity .5s ease-in-out 1s;
+  opacity: 0;
+
+  &.is-active {
+    opacity: 1;
+  }
+}
+
+.modal-card-lg {
+  width: 90%;
+  max-width: 1300px;
+}
