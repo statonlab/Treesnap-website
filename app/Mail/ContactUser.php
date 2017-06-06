@@ -83,6 +83,7 @@ class ContactUser extends Mailable implements ShouldQueue
             ->replyTo($this->contact->from)
             ->to($this->_to)
             ->cc($this->_cc)
+            ->subject($this->contact->subject)
             ->markdown('emails.contact-user');
     }
 }

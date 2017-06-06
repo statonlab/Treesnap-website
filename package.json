@@ -10,6 +10,7 @@
   "devDependencies": {
     "axios": "^0.15.3",
     "babel-preset-react": "^6.24.0",
+    "cookie-signature": "^1.0.6",
     "cross-env": "^3.2.3",
     "jquery": "^3.2.1",
     "laravel-mix": "^0.8.3",
@@ -18,19 +19,27 @@
   },
   "dependencies": {
     "amdefine": "^1.0.1",
+    "array-flatten": "^2.1.1",
     "bulma": "^0.4.2",
     "camelizer": "^0.1.0",
     "chart.js": "^2.6.0",
+    "content-disposition": "^0.5.2",
+    "content-type": "^1.0.2",
     "datatables-bulma": "^1.0.1",
     "datatables.net": "^1.10.15",
     "dragscroll": "0.0.8",
+    "fuse.js": "^3.0.4",
     "google-maps-react": "^1.0.19",
     "lodash._baseassign": "^3.2.0",
     "lodash._baseclone": "^4.5.7",
     "lodash._bindcallback": "^3.0.1",
     "lodash._createassigner": "^3.1.1",
     "marked": "^0.3.6",
+    "merge-descriptors": "^1.0.1",
+    "methods": "^1.1.2",
+    "path-to-regexp": "^1.7.0",
     "prop-types": "^15.5.10",
+    "proxy-addr": "^1.1.4",
     "react": "^15.5.4",
     "react-addons-update": "^15.5.2",
     "react-async-script": "^0.9.1",
@@ -40,6 +49,7 @@
     "react-image-gallery": "^0.7.16",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.5",
-    "slick-carousel": "^1.6.0"
+    "slick-carousel": "^1.6.0",
+    "type-is": "^1.6.15"
   }
 }

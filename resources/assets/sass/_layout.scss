@@ -23,6 +23,11 @@ body,
   min-height: calc(100% - 140px);
 }
 
+.flexbox {
+  @include flexbox();
+  width: 100%;
+}
+
 .flex-v-center {
   @include align-items(center);
 }
