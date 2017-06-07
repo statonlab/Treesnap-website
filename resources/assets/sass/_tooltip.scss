@@ -6,6 +6,8 @@
 }
 
 .tooltip .tooltip-text {
+  opacity: 0;
+  transition:opacity 0.25s linear;
   width: 100%;
   min-width: 120px;
   background-color: #222;
@@ -15,9 +17,10 @@
   padding: 5px 0;
   position: absolute;
   z-index: 1;
-  display: none;
+  visibility: hidden;
   &.show {
-    display: block;
+    opacity: 1;
+    visibility: visible;
   }
 }
 

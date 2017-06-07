@@ -223,3 +223,9 @@ a.box {
     width: 50px;
   }
 }
+
+.text-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

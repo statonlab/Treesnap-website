@@ -148,7 +148,7 @@ export default class FlagForm extends Component {
                 <div className="field">
                     <label className="label">Additional Comments</label>
                     <div className="control">
-                        <textarea className={`textarea${this.state.errors.comments.length > 0 ? ' is-danger' : ''}`}
+                        <textarea className={`card-textarea-sm textarea${this.state.errors.comments.length > 0 ? ' is-danger' : ''}`}
                                   value={this.state.comments}
                                   onChange={({target}) => this.setState({comments: target.value})}>
                         </textarea>

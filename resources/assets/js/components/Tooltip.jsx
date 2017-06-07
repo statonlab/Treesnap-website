@@ -16,6 +16,7 @@ export default class Tooltip extends Component {
                  onMouseEnter={() => this.setState({show: true})}
                  onMouseLeave={() => this.setState({show: false})}
                  {..._.omit(this.props, Object.keys(Tooltip.PropTypes))}
+                 onClick={() => this.setState({show: false})}
             >
                 {this.props.children}
                 <div className={`tooltip-text${this.state.show ? ' show' : ''}`}>
@@ -27,7 +28,7 @@ export default class Tooltip extends Component {
 }
 
 Tooltip.PropTypes = {
-    label: PropTypes.string.isRequired,
+    label   : PropTypes.string.isRequired,
     position: PropTypes.string
 }
 

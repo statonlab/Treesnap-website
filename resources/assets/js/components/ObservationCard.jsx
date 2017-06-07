@@ -133,7 +133,7 @@ export default class ObservationCard extends Component {
         switch (label) {
             case 'addToCollection':
                 return (
-                    <div>
+                    <div className="card-slide-container">
                         <h3 className="title is-5">Add to Collection</h3>
                         {this.state.addedToCollection ?
                             <div>
@@ -168,7 +168,7 @@ export default class ObservationCard extends Component {
                 break
             case 'flag':
                 return (
-                    <div>
+                    <div className="card-slide-container">
                         <h3 className="title is-5">Flag Observation</h3>
                         <FlagForm observationId={this.props.observation.observation_id}
                                   onSubmit={(data) => {
@@ -197,6 +197,27 @@ export default class ObservationCard extends Component {
         let name        = observation.observation_category + (observation.observation_category === 'Other' ? `(${observation.meta_data.otherLabel})` : '')
         return (
             <div className="card">
+                <header className="card-header">
+                    <p className="card-header-title">
+                        {name}
+                    </p>
+
+                    <a className="card-header-icon is-clear">
+                        <Tooltip label="Mark as incorrect species">
+                            <span className="icon">
+                                <i className="fa fa-times"></i>
+                            </span>
+                        </Tooltip>
+                    </a>
+
+                    <a className="card-header-icon is-clear">
+                        <Tooltip label="Confirm species">
+                            <span className="icon">
+                                <i className="fa fa-check"></i>
+                            </span>
+                        </Tooltip>
+                    </a>
+                </header>
                 <div className="relative-block">
                     <div className="has-bg-image">
                         <div className="card-image"
@@ -207,12 +228,12 @@ export default class ObservationCard extends Component {
                     </div>
                     <div className="card-content">
                         <div className="content">
-                            <h4 className="title is-4">
-                                {name}
-                            </h4>
                             By {observation.user.name}<br/>
                             <a href={`/observation/${observation.observation_id}`}>See Full Details</a><br/>
                             <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
+                            {observation.location.address !== null ?
+                                <div className="text-ellipsis" title={observation.location.address.formatted}><small><b>Near</b> {observation.location.address.formatted}</small></div>
+                            : <div style={{height: 24}}></div>}
                         </div>
                     </div>
                     <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
