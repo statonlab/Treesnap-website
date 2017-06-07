@@ -69,13 +69,37 @@ export default class ObservationsFilter {
             return true
         }
 
+        if (observation.observation_category === 'Other') {
+            if (observation.meta_data.otherLabel.toLowerCase().indexOf(term) > -1) {
+                return true
+            }
+        }
+
         if (observation.user.name.toLowerCase().indexOf(term) > -1) {
             return true
         }
 
         if (observation.location.address !== null) {
-            if (observation.location.address.formatted.toLowerCase().indexOf(term) > -1) {
-                return true
+            let address = observation.location.address
+            /*if (address.formatted.toLowerCase().indexOf(term) > -1) {
+             return true
+             }*/
+
+            if (address.components.length > 0) {
+                let found = false
+                address.components.map(component => {
+                    Object.keys(component).map(key => {
+                        if (typeof component[key] === 'string') {
+                            if (component[key].trim().toLowerCase().indexOf(term) > -1) {
+                                found = true
+                            }
+                        }
+                    })
+                })
+
+                if (found) {
+                    return true
+                }
             }
         }
 
@@ -83,7 +107,7 @@ export default class ObservationsFilter {
     }
 
     /**
-     * Converts object to array.
+     * Converts collections to array of IDs.
      *
      * @param collections
      * @private
