@@ -198,7 +198,7 @@ export default class ObservationCard extends Component {
         return (
             <div className="card">
                 <header className="card-header">
-                    <p className="card-header-title">
+                    <p className="card-header-title text-ellipsis">
                         {name}
                     </p>
 
