@@ -445,9 +445,24 @@ export default class ObservationsScene extends Component {
                                     }}
                                     onCollectionCreated={(data) => {
                                         let collections = this.state.collections
-                                        collections.push({
-                                            label: data.label,
-                                            value: data.id
+                                        let found       = false
+                                        collections.map(collection => {
+                                            if (collection.value === data.id) {
+                                                found = true
+                                            }
+                                        })
+
+                                        if (!found) {
+                                            collections.push({
+                                                label: data.label,
+                                                value: data.id
+                                            })
+                                        }
+
+                                        observation.collections.push({
+                                            id         : data.id,
+                                            label      : data.label,
+                                            description: data.description
                                         })
                                     }}
                                 />

@@ -150,16 +150,7 @@ export default class ObservationCard extends Component {
                                             collections={this.props.collections}
                                             onSubmit={(data) => {
                                                 this.setState({addedToCollection: true})
-                                                let found = false
-                                                this.props.collections.map(collection => {
-                                                    if (collection.value === data.id) {
-                                                        found = true
-                                                    }
-                                                })
-
-                                                if (!found) {
-                                                    this.props.onCollectionCreated(data)
-                                                }
+                                                this.props.onCollectionCreated(data)
                                             }}
                             />
                         }
@@ -232,8 +223,10 @@ export default class ObservationCard extends Component {
                             <a href={`/observation/${observation.observation_id}`}>See Full Details</a><br/>
                             <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
                             {observation.location.address !== null ?
-                                <div className="text-ellipsis" title={observation.location.address.formatted}><small><b>Near</b> {observation.location.address.formatted}</small></div>
-                            : <div style={{height: 24}}></div>}
+                                <div className="text-ellipsis" title={observation.location.address.formatted}>
+                                    <small><b>Near</b> {observation.location.address.formatted}</small>
+                                </div>
+                                : <div style={{height: 24}}></div>}
                         </div>
                     </div>
                     <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
