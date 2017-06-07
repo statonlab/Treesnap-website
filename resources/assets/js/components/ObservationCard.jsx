@@ -7,6 +7,7 @@ import CollectionForm from './CollectionForm'
 import FlagForm from './FlagForm'
 import Map from '../UI/Map'
 import Marker from '../UI/Marker'
+import Spinner from '../components/Spinner'
 
 export default class ObservationCard extends Component {
     constructor(props) {
@@ -18,7 +19,8 @@ export default class ObservationCard extends Component {
             flagged          : false,
             flag_id          : 0,
             addedToCollection: false,
-            observationId    : 0
+            observationId    : 0,
+            loading          : false
         }
 
         this.timeoutWatcher = null
@@ -125,6 +127,28 @@ export default class ObservationCard extends Component {
     }
 
     /**
+     * Remove observation from collection.
+     *
+     * @param collection
+     * @param observation
+     */
+    removeFromCollection(collection, observation) {
+        this.setState({loading: true})
+        axios.delete('/collection/detach', {
+            params: {
+                collection_id : collection.id,
+                observation_id: observation.observation_id
+            }
+        }).then(response => {
+            this.setState({loading: false})
+            this.props.onRemovedFromCollection(collection)
+        }).catch(error => {
+            console.log(error.response)
+            this.setState({loading: false})
+        })
+    }
+
+    /**
      * Render the content of the
      * @param label
      * @returns {*}
@@ -154,6 +178,19 @@ export default class ObservationCard extends Component {
                                             }}
                             />
                         }
+
+                        {this.props.observation.collections.map(collection => {
+                            return (
+                                <div key={collection.id}
+                                     className="mt-1 flexbox flex-row flex-v-center flex-space-between"
+                                     style={{marginBottom: '0.1rem'}}>
+                                    <p>Found in "{collection.label}"</p>
+                                    <button onClick={() => this.removeFromCollection(collection, this.props.observation)}
+                                            className="button is-small is-danger is-outlined">Remove
+                                    </button>
+                                </div>
+                            )
+                        })}
                     </div>
                 )
                 break
@@ -185,7 +222,7 @@ export default class ObservationCard extends Component {
 
     render() {
         let observation = this.props.observation
-        let name        = observation.observation_category + (observation.observation_category === 'Other' ? `(${observation.meta_data.otherLabel})` : '')
+        let name        = observation.observation_category + (observation.observation_category === 'Other' ? ` (${observation.meta_data.otherLabel})` : '')
         return (
             <div className="card">
                 <header className="card-header">
@@ -210,6 +247,7 @@ export default class ObservationCard extends Component {
                     </a>
                 </header>
                 <div className="relative-block">
+                    <Spinner visible={this.state.loading}/>
                     <div className="has-bg-image">
                         <div className="card-image"
                              style={{
@@ -287,11 +325,12 @@ export default class ObservationCard extends Component {
 }
 
 ObservationCard.PropTypes = {
-    observation        : PropTypes.object.isRequired,
-    onFlagChange       : PropTypes.func,
-    onCollectionCreated: PropTypes.func,
-    onEmailRequest     : PropTypes.func,
-    collections        : PropTypes.array
+    observation            : PropTypes.object.isRequired,
+    onFlagChange           : PropTypes.func,
+    onCollectionCreated    : PropTypes.func,
+    onRemovedFromCollection: PropTypes.func,
+    onEmailRequest         : PropTypes.func,
+    collections            : PropTypes.array
 }
 
 ObservationCard.defaultProps = {
@@ -300,6 +339,8 @@ ObservationCard.defaultProps = {
     onCollectionCreated() {
     },
     onEmailRequest(observation){
+    },
+    onRemovedFromCollection(collection) {
     },
     collections: []
 }

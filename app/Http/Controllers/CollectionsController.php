@@ -184,8 +184,8 @@ class CollectionsController extends Controller
     public function detach(Request $request)
     {
         $this->validate($request, [
-            'collection_id' => 'required|exists:collections,id',
-            'observations' => 'required|json',
+            'collection_id' => 'required|integer|exists:collections,id',
+            'observation_id' => 'required|integer|exists:observations,id',
         ]);
 
         $user = $request->user();
@@ -197,14 +197,9 @@ class CollectionsController extends Controller
             return $this->unauthorized();
         }
 
-        $observations = json_decode($request->observations);
-        foreach ($observations as $id) {
-            $collection->observations()->detach($id);
-        }
+        $collection->observations()->detach($request->observation_id);
 
-        return $this->success([
-            'name' => $collection->name,
-        ]);
+        return $this->success('Observation detached successfully.');
     }
 
     /**
