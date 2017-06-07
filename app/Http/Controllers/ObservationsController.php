@@ -38,6 +38,9 @@ class ObservationsController extends Controller
             'flags' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             },
+            'collections' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
         ]);
 
         $data = [];
@@ -97,5 +100,15 @@ class ObservationsController extends Controller
         }
 
         return abort(404);
+    }
+
+    /**
+     * Return available categories.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCategories()
+    {
+        return $this->success($this->observation_categories);
     }
 }

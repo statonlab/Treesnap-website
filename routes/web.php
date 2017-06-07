@@ -42,6 +42,7 @@ Route::get('/logout', function () {
 
 // Observations
 Route::get('/observations', 'ObservationsController@index');
+Route::get('/observations/categories', 'ObservationsController@getCategories');
 Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Users
@@ -67,7 +68,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/collection/delete', 'CollectionsController@delete');
     Route::post('/collection/share', 'CollectionsController@share');
     Route::delete('/collection/unshare', 'CollectionsController@unshare');
-
 
     // Flags
     Route::post('/flag', 'FlagsController@create');

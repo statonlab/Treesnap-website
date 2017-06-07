@@ -4,6 +4,24 @@
   height: 100%;
 }
 
+.card-header-icon.is-clear {
+  color: #aaa;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
+  z-index: 11;
+  margin-right: .2rem;
+  &:hover {
+    .fa-times {
+      color: $danger;
+    }
+
+    .fa-check {
+      color: $primary;
+    }
+  }
+
+}
+
 .fade {
   transition: opacity 1s ease;
   opacity: 0;
@@ -22,12 +40,13 @@
   right: 0;
   background-color: #f7f7f7;
   z-index: 5;
-  overflow-y: auto;
+  overflow: auto !important;
   -webkit-transform: translate(0, 130%);
   -moz-transform: translate(0, 130%);
   -ms-transform: translate(0, 130%);
   -o-transform: translate(0, 130%);
   transform: translate(0, 130%);
+  border-top: 1px solid $border;
 
   &.show {
     -webkit-transform: translate(0, 0);
@@ -39,8 +58,8 @@
 
   .close {
     position: absolute;
-    top: 0.2rem;
-    right: 0.2rem;
+    top: 0.5rem;
+    right: 0.5rem;
     width: 30px;
     height: 30px;
     background-color: #fff;
@@ -54,6 +73,17 @@
       line-height: 1;
     }
   }
+
+  .card-textarea-sm {
+    min-height: 80px;
+    max-height: 80px;
+    resize: none;
+  }
+}
+
+.card-slide-container {
+  max-height: 100%;
+  overflow: auto;
 }
 
 .card-footer,

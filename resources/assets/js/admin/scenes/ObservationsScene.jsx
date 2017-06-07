@@ -10,15 +10,15 @@ export default class ObservationsScene extends Component {
         super(props)
 
         this.state = {
-            loading     : true,
-            observations: [],
-            total       : 0,
-            page        : 0,
-            perPage     : 6,
-            pages       : [],
-            collections : [],
-            showEmail   : false,
-            contact     : {
+            loading           : true,
+            observations      : [],
+            total             : 0,
+            page              : 0,
+            perPage           : 6,
+            pages             : [],
+            collections       : [],
+            showEmail         : false,
+            contact           : {
                 to         : {
                     user_id: 0,
                     email  : ''
@@ -26,7 +26,11 @@ export default class ObservationsScene extends Component {
                 from       : '',
                 observation: {}
             },
-            user        : {}
+            user              : {},
+            categories        : [],
+            search            : '',
+            selectedCollection: -1,
+            selectedCategory  : ''
         }
     }
 
@@ -40,9 +44,10 @@ export default class ObservationsScene extends Component {
             this.allObservations = response.data.data
             this.filter          = new ObservationsFilter(this.allObservations)
 
-            this.paginate(response.data.data)
+            this.paginate(response.data.data, true)
             this.loadCollections()
             this.loadUser()
+            this.loadCategories()
         }).catch(error => {
             this.setState({loading: false})
             console.log(error)
@@ -67,23 +72,52 @@ export default class ObservationsScene extends Component {
         })
     }
 
+    loadCategories() {
+        axios.get('/observations/categories').then(response => {
+            let categories = response.data.data.map(category => {
+                return {
+                    label: category,
+                    value: category
+                }
+            })
+            this.setState({categories})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     /**
      * Create page links.
      *
-     * @param observations
+     * @param observations_full
+     * @param preLoad
      */
-    paginate(observations) {
-        this.allObservations       = observations
-        let total                  = observations.length
-        let {page, perPage, pages} = this.preLoadPage(total)
+    paginate(observations_full, preLoad) {
+        this.allObservations = observations_full
+        let total            = observations_full.length
+        let page             = 0
+        let perPage          = 6
+        let pages            = []
+        if (typeof preLoad === 'undefined') {
+            let r   = this.preLoadPage(total)
+            page    = r.page
+            perPage = r.perPage
+            pages   = r.pages
+        } else {
+            page    = 0
+            perPage = this.state.perPage
+            pages   = this.generatePages(total, perPage)
+        }
 
+        let observations = this.getPage(page, perPage, observations_full)
         this.setState({
-            observations: this.getPage(page, perPage),
+            observations,
             total,
             page,
             perPage,
             pages
         })
+        this.goToPage(page)
     }
 
     /**
@@ -165,13 +199,16 @@ export default class ObservationsScene extends Component {
 
     /**
      * Get the current set of observations
+     *
      * @param page
+     * @param perPage
+     * @param observations
      */
-    getPage(page, perPage) {
+    getPage(page, perPage, observations) {
         perPage   = perPage || this.state.perPage
         let start = perPage * page
         let end   = start + perPage
-        return this.allObservations.slice(start, end)
+        return typeof observations !== 'undefined' ? observations.slice(start, end) : this.allObservations.slice(start, end)
     }
 
     /**
@@ -221,7 +258,102 @@ export default class ObservationsScene extends Component {
         window.scroll(0, 0)
     }
 
+    /**
+     * Apply search filter.
+     *
+     * @param search
+     */
+    searchFilter(search) {
+        if (this.filter) {
+            this.setState({search})
+            this.paginate(this.filter.search(search))
+        }
+    }
+
+    /**
+     * Apply collection filter.
+     *
+     * @param selectedCollection
+     */
+    collectionFilter(selectedCollection) {
+        if (this.filter) {
+            this.setState({selectedCollection})
+            this.paginate(this.filter.collection(selectedCollection))
+        }
+    }
+
+    /**
+     * Apply category filter.
+     *
+     * @param selectedCategory
+     */
+    categoriesFilter(selectedCategory) {
+        if (this.filter) {
+            this.setState({selectedCategory})
+            this.paginate(this.filter.category(selectedCategory))
+        }
+    }
+
+    /**
+     * Render filter bar.
+     *
+     * @returns {XML}
+     */
     renderFilters() {
+        return (
+            <div className="mb-1">
+                <p className="mb-0"><b>Filters</b></p>
+                <div className="field is-horizontal">
+                    <div className="field-body">
+                        <div className="field is-expanded">
+                            <div className="control is-expanded">
+                                <input type="search"
+                                       className="input"
+                                       placeholder="Search"
+                                       onChange={({target}) => this.searchFilter(target.value)}
+                                       value={this.state.search}
+                                />
+                            </div>
+                        </div>
+                        <div className="field">
+                            <div className="control">
+                                <span className="select">
+                                    <select
+                                        value={this.state.selectedCollection}
+                                        onChange={({target}) => this.collectionFilter(target.value)}
+                                    >
+                                        <option value="-1">All Collections</option>
+                                        {this.state.collections.map(collection => {
+                                            return (
+                                                <option key={collection.value}
+                                                        value={collection.value}>
+                                                    {collection.label}
+                                                </option>
+                                            )
+                                        })}
+                                    </select>
+                                </span>
+
+                                <span className="select ml-1">
+                                    <select value={this.state.selectedCategory}
+                                            onChange={({target}) => this.categoriesFilter(target.value)}>
+                                        <option value="">All Species</option>
+                                        {this.state.categories.map(category => {
+                                            return (
+                                                <option key={category.value}
+                                                        value={category.value}>
+                                                    {category.label}
+                                                </option>
+                                            )
+                                        })}
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     changePerPage(perPage) {
@@ -246,10 +378,12 @@ export default class ObservationsScene extends Component {
         return (
             <div>
                 <Spinner visible={this.state.loading}/>
+
                 <EmailModal visible={this.state.showEmail}
                             contact={this.state.contact}
                             observation={this.state.contact.observation}
                             onCloseRequest={() => this.setState({showEmail: false})}/>
+
                 <div className="columns flex-v-center">
                     <div className="column">
                         <h1 className="title is-3"> Observations</h1>
@@ -272,11 +406,13 @@ export default class ObservationsScene extends Component {
 
                 {this.renderFilters()}
 
+                {this.state.observations.length === 0 ? <p className="mb-0">No results found</p> : null}
+
                 <div className="columns is-multiline">
                     {this.state.observations.map(observation => {
                         return (
                             <div key={observation.observation_id}
-                                 className="column is-4-widescreen is-6-desktop is-12-tablet">
+                                 className="column is-4-widescreen is-6-desktop is-6-tablet">
                                 <ObservationCard
                                     observation={observation}
                                     collections={this.state.collections}
