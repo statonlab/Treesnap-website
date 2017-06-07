@@ -56,6 +56,9 @@ export default class ObservationsScene extends Component {
         this.history = this.props.history
     }
 
+    /**
+     * Load available collections.
+     */
     loadCollections() {
         axios.get('/collections/mapped').then(response => {
             this.setState({collections: response.data.data})
@@ -64,6 +67,9 @@ export default class ObservationsScene extends Component {
         })
     }
 
+    /**
+     * Load user info.
+     */
     loadUser() {
         axios.get('/user').then(response => {
             this.setState({user: response.data.data})
@@ -72,6 +78,9 @@ export default class ObservationsScene extends Component {
         })
     }
 
+    /**
+     * Load observation categories from server.
+     */
     loadCategories() {
         axios.get('/observations/categories').then(response => {
             let categories = response.data.data.map(category => {
@@ -464,6 +473,11 @@ export default class ObservationsScene extends Component {
                                             label      : data.label,
                                             description: data.description
                                         })
+                                    }}
+                                    onRemovedFromCollection={(collection) => {
+                                        console.log(collection)
+                                        observation.collections = observation.collections.filter(c => c.id !== collection.id)
+                                        this.forceUpdate()
                                     }}
                                 />
                             </div>
