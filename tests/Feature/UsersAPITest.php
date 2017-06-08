@@ -17,24 +17,26 @@ class UsersAPITest extends TestCase
     public function testCreatingUser()
     {
         $response = $this->post('/api/v1/users', [
-          'name' => 'Test User',
-          'password' => 'TestPass123',
-          'email' => 'example@email.com',
-          'zipcode' => '37906',
-          'is_anonymous' => true,
-          'is_over_thirteen' => true,
+            'name' => 'Test User',
+            'password' => 'TestPass123',
+            'email' => 'example@email.com',
+            'zipcode' => '37906',
+            'is_anonymous' => true,
+            'birth_year' => 1990,
+            'is_private' => true,
         ]);
 
         $response->assertJsonStructure([
-          'data' => [
-            'user_id',
-            'name',
-            'email',
-            'zipcode',
-            'api_token',
-            'is_anonymous',
-            'is_over_thirteen',
-          ],
+            'data' => [
+                'user_id',
+                'name',
+                'email',
+                'zipcode',
+                'api_token',
+                'is_anonymous',
+                'is_private',
+                'birth_year',
+            ],
         ])->assertStatus(201);
     }
 
@@ -48,39 +50,23 @@ class UsersAPITest extends TestCase
         $this->actingAs($user);
 
         $response = $this->put('/api/v1/user', [
-          'name' => 'Test User',
-          'email' => 'example2@email.com',
-          'zipcode' => '37919',
-          'is_anonymous' => false,
-          'is_over_thirteen' => false,
+            'name' => 'Test User',
+            'email' => 'example2@email.com',
+            'zipcode' => '37919',
+            'is_anonymous' => false,
+            'birth_year' => 1980,
+            'is_private' => true,
         ]);
 
         $response->assertJsonStructure([
-          'data' => [
-            'name',
-            'email',
-            'zipcode',
-            'is_anonymous',
-            'is_over_thirteen',
-          ],
-        ])->assertStatus(201);
-    }
-
-    /**
-     * Test updating a user's password.
-     */
-    public function testUpdatingPassword()
-    {
-        // Get the last user created
-        $user = User::orderBy('id', 'desc')->first();
-        $this->actingAs($user);
-
-        $response = $this->patch('/api/v1/user/password', [
-          'password' => 'testing123',
-        ]);
-
-        $response->assertJsonStructure([
-          'data',
+            'data' => [
+                'name',
+                'email',
+                'zipcode',
+                'is_anonymous',
+                'birth_year',
+                'is_private',
+            ],
         ])->assertStatus(201);
     }
 
@@ -95,13 +81,13 @@ class UsersAPITest extends TestCase
         $response = $this->get('/api/v1/user');
 
         $response->assertJsonStructure([
-          'data' => [
-            'id',
-            'name',
-            'zipcode',
-            'email',
-            'is_anonymous',
-          ],
+            'data' => [
+                'id',
+                'name',
+                'zipcode',
+                'email',
+                'is_anonymous',
+            ],
         ])->assertStatus(200);
     }
 
@@ -111,12 +97,12 @@ class UsersAPITest extends TestCase
     public function testAuthenticatingAUser()
     {
         $response = $this->post('/api/v1/user/login', [
-          'email' => 'almasaeed2010@gmail.com',
-          'password' => 'testpass',
+            'email' => 'almasaeed2010@gmail.com',
+            'password' => 'testpass',
         ]);
 
         $response->assertJsonStructure([
-          'data' => ['api_token'],
+            'data' => ['api_token'],
         ])->assertStatus(200);
     }
 }

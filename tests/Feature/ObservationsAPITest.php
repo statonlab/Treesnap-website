@@ -26,23 +26,23 @@ class ObservationsAPITest extends TestCase
         $response = $this->get('/api/v1/observations');
 
         $response->assertJsonStructure([
-          'data' => [
-            [
-              'observation_id',
-              'user_id',
-              'observation_category',
-              'meta_data',
-              'location' => [
-                'longitude',
-                'latitude',
-                'accuracy',
-              ],
-              'images',
-              'date',
-              'meta_data',
-              'is_private',
+            'data' => [
+                [
+                    'observation_id',
+                    'user_id',
+                    'observation_category',
+                    'meta_data',
+                    'location' => [
+                        'longitude',
+                        'latitude',
+                        'accuracy',
+                    ],
+                    'images',
+                    'date',
+                    'meta_data',
+                    'is_private',
+                ],
             ],
-          ],
         ])->assertStatus(200);
     }
 
@@ -59,21 +59,21 @@ class ObservationsAPITest extends TestCase
         $response = $this->get("/api/v1/observation/{$observation->id}");
 
         $response->assertJsonStructure([
-          'data' => [
-            'observation_id',
-            'user_id',
-            'observation_category',
-            'meta_data',
-            'location' => [
-              'longitude',
-              'latitude',
-              'accuracy',
+            'data' => [
+                'observation_id',
+                'user_id',
+                'observation_category',
+                'meta_data',
+                'location' => [
+                    'longitude',
+                    'latitude',
+                    'accuracy',
+                ],
+                'images',
+                'date',
+                'meta_data',
+                'is_private',
             ],
-            'images',
-            'date',
-            'meta_data',
-            'is_private',
-          ],
         ])->assertStatus(200);
     }
 
@@ -117,20 +117,25 @@ class ObservationsAPITest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post("/api/v1/observations", [
-          'observation_category' => 'American Chestnut',
-          'meta_data' => json_encode([
-            'comment' => 'Comment: This record has been added via a test.',
-          ]),
-          'longitude' => -90.03073,
-          'latitude' => 34.090,
-          'location_accuracy' => 5.00,
-          'date' => '03-23-2017 20:00:00',
-          'images' => [UploadedFile::fake()->image('avatar.jpg'), UploadedFile::fake()->image('guy.jpg')],
-          'is_private' => true,
+            'observation_category' => 'American Chestnut',
+            'meta_data' => json_encode([
+                'comment' => 'Comment: This record has been added via a test.',
+            ]),
+            'longitude' => -90.03073,
+            'latitude' => 34.090,
+            'location_accuracy' => 5.00,
+            'date' => '03-23-2017 20:00:00',
+            'images' => [
+                'images' => [
+                    UploadedFile::fake()->image('avatar.jpg'),
+                    UploadedFile::fake()->image('guy.jpg'),
+                ],
+            ],
+            'is_private' => true,
+            'mobile_id' => 1234,
         ]);
 
-        $response->assertJsonStructure(['data' => ['observation_id']])
-          ->assertStatus(201);
+        $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
     }
 
     /**
@@ -142,20 +147,26 @@ class ObservationsAPITest extends TestCase
         $this->actingAs($user);
         $observation = $user->observations()->orderby('id', 'desc')->first();
 
-        $response = $this->put("/api/v1/observation/{$observation->id}", [
-          'observation_category' => 'American Chestnut',
-          'meta_data' => json_encode([
-            'comment' => 'Comment: This record has been updated via a test',
-          ]),
-          'longitude' => -90.03073,
-          'latitude' => 34.090,
-          'location_accuracy' => 5.00,
-          'date' => '03-23-2017 20:00:00',
-          'images' => [UploadedFile::fake()->image('avatar2.jpg'), UploadedFile::fake()->image('hem.jpg')],
-          'is_private' => true,
+        $response = $this->post("/api/v1/observation/{$observation->id}", [
+            'observation_category' => 'American Chestnut',
+            'meta_data' => json_encode([
+                'comment' => 'Comment: This record has been updated via a test',
+            ]),
+            'longitude' => -90.03073,
+            'latitude' => 34.090,
+            'location_accuracy' => 5.00,
+            'date' => '03-23-2017 20:00:00',
+            'images' => [
+                'images' => [
+                    UploadedFile::fake()->image('avatar2.jpg'),
+                    UploadedFile::fake()->image('hem.jpg'),
+                ],
+            ],
+            'is_private' => true,
+            'mobile_id' => 4021,
         ]);
 
-        $response->assertJsonStructure(['data'])->assertStatus(201);
+        $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
     }
 
     /**
@@ -165,11 +176,11 @@ class ObservationsAPITest extends TestCase
     {
         $user = User::first();
         $this->actingAs($user);
-        $observation = Observation::where('user_id', '!=', $user->id)
-          ->orderby('id', 'desc')
-          ->first();
+        $observation = Observation::where('user_id', '!=', $user->id)->orderby('id', 'desc')->first();
 
-        $response = $this->put("/api/v1/observation/{$observation->id}");
+        $response = $this->post("/api/v1/observation/{$observation->id}", [
+            'data'
+        ]);
 
         $response->assertStatus(401);
     }
@@ -196,7 +207,6 @@ class ObservationsAPITest extends TestCase
         $user = User::has('observations')->first();
         $this->actingAs($user);
         $observation = Observation::where('user_id', '!=', $user->id)->first();
-        var_dump($observation);
 
         $response = $this->delete("/api/v1/observation/{$observation->id}");
 
