@@ -4,7 +4,7 @@ import DoughnutChart from '../components/DoughnutChart'
 import LineChart from '../components/LineChart'
 import BarChart from '../components/BarChart'
 
-export default class Dashboard extends Component {
+export default class DashboardScene extends Component {
 
     render() {
         return (

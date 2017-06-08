@@ -5,7 +5,7 @@ import '../plugins/dataTables.bulma'
 import {Link} from 'react-router-dom'
 import Spinner from '../../components/Spinner'
 
-export default class Users extends Component {
+export default class UsersScene extends Component {
     constructor(props) {
         super(props)
 

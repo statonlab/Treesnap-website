@@ -31,7 +31,6 @@ export default class CollectionForm extends Component {
             collection_id : this.state.collection_id || '',
             label         : this.state.label
         }).then(response => {
-            this.props.onSubmit(response.data.data)
             this.setState({
                 loading      : false,
                 label        : '',
@@ -41,6 +40,7 @@ export default class CollectionForm extends Component {
                     collection_id: []
                 }
             })
+            this.props.onSubmit(response.data.data)
         }).catch(error => {
             const response = error.response
             if (response && response.status === 422) {
@@ -107,6 +107,8 @@ export default class CollectionForm extends Component {
                                onChange={({target}) => this.setState({label: target.value})}
                                value={this.state.label}
                                placeholder="Type new collection label"
+                               readOnly={parseInt(this.state.collection_id) !== 0}
+                               disabled={parseInt(this.state.collection_id) !== 0}
                         />
                         {this.state.errors.label.map((error, index) => {
                             return (<p className="help is-danger" key={index}>{error}</p>)

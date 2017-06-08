@@ -60,7 +60,7 @@
 
 .buttons-group {
   .button {
-    margin-left: .5rem;
+    margin-right: .5rem;
   }
 }
 
@@ -68,4 +68,25 @@
   .label {
     line-height: 2rem;
   }
+}
+
+.button-select {
+  background-color: whitesmoke;
+
+  .fa {
+    color: #aaa;
+  }
+
+  &.is-selected {
+    background-color: #fff;
+    .fa {
+      color: $primary;
+    }
+  }
+}
+
+.bordered {
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 1rem;
 }
