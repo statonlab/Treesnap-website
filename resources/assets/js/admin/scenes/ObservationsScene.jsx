@@ -4,6 +4,7 @@ import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
 import ObservationsFilter from '../../helpers/ObservationsFilter'
+import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 
 export default class ObservationsScene extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ export default class ObservationsScene extends Component {
             pages             : [],
             collections       : [],
             showEmail         : false,
+            showFiltersModal  : false,
             contact           : {
                 to         : {
                     user_id: 0,
@@ -30,7 +32,8 @@ export default class ObservationsScene extends Component {
             categories        : [],
             search            : '',
             selectedCollection: -1,
-            selectedCategory  : ''
+            selectedCategory  : '',
+            searchTermCategory: 'all'
         }
     }
 
@@ -107,7 +110,7 @@ export default class ObservationsScene extends Component {
         let page             = 0
         let perPage          = 6
         let pages            = []
-        if (typeof preLoad === 'undefined') {
+        if (typeof preLoad !== 'undefined' && preLoad !== false) {
             let r   = this.preLoadPage(total)
             page    = r.page
             perPage = r.perPage
@@ -252,11 +255,6 @@ export default class ObservationsScene extends Component {
      * @param page
      */
     goToPage(page) {
-        // Don't compute unless the page actually changed
-        if (this.state.page === page) {
-            return
-        }
-
         this.setState({
             observations: this.getPage(page),
             page
@@ -303,6 +301,13 @@ export default class ObservationsScene extends Component {
         }
     }
 
+    searchCategoryFilter(searchTermCategory) {
+        if (this.filter) {
+            this.setState({searchTermCategory})
+            this.paginate(this.filter.searchTermCategory(searchTermCategory))
+        }
+    }
+
     /**
      * Render filter bar.
      *
@@ -314,7 +319,7 @@ export default class ObservationsScene extends Component {
                 <p className="mb-0"><b>Filters</b></p>
                 <div className="field is-horizontal">
                     <div className="field-body">
-                        <div className="field is-expanded">
+                        <div className="field has-addons">
                             <div className="control is-expanded">
                                 <input type="search"
                                        className="input"
@@ -322,6 +327,22 @@ export default class ObservationsScene extends Component {
                                        onChange={({target}) => this.searchFilter(target.value)}
                                        value={this.state.search}
                                 />
+                            </div>
+                            <div className="control">
+                                <span className="select">
+                                    <select
+                                        value={this.state.searchTermCategory}
+                                        onChange={({target}) => this.searchCategoryFilter(target.value)}
+                                    >
+                                        <option value="all">Any</option>
+                                        <option value="user">User Name</option>
+                                        <option value="category">Title</option>
+                                        <option value="address">Full Address</option>
+                                        <option value="state">State</option>
+                                        <option value="county">County</option>
+                                        <option value="city">City</option>
+                                    </select>
+                                </span>
                             </div>
                         </div>
                         <div className="field">
@@ -359,6 +380,9 @@ export default class ObservationsScene extends Component {
                                 </span>
                             </div>
                         </div>
+                        <div className="field has-text-right">
+                            <a onClick={() => this.setState({showFiltersModal: true})}>Advanced Filters</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -392,6 +416,10 @@ export default class ObservationsScene extends Component {
                             contact={this.state.contact}
                             observation={this.state.contact.observation}
                             onCloseRequest={() => this.setState({showEmail: false})}/>
+
+                <AdvancedFiltersModal
+                    visible={this.state.showFiltersModal}
+                    onCloseRequest={() => this.setState({showFiltersModal: false})}/>
 
                 <div className="columns flex-v-center">
                     <div className="column">

@@ -3,7 +3,7 @@ import Spinner from '../../components/Spinner'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 
-export default class Groups extends Component {
+export default class GroupsScene extends Component {
     constructor(props) {
         super(props)
 

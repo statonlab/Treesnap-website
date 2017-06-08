@@ -127,7 +127,6 @@ class ObservationsController extends Controller
             'fuzzy_coords' => $fuzzy_coords,
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
-
         ]);
 
         if (! $observation) {
@@ -182,14 +181,14 @@ class ObservationsController extends Controller
             'images' => $images,
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
-
         ]);
 
         if (! $observation) {
             return $this->error('Request could not be completed', 101);
         }
 
-   }
+        return $this->created(['observation_id' => $observation->id]);
+    }
 
     /**
      * Returns the validation rules for observation create/update requests.

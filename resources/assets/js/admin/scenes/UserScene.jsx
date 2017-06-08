@@ -1,9 +1,10 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import Spinner from '../../components/Spinner'
 import Select from 'react-select'
 
-export default class User extends Component {
+export default class UserScene extends Component {
     constructor(props) {
         super(props)
 
@@ -539,6 +540,6 @@ export default class User extends Component {
     }
 }
 
-User.PropTypes = {
+UserScene.PropTypes = {
     location: PropTypes.object.isRequired
 }

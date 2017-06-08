@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import Spinner from '../../components/Spinner'
 import Select from 'react-select'
 
-export default class Group extends Component {
+export default class GroupScene extends Component {
     constructor(props) {
         super(props)
 

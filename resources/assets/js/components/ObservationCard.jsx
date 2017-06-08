@@ -46,8 +46,6 @@ export default class ObservationCard extends Component {
         let oldLabel = this.state.slideContent
         let slide    = this.state.slide
 
-        //console.log(this.state, label)
-
         if (this.timeoutWatcher) {
             clearTimeout(this.timeoutWatcher)
         }
@@ -160,15 +158,25 @@ export default class ObservationCard extends Component {
                     <div className="card-slide-container">
                         <h3 className="title is-5">Add to Collection</h3>
                         {this.state.addedToCollection ?
-                            <div>
-                                <div className="notification is-success">
+                            <div className="content">
+                                <p className="text-success">
                                     Observation was successfully added to your collection.
-                                </div>
+                                </p>
 
-                                <button type="button"
-                                        className="button"
-                                        onClick={() => this.setState({addedToCollection: false})}>Add to Another Collection
-                                </button>
+                                <div className="flexbox flex-row flex-v-center flex-space-between">
+                                    <button type="button"
+                                            className="button is-link is-paddingless"
+                                            onClick={() => this.setState({addedToCollection: false})}>
+                                        Add to Another Collection
+                                    </button>
+
+                                    <button className="button" type="button" onClick={() => {
+                                        this.setState({addedToCollection: false})
+                                        this.slowCloseSlideContent()
+                                    }}>
+                                        Done
+                                    </button>
+                                </div>
                             </div> :
                             <CollectionForm observationId={this.props.observation.observation_id}
                                             collections={this.props.collections}
@@ -184,7 +192,7 @@ export default class ObservationCard extends Component {
                                 <div key={collection.id}
                                      className="mt-1 flexbox flex-row flex-v-center flex-space-between"
                                      style={{marginBottom: '0.1rem'}}>
-                                    <p>Found in "{collection.label}"</p>
+                                    <p style={{paddingRight: '5px'}}>Found in "{collection.label}"</p>
                                     <button onClick={() => this.removeFromCollection(collection, this.props.observation)}
                                             className="button is-small is-danger is-outlined">Remove
                                     </button>
@@ -221,8 +229,16 @@ export default class ObservationCard extends Component {
     }
 
     render() {
-        let observation = this.props.observation
-        let name        = observation.observation_category + (observation.observation_category === 'Other' ? ` (${observation.meta_data.otherLabel})` : '')
+        let observation  = this.props.observation
+        let name         = observation.observation_category + (observation.observation_category === 'Other' ? ` (${observation.meta_data.otherLabel})` : '')
+        let address      = observation.location.address !== null ? observation.location.address.formatted : null
+        let addressLine1 = ''
+        let addressLine2 = ''
+        if (address !== null) {
+            address      = address.split(',')
+            addressLine1 = address.shift()
+            addressLine2 = address.join(',')
+        }
         return (
             <div className="card">
                 <header className="card-header">
@@ -260,11 +276,13 @@ export default class ObservationCard extends Component {
                             By {observation.user.name}<br/>
                             <a href={`/observation/${observation.observation_id}`}>See Full Details</a><br/>
                             <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
-                            {observation.location.address !== null ?
+                            {address !== null ?
                                 <div className="text-ellipsis" title={observation.location.address.formatted}>
-                                    <small><b>Near</b> {observation.location.address.formatted}</small>
+                                    <small><b>Near</b> {addressLine1}</small>
+                                    <br/>
+                                    <small style={{marginLeft: '35px'}}>{addressLine2}</small>
                                 </div>
-                                : <div style={{height: 24}}></div>}
+                                : <div style={{height: 48}}></div>}
                         </div>
                     </div>
                     <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>

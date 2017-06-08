@@ -117,7 +117,7 @@ class CollectionsController extends Controller
         ]);
 
         // Deal with new collections.
-        if (! empty($request->label)) {
+        if (! empty($request->label) && $request->collection_id === '') {
             $collection = Collection::firstOrCreate([
                 'label' => $request->label,
                 'user_id' => $user->id,
@@ -261,13 +261,13 @@ class CollectionsController extends Controller
 
         $collection = Collection::findOrFail($request->collection_id);
 
-        if ($request->user() !== $collection->user_id) {
+        if ($request->user()->id !== $collection->user_id) {
             return $this->unauthorized();
         }
 
         $collection->delete();
 
-        return $this->success([
+        return $this->created([
             'id' => $request->id,
             'label' => $request->label,
         ]);
