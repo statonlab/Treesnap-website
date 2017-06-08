@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -25,9 +26,7 @@ class CollectionsTest extends TestCase
     {
         $this->actingAs(User::first());
 
-        $response = $this->get('/api/collections');
-
-        var_dump('data');
+        $response = $this->get('/collections');
 
         $response->assertJsonStructure([
             'data' => [
@@ -50,7 +49,7 @@ class CollectionsTest extends TestCase
     public function testGettingSpecificCollection()
     {
         $this->actingAs(User::first());
-        $response = $this->get('/api/collection/{id}');
+        $response = $this->get('/collection/{id}');
     }
 
     /**
@@ -60,24 +59,26 @@ class CollectionsTest extends TestCase
      */
     public function testDeleteCollection()
     {
-        $this->actingAs(User::first());
+        $user = User::first();
+        $this->actingAs($user);
 
-        $response = $this->delete("/api/collection/delete", [
-            'label' => 'Test collection',
-            'description' => 'this is a test collection',
+        $collection = Collection::create([
+            'label' => 'test',
+            'user_id' => $user->id,
+        ]);
+
+        $collection->users()->attach($user->id);
+
+        $response = $this->delete("/collection/delete", [
+            'collection_id' => $collection->id,
         ]);
 
         $response->assertJsonStructure([
             'data' => [
-                [
-                    'collection_id',
-                    'collection_label',
-                    'collection_description',
-                    'owner',
-                    'shared_users',
-                ],
+                'id',
+                'label',
             ],
-        ])->asserStatus(201);
+        ])->assertStatus(201);
     }
 
     /**
@@ -87,18 +88,29 @@ class CollectionsTest extends TestCase
 
     public function testCreateCollection()
     {
-        $this->actingAs(User::first());
+        $user = User::first();
+        $this->actingAs($user);
 
-        $response = $this->post("/api/collections", [
+        $response = $this->post("/collections", [
             'label' => 'Test collection',
             'description' => 'this is a test collection',
         ]);
 
-        $response->assertJsonStructure(['data' => ['collection_id']])->asserStatus(201);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'user_id',
+                'label',
+                'description',
+                'created_at',
+                'updated_at'
+            ]
+        ])->assertStatus(201);
     }
 
     /**
      * Test requests for non-existent collections.
+     *
      * @group collection
      */
     public function testGettingACollectionThatDoesNotExist()
@@ -109,7 +121,7 @@ class CollectionsTest extends TestCase
         // Make up a weird id
         $id = 'ua700xf';
 
-        $response = $this->get("/api/collection/{$id}");
+        $response = $this->get("/collection/{$id}");
 
         $response->assertStatus(404);
     }
