@@ -147,66 +147,77 @@ export default class ObservationCard extends Component {
     }
 
     /**
+     * Render collection form.
+     *
+     * @returns {XML}
+     */
+    renderCollectionForm() {
+        let observation = this.props.observation
+        return (
+            <div className="card-slide-container">
+                <h3 className="title is-5">Add to Collection</h3>
+                {this.state.addedToCollection ?
+                    <div className="content">
+                        <p className="text-success">
+                            Observation was successfully added to your collection.
+                        </p>
+
+                        <div className="flexbox flex-row flex-v-center flex-space-between">
+                            <button type="button"
+                                    className="button is-link is-paddingless"
+                                    onClick={() => this.setState({addedToCollection: false})}>
+                                Add to Another Collection
+                            </button>
+
+                            <button className="button" type="button" onClick={() => {
+                                this.setState({addedToCollection: false})
+                                this.slowCloseSlideContent()
+                            }}>
+                                Done
+                            </button>
+                        </div>
+                    </div> :
+                    <CollectionForm observationId={observation.observation_id}
+                                    collections={this.props.collections}
+                                    onSubmit={(data) => {
+                                        this.setState({addedToCollection: true})
+                                        this.props.onCollectionCreated(data)
+                                    }}
+                    />
+                }
+
+                {observation.collections.map(collection => {
+                    return (
+                        <div key={collection.id}
+                             className="mt-1 flexbox flex-row flex-v-center flex-space-between"
+                             style={{marginBottom: '0.1rem'}}>
+                            <p style={{paddingRight: '5px'}}>Found in "{collection.label}"</p>
+                            <button onClick={() => this.removeFromCollection(collection, observation)}
+                                    className="button is-small is-danger is-outlined">Remove
+                            </button>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+
+    /**
      * Render the content of the
      * @param label
      * @returns {*}
      */
     renderSlideContent(label) {
+        let observation = this.props.observation
         switch (label) {
             case 'addToCollection':
-                return (
-                    <div className="card-slide-container">
-                        <h3 className="title is-5">Add to Collection</h3>
-                        {this.state.addedToCollection ?
-                            <div className="content">
-                                <p className="text-success">
-                                    Observation was successfully added to your collection.
-                                </p>
-
-                                <div className="flexbox flex-row flex-v-center flex-space-between">
-                                    <button type="button"
-                                            className="button is-link is-paddingless"
-                                            onClick={() => this.setState({addedToCollection: false})}>
-                                        Add to Another Collection
-                                    </button>
-
-                                    <button className="button" type="button" onClick={() => {
-                                        this.setState({addedToCollection: false})
-                                        this.slowCloseSlideContent()
-                                    }}>
-                                        Done
-                                    </button>
-                                </div>
-                            </div> :
-                            <CollectionForm observationId={this.props.observation.observation_id}
-                                            collections={this.props.collections}
-                                            onSubmit={(data) => {
-                                                this.setState({addedToCollection: true})
-                                                this.props.onCollectionCreated(data)
-                                            }}
-                            />
-                        }
-
-                        {this.props.observation.collections.map(collection => {
-                            return (
-                                <div key={collection.id}
-                                     className="mt-1 flexbox flex-row flex-v-center flex-space-between"
-                                     style={{marginBottom: '0.1rem'}}>
-                                    <p style={{paddingRight: '5px'}}>Found in "{collection.label}"</p>
-                                    <button onClick={() => this.removeFromCollection(collection, this.props.observation)}
-                                            className="button is-small is-danger is-outlined">Remove
-                                    </button>
-                                </div>
-                            )
-                        })}
-                    </div>
-                )
+                return this.renderCollectionForm()
                 break
             case 'flag':
                 return (
                     <div className="card-slide-container">
                         <h3 className="title is-5">Flag Observation</h3>
-                        <FlagForm observationId={this.props.observation.observation_id}
+                        <FlagForm observationId={observation.observation_id}
                                   onSubmit={(data) => {
                                       this.setState({flagged: true, flag_id: data.id})
                                       this.props.onFlagChange('added', data)
@@ -246,7 +257,7 @@ export default class ObservationCard extends Component {
                         {name}
                     </p>
 
-                    <a className="card-header-icon is-clear">
+                    <a className="card-header-icon is-clear" onClick={() => this.shouldSlide('flag')}>
                         <Tooltip label="Mark as incorrect species">
                             <span className="icon">
                                 <i className="fa fa-times"></i>

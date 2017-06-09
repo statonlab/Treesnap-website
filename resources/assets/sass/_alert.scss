@@ -14,3 +14,28 @@
     color: #fff;
   }
 }
+
+.push-notification {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  right: 1em;
+  z-index: 1100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, top 1s ease-in-out;
+
+  &.show {
+    visibility: visible;
+    opacity: 1;
+    top: $nav-height + 1em;
+  }
+
+  &.hiding {
+    visibility: visible;
+    opacity: 0;
+    top: 0;
+  }
+}
+

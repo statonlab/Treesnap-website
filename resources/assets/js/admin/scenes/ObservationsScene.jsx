@@ -5,6 +5,7 @@ import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
 import ObservationsFilter from '../../helpers/ObservationsFilter'
 import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
+import Notify from '../../components/Notify'
 
 export default class ObservationsScene extends Component {
     constructor(props) {
@@ -129,6 +130,7 @@ export default class ObservationsScene extends Component {
             perPage,
             pages
         })
+
         this.goToPage(page)
     }
 
@@ -470,7 +472,6 @@ export default class ObservationsScene extends Component {
                                         if (event === 'removed') {
                                             let flags = []
                                             observation.flags.map(flag => {
-                                                console.log(flag, data)
                                                 if (flag.id !== parseInt(data.id)) {
                                                     flags.push(flag)
                                                 }
@@ -501,11 +502,13 @@ export default class ObservationsScene extends Component {
                                             label      : data.label,
                                             description: data.description
                                         })
+                                        this.forceUpdate()
+                                        Notify.push(`Added "${observation.observation_category}" to "${data.label}" successfully`)
                                     }}
                                     onRemovedFromCollection={(collection) => {
-                                        console.log(collection)
                                         observation.collections = observation.collections.filter(c => c.id !== collection.id)
                                         this.forceUpdate()
+                                        Notify.push(`Removed "${observation.observation_category}" from "${collection.label}" successfully`)
                                     }}
                                 />
                             </div>

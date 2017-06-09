@@ -72,6 +72,9 @@
 
 .button-select {
   background-color: whitesmoke;
+  white-space: normal!important;
+  height: auto;
+  line-height: 1.5;
 
   .fa {
     color: #aaa;

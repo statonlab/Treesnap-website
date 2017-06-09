@@ -25,7 +25,7 @@ export default class AdvancedFiltersModal extends Component {
 
     _resetForm() {
         this.setState({
-            selectedCategories: this.state.categories
+            //selectedCategories: this.state.categories
         })
     }
 
@@ -37,7 +37,7 @@ export default class AdvancedFiltersModal extends Component {
         axios.get('/observations/categories').then(response => {
             this.setState({
                 categories        : response.data.data,
-                selectedCategories: response.data.data
+                //selectedCategories: response.data.data
             })
         }).catch(error => {
             console.log(error)
@@ -63,7 +63,7 @@ export default class AdvancedFiltersModal extends Component {
     renderAmericanChestnutFilters() {
         return (
             <div className="column is-12">
-                <h3 className="title is-4"> American Chestnut Filters</h3>
+                <h3 className="title is-4">American Chestnut Filters</h3>
                 <div className="bordered">
                     <AmericanChestnutFilters onChange={(americanChestnut) => this.setState({americanChestnut})}/>
                 </div>
@@ -99,9 +99,11 @@ export default class AdvancedFiltersModal extends Component {
                 <div className="column is-6">
                     <div className="field">
                         <label className="label">Species</label>
+                        <p className="mb-1">
+                            Begin by selecting the species you are interested in.
+                        </p>
                         <ButtonList list={this.state.categories}
                                     onChange={selectedCategories => this.setState({selectedCategories})}
-                                    selectedByDefault={true}
                         />
                     </div>
                 </div>

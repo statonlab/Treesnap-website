@@ -7,16 +7,16 @@ export default class AshFilters extends Component {
         super(props)
 
         this.state = {
-            species        : [],
-            habitat        : [],
-            seedsPresent   : [],
-            flowersPresent : [],
-            ashBorer       : [],
-            treesNearby    : [],
-            crownHealthMin : '',
-            crownHealthMax : '',
-            treeDiameterMin: '',
-            treeDiameterMax: ''
+            species                : [],
+            locationCharacteristics: [],
+            seedsBinary            : [],
+            flowersBinary          : [],
+            emeraldAshBorer               : [],
+            nearbyTrees            : [],
+            crownHealthMin         : '',
+            crownHealthMax         : '',
+            diameterNumericMin     : '',
+            diameterNumericMax     : ''
         }
     }
 
@@ -41,7 +41,7 @@ export default class AshFilters extends Component {
                     <div className="field">
                         <label className="label">Habitat</label>
                         <ButtonList list={['Forest', 'Wetland', 'Field', 'Roadside, urban, suburban, or park']}
-                                    onChange={habitat => this._update('habitat', habitat)}/>
+                                    onChange={locationCharacteristics => this._update('locationCharacteristics', locationCharacteristics)}/>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@ export default class AshFilters extends Component {
                                 'Yes',
                                 'No'
                             ]}
-                            onChange={seedsPresent => this._update('seedsPresent', seedsPresent)}/>
+                            onChange={seedsBinary => this._update('seedsBinary', seedsBinary)}/>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@ export default class AshFilters extends Component {
                                 'Yes',
                                 'No'
                             ]}
-                            onChange={flowersPresent => this._update('flowersPresent', flowersPresent)}/>
+                            onChange={flowersBinary => this._update('flowersBinary', flowersBinary)}/>
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@ export default class AshFilters extends Component {
                                 'Emerald ash borer beetles/larvae',
                                 'Stump sprouting'
                             ]}
-                            onChange={ashBorer => this._update('ashBorer', ashBorer)}/>
+                            onChange={emeraldAshBorer => this._update('emeraldAshBorer', emeraldAshBorer)}/>
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@ export default class AshFilters extends Component {
                                 'No trees of this species nearby',
                                 'Not sure'
                             ]}
-                            onChange={treesNearby => this._update('treesNearby', treesNearby)}/>
+                            onChange={nearbyTrees => this._update('nearbyTrees', nearbyTrees)}/>
                     </div>
                 </div>
 
@@ -137,8 +137,8 @@ export default class AshFilters extends Component {
                                         <input type="number"
                                                className="input"
                                                placeholder="Min."
-                                               value={this.state.treeDiameterMin}
-                                               onChange={({target}) => this._update('treeDiameterMin', target.value)}/>
+                                               value={this.state.diameterNumericMin}
+                                               onChange={({target}) => this._update('diameterNumericMin', target.value)}/>
                                     </div>
                                 </div>
                                 <div className="field">
@@ -146,8 +146,8 @@ export default class AshFilters extends Component {
                                         <input type="number"
                                                className="input"
                                                placeholder="Max."
-                                               value={this.state.treeDiameterMax}
-                                               onChange={({target}) => this._update('treeDiameterMax', target.value)}/>
+                                               value={this.state.diameterNumericMax}
+                                               onChange={({target}) => this._update('diameterNumericMax', target.value)}/>
                                     </div>
                                 </div>
                             </div>
