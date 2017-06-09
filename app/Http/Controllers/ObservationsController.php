@@ -33,15 +33,16 @@ class ObservationsController extends Controller
                 ->orderby('collection_date', 'desc')
                 ->get();
         }
-
-        $observations->load([
-            'flags' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            },
-            'collections' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            },
-        ]);
+        if ($user) {
+            $observations->load([
+                'flags' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+                'collections' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+            ]);
+        }
 
         $data = [];
         foreach ($observations as $observation) {
