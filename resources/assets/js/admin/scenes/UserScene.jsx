@@ -9,19 +9,22 @@ export default class UserScene extends Component {
         super(props)
 
         this.state = {
-            name    : '',
-            editing : false,
-            perPage : 6,
-            offset  : 0,
-            numPages: 0,
-            roles   : [],
-            groups  : [],
-            loading : true,
-            errors  : null,
-            role    : {
+            name        : '',
+            birth_year  : 1980,
+            editing     : false,
+            perPage     : 6,
+            offset      : 0,
+            numPages    : 0,
+            roles       : [],
+            groups      : [],
+            loading     : true,
+            errors      : null,
+            role        : {
                 name    : '',
                 is_admin: false
-            }
+            },
+            role_id     : -1,
+            observations: []
         }
     }
 
@@ -38,6 +41,8 @@ export default class UserScene extends Component {
         }).catch(error => {
             console.log(error)
         })
+
+        this._years = this._generateBirthDateOptions()
     }
 
     /**
@@ -48,31 +53,54 @@ export default class UserScene extends Component {
         axios.get(`/admin/api/user/${this.props.match.params.id}`).then(response => {
             let data = response.data.data
 
-            let groups = []
 
-            data.groups.map(group => groups.push({
-                label: group.name,
-                value: group.id
+            let user = this._userObject(data)
+
+            this.setState(Object.assign({}, user, {
+                observations: data.observations,
+                numPages    : Math.ceil(data.observations.length / this.state.perPage)
             }))
-
-            this.setState({
-                name            : data.name,
-                email           : data.email,
-                observations    : data.observations,
-                is_over_thirteen: data.is_over_thirteen,
-                role            : data.role,
-                class           : data.class,
-                is_anonymous    : data.is_anonymous,
-                zipcode         : data.zipcode,
-                user_groups     : groups,
-                created_at      : data.created_at,
-                numPages        : Math.ceil(data.observations.length / this.state.perPage)
-            })
         }).catch(error => {
             console.log(error)
         }).then(() => {
             this.setState({loading: false})
         })
+    }
+
+    /**
+     * Generate birth years.
+     * @returns {Array}
+     * @private
+     */
+    _generateBirthDateOptions() {
+        let today = parseInt(moment().format('YYYY').toString())
+        let dates = []
+        for (let i = today; i > today - 101; i--) {
+            dates.push(i)
+        }
+        return dates
+    }
+
+    _userObject(data) {
+        let groups = []
+
+        data.groups.map(group => groups.push({
+            label: group.name,
+            value: group.id
+        }))
+
+        return {
+            name        : data.name,
+            email       : data.email,
+            birth_year  : data.birth_year,
+            role        : data.role,
+            role_id     : data.role.id,
+            class       : data.class,
+            is_anonymous: data.is_anonymous,
+            zipcode     : data.zipcode,
+            user_groups : groups,
+            created_at  : data.created_at
+        }
     }
 
     /**
@@ -130,7 +158,7 @@ export default class UserScene extends Component {
                         </tr>
                         <tr>
                             <th>Role</th>
-                            <td>{this.state.role.is_admin ? 'Admin' : 'User'}</td>
+                            <td>{this.state.role.name}</td>
                         </tr>
                         <tr>
                             <th>Email</th>
@@ -145,8 +173,8 @@ export default class UserScene extends Component {
                             <td>{this.state.observations.length}</td>
                         </tr>
                         <tr>
-                            <th>Over 13 Years Old</th>
-                            <td>{this.state.is_over_thirteen ? 'Yes' : 'No'}</td>
+                            <th>Birth Year</th>
+                            <td>{this.state.birth_year}</td>
                         </tr>
                         <tr>
                             <th>Class</th>
@@ -371,6 +399,20 @@ export default class UserScene extends Component {
                     </div>
 
                     <div className="field">
+                        <label className="label">Role</label>
+                        <div className="control">
+                            <span className="select">
+                                <select onChange={({target}) => this.setState({role_id: target.value})}
+                                        value={this.state.role_id}>
+                                    {this.state.roles.map(role => {
+                                        return (<option key={role.id} value={role.id}>{role.name}</option>)
+                                    })}
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="field">
                         <label className="label">Email</label>
                         <div className="control">
                             <input type="email"
@@ -401,20 +443,6 @@ export default class UserScene extends Component {
                     </div>
 
                     <div className="field">
-                        <label className="label">Role</label>
-                        <div className="control">
-                        <span className="select">
-                            <select onChange={this._handleRoleChange.bind(this)}
-                                    value={this.state.role.id}>
-                                {this.state.roles.map((role, index) => {
-                                    return (<option key={index} value={role.id}>{role.name}</option>)
-                                })}
-                            </select>
-                        </span>
-                        </div>
-                    </div>
-
-                    <div className="field">
                         <label className="label">Groups</label>
                         <div className="control limit-width">
                             <Select.Async value={this.state.user_groups}
@@ -428,13 +456,20 @@ export default class UserScene extends Component {
 
                     <div className="field">
                         <div className="control">
-                            <label className="checkbox">
-                                <input type="checkbox"
-                                       onChange={e => this.setState({is_anonymous: e.target.checked})}
-                                       value={this.state.is_anonymous}
-                                       defaultChecked={this.state.is_anonymous}/>
-                                This user is anonymous
+                            <label className="label">
+                                Birth Year
                             </label>
+                            <div className="control">
+                                <span className="select">
+                                    <select
+                                        value={this.state.birth_year}
+                                        onChange={({target}) => this.setState({birth_year: target.value})}>
+                                        {this._years.map((year, i) => {
+                                            return <option value={year} key={i}>{year}</option>
+                                        })}
+                                    </select>
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -442,10 +477,10 @@ export default class UserScene extends Component {
                         <div className="control">
                             <label className="checkbox">
                                 <input type="checkbox"
-                                       onChange={e => this.setState({is_over_thirteen: e.target.checked})}
-                                       value={this.state.is_over_thirteen}
-                                       defaultChecked={this.state.is_over_thirteen}/>
-                                This user is over 13 years old
+                                       onChange={e => this.setState({is_anonymous: e.target.checked})}
+                                       value={this.state.is_anonymous}
+                                       defaultChecked={this.state.is_anonymous}/>
+                                <span className="ml-1">This user is anonymous</span>
                             </label>
                         </div>
                     </div>
@@ -508,16 +543,17 @@ export default class UserScene extends Component {
         })
 
         axios.put(`/admin/api/user/${this.props.match.params.id}`, {
-            name            : this.state.name,
-            email           : this.state.email,
-            class           : this.state.class,
-            role            : this.state.role.id,
-            groups          : groups,
-            is_anonymous    : this.state.is_anonymous,
-            is_over_thirteen: this.state.is_over_thirteen,
-            zipcode         : this.state.zipcode
-        }).then(() => {
-            this.setState({editing: false, errors: null})
+            name        : this.state.name,
+            email       : this.state.email,
+            class       : this.state.class,
+            role        : this.state.role_id,
+            groups      : groups,
+            is_anonymous: this.state.is_anonymous,
+            birth_year  : this.state.birth_year,
+            zipcode     : this.state.zipcode
+        }).then(response => {
+            let user = this._userObject(response.data.data)
+            this.setState(Object.assign({}, user, {editing: false, errors: null}))
         }).catch(error => {
             if (error.response && error.response.status === 422) {
                 this.setState({errors: error.response.data})
