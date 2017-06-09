@@ -63,6 +63,7 @@ class UsersController extends Controller
                 'max:10',
                 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
             ],
+            'birth_year' => 'required|integer',
         ], $rules));
 
         $user->fill([
@@ -72,6 +73,7 @@ class UsersController extends Controller
             'class' => $request->class,
             'is_anonymous' => $request->is_anonymous,
             'zipcode' => $request->zipcode,
+            'birth_year' => $request->birth_year,
         ])->save();
 
         $user->groups()->sync($request->groups);
@@ -83,6 +85,10 @@ class UsersController extends Controller
             'class' => $user->class,
             'zipcode' => $user->zipcode,
             'is_admin' => $user->role->is_admin,
+            'role' => $user->role,
+            'groups' => $user->groups,
+            'is_anonymous' => $user->is_anonymous,
+            'birth_year' => $user->birth_year,
         ]);
     }
 }

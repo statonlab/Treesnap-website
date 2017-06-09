@@ -24,6 +24,7 @@ class User extends Authenticatable
         'zipcode',
         'class',
         'birth_year',
+        'role_id',
     ];
 
     /**
