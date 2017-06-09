@@ -66,7 +66,7 @@ class Observation extends Model
 
     protected function fuzzify(Observation $observation, $miles = 5)
     {
-
+        $range = $miles / 69/2 * 10000;
         $latitude = $observation->latitude * 10000 + mt_rand($range * (-1), $range);
         $longitude = $observation->longitude * 10000 + mt_rand($range * (-1), $range);
 
