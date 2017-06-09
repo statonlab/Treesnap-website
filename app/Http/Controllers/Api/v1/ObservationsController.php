@@ -107,10 +107,9 @@ class ObservationsController extends Controller
         // Generate fuzzified coordinates.  Transform by 10,000 to ensure mt_rand is working on integers
         $miles = 5;
         //345000 = 69 miles per lat/2 for radius*10000
-        $range = $miles /345000;
+        $range = $miles * 345000;
         $latitude = $request->latitude * 10000 + mt_rand($range * (-1), $range);
         $longitude = $request->longitude * 10000 + mt_rand($range * (-1), $range);
-
 
             $fuzzy_coords = [
             'latitude' => $latitude/10000,
