@@ -5,6 +5,7 @@ import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
 import ObservationsFilter from '../../helpers/ObservationsFilter'
 import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
+import Notify from '../../components/Notify'
 
 export default class ObservationsScene extends Component {
     constructor(props) {
@@ -33,7 +34,9 @@ export default class ObservationsScene extends Component {
             search            : '',
             selectedCollection: -1,
             selectedCategory  : '',
-            searchTermCategory: 'all'
+            searchTermCategory: 'all',
+            advancedFilters   : [],
+            selectedFilter    : -1
         }
     }
 
@@ -51,6 +54,7 @@ export default class ObservationsScene extends Component {
             this.loadCollections()
             this.loadUser()
             this.loadCategories()
+            this.loadFilters()
         }).catch(error => {
             this.setState({loading: false})
             console.log(error)
@@ -99,6 +103,24 @@ export default class ObservationsScene extends Component {
     }
 
     /**
+     * Load saved filters form server.
+     */
+    loadFilters() {
+        axios.get('/api/filters').then(response => {
+            let advancedFilters = response.data.data.map(filter => {
+                return {
+                    label: filter.name,
+                    value: filter.id
+                }
+            })
+
+            this.setState({advancedFilters})
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
+
+    /**
      * Create page links.
      *
      * @param observations_full
@@ -129,6 +151,7 @@ export default class ObservationsScene extends Component {
             perPage,
             pages
         })
+
         this.goToPage(page)
     }
 
@@ -278,6 +301,42 @@ export default class ObservationsScene extends Component {
     }
 
     /**
+     * Apply advanced filter by replacing observations.
+     *
+     * @param observations
+     */
+    replaceObservations(observations) {
+        this.allObservations = observations
+        this.filter.replace(this.allObservations)
+
+        this.paginate(observations, true)
+    }
+
+    /**
+     * Load and apply advanced filter.
+     *
+     * @param id
+     */
+    loadAdvancedFilter(id) {
+        this.setState({
+            selectedFilter: id,
+            loading       : id !== -1
+        })
+
+        if (id === -1) {
+            return
+        }
+
+        axios.get(`/api/filter/${id}`).then(response => {
+            this.replaceObservations(response.data.data.observations)
+            this.setState({loading: false})
+        }).catch(error => {
+            console.log(error)
+            this.setState({loading: false})
+        })
+    }
+
+    /**
      * Apply collection filter.
      *
      * @param selectedCollection
@@ -301,6 +360,11 @@ export default class ObservationsScene extends Component {
         }
     }
 
+    /**
+     * Filter by search term.
+     *
+     * @param searchTermCategory
+     */
     searchCategoryFilter(searchTermCategory) {
         if (this.filter) {
             this.setState({searchTermCategory})
@@ -315,64 +379,93 @@ export default class ObservationsScene extends Component {
      */
     renderFilters() {
         return (
-            <div className="mb-1">
-                <p className="mb-0"><b>Filters</b></p>
-                <div className="field is-horizontal">
-                    <div className="field-body">
-                        <div className="field has-addons">
-                            <div className="control is-expanded">
-                                <input type="search"
-                                       className="input"
-                                       placeholder="Search"
-                                       onChange={({target}) => this.searchFilter(target.value)}
-                                       value={this.state.search}
-                                />
-                            </div>
-                            <div className="control">
-                                <span className="select">
-                                    <select
-                                        value={this.state.searchTermCategory}
-                                        onChange={({target}) => this.searchCategoryFilter(target.value)}
-                                    >
-                                        <option value="all">Any</option>
-                                        <option value="user">User Name</option>
-                                        <option value="category">Title</option>
-                                        <option value="address">Full Address</option>
-                                        <option value="state">State</option>
-                                        <option value="county">County</option>
-                                        <option value="city">City</option>
-                                    </select>
-                                </span>
-                            </div>
+            <div className="columns is-multiline">
+                <div className="column is-12">
+                    <p><b>Filters</b></p>
+                </div>
+                <div className="column is-4">
+                    <div className="field has-addons">
+                        <div className="control is-expanded">
+                            <input type="search"
+                                   className="input"
+                                   placeholder="Search"
+                                   onChange={({target}) => this.searchFilter(target.value)}
+                                   value={this.state.search}
+                            />
                         </div>
+                        <div className="control">
+                            <span className="select">
+                                <select
+                                    value={this.state.searchTermCategory}
+                                    onChange={({target}) => this.searchCategoryFilter(target.value)}
+                                >
+                                    <option value="all">Any</option>
+                                    <option value="user">User Name</option>
+                                    <option value="category">Title</option>
+                                    <option value="address">Full Address</option>
+                                    <option value="state">State</option>
+                                    <option value="county">County</option>
+                                    <option value="city">City</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className="column is-4">
+                    <div className="field">
+                        <div className="control">
+                            <span className="select is-full-width">
+                                <select
+                                    value={this.state.selectedCollection}
+                                    onChange={({target}) => this.collectionFilter(target.value)}
+                                >
+                                    <option value="-1">All Collections</option>
+                                    {this.state.collections.map(collection => {
+                                        return (
+                                            <option key={collection.value}
+                                                    value={collection.value}>
+                                                {collection.label}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className="column is-4">
+                    <div className="field">
+                        <div className="control">
+                            <span className="select is-full-width">
+                                <select value={this.state.selectedCategory}
+                                        onChange={({target}) => this.categoriesFilter(target.value)}>
+                                    <option value="">All Species</option>
+                                    {this.state.categories.map(category => {
+                                        return (
+                                            <option key={category.value}
+                                                    value={category.value}>
+                                                {category.label}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {this.state.advancedFilters.length > 0 ?
+                    <div className="column is-4">
                         <div className="field">
                             <div className="control">
-                                <span className="select">
-                                    <select
-                                        value={this.state.selectedCollection}
-                                        onChange={({target}) => this.collectionFilter(target.value)}
-                                    >
-                                        <option value="-1">All Collections</option>
-                                        {this.state.collections.map(collection => {
+                                <span className="select is-full-width">
+                                    <select value={this.state.selectedFilter}
+                                            onChange={({target}) => this.loadAdvancedFilter(target.value)}>
+                                        <option value="-1">Select Advanced Filter</option>
+                                        {this.state.advancedFilters.map(filter => {
                                             return (
-                                                <option key={collection.value}
-                                                        value={collection.value}>
-                                                    {collection.label}
-                                                </option>
-                                            )
-                                        })}
-                                    </select>
-                                </span>
-
-                                <span className="select ml-1">
-                                    <select value={this.state.selectedCategory}
-                                            onChange={({target}) => this.categoriesFilter(target.value)}>
-                                        <option value="">All Species</option>
-                                        {this.state.categories.map(category => {
-                                            return (
-                                                <option key={category.value}
-                                                        value={category.value}>
-                                                    {category.label}
+                                                <option value={filter.value}
+                                                        key={filter.value}>
+                                                    {filter.label}
                                                 </option>
                                             )
                                         })}
@@ -380,7 +473,11 @@ export default class ObservationsScene extends Component {
                                 </span>
                             </div>
                         </div>
-                        <div className="field has-text-right">
+                    </div>
+                    : null}
+                <div className="column is-4">
+                    <div className="field">
+                        <div className="control">
                             <a onClick={() => this.setState({showFiltersModal: true})}>Advanced Filters</a>
                         </div>
                     </div>
@@ -389,6 +486,11 @@ export default class ObservationsScene extends Component {
         )
     }
 
+    /**
+     * Change the number of cards per page.
+     *
+     * @param perPage
+     */
     changePerPage(perPage) {
         this.setState({
             perPage,
@@ -419,7 +521,18 @@ export default class ObservationsScene extends Component {
 
                 <AdvancedFiltersModal
                     visible={this.state.showFiltersModal}
-                    onCloseRequest={() => this.setState({showFiltersModal: false})}/>
+                    onCloseRequest={() => this.setState({showFiltersModal: false})}
+                    onCreate={(data) => {
+                        let advancedFilters = this.state.advancedFilters
+                        advancedFilters.push({
+                            label: data.filter.name,
+                            value: data.filter.id
+                        })
+
+                        this.setState({
+                            showFiltersModal: false
+                        })
+                    }}/>
 
                 <div className="columns flex-v-center">
                     <div className="column">
@@ -470,7 +583,6 @@ export default class ObservationsScene extends Component {
                                         if (event === 'removed') {
                                             let flags = []
                                             observation.flags.map(flag => {
-                                                console.log(flag, data)
                                                 if (flag.id !== parseInt(data.id)) {
                                                     flags.push(flag)
                                                 }
@@ -501,11 +613,13 @@ export default class ObservationsScene extends Component {
                                             label      : data.label,
                                             description: data.description
                                         })
+                                        this.forceUpdate()
+                                        Notify.push(`Added "${observation.observation_category}" to "${data.label}" successfully`)
                                     }}
                                     onRemovedFromCollection={(collection) => {
-                                        console.log(collection)
                                         observation.collections = observation.collections.filter(c => c.id !== collection.id)
                                         this.forceUpdate()
+                                        Notify.push(`Removed "${observation.observation_category}" from "${collection.label}" successfully`)
                                     }}
                                 />
                             </div>

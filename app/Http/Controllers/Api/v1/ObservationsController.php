@@ -9,9 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Validator;
+use Storage;
 
 class ObservationsController extends Controller
 {
@@ -79,6 +79,17 @@ class ObservationsController extends Controller
 
         if ($observation->user_id != $user->id) {
             return $this->unauthorized();
+        }
+
+        // Delete All Images
+        foreach ($observation->images as $images) {
+            foreach ($images as $image) {
+                $image = str_replace('/storage/', 'public/', $image);
+                $image = trim($image, '/');
+                if (Storage::exists($image)) {
+                    Storage::delete($image);
+                }
+            }
         }
 
         $observation->delete();

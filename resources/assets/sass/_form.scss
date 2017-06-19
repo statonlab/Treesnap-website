@@ -72,6 +72,9 @@
 
 .button-select {
   background-color: whitesmoke;
+  white-space: normal !important;
+  height: auto;
+  line-height: 1.5;
 
   .fa {
     color: #aaa;
@@ -89,4 +92,11 @@
   border: 1px solid $border;
   border-radius: $radius;
   padding: 1rem;
+}
+
+.select.is-full-width {
+  &,
+  > select {
+    width: 100%;
+  }
 }

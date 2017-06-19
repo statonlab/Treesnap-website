@@ -49,8 +49,17 @@ Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');
 
+// Filters
+Route::post('/api/filter/count', 'FiltersController@count');
+Route::get('/api/filters', 'FiltersController@index');
+
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
+    // Filters
+    Route::post('/api/filters', 'FiltersController@create');
+    Route::delete('/api/filter/{id}', 'FiltersController@delete');
+    Route::get('/api/filter/{id}', 'FiltersController@show');
+
     // Users controller
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');

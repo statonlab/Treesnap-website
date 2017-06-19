@@ -127,4 +127,14 @@ class User extends Authenticatable
 
         return strtolower($user->role()->first()->name) === strtolower(trim($role));
     }
+
+    /**
+     * Get filters owed by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function filters()
+    {
+        return $this->hasMany('App\Filter');
+    }
 }

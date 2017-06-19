@@ -11,7 +11,6 @@ export default class HemlockFilters extends Component {
             cones                  : [],
             crownClassification    : [],
             locationCharacteristics: [],
-            ashBorer               : [],
             nearbyTrees            : [],
             crownHealthMin         : '',
             crownHealthMax         : '',

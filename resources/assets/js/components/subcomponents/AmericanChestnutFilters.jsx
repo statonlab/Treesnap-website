@@ -7,15 +7,15 @@ export default class AmericanChestnutFilters extends Component {
         super(props)
 
         this.state = {
-            nutsBurs       : [],
+            burrs       : [],
             catkins        : [],
             chestnutBlight : [],
             crownHealthMin : '',
             crownHealthMax : '',
-            treeDiameterMin: '',
-            treeDiameterMax: '',
-            treeHeightMin  : '',
-            treeHeightMax  : ''
+            diameterNumericMin: '',
+            diameterNumericMax: '',
+            heightNumericMin  : '',
+            heightNumericMax  : ''
         }
     }
 
@@ -32,7 +32,7 @@ export default class AmericanChestnutFilters extends Component {
                     <div className="field">
                         <label className="label">Nuts/Burrs</label>
                         <ButtonList list={['None', 'Few', 'Many', 'Unknown']}
-                                    onChange={nutsBurs => this._update('nutsBurs', nutsBurs)}/>
+                                    onChange={burrs => this._update('burrs', burrs)}/>
                     </div>
                 </div>
 
@@ -95,8 +95,8 @@ export default class AmericanChestnutFilters extends Component {
                                         <input type="number"
                                                className="input"
                                                placeholder="Min."
-                                               value={this.state.treeDiameterMin}
-                                               onChange={({target}) => this._update('treeDiameterMin', target.value)}/>
+                                               value={this.state.diameterNumericMin}
+                                               onChange={({target}) => this._update('diameterNumericMin', target.value)}/>
                                     </div>
                                 </div>
                                 <div className="field">
@@ -104,8 +104,8 @@ export default class AmericanChestnutFilters extends Component {
                                         <input type="number"
                                                className="input"
                                                placeholder="Max."
-                                               value={this.state.treeDiameterMax}
-                                               onChange={({target}) => this._update('treeDiameterMax', target.value)}/>
+                                               value={this.state.diameterNumericMax}
+                                               onChange={({target}) => this._update('diameterNumericMax', target.value)}/>
                                     </div>
                                 </div>
                             </div>
@@ -123,8 +123,8 @@ export default class AmericanChestnutFilters extends Component {
                                         <input type="number"
                                                className="input"
                                                placeholder="Min."
-                                               value={this.state.treeHeightMin}
-                                               onChange={({target}) => this._update('treeHeightMin', target.value)}/>
+                                               value={this.state.heightNumericMin}
+                                               onChange={({target}) => this._update('heightNumericMin', target.value)}/>
                                     </div>
                                 </div>
                                 <div className="field">
@@ -132,8 +132,8 @@ export default class AmericanChestnutFilters extends Component {
                                         <input type="number"
                                                className="input"
                                                placeholder="Max."
-                                               value={this.state.treeHeightMax}
-                                               onChange={({target}) => this._update('treeHeightMax', target.value)}/>
+                                               value={this.state.heightNumericMax}
+                                               onChange={({target}) => this._update('heightNumericMax', target.value)}/>
                                     </div>
                                 </div>
                             </div>
