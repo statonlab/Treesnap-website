@@ -1,14 +1,14 @@
 # Frequently Asked Questions
 
-### When will Treesnap be available in the app store?
+### When will TreeSnap be available in the app store?
 
-We currently plan to release Treesnap by August 1st 2017.  If you are interested in participating in beta testing, or would like to collaborate with Treesnap, please [contact us](/contact).
+We currently plan to release TreeSnap by August 1st 2017.  If you are interested in participating in beta testing, or would like to collaborate with TreeSnap, please [contact us](/contact).
 
 ### Why are the tree reports showing up as a giant circle instead of a pin?
 
-Some of the trees Treesnap records are very valuable or are on private land. To protect the trees and the privacy of landowners, we do not display exact locations on our map.  Instead, locations are randomly altered and reported within a 5 mile radius.
+Some of the trees TreeSnap records are very valuable or are on private land. To protect the trees and the privacy of landowners, we do not display exact locations on our map.  Instead, locations are randomly altered and reported within a 5 mile radius.
  
- Treesnap and our partner breeding programs have access to the original reported coordinates.  Prior to viewing or sampling any tree on private land, we will contact the owner of the land for consent.
+ TreeSnap and our partner breeding programs have access to the original reported coordinates.  Prior to viewing or sampling any tree on private land, we will contact the owner of the land for consent.
 
 ### I reported a tree at x location, but it appears somewhere else.
 
