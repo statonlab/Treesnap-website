@@ -38,6 +38,25 @@ export default class ObservationsFilter {
     }
 
     /**
+     * Replace current observations with a new set.
+     *
+     * @param observations
+     * @returns {Array}
+     */
+    replace(observations) {
+        this._observations = observations
+        this._sortable     = []
+        this._categoryName = ''
+        this._searchTerm   = ''
+        this._termCategory = 'all'
+        this._collectionID = -1
+        this._filtered     = observations
+
+        this._saveState()
+        return this._filter()
+    }
+
+    /**
      * Set search filter.
      *
      * @param term

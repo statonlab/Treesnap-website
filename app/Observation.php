@@ -64,14 +64,16 @@ class Observation extends Model
      *
      */
 
-    protected function fuzzify(Observation $observation, $miles = 50)
+    protected function fuzzify(Observation $observation, $miles = 5)
     {
-        $range = $miles / 69 / 2;
-        $latitude = $observation->latitude + mtrand($range * (-1), $range);
-        $longitude = $observation->longitude + mtrand($range * (-1), $range);
+        //345000 = 69 miles per lat/2 for radius*10000
+        $range = $miles / 345000;
+        $latitude = $observation->latitude * 10000 + mt_rand($range * (-1), $range);
+        $longitude = $observation->longitude * 10000 + mt_rand($range * (-1), $range);
+
         $observation->fuzzy_coords = [
-            "latitude" => $latitude,
-            "longitude" => $longitude,
+            'latitude' => $latitude/10000,
+            'longitude' => $longitude/10000,
         ];
         $observation->save();
     }
