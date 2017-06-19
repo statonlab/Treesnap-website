@@ -9,7 +9,7 @@ Scientists will use the data you collect to locate trees for research projects l
 
 ### The Treesnap team
 
-Treesnap is developed as a collaboration between Scientists at the University of Kentucky and the University of Tennessee Knoxville.  The project is funded in part by the [NSF Plant Genome Research Program](https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338).
+Treesnap is developed as a collaboration between Scientists at the University of Kentucky and the University of Tennessee.  The project is funded in part by the [NSF Plant Genome Research Program](https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338).
 
 To learn more about the Staton laboratory and the genomic resources we provide, please visit the [Hardwoods Genomics Database](http://www.hardwoodgenomics.org/).
 
