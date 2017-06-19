@@ -18,7 +18,7 @@ You are able to delete your Treesnap account or opt out of receiving emails at a
 
 ### How do we use the submitted observations?
 
-All observations submitted to our database will be stored permanently on the Treesnap website. This includes  all data and metadata, including GPS coordinates, and images.  Observation data will be displayed on the Treesnap website, and be made available to outside parties through an API.  Observations can be made anonymous in the profile settings of the app or website: anonymous observations will only be visible to you and the scientists behind Treesnap.  
+All observations submitted to our database will be stored permanently on the Treesnap website. This includes all data and metadata, including GPS coordinates, and images.  Observation data will be displayed on the Treesnap website, and be made available to outside parties through an API.  Observations can be made anonymous in the profile settings of the app or website: anonymous observations will only be visible to you and the scientists behind Treesnap.  
 
 
 ### How can I manage my privacy settings?
