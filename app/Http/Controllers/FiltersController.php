@@ -149,9 +149,13 @@ class FiltersController extends Controller
             return $this->success(0);
         }
 
-        $filtered = $this->apply($request->all())->count();
+        $filtered = $this->apply($request->all());
 
-        return $this->success($filtered);
+        return $this->success([
+            'count' => $filtered->count(),
+            'filters' => $request->all(),
+            'o' => $filtered->get(),
+        ]);
     }
 
     /**
@@ -163,35 +167,81 @@ class FiltersController extends Controller
     {
         $observations = Observation::with('user');
 
-        foreach ($filters['categories'] as $key => $category) {
-            $where = function ($query) use ($category, $filters) {
-                $query->where('observation_category', $category);
-                if (isset($filters[$this->filterMapper[$category]])) {
+        // Apply address
+        if (isset($filters['address'])) {
+            $nulls = 0;
+            foreach ($filters['address'] as $key => $value) {
+                if (empty($value)) {
+                    $nulls++;
+                    continue;
+                }
+
+                $observations->where('address->components', 'like', "%$value%");
+            }
+            if ($nulls < 3) {
+                $observations->whereNotNull('address');
+            }
+        }
+
+        $observations->where(function ($DB) use ($filters) {
+            // Apply per category filters.
+            foreach ($filters['categories'] as $key => $category) {
+                $where = function ($query) use ($category, $filters) {
+                    $query->where('observation_category', $category);
+                    if (! isset($filters[$this->filterMapper[$category]])) {
+                        return;
+                    }
+
                     foreach ($filters[$this->filterMapper[$category]] as $filter => $value) {
-                        $filter = "data->$filter";
                         if (is_array($value)) {
                             $query->where(function ($q) use ($filter, $value) {
                                 foreach ($value as $index => $one) {
+                                    // For the first filter, apply only a WHERE statement instead of an OR WHERE
                                     if ($index === 0) {
-                                        $q->where($filter, $one);
+                                        $q->where("data->$filter", $one);
                                     } else {
-                                        $q->orWhere($filter, $one);
+                                        $q->orWhere("data->$filter", $one);
                                     }
                                 }
                             });
                         } else {
-                            $query->where($filter, $value);
+                            $sub = substr($filter, -3);
+                            if ($sub === 'Min' || $sub === 'Max') {
+                                // Ignore max
+                                if ($sub === 'Max') {
+                                    continue;
+                                }
+
+                                // Extract the filter name
+                                $filterName = substr($filter, 0, strlen($filter) - 3);
+                                $filterMax = "{$filterName}Max";
+                                $allFilters = $filters[$this->filterMapper[$category]];
+
+                                // If the filter is not complete, ignore it
+                                if (! isset($allFilters[$filterMax])) {
+                                    continue;
+                                }
+
+                                // Apply the min/max filter
+                                $query->whereBetween("data->$filterName", [
+                                    intVal($value),
+                                    intval($allFilters[$filterMax]),
+                                ]);
+                            } else {
+                                $query->where("data->$filter", $value);
+                            }
                         }
                     }
-                }
-            };
+                };
 
-            if ($key === 0) {
-                $observations->where($where);
-            } else {
-                $observations->orWhere($where);
+                // For the first filter, apply only a WHERE statement instead of an OR WHERE
+                if ($key === 0) {
+                    $DB->where($where);
+                } else {
+                    $DB->orWhere($where);
+                }
             }
-        }
+        });
 
         return $observations;
     }

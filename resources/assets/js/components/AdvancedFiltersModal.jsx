@@ -4,6 +4,8 @@ import ButtonList from './ButtonList'
 import AmericanChestnutFilters from './subcomponents/AmericanChestnutFilters'
 import AshFilters from './subcomponents/AshFilters'
 import HemlockFilters from './subcomponents/HemlockFilters'
+import AmericanElmFilters from './subcomponents/AmericanElmFilters'
+import WhiteOakFilters from './subcomponents/WhiteOakFilters'
 
 export default class AdvancedFiltersModal extends Component {
     constructor(props) {
@@ -20,6 +22,8 @@ export default class AdvancedFiltersModal extends Component {
             americanChestnut  : {},
             ash               : {},
             hemlock           : {},
+            americanElm       : {},
+            whiteOak          : {},
             resultsCount      : 0,
             loading           : false,
             errors            : {}
@@ -66,7 +70,14 @@ export default class AdvancedFiltersModal extends Component {
             categories      : this.state.selectedCategories,
             ash             : this.state.ash,
             americanChestnut: this.state.americanChestnut,
-            hemlock         : this.state.hemlock
+            hemlock         : this.state.hemlock,
+            americanElm     : this.state.americanElm,
+            whiteOak        : this.state.whiteOak,
+            address         : {
+                city  : this.state.city,
+                county: this.state.county,
+                state : this.state.state
+            }
         }).then(response => {
             this.setState({
                 loading: false,
@@ -99,11 +110,18 @@ export default class AdvancedFiltersModal extends Component {
             categories      : filters.selectedCategories,
             ash             : filters.ash,
             americanChestnut: filters.americanChestnut,
-            hemlock         : filters.hemlock
+            hemlock         : filters.hemlock,
+            americanElm     : filters.americanElm,
+            whiteOak        : filters.whiteOak,
+            address         : {
+                city  : filters.city,
+                county: filters.county,
+                state : filters.state
+            }
         }).then(response => {
             this.setState({
                 loading     : false,
-                resultsCount: response.data.data
+                resultsCount: response.data.data.count
             })
         }).catch(error => {
             console.log(error.response)
@@ -114,12 +132,31 @@ export default class AdvancedFiltersModal extends Component {
     renderAmericanChestnutFilters() {
         return (
             <div className="column is-12">
-                <h3 className="title is-4">American Chestnut Filters (Optional)</h3>
+                <h3 className="title is-4 mb-0">American Chestnut Filters (Optional)</h3>
                 <div className="bordered">
-                    <AmericanChestnutFilters onChange={(americanChestnut) => {
-                        this.setState({americanChestnut})
-                        this.count({americanChestnut})
-                    }}/>
+                    <AmericanChestnutFilters onChange={(americanChestnut) => this.count({americanChestnut})}/>
+                </div>
+            </div>
+        )
+    }
+
+    renderAmericanElmFilters() {
+        return (
+            <div className="column is-12">
+                <h3 className="title is-4 mb-0">American Elm Filters (Optional)</h3>
+                <div className="bordered">
+                    <AmericanElmFilters onChange={(americanElm) => this.count({americanElm})}/>
+                </div>
+            </div>
+        )
+    }
+
+    renderWhiteOakFilters() {
+        return (
+            <div className="column is-12">
+                <h3 className="title is-4 mb-0">White Oak Filters (Optional)</h3>
+                <div className="bordered">
+                    <WhiteOakFilters onChange={(whiteOak) => this.count({whiteOak})}/>
                 </div>
             </div>
         )
@@ -128,7 +165,7 @@ export default class AdvancedFiltersModal extends Component {
     renderAshFilters() {
         return (
             <div className="column is-12">
-                <h3 className="title is-4">Ash Filters (Optional)</h3>
+                <h3 className="title is-4 mb-0">Ash Filters (Optional)</h3>
                 <div className="bordered">
                     <AshFilters onChange={(ash) => this.count({ash})}/>
                 </div>
@@ -139,7 +176,7 @@ export default class AdvancedFiltersModal extends Component {
     renderHemlockFilters() {
         return (
             <div className="column is-12">
-                <h3 className="title is-4">Hemlock Filters (Optional)</h3>
+                <h3 className="title is-4 mb-0">Hemlock Filters (Optional)</h3>
                 <div className="bordered">
                     <HemlockFilters onChange={(hemlock) => this.count({hemlock})}/>
                 </div>
@@ -168,7 +205,11 @@ export default class AdvancedFiltersModal extends Component {
                             <div className="field mb-none">
                                 <label className="label">City</label>
                                 <div className="control">
-                                    <input type="text" className="input"/>
+                                    <input type="text"
+                                           className="input"
+                                           placeholder="E.g, Knoxville"
+                                           value={this.state.city}
+                                           onChange={({target}) => this.count({city: target.value})}/>
                                 </div>
                             </div>
                         </div>
@@ -176,7 +217,11 @@ export default class AdvancedFiltersModal extends Component {
                             <div className="field mb-none">
                                 <label className="label">County</label>
                                 <div className="control">
-                                    <input type="text" className="input"/>
+                                    <input type="text"
+                                           className="input"
+                                           placeholder="E.g, Knox County"
+                                           value={this.state.county}
+                                           onChange={({target}) => this.count({county: target.value})}/>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +229,11 @@ export default class AdvancedFiltersModal extends Component {
                     <div className="field">
                         <label className="label">State</label>
                         <div className="control">
-                            <input type="text" className="input"/>
+                            <input type="text"
+                                   className="input"
+                                   placeholder="E.g, Tennessee"
+                                   value={this.state.state}
+                                   onChange={({target}) => this.count({state: target.value})}/>
                         </div>
                     </div>
                 </div>
@@ -194,6 +243,10 @@ export default class AdvancedFiltersModal extends Component {
                 {this.state.selectedCategories.indexOf('Ash') > -1 ? this.renderAshFilters() : null}
 
                 {this.state.selectedCategories.indexOf('Hemlock') > -1 ? this.renderHemlockFilters() : null}
+
+                {this.state.selectedCategories.indexOf('White Oak') > -1 ? this.renderWhiteOakFilters() : null }
+
+                {this.state.selectedCategories.indexOf('American Elm') > -1 ? this.renderAmericanElmFilters() : null }
 
                 <div className="column is-6">
                     <div className="field">
@@ -206,7 +259,7 @@ export default class AdvancedFiltersModal extends Component {
                                    onChange={({target}) => this.setState({filterName: target.value})}/>
                         </div>
                         <p className="help">
-                            You can save your filter settings to easily reapply later or share with users.
+                            You can save your filter settings to easily reapply later or share with others.
                         </p>
                     </div>
                 </div>

@@ -319,11 +319,19 @@ export default class ObservationsScene extends Component {
      */
     loadAdvancedFilter(id) {
         this.setState({
-            selectedFilter: id,
-            loading       : id !== -1
+            selectedFilter: parseInt(id),
+            loading       : true
         })
 
-        if (id === -1) {
+        if (parseInt(id) === -1) {
+            axios.get('/observations').then(response => {
+                this.replaceObservations(response.data.data)
+                this.setState({loading: false})
+            }).catch(error => {
+                console.log(error)
+                this.setState({loading: false})
+            })
+
             return
         }
 
@@ -379,7 +387,7 @@ export default class ObservationsScene extends Component {
      */
     renderFilters() {
         return (
-            <div className="columns is-multiline">
+            <div className="columns is-multiline flex-v-center">
                 <div className="column is-12">
                     <p><b>Filters</b></p>
                 </div>
@@ -417,8 +425,7 @@ export default class ObservationsScene extends Component {
                             <span className="select is-full-width">
                                 <select
                                     value={this.state.selectedCollection}
-                                    onChange={({target}) => this.collectionFilter(target.value)}
-                                >
+                                    onChange={({target}) => this.collectionFilter(target.value)}>
                                     <option value="-1">All Collections</option>
                                     {this.state.collections.map(collection => {
                                         return (
