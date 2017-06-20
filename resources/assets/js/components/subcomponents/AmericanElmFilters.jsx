@@ -2,20 +2,18 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 
-export default class AshFilters extends Component {
+export default class AmericanElmFilters extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            species                : [],
-            locationCharacteristics: [],
-            seedsBinary            : [],
-            flowersBinary          : [],
-            emeraldAshBorer        : [],
-            nearbyTrees            : [],
-            crownHealth            : [],
             diameterNumericMin     : '',
-            diameterNumericMax     : ''
+            diameterNumericMax     : '',
+            crownHealth            : [],
+            locationCharacteristics: [],
+            nearbyTrees            : [],
+            seedsBinary            : [],
+            flowersBinary          : []
         }
     }
 
@@ -28,57 +26,34 @@ export default class AshFilters extends Component {
     render() {
         return (
             <div className="columns is-multiline">
+
                 <div className="column is-6">
                     <div className="field">
-                        <label className="label">Ash Species</label>
-                        <ButtonList list={['White Ash', 'Green Ash', 'Blue Ash', 'Black Ash', 'Uncertain']}
-                                    onChange={species => this._update('species', species)}/>
+                        <label className="label">Crown Health</label>
+                        <ButtonList
+                            list={[
+                                '1 - Healthy',
+                                '2 - Thinning',
+                                '3 - Some dead branches (less than 50%)',
+                                '4 - Many dead branches (more than 50%)',
+                                '5 - Completely dead',
+                                'I\'m not sure'
+                            ]}
+                            onChange={crownHealth => this._update('crownHealth', crownHealth)}/>
                     </div>
                 </div>
 
                 <div className="column is-6">
                     <div className="field">
                         <label className="label">Habitat</label>
-                        <ButtonList list={['Forest', 'Wetland', 'Field', 'Roadside, urban, suburban, or park']}
-                                    onChange={locationCharacteristics => this._update('locationCharacteristics', locationCharacteristics)}/>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Seeds Present</label>
                         <ButtonList
                             list={[
-                                'Yes',
-                                'No'
+                                'Forest',
+                                'Wetland',
+                                'Field',
+                                'Roadside, urban, suburban, or park'
                             ]}
-                            onChange={seedsBinary => this._update('seedsBinary', seedsBinary)}/>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Flowers Present</label>
-                        <ButtonList
-                            list={[
-                                'Yes',
-                                'No'
-                            ]}
-                            onChange={flowersBinary => this._update('flowersBinary', flowersBinary)}/>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Ash Borer</label>
-                        <ButtonList
-                            list={[
-                                'D-shaped adult exit holes',
-                                'Bark coming off with tunneling underneath',
-                                'Emerald ash borer beetles/larvae',
-                                'Stump sprouting'
-                            ]}
-                            onChange={emeraldAshBorer => this._update('emeraldAshBorer', emeraldAshBorer)}/>
+                            onChange={locationCharacteristics => this._update('locationCharacteristics', locationCharacteristics)}/>
                     </div>
                 </div>
 
@@ -94,22 +69,6 @@ export default class AshFilters extends Component {
                                 'Not sure'
                             ]}
                             onChange={nearbyTrees => this._update('nearbyTrees', nearbyTrees)}/>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Crown Health</label>
-                        <ButtonList
-                            list={[
-                                '1 - Healthy',
-                                '2 - Thinning',
-                                '3 - Some dead branches (less than 50%)',
-                                '4 - Many dead branches (more than 50%)',
-                                '5 - Completely dead',
-                                'I\'m not sure'
-                            ]}
-                            onChange={crownHealth => this._update('crownHealth', crownHealth)}/>
                     </div>
                 </div>
 
@@ -145,6 +104,6 @@ export default class AshFilters extends Component {
     }
 }
 
-AshFilters.PropTypes = {
+AmericanElmFilters.PropTypes = {
     onChange: PropTypes.func.isRequired
 }

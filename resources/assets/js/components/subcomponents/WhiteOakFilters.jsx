@@ -2,19 +2,18 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 
-export default class HemlockFilters extends Component {
+export default class WhiteOakFilters extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            woollyAdesCoverage     : [],
-            cones                  : [],
-            crownClassification    : [],
-            locationCharacteristics: [],
-            nearbyTrees            : [],
-            crownHealth            : [],
-            diameterNumericMin     : '',
-            diameterNumericMax     : ''
+            acorns              : [],
+            heightFirstBranchMin: '',
+            heightFirstBranchMax: '',
+            oakHealthProblems   : [],
+            crownHealth         : [],
+            diameterNumericMin  : '',
+            diameterNumericMax  : ''
         }
     }
 
@@ -27,37 +26,6 @@ export default class HemlockFilters extends Component {
     render() {
         return (
             <div className="columns is-multiline">
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Woolly Adelgids</label>
-                        <ButtonList list={['0%', '1-24%', '25-49%', '50-74%', '75-100%']}
-                                    onChange={woollyAdesCoverage => this._update('woollyAdesCoverage', woollyAdesCoverage)}/>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Cones</label>
-                        <ButtonList list={['Yes', 'No']}
-                                    onChange={cones => this._update('cones', cones)}/>
-                    </div>
-                </div>
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Crown Classification</label>
-                        <ButtonList
-                            list={[
-                                'Dominant. This tree\'s crown extends above others in the area.',
-                                'Codominant. This tree\'s crown is level with or slightly below other nearby trees.',
-                                'Overtopped. This tree\'s crown is entirely below other trees nearby.',
-                                'Not applicable (Tree is isolated)',
-                                'I\'m not sure.'
-                            ]}
-                            onChange={crownClassification => this._update('crownClassification', crownClassification)}/>
-                    </div>
-                </div>
-
                 <div className="column is-6">
                     <div className="field">
                         <label className="label">Crown Health</label>
@@ -76,30 +44,54 @@ export default class HemlockFilters extends Component {
 
                 <div className="column is-6">
                     <div className="field">
-                        <label className="label">Habitat</label>
+                        <label className="label">Health Problems</label>
                         <ButtonList
                             list={[
-                                'Forest',
-                                'Wetland',
-                                'Field',
-                                'Roadside, urban, suburban, or park'
+                                'Dieback in canopy',
+                                'Defoliation',
+                                'Cankers',
+                                'Bark damage',
+                                'Signs of rot at base',
+                                'Other'
                             ]}
-                            onChange={locationCharacteristics => this._update('locationCharacteristics', locationCharacteristics)}/>
+                            onChange={oakHealthProblems => this._update('oakHealthProblems', oakHealthProblems)}/>
                     </div>
                 </div>
 
                 <div className="column is-6">
                     <div className="field">
-                        <label className="label">Trees Nearby</label>
+                        <label className="label">Acorns</label>
                         <ButtonList
-                            list={[
-                                'Dead and/or dying',
-                                'Healthy and large',
-                                'Healthy and small',
-                                'No trees of this species nearby',
-                                'Not sure'
-                            ]}
-                            onChange={nearbyTrees => this._update('nearbyTrees', nearbyTrees)}/>
+                            list={['None', 'Some', 'Lots', 'I\'m not sure']}
+                            onChange={acorns => this._update('acorns', acorns)}/>
+                    </div>
+                </div>
+
+                <div className="column is-6">
+                    <div className="field">
+                        <label className="label">Height of First Branch (feet)</label>
+                        <div className="field is-horizontal">
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input type="number"
+                                               className="input"
+                                               placeholder="Min."
+                                               value={this.state.heightFirstBranchMin}
+                                               onChange={({target}) => this._update('heightFirstBranchMin', target.value)}/>
+                                    </div>
+                                </div>
+                                <div className="field">
+                                    <div className="control">
+                                        <input type="number"
+                                               className="input"
+                                               placeholder="Max."
+                                               value={this.state.heightFirstBranchMax}
+                                               onChange={({target}) => this._update('heightFirstBranchMax', target.value)}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -135,6 +127,6 @@ export default class HemlockFilters extends Component {
     }
 }
 
-HemlockFilters.PropTypes = {
+WhiteOakFilters.PropTypes = {
     onChange: PropTypes.func.isRequired
 }

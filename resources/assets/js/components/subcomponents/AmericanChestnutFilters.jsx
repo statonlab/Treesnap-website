@@ -10,8 +10,7 @@ export default class AmericanChestnutFilters extends Component {
             burrs       : [],
             catkins        : [],
             chestnutBlight : [],
-            crownHealthMin : '',
-            crownHealthMax : '',
+            crownHealth : [],
             diameterNumericMin: '',
             diameterNumericMax: '',
             heightNumericMin  : '',
@@ -60,32 +59,21 @@ export default class AmericanChestnutFilters extends Component {
 
                 <div className="column is-6">
                     <div className="field">
-                        <label className="label">Crown Health (percentage)</label>
-                        <div className="field is-horizontal">
-                            <div className="field-body">
-                                <div className="field">
-                                    <div className="control">
-                                        <input type="number"
-                                               className="input"
-                                               placeholder="Min."
-                                               value={this.state.crownHealthMin}
-                                               onChange={({target}) => this._update('crownHealthMin', target.value)}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="field">
-                                    <div className="control">
-                                        <input type="number"
-                                               className="input"
-                                               placeholder="Max."
-                                               value={this.state.crownHealthMax}
-                                               onChange={({target}) => this._update('crownHealthMax', target.value)}/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <label className="label">Crown Health</label>
+                        <ButtonList
+                            list={[
+                                '1 - Healthy',
+                                '2 - Thinning',
+                                '3 - Some dead branches (less than 50%)',
+                                '4 - Many dead branches (more than 50%)',
+                                '5 - Completely dead',
+                                'I\'m not sure'
+                            ]}
+                            onChange={crownHealth => this._update('crownHealth', crownHealth)}/>
                     </div>
+                </div>
 
+                <div className="column is-6">
                     <div className="field">
                         <label className="label">Tree Diameter (inches)</label>
                         <div className="field is-horizontal">

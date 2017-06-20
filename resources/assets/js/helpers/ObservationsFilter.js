@@ -1,7 +1,6 @@
 export default class ObservationsFilter {
     constructor(observations) {
         this._observations = observations
-        this._sortable     = []
         this._categoryName = ''
         this._searchTerm   = ''
         this._termCategory = 'all'
@@ -45,7 +44,6 @@ export default class ObservationsFilter {
      */
     replace(observations) {
         this._observations = observations
-        this._sortable     = []
         this._categoryName = ''
         this._searchTerm   = ''
         this._termCategory = 'all'
@@ -90,20 +88,25 @@ export default class ObservationsFilter {
     }
 
     /**
-     * Sort by column.
+     * Set the search field category.
      *
-     * @param column
-     * @param observations
+     * @param value
+     * @returns {Array}
      */
-    sort(column, observations) {
-
-    }
-
     searchTermCategory(value) {
         this._termCategory = value
         return this._filter()
     }
 
+    /**
+     * Search a certain category such as address or user name.
+     *
+     * @param term
+     * @param category
+     * @param observation
+     * @returns {*}
+     * @private
+     */
     _searchCategory(term, category, observation) {
         switch (category) {
             case 'user':
@@ -120,6 +123,14 @@ export default class ObservationsFilter {
         }
     }
 
+    /**
+     * Check if string a contains string b.
+     *
+     * @param a
+     * @param b
+     * @returns {boolean}
+     * @private
+     */
     _contains(a, b) {
         return a.trim().toLowerCase().indexOf(b) > -1
     }
