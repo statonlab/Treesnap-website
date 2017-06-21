@@ -41,8 +41,8 @@ Route::get('/logout', function () {
 });
 
 // Observations
-Route::get('/observations', 'ObservationsController@index');
 Route::get('/observations/categories', 'ObservationsController@getCategories');
+Route::get('/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Users
@@ -52,6 +52,9 @@ Route::post('/user/subscribe', 'UsersController@subscribe');
 // Filters
 Route::post('/api/filter/count', 'FiltersController@count');
 Route::get('/api/filters', 'FiltersController@index');
+
+// CSRF
+Route::get('/api/_token', 'CSRFController@index');
 
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
@@ -124,6 +127,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
 
     // Contact Controller
     Route::post('/api/contact/user', 'ContactController@contactUser');
+
+    // Confirmations Controller
+    Route::get('/api/confirmations', 'ConfirmationsController@index');
+    Route::post('/api/confirmations', 'ConfirmationsController@create');
+    Route::delete('/api/confirmation/{id}', 'ConfirmationsController@delete');
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);

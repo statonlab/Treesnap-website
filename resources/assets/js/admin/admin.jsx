@@ -1,7 +1,7 @@
 import '../bootstrap'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 import AdminSidebar from './components/AdminSidebar'
 import AdminNavbar from '../components/AdminNavbar'
 import DashboardScene from './scenes/DashboardScene'
@@ -10,6 +10,9 @@ import UserScene from './scenes/UserScene'
 import GroupsScene from './scenes/GroupsScene'
 import GroupScene from './scenes/GroupScene'
 import ObservationsScene from './scenes/ObservationsScene'
+import FiltersScene from './scenes/FiltersScene'
+import CollectionsScene from './scenes/CollectionsScene'
+import CurateScene from './scenes/CurateScene'
 
 class Admin extends Component {
     render() {
@@ -30,7 +33,14 @@ class Admin extends Component {
                                         <Route path="/user/:id" component={UserScene}/>
                                         <Route path="/groups" component={GroupsScene}/>
                                         <Route path="/group/:id" component={GroupScene}/>
+                                        <Route path="/filters" component={FiltersScene}/>
                                         <Route path="/observations" component={ObservationsScene}/>
+                                        <Route path="/collections" component={CollectionsScene}/>
+                                        <Route path="/curate" component={CurateScene}/>
+                                        <Route render={() => {
+                                            window.location.replace('/no-match')
+                                            return null
+                                        }}/>
                                     </Switch>
                                     <div className="app-footer admin-footer">
                                         Copyright &copy; 2017 University of Tennessee at Knoxville

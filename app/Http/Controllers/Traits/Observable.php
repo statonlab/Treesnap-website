@@ -55,6 +55,7 @@ trait Observable
             'mobile_id' => $observation->mobile_id,
             'flags' => isset($observation->flags) ? $observation->flags : [],
             'collections' => isset($observation->collections) ? $observation->collections : [],
+            'confirmations' => isset($observation->confirmations) ? $observation->confirmations : [],
         ];
     }
 }

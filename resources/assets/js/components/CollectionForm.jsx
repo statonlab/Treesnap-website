@@ -26,9 +26,11 @@ export default class CollectionForm extends Component {
 
         this.setState({loading: true})
 
+        let id = parseInt(this.state.collection_id)
+
         axios.post('/collection/attach', {
             observation_id: this.props.observationId,
-            collection_id : this.state.collection_id || '',
+            collection_id : id !== 0 ? id : '',
             label         : this.state.label
         }).then(response => {
             this.setState({

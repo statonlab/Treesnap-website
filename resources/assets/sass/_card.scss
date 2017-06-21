@@ -10,6 +10,8 @@
   padding-left: 0.25rem;
   z-index: 11;
   margin-right: .2rem;
+
+  &.is-active,
   &:hover {
     .fa-times {
       color: $danger;

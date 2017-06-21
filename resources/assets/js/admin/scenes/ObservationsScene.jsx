@@ -307,21 +307,27 @@ export default class ObservationsScene extends Component {
      */
     replaceObservations(observations) {
         this.allObservations = observations
-        this.filter.replace(this.allObservations)
-
-        this.paginate(observations, true)
+        this.paginate(this.filter.replace(observations), false)
     }
 
     /**
      * Load and apply advanced filter.
      *
      * @param id
+     * @param observations
      */
-    loadAdvancedFilter(id) {
+    loadAdvancedFilter(id, observations) {
+        const preLoaded = typeof observations !== 'undefined'
+
         this.setState({
             selectedFilter: parseInt(id),
-            loading       : true
+            loading       : !preLoaded
         })
+
+        if (typeof observations !== 'undefined') {
+            this.replaceObservations(observations)
+            return
+        }
 
         if (parseInt(id) === -1) {
             axios.get('/observations').then(response => {
@@ -419,27 +425,29 @@ export default class ObservationsScene extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="column is-4">
-                    <div className="field">
-                        <div className="control">
-                            <span className="select is-full-width">
-                                <select
-                                    value={this.state.selectedCollection}
-                                    onChange={({target}) => this.collectionFilter(target.value)}>
-                                    <option value="-1">All Collections</option>
-                                    {this.state.collections.map(collection => {
-                                        return (
-                                            <option key={collection.value}
-                                                    value={collection.value}>
-                                                {collection.label}
-                                            </option>
-                                        )
-                                    })}
-                                </select>
-                            </span>
+                {this.state.collections.length > 0 ?
+                    <div className="column is-4">
+                        <div className="field">
+                            <div className="control">
+                                <span className="select is-full-width">
+                                    <select
+                                        value={this.state.selectedCollection}
+                                        onChange={({target}) => this.collectionFilter(target.value)}>
+                                        <option value="-1">All Collections</option>
+                                        {this.state.collections.map(collection => {
+                                            return (
+                                                <option key={collection.value}
+                                                        value={collection.value}>
+                                                    {collection.label}
+                                                </option>
+                                            )
+                                        })}
+                                    </select>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    : null }
                 <div className="column is-4">
                     <div className="field">
                         <div className="control">
@@ -531,14 +539,25 @@ export default class ObservationsScene extends Component {
                     onCloseRequest={() => this.setState({showFiltersModal: false})}
                     onCreate={(data) => {
                         let advancedFilters = this.state.advancedFilters
-                        advancedFilters.push({
-                            label: data.filter.name,
-                            value: data.filter.id
-                        })
+
+                        if (data.filter) {
+                            advancedFilters.push({
+                                label: data.filter.name,
+                                value: data.filter.id
+                            })
+
+                            Notify.push(`Filter "${data.filter.name}" has been created.`)
+                        } else {
+                            Notify.push(`Advanced filter has been loaded but not saved.`)
+                        }
 
                         this.setState({
-                            showFiltersModal: false
+                            showFiltersModal: false,
+                            selectedFilter  : data.filter ? data.filter.id : -1,
+                            advancedFilters
                         })
+
+                        this.loadAdvancedFilter(data.filter ? data.filter.id : -1, data.observations)
                     }}/>
 
                 <div className="columns flex-v-center">

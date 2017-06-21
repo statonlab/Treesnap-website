@@ -60,26 +60,6 @@ class Observation extends Model
     }
 
     /**
-     * Create noised coordinates based on the real coordinates.  Coordinates are noised by randomly adding a number between -.333 to 0.333: translating to roughly 50miles fuzzying for both latitude and longitude.
-     *
-     */
-
-    protected function fuzzify(Observation $observation, $miles = 5)
-    {
-
-        //72.4637681159 = 1000 / 69 miles per lat/2 for radius
-        $range = $miles * 72.4637681159;
-        $latitude = $observation->latitude * 10000 + mt_rand($range * (-1), $range);
-        $longitude = $observation->longitude * 10000 + mt_rand($range * (-1), $range);
-
-        $observation->fuzzy_coords = [
-            'latitude' => $latitude/10000,
-            'longitude' => $longitude/10000,
-        ];
-        $observation->save();
-    }
-
-    /**
      * Return lists observation belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -98,5 +78,15 @@ class Observation extends Model
     public function flags()
     {
         return $this->hasMany('App\Flag');
+    }
+
+    /**
+     * Confirmations.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function confirmations()
+    {
+        return $this->hasMany('App\Confirmation');
     }
 }

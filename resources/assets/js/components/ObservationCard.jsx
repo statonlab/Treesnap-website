@@ -7,7 +7,8 @@ import CollectionForm from './CollectionForm'
 import FlagForm from './FlagForm'
 import Map from '../UI/Map'
 import Marker from '../UI/Marker'
-import Spinner from '../components/Spinner'
+import Spinner from './Spinner'
+import Notify from './Notify'
 
 export default class ObservationCard extends Component {
     constructor(props) {
@@ -20,12 +21,19 @@ export default class ObservationCard extends Component {
             flag_id          : 0,
             addedToCollection: false,
             observationId    : 0,
-            loading          : false
+            loading          : false,
+            confirmation     : {
+                id     : -1,
+                correct: null
+            }
         }
 
         this.timeoutWatcher = null
     }
 
+    /**
+     * Set up flags and confirmations
+     */
     componentWillMount() {
         const observation = this.props.observation
 
@@ -33,6 +41,12 @@ export default class ObservationCard extends Component {
             this.setState({
                 flagged: true,
                 flag_id: observation.flags[0].id
+            })
+        }
+
+        if (observation.confirmations.length > 0) {
+            this.setState({
+                confirmation: observation.confirmations[0]
             })
         }
     }
@@ -239,8 +253,66 @@ export default class ObservationCard extends Component {
         }
     }
 
+    /**
+     * Confirm species as correct or incorrect.
+     *
+     * @param correct
+     * @param observation
+     */
+    confirm(correct, observation) {
+        if (this.state.confirmation.correct === correct) {
+            this.deleteConfirmation(this.state.confirmation)
+            Notify.push('Unmarked observation', 'warning')
+            return
+        }
+
+        this.setState({
+            confirmation: {
+                id: 0,
+                correct
+            }
+        })
+
+        axios.post('/admin/api/confirmations', {
+            observation_id: observation.observation_id,
+            correct
+        }).then(response => {
+            let confirmation = response.data.data
+            this.setState({confirmation})
+            let correct = confirmation.correct ? 'correct' : 'incorrect'
+            Notify.push(`Marked observation as ${correct} species`, confirmation.correct ? 'success' : 'danger')
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
+
+    /**
+     * Undo confirmation.
+     *
+     * @param confirmation
+     */
+    deleteConfirmation(confirmation) {
+        if (confirmation.id <= 0) {
+            return
+        }
+
+        this.setState({
+            confirmation: {
+                id     : -1,
+                correct: null
+            }
+        })
+
+        axios.delete(`/admin/api/confirmation/${confirmation.id}`).then(response => {
+            //
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
+
     render() {
         let observation  = this.props.observation
+        let confirmation = this.state.confirmation
         let name         = observation.observation_category + (observation.observation_category === 'Other' ? ` (${observation.meta_data.otherLabel})` : '')
         let address      = observation.location.address !== null ? observation.location.address.formatted : null
         let addressLine1 = ''
@@ -257,16 +329,20 @@ export default class ObservationCard extends Component {
                         {name}
                     </p>
 
-                    <a className="card-header-icon is-clear" onClick={() => this.shouldSlide('flag')}>
-                        <Tooltip label="Mark as incorrect species">
+                    <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+                       onClick={() => this.confirm(false, observation)}>
+                        <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                                 hideOnClick={false}>
                             <span className="icon">
                                 <i className="fa fa-times"></i>
                             </span>
                         </Tooltip>
                     </a>
 
-                    <a className="card-header-icon is-clear">
-                        <Tooltip label="Confirm species">
+                    <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+                       onClick={() => this.confirm(true, observation)}>
+                        <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                                 hideOnClick={false}>
                             <span className="icon">
                                 <i className="fa fa-check"></i>
                             </span>

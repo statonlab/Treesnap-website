@@ -17,7 +17,7 @@ class ObservationsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $limit = null)
     {
         $is_admin = false;
         $user = $request->user();
@@ -26,15 +26,22 @@ class ObservationsController extends Controller
         }
 
         if ($is_admin) {
-            $observations = Observation::with(['user'])->orderby('collection_date', 'desc')->get();
+            $observations = Observation::with('user')->orderby('collection_date', 'desc');
         } else {
-            $observations = Observation::with('user')
-                ->where('is_private', false)
-                ->orderby('collection_date', 'desc')
-                ->get();
+            $observations = Observation::with('user')->where('is_private', false)->orderby('collection_date', 'desc');
         }
+
+        if ($limit) {
+            $observations->limit($limit);
+        }
+
+        $observations = $observations->get();
+
         if ($user) {
             $observations->load([
+                'confirmations' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
                 'flags' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 },

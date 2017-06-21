@@ -137,4 +137,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Filter');
     }
+
+    /**
+     * Confirmations.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function confirmations()
+    {
+        return $this->hasMany('App\Confirmation');
+    }
 }
