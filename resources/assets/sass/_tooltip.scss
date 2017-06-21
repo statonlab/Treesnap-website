@@ -7,7 +7,7 @@
 
 .tooltip .tooltip-text {
   opacity: 0;
-  transition:opacity 0.25s linear;
+  transition: opacity 0.25s linear;
   width: 100%;
   min-width: 120px;
   background-color: #222;
@@ -18,6 +18,9 @@
   position: absolute;
   z-index: 1;
   visibility: hidden;
+  font-size: 1rem !important;
+  font-weight: $weight-normal !important;
+  white-space: normal !important;
   &.show {
     opacity: 1;
     visibility: visible;

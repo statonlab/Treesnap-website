@@ -14,6 +14,35 @@ window.axios.defaults.headers.common = {
     'Accept'          : 'application/json'
 }
 
+window.Laravel.renewToken = () => {
+    axios.get('/api/_token').then(response => {
+        window.Laravel.csrfToken             = response.data.data
+        window.axios.defaults.headers.common = {
+            'X-CSRF-TOKEN'    : window.Laravel.csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept'          : 'application/json'
+        }
+
+        const _tokens = document.querySelectorAll('input[name="_token"]')
+        if (_tokens) {
+            _token.forEach(token => {
+                token.value = response.data.data
+            })
+        }
+    }).catch(error => {
+        if (error.response && (error.response.status === 302 || error.response.status === 401)) {
+            if (confirm('You have been logged out due to inactivity.')) {
+                window.location.replace('/login')
+            } else {
+                window.location.replace('/login')
+            }
+        }
+    })
+}
+
+// Renew the CSRF token every 30 minutes
+setInterval(window.Laravel.renewToken, 60 * 60 * 30)
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

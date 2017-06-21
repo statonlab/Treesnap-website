@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Path from '../helpers/Path'
-import {NavLink} from 'react-router-dom'
 
 export default class AdminNavbar extends Component {
     constructor(props) {
@@ -40,11 +39,9 @@ export default class AdminNavbar extends Component {
                     <div className={this.props.container ? 'container' : 'container is-fluid'}>
                         <div className="nav-left nav-brand">
                             <a href="/" className="nav-item">
-                                <b>Tree</b><span style={{fontWeight: 300}}>snap</span>
+                                <img src={`/logo/ts-logo-${this.props.home ? '96' : '32'}.png`} alt="Logo" className="logo-img"/>
+                                <span className="logo-text"><b>Tree</b><span style={{fontWeight: 300}}>Snap</span></span>
                             </a>
-                            <small className="nav-item">
-                                Citizen science app
-                            </small>
                         </div>
 
                         <div className="nav-toggle" onClick={this.toggle.bind(this)}>
@@ -56,6 +53,10 @@ export default class AdminNavbar extends Component {
                         <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
                             <a href="/" className={`nav-item ${Path.isActive('/')}`}>
                                 Home
+                            </a>
+
+                            <a href="/map" className={`nav-item ${Path.isActive('/map')}`}>
+                                Map
                             </a>
 
                             <a href="/about" className={`nav-item ${Path.isActive('/about')}`}>

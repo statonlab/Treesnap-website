@@ -15,7 +15,7 @@ export default class Notify extends Component {
     componentWillMount() {
         this.timer = setTimeout(() => {
             this.hide()
-        }, 7000)
+        }, 5000)
     }
 
     componentDidMount() {
@@ -24,10 +24,9 @@ export default class Notify extends Component {
         }, 100)
     }
 
-    _remove() {
-        setTimeout(() => {
-            document.body.removeChild(this.props.container)
-        }, 1000)
+    static _remove() {
+        document.body.removeChild(this.stack[0])
+        this.stack.shift()
     }
 
     hide() {
@@ -69,6 +68,12 @@ export default class Notify extends Component {
         ), container)
 
         document.body.appendChild(container)
+
+        if (this.stack.length > 0) {
+            this._remove()
+        }
+
+        this.stack.push(container)
     }
 }
 
@@ -81,3 +86,5 @@ Notify.PropTypes = {
 Notify.defaultProps = {
     type: 'success'
 }
+
+Notify.stack = []

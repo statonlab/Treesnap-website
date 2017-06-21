@@ -44,13 +44,6 @@ export default class ObservationsFilter {
      */
     replace(observations) {
         this._observations = observations
-        this._categoryName = ''
-        this._searchTerm   = ''
-        this._termCategory = 'all'
-        this._collectionID = -1
-        this._filtered     = observations
-
-        this._saveState()
         return this._filter()
     }
 

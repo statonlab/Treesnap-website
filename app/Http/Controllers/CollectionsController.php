@@ -22,7 +22,7 @@ class CollectionsController extends Controller
     {
         $user = $request->user();
 
-        $collections = $user->collections;
+        $collections = $user->collections()->withCount(['observations', 'users'])->get();
 
         if (! $paired) {
             return $this->success($collections);
@@ -117,12 +117,12 @@ class CollectionsController extends Controller
         ]);
 
         // Deal with new collections.
-        if (! empty($request->label) && $request->collection_id === '') {
+        if (empty($request->collection_id)) {
             $collection = Collection::firstOrCreate([
                 'label' => $request->label,
                 'user_id' => $user->id,
             ]);
-            $collection->users()->attach($request->user());
+            $collection->users()->syncWithoutDetaching($user->id);
         } else {
             if (empty($request->collection_id)) {
                 return $this->validationError(['label' => ['At least on item is required. Please select an existing collection or create a new one.']]);

@@ -26,15 +26,19 @@ class ObservationsController extends Controller
         }
 
         if ($is_admin) {
-            $observations = Observation::with(['user'])->orderby('collection_date', 'desc')->get();
+            $observations = Observation::with('user')->orderby('collection_date', 'desc')->get();
         } else {
             $observations = Observation::with('user')
-                ->where('is_private', false)
-                ->orderby('collection_date', 'desc')
-                ->get();
+                                       ->where('is_private', false)
+                                       ->orderby('collection_date', 'desc')
+                                       ->get();
         }
+
         if ($user) {
             $observations->load([
+                'confirmations' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
                 'flags' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 },
