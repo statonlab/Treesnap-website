@@ -12,6 +12,7 @@ import GroupScene from './scenes/GroupScene'
 import ObservationsScene from './scenes/ObservationsScene'
 import FiltersScene from './scenes/FiltersScene'
 import CollectionsScene from './scenes/CollectionsScene'
+import CurateScene from './scenes/CurateScene'
 
 class Admin extends Component {
     render() {
@@ -35,6 +36,7 @@ class Admin extends Component {
                                         <Route path="/filters" component={FiltersScene}/>
                                         <Route path="/observations" component={ObservationsScene}/>
                                         <Route path="/collections" component={CollectionsScene}/>
+                                        <Route path="/curate" component={CurateScene}/>
                                         <Route render={() => {
                                             window.location.replace('/no-match')
                                             return null

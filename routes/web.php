@@ -41,8 +41,8 @@ Route::get('/logout', function () {
 });
 
 // Observations
-Route::get('/observations', 'ObservationsController@index');
 Route::get('/observations/categories', 'ObservationsController@getCategories');
+Route::get('/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Users

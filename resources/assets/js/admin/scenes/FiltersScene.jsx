@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Spinner from '../../components/Spinner'
 import {Link} from 'react-router-dom'
+import Tooltip from '../../components/Tooltip'
 
 export default class UsersScene extends Component {
     constructor(props) {
@@ -48,12 +49,16 @@ export default class UsersScene extends Component {
                 <td className="has-text-right">
                     <a className="button is-small is-warning mr-0">
                         <span className="icon is-small">
-                            <i className="fa fa-pencil" style={{color: '#fff'}}></i>
+                            <Tooltip label="Edit">
+                                <i className="fa fa-pencil" style={{color: '#fff'}}></i>
+                            </Tooltip>
                         </span>
                     </a>
                     <a className="button is-small is-danger" onClick={(e) => this.deleteFilter(e, filter)}>
                         <span className="icon is-small">
-                            <i className="fa fa-times"></i>
+                            <Tooltip label="Delete">
+                                <i className="fa fa-times"></i>
+                            </Tooltip>
                         </span>
                     </a>
                 </td>
@@ -67,7 +72,7 @@ export default class UsersScene extends Component {
                 <h1 className="title is-3">Manage Advanced Filters</h1>
                 <div className="box">
                     {this.state.filters.length !== 0 ?
-                        <table className="table is-striped mb-none" id="users-table">
+                        <table className="table is-striped mb-none">
                             <thead>
                             <tr>
                                 <th>Name</th>

@@ -5,7 +5,8 @@ export default class ObservationsFilter {
         this._searchTerm   = ''
         this._termCategory = 'all'
         this._collectionID = -1
-        this._filtered     = observations
+        this._filtered     = []
+        this._stateStatus  = 0
 
         this._saveState()
     }
@@ -20,7 +21,8 @@ export default class ObservationsFilter {
             _categoryName: this._categoryName,
             _searchTerm  : this._searchTerm,
             _termCategory: this._termCategory,
-            _collectionID: this._collectionID
+            _collectionID: this._collectionID,
+            _stateStatus : this._stateStatus
         }
     }
 
@@ -44,6 +46,9 @@ export default class ObservationsFilter {
      */
     replace(observations) {
         this._observations = observations
+        this._filtered     = []
+        this._stateStatus += 1
+        this._saveState()
         return this._filter()
     }
 
@@ -319,15 +324,17 @@ export default class ObservationsFilter {
     _filter() {
         // Make sure one of filters changed before iterating needlessly
         // We don't want this method called if React decides to update it's state
-        if (this._stateChanged()) {
-            this._filtered = this._observations.filter(observation => {
-                return this._collection(this._collectionID, observation)
-                    && this._search(this._searchTerm, observation, this._termCategory)
-                    && this._category(this._categoryName, observation)
-            })
+        //if (this._stateChanged()) {
+        this._filtered = this._observations.filter(observation => {
+            return this._collection(this._collectionID, observation)
+                && this._search(this._searchTerm, observation, this._termCategory)
+                && this._category(this._categoryName, observation)
+        })
 
-            this._saveState()
-        }
+        this._saveState()
+        /*} else if (this._filtered.length === 0) {
+         return this._observations
+         }*/
 
         return this._filtered
     }
