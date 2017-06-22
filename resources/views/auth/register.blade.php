@@ -105,7 +105,7 @@
                                     <label class="checkbox">
                                         <input type="checkbox" name="agreement"
                                                value="1" {{ old('agreement') ? 'checked' : '' }}>
-                                        I agree to the &nbsp;<a href="/policy">Treesnap license and terms of service</a>
+                                        I agree to the &nbsp;<a href="/policy">TreeSnap license and terms of service</a>
                                     </label>
                                 </div>
                                 @if ($errors->has('agreement'))
