@@ -187,6 +187,22 @@ export default class AdvancedFiltersModal extends Component {
     renderForm() {
         return (
             <div className="columns is-multiline">
+                <div className="column is-12">
+                    <div className="field">
+                        <label className="label">Filter Name</label>
+                        <div className="control">
+                            <input type="text"
+                                   className="input"
+                                   placeholder="Optional: label your filter"
+                                   value={this.state.filterName}
+                                   onChange={({target}) => this.setState({filterName: target.value})}/>
+                        </div>
+                        <p className="help">
+                            You can save your filter settings to easily reapply later or share with others.
+                        </p>
+                    </div>
+                </div>
+
                 <div className="column is-6">
                     <div className="field">
                         <label className="label">Species</label>
@@ -247,22 +263,6 @@ export default class AdvancedFiltersModal extends Component {
                 {this.state.selectedCategories.indexOf('White Oak') > -1 ? this.renderWhiteOakFilters() : null }
 
                 {this.state.selectedCategories.indexOf('American Elm') > -1 ? this.renderAmericanElmFilters() : null }
-
-                <div className="column is-6">
-                    <div className="field">
-                        <label className="label">Filter Name</label>
-                        <div className="control">
-                            <input type="text"
-                                   className="input"
-                                   placeholder="Optional: label your filter"
-                                   value={this.state.filterName}
-                                   onChange={({target}) => this.setState({filterName: target.value})}/>
-                        </div>
-                        <p className="help">
-                            You can save your filter settings to easily reapply later or share with others.
-                        </p>
-                    </div>
-                </div>
 
                 <div className="column is-6"></div>
 

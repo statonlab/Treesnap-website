@@ -16,10 +16,9 @@ class Contact extends Model
         'recipient_id',
         'to',
         'from',
-        'subject',
-        'message',
         'observation_id',
         'include_observation',
+        'cc',
     ];
 
     /**
@@ -28,7 +27,7 @@ class Contact extends Model
      * @var array
      */
     protected $casts = [
-        'cc' => 'array'
+        'cc' => 'array',
     ];
 
     /**

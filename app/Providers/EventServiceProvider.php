@@ -14,7 +14,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\ObservationCreated' => [
-            'App\Listeners\AddAddressToObservation',
+            \App\Listeners\AddAddressToObservation::class,
+            \App\Listeners\ClearObservationsCache::class,
         ],
     ];
 
@@ -26,7 +27,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
         //
     }
 }

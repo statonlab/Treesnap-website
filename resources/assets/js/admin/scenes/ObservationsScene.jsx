@@ -44,7 +44,7 @@ export default class ObservationsScene extends Component {
      * Get observations from server.
      */
     componentWillMount() {
-        axios.get('/observations').then(response => {
+        axios.get('/observations?reset_cache=1').then(response => {
             this.setState({loading: false})
 
             this.allObservations = response.data.data
@@ -140,7 +140,7 @@ export default class ObservationsScene extends Component {
         } else {
             page    = 0
             perPage = this.state.perPage
-            pages   = this.generatePages(total, perPage)
+            pages   = this.generatePages(total, perPage, 1)
         }
 
         let observations = this.getPage(page, perPage, observations_full)
@@ -180,9 +180,7 @@ export default class ObservationsScene extends Component {
             }
         }
 
-        let pages = this.generatePages(total, perPage)
-        let max   = pages.length
-
+        let max = Math.ceil(total / perPage)
 
         if (typeof params.page !== 'undefined') {
             page = parseInt(params.page)
@@ -200,6 +198,8 @@ export default class ObservationsScene extends Component {
 
         this.history.replace(`/observations?page=${page + 1}&view=${perPage}`)
 
+        let pages = this.generatePages(total, perPage, page + 1)
+
         return {
             page,
             perPage,
@@ -214,9 +214,7 @@ export default class ObservationsScene extends Component {
      * @param perPage
      * @returns {Array}
      */
-    generatePages(total, perPage) {
-        let pages = []
-
+    generatePages(total, perPage, currentPage) {
         if (typeof total === 'undefined') {
             total = this.state.total
         }
@@ -225,8 +223,31 @@ export default class ObservationsScene extends Component {
             perPage = this.state.perPage
         }
 
-        for (let i = 1; i <= Math.ceil(total / perPage); i++) {
+        if (typeof currentPage === 'undefined') {
+            currentPage = this.state.page + 1
+        }
+
+        let pages    = []
+        let numPages = Math.ceil(total / perPage)
+        let pageSet  = Math.min(numPages, 7)
+        let start    = 1
+
+        if (numPages > 7 && currentPage > 3) {
+            pages.push(1)
+            pages.push('...')
+            start = currentPage - 3
+            if (start === 1) {
+                start++
+            }
+        }
+
+        for (let i = start; i < Math.min(pageSet + start, numPages + 1); i++) {
             pages.push(i)
+        }
+
+        if (numPages > 7 && currentPage + 3 < numPages) {
+            pages.push('...')
+            pages.push(numPages)
         }
 
         return pages
@@ -240,9 +261,10 @@ export default class ObservationsScene extends Component {
      * @param observations
      */
     getPage(page, perPage, observations) {
-        perPage   = perPage || this.state.perPage
-        let start = perPage * page
-        let end   = start + perPage
+        perPage   = parseInt(perPage || this.state.perPage)
+        let start = perPage * parseInt(page)
+        let end   = parseInt(start) + perPage
+
         return typeof observations !== 'undefined' ? observations.slice(start, end) : this.allObservations.slice(start, end)
     }
 
@@ -280,6 +302,7 @@ export default class ObservationsScene extends Component {
     goToPage(page) {
         this.setState({
             observations: this.getPage(page),
+            pages       : this.generatePages(this.state.total, this.state.perPage, page + 1),
             page
         })
 
@@ -511,7 +534,7 @@ export default class ObservationsScene extends Component {
             perPage,
             observations: this.getPage(0, perPage),
             page        : 0,
-            pages       : this.generatePages(this.allObservations.length, perPage)
+            pages       : this.generatePages(this.allObservations.length, perPage, 1)
         })
         this.history.replace(`/observations?page=1&view=${perPage}`)
     }
@@ -664,11 +687,22 @@ export default class ObservationsScene extends Component {
                             Next page
                         </a>
                         <ul className="pagination-list">
-                            {this.state.pages.map(page => {
+                            {this.state.pages.map((page, index) => {
+                                if (page === '...') {
+                                    return (
+                                        <li key={`hellip_${index}`}>
+                                            <span className="pagination-ellipsis">&hellip;</span>
+                                        </li>
+                                    )
+                                }
                                 return (
-                                    <li key={page}>
+                                    <li key={`page_${page}`}>
                                         <a className={`pagination-link${this.state.page === page - 1 ? ' is-current' : ''}`}
-                                           onClick={() => this.goToPage.call(this, page - 1)}>
+                                           onClick={() => {
+                                               if (this.state.page !== page - 1) {
+                                                   this.goToPage.call(this, page - 1)
+                                               }
+                                           }}>
                                             {page}
                                         </a>
                                     </li>

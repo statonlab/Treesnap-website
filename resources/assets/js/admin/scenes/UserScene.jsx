@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import Spinner from '../../components/Spinner'
 import Select from 'react-select'
+import ObservationCard from '../../components/ObservationCard'
 
 export default class UserScene extends Component {
     constructor(props) {
@@ -33,16 +34,21 @@ export default class UserScene extends Component {
      */
     componentWillMount() {
         this.getUser()
+        this.getRoles()
 
-        // Get all available roles
+        this._years = this._generateBirthDateOptions()
+    }
+
+    /**
+     * Get all available roles
+     */
+    getRoles() {
         axios.get('/admin/api/roles').then(response => {
             let roles = response.data.data
             this.setState({roles})
         }).catch(error => {
             console.log(error)
         })
-
-        this._years = this._generateBirthDateOptions()
     }
 
     /**
@@ -53,8 +59,7 @@ export default class UserScene extends Component {
         axios.get(`/admin/api/user/${this.props.match.params.id}`).then(response => {
             let data = response.data.data
 
-
-            let user = this._userObject(data)
+            let user = this._userObject(data.user)
 
             this.setState(Object.assign({}, user, {
                 observations: data.observations,
@@ -232,20 +237,7 @@ export default class UserScene extends Component {
                         }
                         return (
                             <div className="column is-6-tablet is-4-desktop" key={index}>
-                                <div className="card has-bg-image">
-                                    <div className="card-image"
-                                         style={{backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`}}>
-                                    </div>
-                                    <div className="card-content">
-                                        <div className="content">
-                                            <h3 className="title is-4">{observation.observation_category}</h3>
-                                            {observation.latitude}, {observation.longitude}<br/>
-                                            <a href={`/observation/${observation.id}`}>See Full Details</a>
-                                            <br/>
-                                            <small>{moment(observation.collection_date).format('lll')}</small>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ObservationCard observation={observation}/>
                             </div>
                         )
                     })}

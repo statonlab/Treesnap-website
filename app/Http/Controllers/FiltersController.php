@@ -101,7 +101,21 @@ class FiltersController extends Controller
             $filters = $request->all();
         }
 
-        $this->apply($filters)->chunk(200, function ($observations) use (&$all, $isAdmin) {
+        $filtered = $this->apply($filters);
+
+        $filtered->chunk(200, function ($observations) use (&$all, $isAdmin, $user) {
+            $observations->load([
+                'confirmations' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+                'flags' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+                'collections' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+            ]);
+
             foreach ($observations as $observation) {
                 $all[] = array_merge($this->getObservationJson($observation, $isAdmin), [
                     'user' => [
@@ -153,8 +167,6 @@ class FiltersController extends Controller
 
         return $this->success([
             'count' => $filtered->count(),
-            'filters' => $request->all(),
-            'o' => $filtered->get(),
         ]);
     }
 
@@ -242,6 +254,8 @@ class FiltersController extends Controller
                 }
             }
         });
+
+        $observations->orderBy('collection_date', 'DESC');
 
         return $observations;
     }

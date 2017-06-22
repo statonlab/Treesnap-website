@@ -113,6 +113,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     // Flags
     Route::get('/api/flags', 'FlagsController@index');
+
+    // Cache
+    Route::get('/clear-cache', 'CacheController@clearCache');
 });
 
 // Admin or Scientist Only Route Group

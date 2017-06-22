@@ -5,7 +5,6 @@ window._ = require('lodash')
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
-
 window.axios = require('axios')
 
 window.axios.defaults.headers.common = {
@@ -41,7 +40,7 @@ window.Laravel.renewToken = () => {
 }
 
 // Renew the CSRF token every 30 minutes
-setInterval(window.Laravel.renewToken, 60 * 60 * 30)
+setInterval(window.Laravel.renewToken, 1000 * 60 * 30)
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

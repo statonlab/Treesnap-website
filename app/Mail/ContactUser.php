@@ -41,17 +41,27 @@ class ContactUser extends Mailable implements ShouldQueue
      */
     protected $_cc = [];
 
+    public $_message = '';
+
+    public $_subject = '';
+
     /**
      * Create a new message instance.
      *
+     * @param Contact $contact
+     * @param String $subject
+     * @param String $message
+     *
      * @return void
      */
-    public function __construct(Contact $contact)
+    public function __construct(Contact $contact, $subject, $message)
     {
         $this->contact = $contact;
 
         $receiver = $contact->recipient;
         $this->_to = $receiver->email;
+        $this->_message = $message;
+        $this->_subject = $subject;
 
         if ($contact->include_observation) {
             $this->table = [];
@@ -79,11 +89,11 @@ class ContactUser extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from($this->contact->from)
-            ->replyTo($this->contact->from)
-            ->to($this->_to)
-            ->cc($this->_cc)
-            ->subject($this->contact->subject)
-            ->markdown('emails.contact-user');
+        return $this->from(config('mail.from.address'))
+                    ->replyTo($this->contact->from)
+                    ->to($this->_to)
+                    ->cc($this->_cc)
+                    ->subject($this->_subject)
+                    ->markdown('emails.contact-user');
     }
 }

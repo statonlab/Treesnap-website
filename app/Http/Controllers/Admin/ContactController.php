@@ -8,9 +8,11 @@ use App\Http\Controllers\Controller;
 use Mail;
 use App\Mail\ContactUser;
 use App\Contact;
+
 class ContactController extends Controller
 {
     use Responds;
+
     /**
      * Contact a user about an observation.
      *
@@ -51,12 +53,10 @@ class ContactController extends Controller
             'recipient_id' => $request->recipient,
             'observation_id' => $request->observation_id,
             'cc' => $all_cc,
-            'subject' => $request->subject,
-            'message' => $request->message,
             'include_observation' => $request->include_observation,
         ]);
 
-        Mail::queue(new ContactUser($contact));
+        Mail::queue(new ContactUser($contact, $request->subject, $request->message));
 
         return $this->success('Message sent successfully');
     }

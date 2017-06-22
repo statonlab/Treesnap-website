@@ -106,19 +106,20 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'Other',
         'White Oak',
         'Hemlock',
+        'American Elm'
     ];
 
     return [
         'user_id' => 1,
         'observation_category' => $categories[rand() % count($categories)],
         'images' => [
-            '/storage/images/'.$images[rand() % count($images)],
+            'images' => ['/storage/images/'.$images[rand() % count($images)]],
         ],
         'latitude' => $faker->latitude(),
         'longitude' => $faker->longitude(),
         'location_accuracy' => 60.09932,
         'data' => [
-            'comment' => 'Comment on record 1',
+            'comment' => 'Comment on record '. rand() % 3000,
         ],
         'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
