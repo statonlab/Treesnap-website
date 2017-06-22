@@ -3,7 +3,7 @@
         <div class="nav-left nav-brand">
             <a href="/" class="nav-item">
                 <img src="/logo/ts-logo-96.png" alt="Logo" class="logo-img"/>
-                <span class="logo-text"><b>Tree</b><span style="font-weight: 300">snap</span></span>
+                <span class="logo-text"><b>Tree</b><span style="font-weight: 300">Snap</span></span>
             </a>
         </div>
 
@@ -18,8 +18,8 @@
                 Home
             </a>
 
-            <a href="/help" class="nav-item">
-                Help
+            <a href="/map" class="nav-item">
+                Map
             </a>
 
             <a href="/about" class="nav-item">
