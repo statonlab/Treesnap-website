@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\Responds;
 use App\Observation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Cache;
 
 class FiltersController extends Controller
 {
@@ -41,11 +42,11 @@ class FiltersController extends Controller
     public function show($id, Request $request)
     {
         $user = $request->user();
-        $filters = Filter::where('user_id', $user->id)->findOrFail($id);
+        $filter = Filter::where('user_id', $user->id)->findOrFail($id);
 
         return $this->success([
-            'filter' => $filters,
-            'observations' => $this->getFilteredObservations($request, $filters->rules),
+            'filter' => $filter,
+            'observations' => $this->getCachedFilteredObservations($request, $filter),
         ]);
     }
 
@@ -80,7 +81,7 @@ class FiltersController extends Controller
 
         return $this->success([
             'filter' => $filter,
-            'observations' => $this->getFilteredObservations($request),
+            'observations' => $this->getCachedFilteredObservations($request, $filter),
         ]);
     }
 
@@ -258,5 +259,21 @@ class FiltersController extends Controller
         $observations->orderBy('collection_date', 'DESC');
 
         return $observations;
+    }
+
+    /**
+     * Retrieve filtered observations from cache.
+     *
+     * @param Request $request
+     * @param \App\Filter $filter
+     * @return mixed
+     */
+    protected function getCachedFilteredObservations($request, $filter)
+    {
+        $cache_key = "filtered_observations_{$filter->id}";
+
+        return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($request, $filter) {
+            return $this->getFilteredObservations($request, $filter->rules);
+        });
     }
 }
