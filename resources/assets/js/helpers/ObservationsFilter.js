@@ -146,7 +146,7 @@ export default class ObservationsFilter {
             return true
         }
 
-        if (observation.observation_category === 'Other') {
+        if (observation.observation_category === 'Other' && typeof observation.meta_data.otherLabel !== 'undefined') {
             if (this._contains(observation.meta_data.otherLabel, term)) {
                 return true
             }
@@ -327,7 +327,7 @@ export default class ObservationsFilter {
         //if (this._stateChanged()) {
         this._filtered = this._observations.filter(observation => {
             return this._collection(this._collectionID, observation)
-                && this._search(this._searchTerm, observation, this._termCategory)
+                && this._search(this._searchTerm || '', observation, this._termCategory)
                 && this._category(this._categoryName, observation)
         })
 

@@ -24,6 +24,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Observation::class, function (Faker\Generator $faker) {
+    $Addresses = include base_path('database/factories/Addresses.php');
+
     $images = [
         '0gzxI58ed05259fdbb.jpeg',
         '1Dz1O58ed050699cbc.jpeg',
@@ -106,12 +108,25 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'Other',
         'White Oak',
         'Hemlock',
-        'American Elm'
+        'American Elm',
     ];
 
+    $otherTrees = [
+        'Birch',
+        'Beech',
+        'Eastern red cedar',
+        'Sycamore',
+        'Big leaf magnolia',
+        'Eastern red cedar',
+    ];
+
+    $c = $categories[rand() % count($categories)];
+
+    $users = [1, 2];
+
     return [
-        'user_id' => 1,
-        'observation_category' => $categories[rand() % count($categories)],
+        'user_id' => $users[rand() % count($users)],
+        'observation_category' => $c,
         'images' => [
             'images' => ['/storage/images/'.$images[rand() % count($images)]],
         ],
@@ -119,8 +134,10 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'longitude' => $faker->longitude(),
         'location_accuracy' => 60.09932,
         'data' => [
-            'comment' => 'Comment on record '. rand() % 3000,
+            'comment' => 'Comment on record '.rand() % 3000,
+            'otherLabel' => $otherTrees[rand() % count($otherTrees)],
         ],
+        'address' => $Addresses[rand() % count($Addresses)],
         'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
     ];

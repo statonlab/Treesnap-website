@@ -21,7 +21,7 @@ class ScientistsArea
             return redirect('/login');
         }
 
-        if (! $user->isAdmin() && ! $user->isScietist()) {
+        if (! $user->isAdmin() && ! $user->isScientist()) {
             return abort(401, 'Unauthorized');
         }
 

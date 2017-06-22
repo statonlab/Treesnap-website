@@ -30,7 +30,7 @@ class ObservationsController extends Controller
 
         // Get data from the cache if a limit is not set
         if (! $limit) {
-            $data = Cache::tags('observations')->remember($cache_key, 30, function () use ($is_admin, $user, $limit) {
+            $data = Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($is_admin, $user, $limit) {
                 return $this->getObservationsFromDB($user, $is_admin, $limit);
             });
         } else {
@@ -43,7 +43,7 @@ class ObservationsController extends Controller
     /**
      * Get observation records from the DB.
      *
-     * @param App /User|null $user
+     * @param \App\User|null $user
      * @param boolean $is_admin
      * @param int|null $limit
      * @return array

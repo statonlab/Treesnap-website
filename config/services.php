@@ -15,7 +15,7 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN', 'email.treesnap.org'),
+        'domain' => env('MAILGUN_DOMAIN', 'treesnap.org'),
         'secret' => env('MAILGUN_SECRET'),
     ],
 
