@@ -127,6 +127,21 @@ a.box {
   max-height: 500px;
 }
 
+.apple-badge-img {
+  position: relative;
+  height: 68px;
+  top: -15px!important;
+  @include mobile() {
+    margin-top: 0;
+  }
+}
+
+.google-badge-img {
+  height: 100px;
+  width: auto;
+  max-width: 100%;
+}
+
 .home {
   background: $primary url('/images/bg4.png') repeat center center;
   &,

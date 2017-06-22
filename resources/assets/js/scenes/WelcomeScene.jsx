@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import Navbar from '../components/Navbar'
 import HomeJumbotron from '../components/HomeJumbotron'
-import SubscribeRow from '../components/SubscribeRow'
 import FeaturesList from '../components/FeaturesList'
 import HomeFooter from '../components/HomeFooter'
+import GetAppRow from '../components/GetAppRow'
 
 export default class Welcome extends Component {
     /**
@@ -18,7 +18,7 @@ export default class Welcome extends Component {
                     <Navbar home={true}/>
                     <HomeJumbotron/>
                 </div>
-                <SubscribeRow/>
+                <GetAppRow/>
                 <FeaturesList/>
                 <HomeFooter/>
             </div>
