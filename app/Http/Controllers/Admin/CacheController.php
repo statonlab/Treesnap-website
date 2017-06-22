@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Artisan;
 
 class CacheController extends Controller
 {
     public function clearCache()
     {
-        $exitCode = \Artisan::call('cache:clear');
+        Artisan::call('cache:clear');
 
         session()->flash('admin_messages', ['All caches cleared successfully']);
 
