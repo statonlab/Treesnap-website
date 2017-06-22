@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ $contact->message }}
+{{ $_message }}
 
 @if(!empty($table))
 @component('mail::table')

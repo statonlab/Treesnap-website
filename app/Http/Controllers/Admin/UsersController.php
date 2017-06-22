@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Traits\Observable;
 use App\Http\Controllers\Traits\Responds;
+use App\Observation;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    use Responds;
+    use Responds, Observable;
 
     /**
      * Get all users.
@@ -34,11 +36,44 @@ class UsersController extends Controller
         return $this->success($users);
     }
 
-    public function show($id)
+    /**
+     * Get a user and their observations.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id, Request $request)
     {
-        $user = User::with(['observations', 'groups', 'role'])->findOrFail($id);
+        $user = User::with(['groups', 'role'])->findOrFail($id);
+        $admin = $request->user();
 
-        return $this->success($user);
+        $observations = Observation::with([
+            'flags' => function ($query) use ($admin) {
+                $query->where('user_id', $admin->id);
+            },
+            'collections' => function ($query) use ($admin) {
+                $query->where('user_id', $admin->id);
+            },
+            'confirmations' => function ($query) use ($admin) {
+                $query->where('user_id', $admin->id);
+            },
+        ])->where('user_id', $id)->get();
+
+        $all = [];
+        foreach ($observations as $observation) {
+            $all[] = array_merge(array_except($this->getObservationJson($observation, true), ['is_private']), [
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                ],
+            ]);
+        }
+
+        return $this->success([
+            'user' => $user,
+            'observations' => $all,
+        ]);
     }
 
     public function update($id, Request $request)

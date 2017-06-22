@@ -29,8 +29,12 @@ class Admin extends Component {
                                 <div className="column">
                                     <Switch>
                                         <Route exact={true} path="/" component={DashboardScene}/>
-                                        <Route path="/users" component={UsersScene}/>
-                                        <Route path="/user/:id" component={UserScene}/>
+                                        {window.Laravel.isScientist ? null
+                                            : <Route path="/users" component={UsersScene}/>
+                                        }
+                                        {window.Laravel.isScientist ? null
+                                            : <Route path="/user/:id" component={UserScene}/>
+                                        }
                                         <Route path="/groups" component={GroupsScene}/>
                                         <Route path="/group/:id" component={GroupScene}/>
                                         <Route path="/filters" component={FiltersScene}/>

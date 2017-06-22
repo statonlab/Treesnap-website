@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {Dropdown, DropdownItem} from './Dropdown'
 import Tooltip from './Tooltip'
 import moment from 'moment'
 import CollectionForm from './CollectionForm'
@@ -202,7 +201,7 @@ export default class ObservationCard extends Component {
 
                 {observation.collections.map(collection => {
                     return (
-                        <div key={collection.id}
+                        <div key={`collection_${collection.id}`}
                              className="mt-1 flexbox flex-row flex-v-center flex-space-between"
                              style={{marginBottom: '0.1rem'}}>
                             <p style={{paddingRight: '5px'}}>Found in "{collection.label}"</p>

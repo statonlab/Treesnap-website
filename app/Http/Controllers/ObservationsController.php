@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
+use Cache;
 
 class ObservationsController extends Controller
 {
@@ -24,7 +25,31 @@ class ObservationsController extends Controller
         if ($user) {
             $is_admin = $user->isAdmin() || $user->isScientist();
         }
+        $cache_key = $is_admin ? 1 : 0;
+        $cache_key = "all_observations_{$cache_key}";
 
+        // Get data from the cache if a limit is not set
+        if (! $limit) {
+            $data = Cache::tags('observations')->remember($cache_key, 30, function () use ($is_admin, $user, $limit) {
+                return $this->getObservationsFromDB($user, $is_admin, $limit);
+            });
+        } else {
+            $data = $this->getObservationsFromDB($user, $is_admin, $limit);
+        }
+
+        return $this->success($data);
+    }
+
+    /**
+     * Get observation records from the DB.
+     *
+     * @param App /User|null $user
+     * @param boolean $is_admin
+     * @param int|null $limit
+     * @return array
+     */
+    public function getObservationsFromDB($user, $is_admin, $limit = null)
+    {
         if ($is_admin) {
             $observations = Observation::with('user')->orderby('collection_date', 'desc');
         } else {
@@ -35,36 +60,43 @@ class ObservationsController extends Controller
             $observations->limit($limit);
         }
 
-        $observations = $observations->get();
-
-        if ($user) {
-            $observations->load([
-                'confirmations' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                },
-                'flags' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                },
-                'collections' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                },
-            ]);
-        }
-
         $data = [];
-        foreach ($observations as $observation) {
-            // Compile the data into a standardized response
-            // Remove the is_private value from the response
-            $user = $observation->user;
-            $data[] = array_merge(array_except($this->getObservationJson($observation, $is_admin), ['is_private']), [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => ! $is_admin && $user->is_anonymous ? 'Anonymous' : $user->name,
-                ],
-            ]);
+
+        $mapper = function ($observations) use (&$data, $user, $is_admin) {
+            if ($user) {
+                $observations->load([
+                    'confirmations' => function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    },
+                    'flags' => function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    },
+                    'collections' => function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    },
+                ]);
+            }
+
+            foreach ($observations as $observation) {
+                // Compile the data into a standardized response
+                // Remove the is_private value from the response
+                $user = $observation->user;
+                $data[] = array_merge(array_except($this->getObservationJson($observation, $is_admin), ['is_private']), [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => ! $is_admin && $user->is_anonymous ? 'Anonymous' : $user->name,
+                    ],
+                ]);
+            }
+        };
+
+        if ($limit) {
+            $mapper($observations->get());
+        } else {
+            $observations->chunk(1000, $mapper);
         }
 
-        return $this->success($data);
+        return $data;
     }
 
     /**

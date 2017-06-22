@@ -82,6 +82,8 @@
 
   &.is-selected {
     background-color: #fff;
+    border-color: $primary;
+    &,
     .fa {
       color: $primary;
     }
