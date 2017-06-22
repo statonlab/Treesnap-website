@@ -46,7 +46,6 @@ export default class ObservationsScene extends Component {
     componentWillMount() {
         axios.get('/observations?reset_cache=1').then(response => {
             this.setState({loading: false})
-
             this.allObservations = response.data.data
             this.filter          = new ObservationsFilter(this.allObservations)
 
