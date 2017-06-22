@@ -65,6 +65,7 @@ export default class AdvancedFiltersModal extends Component {
     submit(e) {
         e.preventDefault()
 
+        this.setState({loading: true})
         axios.post('/api/filters', {
             name            : this.state.filterName,
             categories      : this.state.selectedCategories,
