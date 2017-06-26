@@ -281,6 +281,7 @@ export default class CurateScene extends Component {
             <div className="column is-4-desktop is-6-tablet" key={observation.observation_id}>
                 <ObservationCard
                     observation={observation}
+                    showMarks={true}
                     loading={this.state.loading}
                     onEmailRequest={(observation) => {
                         this.setState({
