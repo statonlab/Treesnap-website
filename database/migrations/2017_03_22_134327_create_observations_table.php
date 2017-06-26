@@ -15,7 +15,7 @@ class CreateObservationsTable extends Migration
     {
         Schema::create('observations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->index();
+            $table->integer('user_id')->unsigned()->index();
             $table->string('observation_category')->index();
             $table->json('images');
             $table->double('longitude');

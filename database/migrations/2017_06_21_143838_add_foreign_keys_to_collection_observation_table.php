@@ -30,8 +30,8 @@ class AddForeignKeysToCollectionObservationTable extends Migration
     public function down()
     {
         Schema::table('collection_observation', function (Blueprint $table) {
-            $table->dropForeign('observation_id');
-            $table->dropForeign('collection_id');
+            $table->dropForeign(['observation_id']);
+            $table->dropForeign(['collection_id']);
         });
     }
 }
