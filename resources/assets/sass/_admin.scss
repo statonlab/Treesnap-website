@@ -112,6 +112,10 @@ select[multiple].multi-select {
   }
 }
 
+.public-DraftEditor-content {
+  min-height: 200px;
+}
+
 $select-input-bg: #fff;
 $select-input-bg-disabled: #f9f9f9;
 $select-input-border-color: #ccc;

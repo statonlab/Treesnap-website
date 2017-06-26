@@ -25,6 +25,9 @@
     opacity: 1;
     visibility: visible;
   }
+  .button & {
+    padding: 10px;
+  }
 }
 
 .tooltip .tooltip-text::after {
@@ -65,6 +68,7 @@
     .tooltip-text {
       top: 0;
       right: 110%;
+      margin-top: -8px;
       &::after {
         top: 50%;
         margin-top: -5px;

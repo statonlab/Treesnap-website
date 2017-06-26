@@ -129,6 +129,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     Route::post('/api/confirmations', 'ConfirmationsController@create');
     Route::delete('/api/confirmation/{id}', 'ConfirmationsController@delete');
 
+    Route::get('/api/curate/observations/{limit?}', 'CurationsController@index');
+
     // Analytics
     Route::get('/api/analytics/users/count', 'AnalyticsController@usersCount');
     Route::get('/api/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');

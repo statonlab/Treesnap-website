@@ -7,11 +7,30 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(255,255,255,.8);
+  background-color: rgba(255, 255, 255, .8);
   z-index: 1500;
 }
 
 .spinner-container {
   color: #444;
   font-size: 2rem;
+}
+
+.inline-spinner {
+  @include flexbox();
+  @include align-items(center);
+  @include justify-content(center);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #aaa;
+  color: #ddd;
+  font-size: 30px;
+
+  .inline-spinner-container {
+    text-align: center;
+    font-weight: 100;
+  }
 }

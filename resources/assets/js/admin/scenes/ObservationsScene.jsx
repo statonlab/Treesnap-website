@@ -6,6 +6,7 @@ import EmailModal from '../components/EmailModal'
 import ObservationsFilter from '../../helpers/ObservationsFilter'
 import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 import Notify from '../../components/Notify'
+import FiltersHelpModal from '../components/FiltersHelpModal'
 
 export default class ObservationsScene extends Component {
     constructor(props) {
@@ -36,7 +37,8 @@ export default class ObservationsScene extends Component {
             selectedCategory  : '',
             searchTermCategory: 'all',
             advancedFilters   : [],
-            selectedFilter    : -1
+            selectedFilter    : -1,
+            showHelpModal     : false
         }
     }
 
@@ -416,8 +418,22 @@ export default class ObservationsScene extends Component {
     renderFilters() {
         return (
             <div className="columns is-multiline flex-v-center">
-                <div className="column is-12">
+                <div className="column is-4">
                     <p><b>Filters</b></p>
+                </div>
+                <div className="column is-8 has-text-right">
+                    <span className="mr-0">{this.state.total} Total Observations. Showing</span>
+                    <span className="select is-small">
+                        <select value={this.state.perPage}
+                                onChange={({target}) => this.changePerPage.call(this, target.value)}>
+                            <option value="6">6</option>
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="48">48</option>
+                            <option value="96">96</option>
+                        </select>
+                    </span>
+                    <span className="ml-0">per page</span>
                 </div>
                 <div className="column is-4">
                     <div className="field has-addons">
@@ -556,6 +572,11 @@ export default class ObservationsScene extends Component {
                             observation={this.state.contact.observation}
                             onCloseRequest={() => this.setState({showEmail: false})}/>
 
+                <FiltersHelpModal
+                    visible={this.state.showHelpModal}
+                    onCloseRequest={() => this.setState({showHelpModal: false})}
+                />
+
                 <AdvancedFiltersModal
                     visible={this.state.showFiltersModal}
                     onCloseRequest={() => this.setState({showFiltersModal: false})}
@@ -583,22 +604,18 @@ export default class ObservationsScene extends Component {
                     }}/>
 
                 <div className="columns flex-v-center">
-                    <div className="column">
+                    <div className="column is-6">
                         <h1 className="title is-3"> Observations</h1>
                     </div>
-                    <div className="column has-text-right">
-                        <span className="mr-0">{this.state.total} Total Observations. Showing</span>
-                        <span className="select is-small">
-                            <select value={this.state.perPage}
-                                    onChange={({target}) => this.changePerPage.call(this, target.value)}>
-                                <option value="6">6</option>
-                                <option value="12">12</option>
-                                <option value="24">24</option>
-                                <option value="48">48</option>
-                                <option value="96">96</option>
-                            </select>
-                        </span>
-                        <span className="ml-0">per page</span>
+                    <div className="column is-6 has-text-right">
+                        <button type="button"
+                                className="button is-info"
+                                onClick={() => this.setState({showHelpModal: true})}>
+                            <span className="icon">
+                                <i className="fa fa-question-circle-o"></i>
+                            </span>
+                            <span style={{marginTop: -2}}>Help</span>
+                        </button>
                     </div>
                 </div>
 
