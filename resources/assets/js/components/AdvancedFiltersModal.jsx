@@ -31,7 +31,7 @@ export default class AdvancedFiltersModal extends Component {
 
     _resetForm() {
         this.setState({
-            selectedCategories: this.state.categories,
+            selectedCategories: [],
             city              : '',
             county            : '',
             state             : '',
