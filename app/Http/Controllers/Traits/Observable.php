@@ -31,6 +31,7 @@ trait Observable
         $images = [
             'images' => [],
         ];
+
         foreach ($observation->images as $key => $list) {
             foreach ($list as $image) {
                 $images[$key][] = url($image);

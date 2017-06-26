@@ -1,4 +1,4 @@
-<nav class="nav">
+<nav class="nav" id="app-navbar">
     <div class="container">
         <div class="nav-left nav-brand">
             <a href="/" class="nav-item">

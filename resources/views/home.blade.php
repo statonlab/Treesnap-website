@@ -35,7 +35,6 @@
         var header       = document.querySelectorAll('nav.nav')[0].clientHeight
         var content      = document.querySelector('nav.nav + .home-section')
 
-
         if (content) {
             content.style.minHeight = (windowHeight - (footer + header)) + 'px'
         }

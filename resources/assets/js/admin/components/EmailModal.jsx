@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import marked from 'marked'
 import moment from 'moment'
 import Spinner from '../../components/Spinner'
+import RichTextEditor from 'react-rte'
 
 export default class EmailModal extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ export default class EmailModal extends Component {
             subject    : '',
             cc         : '',
             message    : '',
+            rmessage   : RichTextEditor.createEmptyValue(),
             visible    : false,
             to         : {
                 user_id: 0,
@@ -98,7 +100,7 @@ export default class EmailModal extends Component {
             observation_id     : this.state.observation.observation_id,
             cc                 : this.state.cc,
             subject            : this.state.subject,
-            message            : this.state.message,
+            message            : this.state.rmessage.toString('markdown'),
             include_observation: this.state.includeInfo ? 1 : 0
         }).then(response => {
             this.setState({
@@ -236,19 +238,41 @@ export default class EmailModal extends Component {
                     <div className="field-body">
                         <div className="field">
                             <div className="control is-expanded">
-                                <textarea className={`textarea${this.state.errors.message.length > 0 ? ' is-danger' : ''}`}
-                                          placeholder="Message"
-                                          onChange={({target}) => this.setState({message: target.value})}>
-                                </textarea>
+                                <RichTextEditor
+                                    value={this.state.rmessage}
+                                    onChange={(rmessage) => this.setState({rmessage})}/>
                             </div>
                             {this.state.errors.message.map((error, index) => {
                                 return (<p className="help is-danger" key={index}>{error}</p>)
                             })}
-                            <p className="help">
-                                You may user <a href="https://daringfireball.net/projects/markdown/syntax">
-                                Markdown</a> syntax to style your email.
-                            </p>
                         </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    ___tmpSaveTextArea() {
+        return (
+            <div className="field is-horizontal">
+                <div className="field-label">
+                    <label className="label">Message</label>
+                </div>
+                <div className="field-body">
+                    <div className="field">
+                        <div className="control is-expanded">
+                                <textarea className={`textarea${this.state.errors.message.length > 0 ? ' is-danger' : ''}`}
+                                          placeholder="Message"
+                                          onChange={({target}) => this.setState({message: target.value})}>
+                                </textarea>
+                        </div>
+                        {this.state.errors.message.map((error, index) => {
+                            return (<p className="help is-danger" key={index}>{error}</p>)
+                        })}
+                        <p className="help">
+                            You may use <a href="https://daringfireball.net/projects/markdown/syntax">
+                            Markdown</a> syntax to style your email.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -305,11 +329,12 @@ export default class EmailModal extends Component {
     }
 
     renderPreview() {
-        if (this.state.message.trim() === '' && !this.state.includeInfo && this.state.subject.trim() === '') {
+        let message = this.state.rmessage.toString('html')
+        if (message.trim() === '' && !this.state.includeInfo && this.state.subject.trim() === '') {
             return (<p className="text-muted">Preview will be displayed here</p>)
         }
 
-        return (<div className="content" dangerouslySetInnerHTML={{__html: marked(this.state.message)}}></div>)
+        return (<div className="content" dangerouslySetInnerHTML={{__html: message}}></div>)
     }
 
     renderSentColumn() {

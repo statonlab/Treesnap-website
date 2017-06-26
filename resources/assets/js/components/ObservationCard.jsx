@@ -322,7 +322,7 @@ export default class ObservationCard extends Component {
             addressLine2 = address.join(',')
         }
         return (
-            <div className="card">
+            <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
                 <header className="card-header">
                     <p className="card-header-title text-ellipsis">
                         {name}
@@ -350,7 +350,7 @@ export default class ObservationCard extends Component {
                 </header>
                 <div className="relative-block">
                     <Spinner visible={this.state.loading}/>
-                    <div className="has-bg-image">
+                    <div className="has-bg-image relative-block">
                         <div className="card-image"
                              style={{
                                  backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`
@@ -434,7 +434,8 @@ ObservationCard.PropTypes = {
     onCollectionCreated    : PropTypes.func,
     onRemovedFromCollection: PropTypes.func,
     onEmailRequest         : PropTypes.func,
-    collections            : PropTypes.array
+    collections            : PropTypes.array,
+    loading                : PropTypes.bool
 }
 
 ObservationCard.defaultProps = {
@@ -446,5 +447,6 @@ ObservationCard.defaultProps = {
     },
     onRemovedFromCollection(collection) {
     },
-    collections: []
+    collections: [],
+    loading    : false
 }

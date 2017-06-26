@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
 use Cache;
+use Illuminate\Validation\Rule;
 
 class ObservationsController extends Controller
 {
@@ -30,11 +31,11 @@ class ObservationsController extends Controller
 
         // Get data from the cache if a limit is not set
         if (! $limit) {
-            $data = Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($is_admin, $user, $limit) {
-                return $this->getObservationsFromDB($user, $is_admin, $limit);
+            $data = Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($limit, $request) {
+                return $this->getObservationsFromDB($request, $limit);
             });
         } else {
-            $data = $this->getObservationsFromDB($user, $is_admin, $limit);
+            $data = $this->getObservationsFromDB($request, $limit);
         }
 
         return $this->success($data);
@@ -43,22 +44,22 @@ class ObservationsController extends Controller
     /**
      * Get observation records from the DB.
      *
-     * @param \App\User|null $user
-     * @param boolean $is_admin
+     * @param Request $request
      * @param int|null $limit
      * @return array
      */
-    public function getObservationsFromDB($user, $is_admin, $limit = null)
+    public function getObservationsFromDB($request, $limit = null)
     {
+        $user = $request->user();
+        $is_admin = $user->isScientist() || $user->isAdmin();
+
         if ($is_admin) {
-            $observations = Observation::with('user')->orderby('collection_date', 'desc');
+            $observations = Observation::with('user');
         } else {
-            $observations = Observation::with('user')->where('is_private', false)->orderby('collection_date', 'desc');
+            $observations = Observation::with('user')->where('is_private', false);
         }
 
-        if ($limit) {
-            $observations->limit($limit);
-        }
+        $observations->orderBy('observations.id', 'desc');
 
         $data = [];
 
@@ -81,17 +82,30 @@ class ObservationsController extends Controller
                 // Compile the data into a standardized response
                 // Remove the is_private value from the response
                 $user = $observation->user;
-                $data[] = array_merge(array_except($this->getObservationJson($observation, $is_admin), ['is_private']), [
+                $json_ready = array_except($this->getObservationJson($observation, $is_admin), ['is_private']);
+                $mapped = array_merge($json_ready, [
                     'user' => [
                         'id' => $user->id,
                         'name' => ! $is_admin && $user->is_anonymous ? 'Anonymous' : $user->name,
                     ],
                 ]);
+
+                $data[] = $mapped;
             }
         };
 
         if ($limit) {
-            $mapper($observations->get());
+            $observations = $observations->paginate(intval($limit));
+            $mapper($observations);
+            $data = [
+                'observations' => $data,
+                'currentPage' => $observations->currentPage(),
+                'perPage' => $observations->perPage(),
+                'hasMorePages' => $observations->hasMorePages(),
+                'total' => $observations->total(),
+                'nextPageUrl' => $observations->nextPageUrl(),
+                'previousPageUrl' => $observations->previousPageUrl(),
+            ];
         } else {
             $observations->chunk(1000, $mapper);
         }
