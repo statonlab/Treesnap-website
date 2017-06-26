@@ -6,16 +6,10 @@ export default class ShareCollectionModal extends Component {
         super(props)
 
         this.state = {
-            visible: false,
             loading: false
         }
     }
 
-    componentWillReceiveProps(props) {
-        if (props.visible !== this.state.visible) {
-            this.setState({visible: props.visible})
-        }
-    }
 
     close() {
         this.props.onCloseRequest()
@@ -23,7 +17,7 @@ export default class ShareCollectionModal extends Component {
 
     render() {
         return (
-            <div className={`modal${this.state.visible ? ' is-active' : ''}`}>
+            <div className={`modal${this.props.visible ? ' is-active' : ''}`}>
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-card modal-card-lg">
                     <header className="modal-card-head">

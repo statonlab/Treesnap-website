@@ -8,6 +8,7 @@ import Map from '../UI/Map'
 import Marker from '../UI/Marker'
 import Spinner from './Spinner'
 import Notify from './Notify'
+import ObservationDetailsModal from './ObservationDetailsModal'
 
 export default class ObservationCard extends Component {
     constructor(props) {
@@ -26,7 +27,8 @@ export default class ObservationCard extends Component {
                 correct: null
             },
             correctMarks     : 0,
-            incorrectMarks   : 0
+            incorrectMarks   : 0,
+            showDetailsModal : false
         }
 
         this.timeoutWatcher = null
@@ -385,108 +387,120 @@ export default class ObservationCard extends Component {
             addressLine2 = address.join(',')
         }
         return (
-            <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
-                <header className="card-header">
-                    <p className="card-header-title text-ellipsis">
-                        {name}
-                    </p>
+            <div>
+                <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
+                    <header className="card-header">
+                        <p className="card-header-title text-ellipsis">
+                            {name}
+                        </p>
 
-                    <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
-                       onClick={() => this.confirm(false, observation)}>
-                        <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
-                                 hideOnClick={false}>
-                            <span className="icon">
-                                <i className="fa fa-times"></i>
-                            </span>
-                        </Tooltip>
-                    </a>
+                        <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+                           onClick={() => this.confirm(false, observation)}>
+                            <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                                     hideOnClick={false}>
+                                <span className="icon">
+                                    <i className="fa fa-times"></i>
+                                </span>
+                            </Tooltip>
+                        </a>
 
-                    <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
-                       onClick={() => this.confirm(true, observation)}>
-                        <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
-                                 hideOnClick={false}>
-                            <span className="icon">
-                                <i className="fa fa-check"></i>
-                            </span>
-                        </Tooltip>
-                    </a>
-                </header>
-                <div className="relative-block">
-                    <Spinner visible={this.state.loading}/>
-                    <div className="has-bg-image relative-block">
-                        <div className="card-image"
-                             style={{
-                                 backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`
-                             }}>
+                        <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+                           onClick={() => this.confirm(true, observation)}>
+                            <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                                     hideOnClick={false}>
+                                <span className="icon">
+                                    <i className="fa fa-check"></i>
+                                </span>
+                            </Tooltip>
+                        </a>
+                    </header>
+                    <div className="relative-block">
+                        <Spinner visible={this.state.loading}/>
+                        <div className="has-bg-image relative-block">
+                            <div className="card-image"
+                                 style={{
+                                     backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`
+                                 }}>
+                            </div>
+                        </div>
+                        <div className="card-content">
+                            <div className="content">
+                                By {observation.user.name}<br/>
+                                <a href="javascript:;" onClick={(e) => {
+                                    e.preventDefault()
+                                    this.setState({showDetailsModal: true})
+                                }}>
+                                    See Full Details
+                                </a><br/>
+                                {this._renderMarks()}
+                                <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
+                                {address !== null ?
+                                    <div className="text-ellipsis" title={observation.location.address.formatted}>
+                                        <small><b>Near</b> {addressLine1}</small>
+                                        <br/>
+                                        <small style={{marginLeft: '35px'}}>{addressLine2}</small>
+                                    </div>
+                                    : <div style={{height: 48}}></div>}
+                            </div>
+                        </div>
+                        <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
+                            <div className="p-1 relative-block">
+                                <button href="javascript:;"
+                                        className="close button"
+                                        type="button"
+                                        onClick={this.slowCloseSlideContent.bind(this)}>
+                                    <i className="fa fa-times"></i></button>
+                                {this.renderSlideContent(this.state.slideContent)}
+                            </div>
                         </div>
                     </div>
-                    <div className="card-content">
-                        <div className="content">
-                            By {observation.user.name}<br/>
-                            <a href={`/observation/${observation.observation_id}`}>See Full Details</a><br/>
-                            {this._renderMarks()}
-                            <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
-                            {address !== null ?
-                                <div className="text-ellipsis" title={observation.location.address.formatted}>
-                                    <small><b>Near</b> {addressLine1}</small>
-                                    <br/>
-                                    <small style={{marginLeft: '35px'}}>{addressLine2}</small>
-                                </div>
-                                : <div style={{height: 48}}></div>}
-                        </div>
-                    </div>
-                    <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
-                        <div className="p-1 relative-block">
-                            <button href="javascript:;"
-                                    className="close button"
-                                    type="button"
-                                    onClick={this.slowCloseSlideContent.bind(this)}>
-                                <i className="fa fa-times"></i></button>
-                            {this.renderSlideContent(this.state.slideContent)}
-                        </div>
-                    </div>
+                    <footer className="card-footer">
+                        <a href="javascript:;"
+                           className="card-footer-item is-paddingless"
+                           onClick={() => this.shouldSlide('addToCollection')}>
+                            <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
+                                <span className="icon is-small is-marginless">
+                                    <i className="fa fa-plus"></i>
+                                </span>
+                            </Tooltip>
+                        </a>
+                        <a href="javascript:;"
+                           className="card-footer-item is-paddingless"
+                           onClick={() => this.shouldSlide('map')}>
+                            <Tooltip label="Show on Map" style={{padding: '0.75rem'}}>
+                                <span className="icon is-small is-marginless">
+                                    <i className="fa fa-map"></i>
+                                </span>
+                            </Tooltip>
+                        </a>
+                        {window.Laravel.isAdmin &&
+                        <a href="javascript:;"
+                           className="card-footer-item is-paddingless"
+                           onClick={() => {
+                               this.props.onEmailRequest(observation)
+                           }}>
+                            <Tooltip label="Contact Submitter" style={{padding: '0.75rem'}}>
+                                <span className="icon is-small is-marginless">
+                                    <i className="fa fa-envelope"></i>
+                                </span>
+                            </Tooltip>
+                        </a>}
+                        <a href="javascript:;"
+                           className="card-footer-item is-paddingless"
+                           onClick={() => this.shouldSlide('flag')}>
+                            <Tooltip label="Flag as Inappropriate" style={{padding: '0.75rem'}}>
+                                <span className="icon is-small is-marginless">
+                                    <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
+                                </span>
+                            </Tooltip>
+                        </a>
+                    </footer>
                 </div>
-                <footer className="card-footer">
-                    <a href="javascript:;"
-                       className="card-footer-item is-paddingless"
-                       onClick={() => this.shouldSlide('addToCollection')}>
-                        <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
-                            <span className="icon is-small is-marginless">
-                                <i className="fa fa-plus"></i>
-                            </span>
-                        </Tooltip>
-                    </a>
-                    <a href="javascript:;"
-                       className="card-footer-item is-paddingless"
-                       onClick={() => this.shouldSlide('map')}>
-                        <Tooltip label="Show on Map" style={{padding: '0.75rem'}}>
-                            <span className="icon is-small is-marginless">
-                                <i className="fa fa-map"></i>
-                            </span>
-                        </Tooltip>
-                    </a>
-                    {window.Laravel.isAdmin &&
-                    <a href="javascript:;"
-                       className="card-footer-item is-paddingless"
-                       onClick={() => {
-                           this.props.onEmailRequest(observation)
-                       }}>
-                        <Tooltip label="Contact Submitter" style={{padding: '0.75rem'}}>
-                            <span className="icon is-small is-marginless">
-                                <i className="fa fa-envelope"></i>
-                            </span>
-                        </Tooltip>
-                    </a>}
-                    <a href="javascript:;"
-                       className="card-footer-item is-paddingless"
-                       onClick={() => this.shouldSlide('flag')}>
-                        <Tooltip label="Flag as Inappropriate" style={{padding: '0.75rem'}}>
-                            <span className="icon is-small is-marginless">
-                                <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
-                            </span>
-                        </Tooltip>
-                    </a>
-                </footer>
+                {this.state.showDetailsModal ?
+                    <ObservationDetailsModal observation={observation}
+                                             onCloseRequest={() => this.setState({showDetailsModal: false})}
+                                             visible={true}/>
+                    : null}
             </div>
         )
     }
