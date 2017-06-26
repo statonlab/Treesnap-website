@@ -93,3 +93,10 @@
   background-color: #fff;
   z-index: 10;
 }
+
+.marks-section {
+  border-bottom: 1px solid #dbdbdb;
+  + .card-content {
+    padding-top: 1rem;
+  }
+}
