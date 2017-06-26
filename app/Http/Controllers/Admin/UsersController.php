@@ -58,7 +58,12 @@ class UsersController extends Controller
             'confirmations' => function ($query) use ($admin) {
                 $query->where('user_id', $admin->id);
             },
-        ])->where('user_id', $id)->get();
+        ])
+                                   ->select($this->observationSelectFields)
+                                   ->where('user_id', $id)
+                                   ->orderBy('updated_at', 'desc')
+                                   ->limit(60)
+                                   ->get();
 
         $all = [];
         foreach ($observations as $observation) {

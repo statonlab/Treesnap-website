@@ -14,35 +14,6 @@ class CurationsController extends Controller
     use Observable, Responds;
 
     /**
-     * Get only the fields that we need from the DB.
-     * This also allows join statements to be predictable.
-     *
-     * @var array
-     */
-    protected $observationSelectFields;
-
-    /**
-     * CurationsController constructor.
-     */
-    public function __construct()
-    {
-        $this->observationSelectFields = [
-            'observations.id',
-            'observations.user_id',
-            'observation_category',
-            'observations.data',
-            'observations.longitude',
-            'observations.latitude',
-            'observations.location_accuracy',
-            'observations.address',
-            'observations.images',
-            'observations.collection_date',
-            'observations.is_private',
-            'observations.mobile_id',
-        ];
-    }
-
-    /**
      * Get filtered and paged observations.
      *
      * @param \Illuminate\Http\Request $request
