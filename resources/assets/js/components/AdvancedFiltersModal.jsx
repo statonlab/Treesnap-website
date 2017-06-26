@@ -12,7 +12,6 @@ export default class AdvancedFiltersModal extends Component {
         super(props)
 
         this.state = {
-            visible           : false,
             categories        : [],
             selectedCategories: [],
             city              : '',
@@ -32,7 +31,11 @@ export default class AdvancedFiltersModal extends Component {
 
     _resetForm() {
         this.setState({
-            //selectedCategories: this.state.categories
+            selectedCategories: this.state.categories,
+            city              : '',
+            county            : '',
+            state             : '',
+            filterName        : ''
         })
     }
 
@@ -49,12 +52,6 @@ export default class AdvancedFiltersModal extends Component {
         }).catch(error => {
             console.log(error)
         })
-    }
-
-    componentWillReceiveProps(props) {
-        if (this.state.visible !== props.visible) {
-            this.setState({visible: props.visible})
-        }
     }
 
     close() {
@@ -86,6 +83,7 @@ export default class AdvancedFiltersModal extends Component {
             })
 
             this.props.onCreate(response.data.data)
+            this._resetForm()
         }).catch(error => {
             let response = error.response
 
@@ -303,7 +301,7 @@ export default class AdvancedFiltersModal extends Component {
 
     render() {
         return (
-            <div className={`modal${this.state.visible ? ' is-active' : ''}`}>
+            <div className={`modal${this.props.visible ? ' is-active' : ''}`}>
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-card modal-card-lg">
                     <header className="modal-card-head">
