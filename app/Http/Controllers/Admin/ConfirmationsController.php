@@ -66,6 +66,12 @@ class ConfirmationsController extends Controller
         return $this->success('Confirmation deleted successfully');
     }
 
+    /**
+     * Count number of confirmed observations.
+     *
+     * @param $observation_id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function count($observation_id)
     {
         $observation = Observation::findOrFail($observation_id);

@@ -206,6 +206,11 @@ export default class CurateScene extends Component {
         this.loadObservations(state)
     }
 
+    /**
+     * Change selected status.
+     *
+     * @param selectedStatus
+     */
     changeStatus(selectedStatus) {
         this.setState({selectedStatus, page: 1})
         let state            = this.state
@@ -214,6 +219,11 @@ export default class CurateScene extends Component {
         this.loadObservations(state)
     }
 
+    /**
+     * Change selected perPage.
+     *
+     * @param perPage
+     */
     changePerPage(perPage) {
         perPage = parseInt(perPage)
 
@@ -224,6 +234,12 @@ export default class CurateScene extends Component {
         this.loadObservations(state)
     }
 
+    /**
+     * Render the filters bar.
+     *
+     * @returns {XML}
+     * @private
+     */
     _renderFilters() {
         return (
             <div className="columns is-multiline">
@@ -277,6 +293,13 @@ export default class CurateScene extends Component {
         )
     }
 
+    /**
+     * Render observation card.
+     *
+     * @param observation
+     * @returns {XML}
+     * @private
+     */
     _renderObservation(observation) {
         return (
             <div className="column is-4-desktop is-6-tablet" key={observation.observation_id}>
@@ -302,6 +325,12 @@ export default class CurateScene extends Component {
         )
     }
 
+    /**
+     * Render page links.
+     *
+     * @returns {XML}
+     * @private
+     */
     _renderPageLinks() {
         return (
             <nav className="pagination is-centered">
@@ -319,7 +348,7 @@ export default class CurateScene extends Component {
                                 return <option value={page} key={`page_${page}`}>{page}</option>
                             })}
                         </select>
-                    </span> out of {Math.ceil(this.state.total / 3)} pages
+                    </span> out of {this.state.pages.length} pages
                     </li>
                 </ul>
                 <a href="javascript:;"

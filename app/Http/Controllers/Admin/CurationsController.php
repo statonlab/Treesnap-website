@@ -69,7 +69,6 @@ class CurationsController extends Controller
 
         $data = [];
 
-        $sql = $observations->toSql();
         $observations = $observations->paginate(intval($limit));
 
         foreach ($observations as $observation) {
@@ -91,7 +90,6 @@ class CurationsController extends Controller
             'total' => $observations->total(),
             'nextPageUrl' => $observations->nextPageUrl(),
             'previousPageUrl' => $observations->previousPageUrl(),
-            'query' => $sql,
         ];
 
         return $this->success($data);
@@ -121,17 +119,19 @@ class CurationsController extends Controller
         }
 
         if (! empty($request->status)) {
-            $observations->join('confirmations', 'observations.id', '=', 'confirmations.observation_id');
-
             switch ($request->status) {
                 case "marked_correct_by_anyone":
-                    $observations->where('confirmations.correct', true);
+                    $observations->whereHas('confirmations', function ($query) {
+                        $query->where('confirmations.correct', true);
+                    });
                     break;
                 case "marked_correct_by_me":
-                    $observations->where([
-                        'confirmations.user_id' => $user->id,
-                        'confirmations.correct' => true,
-                    ]);
+                    $observations->whereHas('confirmations', function ($query) use ($user) {
+                        $query->where([
+                            'confirmations.user_id' => $user->id,
+                            'confirmations.correct' => true,
+                        ]);
+                    });
                     break;
             }
         }
