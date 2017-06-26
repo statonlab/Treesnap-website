@@ -24,7 +24,9 @@ export default class ObservationCard extends Component {
             confirmation     : {
                 id     : -1,
                 correct: null
-            }
+            },
+            correctMarks     : 0,
+            incorrectMarks   : 0
         }
 
         this.timeoutWatcher = null
@@ -48,6 +50,24 @@ export default class ObservationCard extends Component {
                 confirmation: observation.confirmations[0]
             })
         }
+
+        if (this.props.showMarks) {
+            this.loadMarks()
+        }
+    }
+
+    loadMarks() {
+        let id = this.props.observation.observation_id
+
+        axios.get('/admin/api/confirmations/count/' + id).then(response => {
+            let data = response.data.data
+            this.setState({
+                correctMarks  : data.correct,
+                incorrectMarks: data.incorrect
+            })
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     /**
@@ -262,6 +282,15 @@ export default class ObservationCard extends Component {
         if (this.state.confirmation.correct === correct) {
             this.deleteConfirmation(this.state.confirmation)
             Notify.push('Unmarked observation', 'warning')
+            if (correct) {
+                this.setState({
+                    correctMarks: this.state.correctMarks - 1
+                })
+            } else {
+                this.setState({
+                    incorrectMarks: this.state.incorrectMarks - 1
+                })
+            }
             return
         }
 
@@ -280,6 +309,15 @@ export default class ObservationCard extends Component {
             this.setState({confirmation})
             let correct = confirmation.correct ? 'correct' : 'incorrect'
             Notify.push(`Marked observation as ${correct} species`, confirmation.correct ? 'success' : 'danger')
+            if (confirmation.correct) {
+                this.setState({
+                    correctMarks: this.state.correctMarks + 1
+                })
+            } else {
+                this.setState({
+                    incorrectMarks: this.state.incorrectMarks + 1
+                })
+            }
         }).catch(error => {
             console.log(error.response)
         })
@@ -307,6 +345,31 @@ export default class ObservationCard extends Component {
         }).catch(error => {
             console.log(error.response)
         })
+    }
+
+    _renderMarks() {
+        if (!this.props.showMarks) {
+            return
+        }
+
+        return (
+            <div className="mt-0 mb-0 flexbox flex-space-between is-horizontal">
+                <div>
+                    <span>{this.state.incorrectMarks}</span>
+                    <span className="icon ml-0 mr-0">
+                        <b className="fa fa-times text-danger"></b>
+                    </span>
+                    <span>Marks</span>
+                </div>
+                <div>
+                    <span>{this.state.correctMarks}</span>
+                    <span className="icon ml-0 mr-0">
+                        <b className="fa fa-check text-success"></b>
+                    </span>
+                    <span>Marks</span>
+                </div>
+            </div>
+        )
     }
 
     render() {
@@ -361,6 +424,7 @@ export default class ObservationCard extends Component {
                         <div className="content">
                             By {observation.user.name}<br/>
                             <a href={`/observation/${observation.observation_id}`}>See Full Details</a><br/>
+                            {this._renderMarks()}
                             <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
                             {address !== null ?
                                 <div className="text-ellipsis" title={observation.location.address.formatted}>
@@ -435,7 +499,8 @@ ObservationCard.PropTypes = {
     onRemovedFromCollection: PropTypes.func,
     onEmailRequest         : PropTypes.func,
     collections            : PropTypes.array,
-    loading                : PropTypes.bool
+    loading                : PropTypes.bool,
+    showMarks              : PropTypes.bool
 }
 
 ObservationCard.defaultProps = {
@@ -448,5 +513,6 @@ ObservationCard.defaultProps = {
     onRemovedFromCollection(collection) {
     },
     collections: [],
-    loading    : false
+    loading    : false,
+    showMarks  : false
 }

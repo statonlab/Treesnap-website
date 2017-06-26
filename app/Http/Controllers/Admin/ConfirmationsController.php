@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Confirmation;
 use App\Http\Controllers\Traits\Responds;
+use App\Observation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -63,5 +64,18 @@ class ConfirmationsController extends Controller
         $confirmation->delete();
 
         return $this->success('Confirmation deleted successfully');
+    }
+
+    public function count($observation_id)
+    {
+        $observation = Observation::findOrFail($observation_id);
+
+        $correct = $observation->confirmations()->where('correct', true)->count();
+        $incorrect = $observation->confirmations()->where('correct', false)->count();
+
+        return $this->success([
+            'correct' => $correct,
+            'incorrect' => $incorrect,
+        ]);
     }
 }
