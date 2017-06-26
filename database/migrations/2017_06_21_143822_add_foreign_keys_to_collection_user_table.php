@@ -30,8 +30,8 @@ class AddForeignKeysToCollectionUserTable extends Migration
     public function down()
     {
         Schema::table('collection_user', function (Blueprint $table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('collection_id');
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['collection_id']);
         });
     }
 }

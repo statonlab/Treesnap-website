@@ -30,8 +30,8 @@ class AddForeignKeysToContactsTable extends Migration
     public function down()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('recipient_id');
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['recipient_id']);
         });
     }
 }

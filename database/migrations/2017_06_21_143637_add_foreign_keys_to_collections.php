@@ -27,7 +27,7 @@ class AddForeignKeysToCollections extends Migration
     public function down()
     {
         Schema::table('collections', function (Blueprint $table) {
-            $table->dropForeign('user_id');
+            $table->dropForeign(['user_id']);
         });
     }
 }
