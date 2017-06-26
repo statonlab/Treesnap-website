@@ -1,8 +1,4 @@
 import React, {Component} from 'react'
-import Map from '../UI/Map'
-import Marker from '../UI/Marker'
-import Modal from '../UI/Modal'
-import ImageGallery from 'react-image-gallery'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import Spinner from '../components/Spinner'
@@ -46,7 +42,8 @@ export default class ObservationScene extends Component {
                 <div className="home-section short-content">
                     <div className="container">
                         {this.state.observation !== null ?
-                            <ObservationDetails observation={this.state.observation}/> : null}
+                            <ObservationDetails observation={this.state.observation}/>
+                            : null}
                     </div>
                 </div>
                 <HomeFooter/>

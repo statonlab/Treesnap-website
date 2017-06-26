@@ -4,6 +4,7 @@ import Map from '../UI/Map'
 import Marker from '../UI/Marker'
 import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
+import moment from 'moment'
 
 export default class ObservationDetails extends Component {
     constructor(props) {
@@ -24,23 +25,31 @@ export default class ObservationDetails extends Component {
     }
 
     componentDidMount() {
-        window.fixHeight()
+        if (window.fixHeight) {
+            window.fixHeight()
+        }
     }
 
     _setup(observation) {
+        if (typeof observation.location !== 'undefined') {
+            observation.latitude        = observation.location.latitude
+            observation.longitude       = observation.location.longitude
+            observation.collection_date = moment(observation.date.date).format('LLL')
+        }
+
         this.observation = observation
 
-        this.setState(Object.assign({}, this.observation, {
+        this.setState(Object.assign({}, observation, {
             markers: [{
-                image   : this.observation.images.images ? this.observation.images.images[0] : '',
+                image   : observation.images.images ? observation.images.images[0] : '',
                 position: {
-                    latitude : this.observation.latitude,
-                    longitude: this.observation.longitude
+                    latitude : observation.latitude,
+                    longitude: observation.longitude
                 }
             }],
             center : {
-                lat: this.observation.latitude,
-                lng: this.observation.longitude
+                lat: observation.latitude,
+                lng: observation.longitude
             },
             zoom   : 13,
             loading: false
@@ -48,8 +57,8 @@ export default class ObservationDetails extends Component {
 
         setTimeout(() => {
             this.map.goTo({
-                lat: this.observation.latitude,
-                lng: this.observation.longitude
+                lat: observation.latitude,
+                lng: observation.longitude
             }, 13)
         }, 500)
     }

@@ -199,9 +199,10 @@ export default class CurateScene extends Component {
      * @param selectedCategory
      */
     changeCategory(selectedCategory) {
-        this.setState({selectedCategory})
+        this.setState({selectedCategory, page: 1})
         let state              = this.state
         state.selectedCategory = selectedCategory
+        state.page             = 1
         this.loadObservations(state)
     }
 
