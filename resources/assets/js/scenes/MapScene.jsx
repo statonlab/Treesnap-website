@@ -12,6 +12,7 @@ import Marker from '../UI/Marker'
 import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
 import Spinner from '../components/Spinner'
+import Disclaimer from '../components/Disclaimer'
 
 export default class App extends Component {
     constructor(props) {
@@ -94,6 +95,8 @@ export default class App extends Component {
                 markers: this.allMarkers,
                 categories
             })
+
+            this.disclaimer.show()
         }).catch(error => {
             console.log(error)
         }).then(() => {
@@ -213,7 +216,6 @@ export default class App extends Component {
      * @param newBounds
      */
     boundsChanged(newBounds) {
-
         this.allMarkers.map(marker => {
             let pos = {
                 lat: marker.position.latitude,
@@ -536,6 +538,10 @@ export default class App extends Component {
                 {this._renderFilterBar()}
                 {this._renderBottomBar()}
                 {this._renderImagesModal()}
+                <Disclaimer ref={(ref) => this.disclaimer = ref}>
+                    Notice: For privacy reasons, the location of the trees displayed on this map have been altered.
+                    To learn more, visit our <a href="/faq">Frequently Asked Questions</a> page.
+                </Disclaimer>
                 <Copyright />
                 <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.2)'}}/>
             </div>

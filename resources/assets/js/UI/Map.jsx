@@ -9,11 +9,11 @@ export default class Map extends Component {
         this.cluster = null
         this.markers = []
         this.colors  = {
-            'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-            'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            'Hemlock'          : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            'White Oak'        : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-            'Other'            : 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+            'American Chestnut': 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            'Ash'              : 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            'Hemlock'          : 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            'White Oak'        : 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+            'Other'            : 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
         }
     }
 
@@ -38,40 +38,17 @@ export default class Map extends Component {
             zoom  : options.zoom
         })
 
-        this.maps.addListener('zoom_changed', () => {
-            this.props.onBoundsChange(this.maps.getBounds())
-            let zoom = this.maps.getZoom()
-            this.markers.map(marker => {
-                let icon
-                if (window.Laravel.isAdmin) {
-                    icon = this.colors[marker.title]
-                } else {
-                    icon = {
-                        path        : google.maps.SymbolPath.CIRCLE,
-                        fillColor   : 'green',
-                        fillOpacity : 0.8,
-                        scale       : zoom < 10 ? 2 * zoom : 10 * zoom,
-                        strokeColor : 'rgba(0,0,0,.3)',
-                        strokeWeight: 1
-                    }
+        /*this.maps.addListener('zoom_changed', window.throttle(() => {
+         this.props.onBoundsChange(this.maps.getBounds())
+         }, 250, this))*/
 
-                    if (zoom > 15) {
-                        marker.setLabel(marker.title)
-                    } else {
-                        marker.setLabel('')
-                    }
-                }
-                marker.setIcon(icon)
-            })
-        })
-
-        this.maps.addListener('dragend', () => {
+        this.maps.addListener('idle', window.throttle(() => {
             this.props.onBoundsChange(this.maps.getBounds())
-        })
+        }, 500, this))
 
-        this.maps.addListener('click', () => {
-            this.props.onBoundsChange(this.maps.getBounds())
-        })
+        /*this.maps.addListener('click', window.throttle(() => {
+         this.props.onBoundsChange(this.maps.getBounds())
+         }, 1000, this))*/
     }
 
     /**
@@ -123,7 +100,7 @@ export default class Map extends Component {
 
         if (this.props.children.length > 0 && this.markers.length === this.props.children.length) {
             this.cluster = new MarkerClusterer(this.maps, this.markers, {
-                imagePath: '/images/m',
+                imagePath: '/images/map/m',
                 maxZoom  : window.Laravel.isAdmin ? 18 : 15
             })
         }
