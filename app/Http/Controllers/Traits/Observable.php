@@ -59,14 +59,19 @@ trait Observable
             }
         }
 
+        // In case fuzzified coordinates were not generated for this observation
+        if (empty($observation->fuzzy_coords)) {
+            $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
+        }
+
         return [
             'observation_id' => $observation->id,
             'user_id' => $observation->user_id,
             'observation_category' => $observation->observation_category,
             'meta_data' => $observation->data,
             'location' => [
-                'longitude' => $admin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
                 'latitude' => $admin ? $observation->latitude : $observation->fuzzy_coords['latitude'],
+                'longitude' => $admin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
                 'accuracy' => $observation->location_accuracy,
                 'address' => $admin ? $observation->address : [],
             ],
@@ -78,6 +83,28 @@ trait Observable
             'flags' => isset($observation->flags) ? $observation->flags : [],
             'collections' => isset($observation->collections) ? $observation->collections : [],
             'confirmations' => isset($observation->confirmations) ? $observation->confirmations : [],
+        ];
+    }
+
+    /**
+     * Fuzzify coordinates.
+     *
+     * @param $original_latitude
+     * @param $original_longitude
+     * @return array
+     */
+    protected function fuzifyCoorinates($original_latitude, $original_longitude)
+    {
+        // Generate fuzzified coordinates.  Transform by 10,000 to ensure mt_rand is working on integers
+        $miles = 5;
+        //72.4637681159 = 1000 / 69 miles per lat/2 for radius
+        $range = $miles * 72.4637681159;
+        $latitude = $original_latitude * 10000 + mt_rand($range * (-1), $range);
+        $longitude = $original_longitude * 10000 + mt_rand($range * (-1), $range);
+
+        return [
+            'latitude' => $latitude / 10000,
+            'longitude' => $longitude / 10000,
         ];
     }
 }
