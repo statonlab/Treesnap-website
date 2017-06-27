@@ -37,33 +37,49 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function terms() {
+    public function terms()
+    {
         $contents = Storage::get('docs/TermsLicense.md');
 
         return $this->success($contents);
     }
 
-  /**
-   * Show frequently asked questions FAQ page.
-   *
-   * @return \Illuminate\Http\JsonResponse
-   */
+    /**
+     * Show frequently asked questions FAQ page.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
 
-    public function faq() {
+    public function faq()
+    {
         $contents = Storage::get('docs/FAQ.md');
 
         return $this->success($contents);
     }
 
-/**
- * Show Trees page.
- *
- * @return \Illuminate\Http\JsonResponse
- */
+    /**
+     * Show Trees page.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
 
-public function trees() {
-  $contents = Storage::get('docs/Trees.md');
+    public function trees()
+    {
+        $contents = Storage::get('docs/Trees.md');
 
-  return $this->success($contents);
-}
+        return $this->success($contents);
+    }
+
+    /**
+     * Show Partners page.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function partners()
+    {
+        $contents = Storage::get('docs/Partners.md');
+
+        return $this->success($contents);
+    }
 }

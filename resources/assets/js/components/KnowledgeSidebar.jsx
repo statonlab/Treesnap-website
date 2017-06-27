@@ -18,6 +18,11 @@ export default class KnowledgeSidebar extends Component {
                         </NavLink>
                     </li>
                     <li>
+                        <NavLink to="/partners" activeClassName={'is-active'}>
+                            <i className="fa fa-handshake-o"></i> Partners
+                        </NavLink>
+                    </li>
+                    <li>
                         <NavLink to="/faq" activeClassName={'is-active'}>
                             <i className="fa fa-question-circle-o"></i> FAQ
                         </NavLink>
