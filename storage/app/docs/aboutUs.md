@@ -16,7 +16,3 @@ To learn more about the Staton laboratory and the genomic resources we provide, 
 ### Privacy
 
 Our privacy and data usage policies are available [here](/privacy-policy).
-
-### More information
-
-* [The American Chestnut Foundation](https://www.acf.org/).

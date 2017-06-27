@@ -22,6 +22,7 @@ Route::get('/docs/terms', 'DocumentController@terms');
 Route::get('/docs/privacy', 'DocumentController@policy');
 Route::get('/docs/faq', 'DocumentController@faq');
 Route::get('/docs/trees', 'DocumentController@trees');
+Route::get('/docs/partners', 'DocumentController@partners');
 
 // Contact
 Route::post('/contact', 'ContactController@send');
