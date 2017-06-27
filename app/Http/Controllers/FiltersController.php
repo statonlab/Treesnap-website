@@ -270,6 +270,10 @@ class FiltersController extends Controller
      */
     protected function getCachedFilteredObservations($request, $filter)
     {
+        if (! $filter) {
+            return $this->getFilteredObservations($request);
+        }
+
         $cache_key = "filtered_observations_{$filter->id}";
 
         return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($request, $filter) {
