@@ -15,11 +15,11 @@ export default class Marker extends Component {
         this.marker = ''
 
         this.colors = {
-            'American Chestnut': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-            'Ash'              : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            'Hemlock'          : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            'White Oak'        : 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-            'Other'            : 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+            'American Chestnut': 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            'Ash'              : 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            'Hemlock'          : 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            'White Oak'        : 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+            'Other'            : 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
         }
     }
 
@@ -45,20 +45,11 @@ export default class Marker extends Component {
         // Handle click events on the callout
         this.marker.addListener('click', this.openCallout.bind(this))
 
-        let zoom = this.props.maps.getZoom()
-
         let icon
         if (window.Laravel.isAdmin) {
-            icon = this.colors[this.marker.title] || 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+            icon = this.colors[this.marker.title] || 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
         } else {
-            icon = {
-                path        : google.maps.SymbolPath.CIRCLE,
-                fillColor   : 'green',
-                fillOpacity : 0.8,
-                scale       : zoom < 10 ? 2 * zoom : 10 * zoom,
-                strokeColor : 'rgba(0,0,0,.3)',
-                strokeWeight: 1
-            }
+            icon = '/images/map/q-dot.png'
         }
         this.marker.setIcon(icon)
         this.props.onCreate(this.marker)

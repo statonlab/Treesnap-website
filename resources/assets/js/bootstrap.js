@@ -42,6 +42,28 @@ window.Laravel.renewToken = () => {
 // Renew the CSRF token every 30 minutes
 setInterval(window.Laravel.renewToken, 1000 * 60 * 30)
 
+window.throttle = function (fn, threshold, scope) {
+    threshold || (threshold = 250)
+    let last,
+        deferTimer
+    return function () {
+        let context = scope || this
+        let now  = +new Date,
+            args = arguments
+
+        if (last && now < last + threshold) {
+            // hold on to it
+            clearTimeout(deferTimer)
+            deferTimer = setTimeout(function () {
+                last = now
+                fn.apply(context, args)
+            }, threshold)
+        } else {
+            last = now
+            fn.apply(context, args)
+        }
+    }
+}
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

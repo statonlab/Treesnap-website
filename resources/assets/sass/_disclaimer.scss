@@ -1,0 +1,21 @@
+.floating-disclaimer {
+  position: fixed;
+  z-index: 1100;
+  bottom: -150%;
+  right: 1rem;
+  visibility: hidden;
+  opacity: 0;
+  max-width: 350px;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.3);
+  -webkit-transition: opacity 1s linear, bottom 1s .5s ease-in-out;
+  -moz-transition: opacity 1s linear, bottom 1s .5s ease-in-out;
+  -ms-transition: opacity 1s linear, bottom 1s .5s ease-in-out;
+  -o-transition: opacity 1s linear, bottom 1s .5s ease-in-out;
+  transition: opacity 1s linear, bottom 1s .5s ease-in-out;
+
+  &.is-active {
+    visibility: visible;
+    opacity: 1;
+    bottom: 1rem;
+  }
+}
