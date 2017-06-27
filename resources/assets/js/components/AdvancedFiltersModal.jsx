@@ -35,8 +35,10 @@ export default class AdvancedFiltersModal extends Component {
             city              : '',
             county            : '',
             state             : '',
-            filterName        : ''
+            filterName        : '',
+            resultsCount      : 0
         })
+        this.refs.speciesButtonList.reset()
     }
 
     componentWillMount() {
@@ -208,7 +210,8 @@ export default class AdvancedFiltersModal extends Component {
                         <p className="mb-1">
                             Begin by selecting the species you are interested in.
                         </p>
-                        <ButtonList list={this.state.categories}
+                        <ButtonList ref="speciesButtonList"
+                                    list={this.state.categories}
                                     onChange={selectedCategories => this.count({selectedCategories})}
                         />
                     </div>

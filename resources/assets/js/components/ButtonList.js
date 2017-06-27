@@ -24,6 +24,10 @@ export default class ButtonList extends Component {
         }
     }
 
+    reset() {
+        this.setState({selected: []})
+    }
+
     _setActiveSelected(item) {
         return this.state.selected.indexOf(item) > -1 ? ' is-selected' : ''
     }

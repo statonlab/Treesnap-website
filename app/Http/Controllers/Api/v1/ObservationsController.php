@@ -115,17 +115,8 @@ class ObservationsController extends Controller
         // Upload images
         $images = $this->uploadImages($request->images);
 
-        // Generate fuzzified coordinates.  Transform by 10,000 to ensure mt_rand is working on integers
-        $miles = 5;
-        //72.4637681159 = 1000 / 69 miles per lat/2 for radius
-        $range = $miles * 72.4637681159;
-        $latitude = $request->latitude * 10000 + mt_rand($range * (-1), $range);
-        $longitude = $request->longitude * 10000 + mt_rand($range * (-1), $range);
-
-            $fuzzy_coords = [
-            'latitude' => $latitude/10000,
-            'longitude' => $longitude/10000,
-        ];
+        // Fuzzify coordinates for non-admin users
+        $fuzzy_coords = $this->fuzifyCoorinates($request->latitude, $request->longitude);
 
         // Create the record
         $observation = Observation::create([

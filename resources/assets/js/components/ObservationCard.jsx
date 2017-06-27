@@ -61,7 +61,7 @@ export default class ObservationCard extends Component {
     loadMarks() {
         let id = this.props.observation.observation_id
 
-        axios.get('/admin/api/confirmations/count/' + id).then(response => {
+        axios.get(`/admin/api/confirmations/count/${id}`).then(response => {
             let data = response.data.data
             this.setState({
                 correctMarks  : data.correct,
@@ -302,6 +302,14 @@ export default class ObservationCard extends Component {
                 correct
             }
         })
+
+        if (this.state.confirmation.id !== -1) {
+            if (this.state.confirmation.correct) {
+                this.setState({correctMarks: this.state.correctMarks - 1})
+            } else {
+                this.setState({incorrectMarks: this.state.incorrectMarks - 1})
+            }
+        }
 
         axios.post('/admin/api/confirmations', {
             observation_id: observation.observation_id,
