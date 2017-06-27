@@ -51,12 +51,16 @@ class ObservationsController extends Controller
     public function getObservationsFromDB($request, $limit = null)
     {
         $user = $request->user();
-        $is_admin = $user->isScientist() || $user->isAdmin();
+        $is_admin = false;
 
-        if ($is_admin) {
-            $observations = Observation::with('user');
-        } else {
-            $observations = Observation::with('user')->where('is_private', false);
+        $observations = Observation::with('user');
+
+        if ($user) {
+            $is_admin = $user->isScientist() || $user->isAdmin();
+        }
+
+        if (! $is_admin) {
+            $observations = $observations->where('is_private', false);
         }
 
         $observations->orderBy('observations.id', 'desc');
