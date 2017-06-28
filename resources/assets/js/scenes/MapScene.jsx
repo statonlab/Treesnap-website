@@ -351,11 +351,11 @@ export default class App extends Component {
     _renderFilters() {
         return (
             <div className="sidebar-filters">
-                <p className="mb-0">Found {this.state.markers.length} Observations</p>
+                <p className="mb-0" style={{marginTop: -10}}>
+                    <b>Found {this.state.markers.length} Observations</b>
+                </p>
                 <form action="#" method="get" className="mb-1" onSubmit={e => e.preventDefault()}>
-                    <p className="mb-0 text-underline">
-                        <strong>Search</strong>
-                    </p>
+                    <p className="mb-0"><b>Filters</b></p>
                     <div className="field">
                         <p className="control has-icon has-icon-right">
                             <input className="input"
@@ -370,26 +370,45 @@ export default class App extends Component {
                     </div>
                 </form>
 
-                <p className="mb-0 text-underline">
-                    <strong>Filter by Species</strong>
-                </p>
-                <div className="checkbox-container">
-                    {this.state.categories.map((category, index) => {
-                        return (
-                            <a key={index}
-                               href="javascript:;"
-                               className={`button is-full checkbox-button${this.state.selectedCategories.indexOf(category) !== -1 ? ' is-active' : ''}`}
-                               onClick={() => {
-                                   this.changeCategory(category)
-                               }}>
-                                <span className="icon">
-                                    <i className="fa fa-check"></i>
-                                </span>
-                                <span>{category}</span>
-                            </a>
-                        )
-                    })}
+                <div className="field">
+                    <div className="control">
+                        <div className="checkbox-container">
+                            {this.state.categories.map((category, index) => {
+                                return (
+                                    <a key={index}
+                                       href="javascript:;"
+                                       className={`button is-full checkbox-button${this.state.selectedCategories.indexOf(category) !== -1 ? ' is-active' : ''}`}
+                                       onClick={() => {
+                                           this.changeCategory(category)
+                                       }}>
+                                        <span className="icon">
+                                            <i className="fa fa-check"></i>
+                                        </span>
+                                        <span>{category}</span>
+                                    </a>
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
+
+                <div className="field">
+                    <div className="control">
+                        <span className="select is-full-width">
+                            <select>
+                                <option value={0}>Select Collection</option>
+                            </select>
+                        </span>
+                        <p className="help">
+                            You can create or add observations to a collection using the
+                            <span className="ml-0 mr-0 icon is-small"><i className="fa fa-star"></i></span> icon.
+                        </p>
+                    </div>
+                </div>
+
+                <p className="mb-0">
+                    <a href="javascript:;" className="button is-primary">Advanced Filters</a>
+                </p>
             </div>
         )
     }
