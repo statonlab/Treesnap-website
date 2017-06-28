@@ -127,7 +127,7 @@ export default class Map extends Component {
 
             this.cluster = new MarkerClusterer(this.maps, this.markers, {
                 imagePath: '/images/map/m',
-                maxZoom  : window.Laravel.isAdmin ? 18 : 15
+                maxZoom  : 15
             })
         }
     }
