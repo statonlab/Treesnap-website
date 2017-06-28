@@ -22,7 +22,7 @@ class MapController extends Controller
         if ($isAdmin) {
             $observations = Observation::with('user')->get();
         } else {
-            $observations = Observation::with('user')->where('is_private', false);
+            $observations = Observation::with('user')->where('is_private', false)->get();
         }
 
         return $this->success($this->prepForMap($observations, $isAdmin));
