@@ -13,6 +13,8 @@ import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
 import Spinner from '../components/Spinner'
 import Disclaimer from '../components/Disclaimer'
+import MarkersFilter from '../helpers/MarkersFilter'
+import Labels from '../helpers/Labels'
 
 export default class App extends Component {
     constructor(props) {
@@ -23,31 +25,57 @@ export default class App extends Component {
                 lat: 40.354388,
                 lng: -95.998237
             },
-            zoom  : 4
+            zoom  : 5
         }
 
         this.state = {
-            markers       : [],
-            categories    : {},
-            center        : {
-                lat: 40.354388,
-                lng: -95.998237
-            },
-            zoom          : 4,
-            selectedMarker: null,
-            galleryImages : [],
-            showSidebar   : false,
-            loading       : false
+            markers           : [],
+            categories        : [],
+            selectedCategories: [],
+            center            : this.defaultMapPosition.center,
+            zoom              : this.defaultMapPosition.zoom,
+            selectedMarker    : null,
+            galleryImages     : [],
+            showSidebar       : false,
+            loading           : false,
+            showFilters       : false,
+            searchTerm        : ''
         }
-
-        this.allMarkers = []
     }
 
     /**
      * Set the maps and load observations into the state.
      */
-    componentDidMount() {
+    componentWillMount() {
         this.loadObservations()
+        this.loadCategories()
+    }
+
+    /**
+     * Open the sidebar automatically and display the filters if the window
+     * is big enough (bigger than 797px which is the popular tablet width)
+     */
+    initSidebar() {
+        if (window.outerWidth > 797) {
+            this.setState({
+                showSidebar: true,
+                showFilters: true
+            })
+            this.refs.maps.resize()
+        }
+    }
+
+
+    openSidebar() {
+        this.setState({
+            showSidebar: true
+        })
+        this.refs.maps.resize()
+    }
+
+    closeSidebar() {
+        this.setState({showSidebar: false})
+        this.refs.maps.resize()
     }
 
     /**
@@ -56,47 +84,19 @@ export default class App extends Component {
     loadObservations() {
         this.setState({loading: true})
 
-        axios.get('/observations').then(response => {
-            let categories = {}
+        axios.get('/api/map').then(response => {
             // Setup the observations to be rendered into markers
-            response.data.data.map((observation, index) => {
-                let category = observation.observation_category
-
-                // Set the category
-                categories[category] = true
-
-                // parse images
-                let images = []
-                Object.keys(observation.images).map(key => {
-                    observation.images[key].map(image => {
-                        images.push(image)
-                    })
-                })
-
-                this.allMarkers.push({
-                    id      : observation.observation_id,
-                    title   : category,
-                    images  : images,
-                    position: {
-                        latitude : observation.location.latitude,
-                        longitude: observation.location.longitude,
-                        accuracy : observation.location.accuracy
-                    },
-                    owner   : observation.user.name,
-                    show    : true,
-                    date    : observation.date_human_diff,
-                    data    : observation.meta_data,
-                    ref     : null
-                })
-            })
+            let markers = response.data.data
 
             // Add the markers to the state
-            this.setState({
-                markers: this.allMarkers,
-                categories
-            })
 
-            this.disclaimer.show()
+            if (!window.Laravel.isAdmin) {
+                this.disclaimer.show()
+            }
+            this.filter  = new MarkersFilter(markers, this.state.selectedCategories)
+            let filtered = this.filter.bounds(this.refs.maps.getBounds())
+            this.setState({markers: filtered})
+            this.initSidebar()
         }).catch(error => {
             console.log(error)
         }).then(() => {
@@ -104,16 +104,37 @@ export default class App extends Component {
         })
     }
 
+    loadCategories() {
+        axios.get('/observations/categories').then(response => {
+            let categories = response.data.data
+            this.setState({
+                categories        : categories,
+                selectedCategories: categories
+            })
+
+            if (this.filter) {
+                this.filter.setCategories(categories)
+            }
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
+
     /**
      * Zoom to marker.
      *
      * @param marker
+     * @param zoom
      */
-    goToSubmission(marker) {
+    goToSubmission(marker, zoom) {
+        if (typeof zoom === 'undefined') {
+            zoom = 24
+        }
+
         this.refs.maps.goTo({
             lat: marker.position.latitude,
             lng: marker.position.longitude
-        }, 24)
+        }, zoom)
     }
 
     /**
@@ -127,20 +148,18 @@ export default class App extends Component {
         let image = marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png'
         return (
             <a
-                href="#"
+                href="javascript:;"
                 role="button"
                 className="bar-item"
                 style={{backgroundImage: `url(${image})`}}
                 key={index}
-                onClick={(e) => {
-                    if (e.nativeEvent) {
-                        e.nativeEvent.preventDefault()
-                    }
+                onClick={() => {
                     this.setState({
                         selectedMarker: marker,
-                        showSidebar   : true
+                        showFilters   : false
                     })
-                    this.goToSubmission.call(this, marker)
+                    this.openSidebar()
+                    this.goToSubmission.call(this, marker, 18)
                     if (marker.ref !== null) {
                         marker.ref.openCallout()
                     }
@@ -160,29 +179,6 @@ export default class App extends Component {
     }
 
     /**
-     * Allow users to filter submissions by plant.
-     *
-     * @param name
-     */
-    filterByPlant(name) {
-        let filteredMarkers = []
-        let categories      = this.state.categories
-
-        this.state.markers.map(marker => {
-            if (marker.title === name) {
-                marker.show      = !marker.show
-                categories[name] = marker.show
-            }
-            filteredMarkers.push(marker)
-        })
-
-        this.setState({
-            markers   : filteredMarkers,
-            categories: categories
-        })
-    }
-
-    /**
      * Reset the position to the center and zoom out.
      */
     resetMapPosition() {
@@ -190,24 +186,32 @@ export default class App extends Component {
     }
 
     /**
-     * search by plant name or username.
+     * Allow users to filter submissions by plant.
      *
-     * @param term
+     * @param name
      */
-    search(event) {
-        let term = event.target.value
-        if (term.length === 0) {
-            this.setState({markers: this.allMarkers})
-            return
+    changeCategory(name) {
+        let selectedCategories = this.state.selectedCategories
+
+        if (selectedCategories.indexOf(name) !== -1) {
+            selectedCategories = selectedCategories.filter(c => name !== c)
+        } else {
+            selectedCategories.push(name)
         }
 
-        term = term.toLowerCase()
+        let markers = this.filter.category(selectedCategories)
+        this.setState({markers, selectedCategories})
+    }
 
-        let markers = this.allMarkers.filter((marker) => {
-            return (marker.title.toLowerCase().indexOf(term) > -1 || marker.owner.toLowerCase().indexOf(term) > -1)
-        })
-
-        this.setState({markers})
+    /**
+     * search by plant name or username.
+     *
+     * @param event
+     */
+    search(event) {
+        let term    = event.target.value
+        let markers = this.filter.search(term)
+        this.setState({markers, searchTerm: term})
     }
 
     /**
@@ -216,16 +220,10 @@ export default class App extends Component {
      * @param newBounds
      */
     boundsChanged(newBounds) {
-        this.allMarkers.map(marker => {
-            let pos = {
-                lat: marker.position.latitude,
-                lng: marker.position.longitude
-            }
-
-            marker.show = newBounds.contains(pos)
-        })
-
-        this.setState({markers: this.allMarkers})
+        if (this.filter) {
+            let markers = this.filter.bounds(newBounds)
+            this.setState({markers})
+        }
     }
 
     /**
@@ -242,18 +240,18 @@ export default class App extends Component {
                  zoom={this.state.zoom}
                  onBoundsChange={this.boundsChanged.bind(this)}
             >
-                {this.state.markers.map((marker, index) => {
+                {this.state.markers.map(marker => {
                     return (
-                        <Marker key={index}
+                        <Marker key={marker.id}
                                 position={marker.position}
                                 title={marker.title}
-                                show={marker.show}
                                 ref={(ref) => marker.ref = ref}
                                 onClick={() => {
                                     this.setState({
-                                        selectedMarker: this.state.markers[index],
-                                        showSidebar   : true
+                                        selectedMarker: marker,
+                                        showFilters   : false
                                     })
+                                    this.openSidebar()
                                 }}
                         >
                             <div className="media callout">
@@ -279,7 +277,6 @@ export default class App extends Component {
     }
 
     _renderBottomBar() {
-        let rendered = 0
         return (
             <div className="horizontal-bar" id="horizontal-bar-container">
                 <a href="javascript:;" className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
@@ -288,10 +285,7 @@ export default class App extends Component {
                 <div className="bar-items-container dragscroll"
                      id="horizontal-bar"
                      onScroll={this.setScrollState.bind(this)}>
-                    {this.state.markers.map((marker, index) => {
-                        if (!marker.show) return
-                        if (rendered >= 50) return
-                        rendered++
+                    {this.state.markers.slice(0, 20).map((marker, index) => {
                         return this._renderSubmission(marker, index)
                     })}
                 </div>
@@ -356,42 +350,42 @@ export default class App extends Component {
      */
     _renderFilters() {
         return (
-            <div>
-                <form action="#" method="get" className="mb-1" onSubmit={(e) => {
-                    e.nativeEvent ? e.nativeEvent.preventDefault() : null
-                }}>
+            <div className="sidebar-filters">
+                <p className="mb-0">Found {this.state.markers.length} Observations</p>
+                <form action="#" method="get" className="mb-1" onSubmit={e => e.preventDefault()}>
                     <p className="mb-0 text-underline">
                         <strong>Search</strong>
                     </p>
                     <div className="field">
                         <p className="control has-icon has-icon-right">
-                            <input className="input" type="search" placeholder="Search" onChange={this.search}/>
-                            <div className="icon is-small">
+                            <input className="input"
+                                   type="search"
+                                   placeholder="Search"
+                                   value={this.state.searchTerm}
+                                   onChange={this.search.bind(this)}/>
+                            <span className="icon is-small">
                                 <i className="fa fa-search"></i>
-                            </div>
+                            </span>
                         </p>
                     </div>
                 </form>
 
                 <p className="mb-0 text-underline">
-                    <strong>Filter by Plant</strong>
+                    <strong>Filter by Species</strong>
                 </p>
                 <div className="checkbox-container">
-                    {Object.keys(this.state.categories).map((name, index) => {
+                    {this.state.categories.map((category, index) => {
                         return (
                             <a key={index}
-                               href="#"
-                               className={`button is-full checkbox-button${this.state.categories[name] ? ' is-active' : ''}`}
-                               onClick={(e) => {
-                                   if (e.nativeEvent) {
-                                       e.nativeEvent.preventDefault()
-                                   }
-                                   this.filterByPlant.call(this, name)
+                               href="javascript:;"
+                               className={`button is-full checkbox-button${this.state.selectedCategories.indexOf(category) !== -1 ? ' is-active' : ''}`}
+                               onClick={() => {
+                                   this.changeCategory(category)
                                }}>
                                 <span className="icon">
                                     <i className="fa fa-check"></i>
                                 </span>
-                                <span>{name}</span>
+                                <span>{category}</span>
                             </a>
                         )
                     })}
@@ -408,25 +402,58 @@ export default class App extends Component {
      */
     _renderSidebar() {
         let marker = this.state.selectedMarker
-        if (marker === null) {
+        if (marker === null && this.state.showFilters === false) {
             return (<Sidebar/>)
         }
 
-        let data = marker.data
+        return (
+            <Sidebar onCloseRequest={() => this.closeSidebar()}>
+                {this.state.showFilters ? this._renderFilters() : this._renderObservation()}
+            </Sidebar>
+        )
+    }
+
+    /**
+     * Observation sidebar view.
+     *
+     * @returns {XML}
+     * @private
+     */
+    _renderObservation() {
+        let marker = this.state.selectedMarker
+        let data   = marker.data
 
         return (
-            <Sidebar onCloseRequest={() => this.setState({showSidebar: false})}>
+            <div>
                 <div className="sidebar-img"
                      style={{backgroundImage: marker.images.length > 0 ? `url('${marker.images[0]}')` : `url("//${window.location.hostname}/images/placeholder.png")`}}>
+                    <a href="javascript:;"
+                       className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
+                       onClick={() => {
+                           this.setState({galleryImages: marker.images})
+                           this.modal.open()
+                       }}>
+                        <i className="fa fa-photo"></i>
+                        <div className="has-text-centered">
+                            Click to Enlarge
+                        </div>
+                    </a>
                 </div>
                 <div className="sidebar-icons-container">
-                    <a href="javascript:;" className="sidebar-icon" onClick={() => {
-                        this.setState({galleryImages: marker.images})
-                        this.modal.open()
-                    }}>
-                        <i className="fa fa-picture-o"></i>
-                        <span>See all images</span>
-                    </a>
+                    <div className="card-footer">
+                        <a href="javascript:;" className="sidebar-icon" onClick={() => {
+                            this.setState({galleryImages: marker.images})
+                            this.modal.open()
+                        }}>
+                            <i className="fa fa-picture-o"></i>
+                        </a>
+                        <a href="javascript:;">
+                            <i className="fa fa-star"></i>
+                        </a>
+                        <a href="javascript:;">
+                            <i className="fa fa-flag"></i>
+                        </a>
+                    </div>
                 </div>
                 <div className="sidebar-content">
                     <h3 className="title is-4">
@@ -439,15 +466,16 @@ export default class App extends Component {
                     </div>
 
                     {Object.keys(data).map(key => {
+                        const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
                         return (
                             <div className="sidebar-item" key={key}>
-                                <h5><strong>{key}</strong></h5>
+                                <h5><strong>{label}</strong></h5>
                                 <p className="ml-1">{data[key]}</p>
                             </div>
                         )
                     })}
                 </div>
-            </Sidebar>
+            </div>
         )
     }
 
@@ -457,9 +485,22 @@ export default class App extends Component {
      * @returns {XML}
      * @private
      */
-    _renderFilterBar() {
+    _renderFilterButton() {
         return (
-            <div className="filters-bar"></div>
+            <a href="javascript:;"
+               className="button filters-button"
+               onClick={() => {
+                   this.setState({
+                       selectedMarker: null,
+                       showFilters   : !this.state.showFilters,
+                       showSidebar   : !this.state.showFilters
+                   })
+               }}>
+                <span className="icon">
+                    <i className="fa fa-filter"></i>
+                </span>
+                <span>Filters</span>
+            </a>
         )
     }
 
@@ -471,8 +512,7 @@ export default class App extends Component {
      */
     _renderImage(item) {
         return (
-            <div className='image-gallery-image'
-                 style={{backgroundColor: this.state.galleryImages.length > 1 ? '#222' : 'transparent'}}>
+            <div className={`image-gallery-image${this.state.galleryImages.length > 1 ? ' show-scroll' : ''}`}>
                 <img
                     src={item.original}
                     alt="Plant Image"
@@ -532,10 +572,13 @@ export default class App extends Component {
                     type="button"
                     className="button reset-map-button"
                     onClick={this.resetMapPosition.bind(this)}>
-                    Reset Position
+                    <span className="icon">
+                        <i className="fa fa-search"></i>
+                    </span>
+                    <span>Reset Position</span>
                 </button>
                 {this._renderMap()}
-                {this._renderFilterBar()}
+                {this._renderFilterButton()}
                 {this._renderBottomBar()}
                 {this._renderImagesModal()}
                 <Disclaimer ref={(ref) => this.disclaimer = ref}>
@@ -543,7 +586,7 @@ export default class App extends Component {
                     To learn more, visit our <a href="/faq">Frequently Asked Questions</a> page.
                 </Disclaimer>
                 <Copyright />
-                <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.2)'}}/>
+                <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
             </div>
         )
     }

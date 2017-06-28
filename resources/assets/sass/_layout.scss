@@ -32,6 +32,14 @@ body,
   @include align-items(center);
 }
 
+.flex-h-center {
+  @include justify-content(center);
+}
+
+.flex-column {
+  @include flex-direction(column);
+}
+
 .flex-right {
   @include flex-direction(row);
   @include justify-content(flex-end);
@@ -101,7 +109,8 @@ a.box {
 
 #map2,
 .horizontal-bar,
-.reset-map-button {
+.reset-map-button,
+.filters-button {
   transition: left 250ms linear;
 }
 
@@ -130,7 +139,7 @@ a.box {
 .apple-badge-img {
   position: relative;
   height: 68px;
-  top: -15px!important;
+  top: -15px !important;
   @include mobile() {
     margin-top: 0;
   }
@@ -243,4 +252,10 @@ a.box {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.image-gallery-image {
+  &.show-scroll {
+    background-color: #222;
+  }
 }

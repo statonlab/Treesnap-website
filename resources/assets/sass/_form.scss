@@ -8,7 +8,7 @@
 }
 
 .checkbox-container {
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+  box-shadow: none;//0 2px 3px rgba(10, 10, 10, 0.1);
   border: 1px solid #dbdbdb;
   border-bottom: 0;
   border-radius: $radius;

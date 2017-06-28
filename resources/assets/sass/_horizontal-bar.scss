@@ -20,7 +20,7 @@
     display: block;
     text-align: center;
     background: rgba(0,0,0,0.6);
-    width: 60px;
+    width: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .7);
 
     &,
@@ -55,14 +55,14 @@
 .bar-items-container {
   @include flexbox();
   @include flex-wrap(nowrap);
-  padding: .5rem 70px;
+  padding: .5rem 50px;
   width: 100%;
   overflow-x: scroll;
 }
 
 .bar-item {
   @include flex(0 0 auto);
-  height: 125px;
+  height: $bottom-bar-height - 15px;
   width: 190px;
   background-color: darken(#333, 5%);
   border-radius: $radius;

@@ -28,6 +28,7 @@
     "datatables-bulma": "^1.0.1",
     "datatables.net": "^1.10.15",
     "dragscroll": "0.0.8",
+    "font-awesome": "^4.7.0",
     "fuse.js": "^3.0.5",
     "google-maps-react": "^1.0.19",
     "lodash._baseassign": "^3.2.0",
