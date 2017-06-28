@@ -78,7 +78,6 @@ trait Observable
             'images' => $images,
             'date' => $observation->collection_date,
             'is_private' => $observation->is_private,
-            'date_human_diff' => $observation->collection_date->diffForHumans(),
             'mobile_id' => $observation->mobile_id,
             'flags' => isset($observation->flags) ? $observation->flags : [],
             'collections' => isset($observation->collections) ? $observation->collections : [],

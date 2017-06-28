@@ -2,15 +2,11 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import InfoWindow from '../helpers/InfoWindow'
+import EventEmitter from '../helpers/EventEmitter'
 
 export default class Marker extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            // Set the initial state for the callout
-            calloutOpen: false
-        }
 
         this.marker = ''
 
@@ -21,6 +17,12 @@ export default class Marker extends Component {
             'White Oak'        : 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
             'Other'            : 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
         }
+
+        this.event = EventEmitter.listen('mapClicked', () => {
+            if (this.callout) {
+                this.callout.close()
+            }
+        })
     }
 
     /**
@@ -62,7 +64,6 @@ export default class Marker extends Component {
         this.callout.close()
         this.callout.setContent(this.renderCallout())
         this.callout.open(this.props.map, this.marker)
-        this.setState({calloutOpen: !this.state.calloutOpen})
         this.props.onClick()
     }
 
@@ -93,21 +94,29 @@ export default class Marker extends Component {
     render() {
         return (null)
     }
+
+    componentWillUnmount() {
+        this.props.onDestroy(this.marker)
+    }
 }
 
 Marker.PropTypes = {
-    maps    : PropTypes.object.isRequired,
-    position: PropTypes.object.isRequired,
-    title   : PropTypes.string,
-    show    : PropTypes.boolean,
-    onCreate: PropTypes.func,
-    onClick : PropTypes.func
+    maps     : PropTypes.object.isRequired,
+    position : PropTypes.object.isRequired,
+    title    : PropTypes.string,
+    show     : PropTypes.bool,
+    onCreate : PropTypes.func,
+    onClick  : PropTypes.func,
+    onDestroy: PropTypes.func
 }
 
 Marker.defaultProps = {
-    title   : '',
-    onCreate: () => {
+    title: '',
+    show : true,
+    onCreate() {
     },
-    onClick : () => {
+    onClick() {
+    },
+    onHide() {
     }
 }

@@ -46,6 +46,9 @@ Route::get('/observations/categories', 'ObservationsController@getCategories');
 Route::get('/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
+// Map
+Route::get('/api/map', 'MapController@index');
+
 // Users
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');

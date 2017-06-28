@@ -39,7 +39,7 @@ export default class Spinner extends Component {
         }
 
         // Render the inline spinner
-        if(this.props.inline) {
+        if (this.props.inline) {
             return (
                 <div className="mt-1" style={this.props.containerStyle}>
                     <i className="fa fa-refresh fa-spin fa-2x"></i>
@@ -51,8 +51,9 @@ export default class Spinner extends Component {
         return (
             <div className="spinner-overlay"
                  style={this.props.containerStyle}>
+                <div className="overlay-blur"></div>
                 <span className="spinner-container">
-                    <i className="fa fa-refresh fa-spin"></i>
+                    <i className="is-loading"></i>
                 </span>
             </div>
         )

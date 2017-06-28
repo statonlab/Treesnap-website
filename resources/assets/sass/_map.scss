@@ -29,25 +29,36 @@
   font-weight: normal;
 }
 
-.reset-map-button {
+.reset-map-button,
+.filters-button {
   position: absolute;
-  top: $nav-height + 2.5em;
-  left: 110px;
+  top: $nav-height + 1em;
+  left: 10px;
   background: #fff;
   border-radius: $radius;
   z-index: 20;
-  font-size: 11px;
+  font-size: 14px;
   border: 0;
   box-shadow: 0 3px 2px rgba(10, 10, 10, .1) !important;
   height: 2.5em;
+  font-weight: bold;
+  padding: 0 15px;
   &:hover {
     background: #ddd;
     color: #000;
   }
   .sidebar-visible & {
-    left: $sidebar-width + 110px;
+    left: $sidebar-width + 10px;
   }
   @include mobile() {
     display: none;
   }
+}
+
+.reset-map-button {
+  top: $nav-height + 4em;
+}
+
+.sidebar-filters {
+  padding: 1rem;
 }

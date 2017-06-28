@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Marker from './Marker'
+import EventEmitter from '../helpers/EventEmitter'
 
 export default class Map extends Component {
     constructor(props) {
@@ -22,13 +23,16 @@ export default class Map extends Component {
      */
     componentDidMount() {
         let options = {
-            center : {
+            center               : {
                 lat: this.props.center.lat,
                 lng: this.props.center.lng
             },
-            zoom   : this.props.zoom,
-            minZoom: 3,
-            maxZoom: window.Laravel.isAdmin ? null : 16
+            zoom                 : this.props.zoom,
+            minZoom              : 3,
+            mapTypeControlOptions: {
+                style   : google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.TOP_CENTER
+            }
         }
 
         this.maps = new google.maps.Map(this.refs.mapContainer, options)
@@ -38,17 +42,25 @@ export default class Map extends Component {
             zoom  : options.zoom
         })
 
-        /*this.maps.addListener('zoom_changed', window.throttle(() => {
-         this.props.onBoundsChange(this.maps.getBounds())
-         }, 250, this))*/
-
-        this.maps.addListener('idle', window.throttle(() => {
+        this.maps.addListener('idle', () => {
             this.props.onBoundsChange(this.maps.getBounds())
-        }, 500, this))
+        })
 
-        /*this.maps.addListener('click', window.throttle(() => {
-         this.props.onBoundsChange(this.maps.getBounds())
-         }, 1000, this))*/
+        this.maps.addListener('click', () => EventEmitter.emit('mapClicked'))
+
+        this.cluster = new MarkerClusterer(this.maps, [], {
+            imagePath: '/images/map/m',
+            maxZoom  : 18
+        })
+    }
+
+    /**
+     * Resize the map.
+     */
+    resize() {
+        setTimeout(() => {
+            google.maps.event.trigger(this.maps, 'resize')
+        }, 300)
     }
 
     /**
@@ -60,7 +72,8 @@ export default class Map extends Component {
     goTo(center, zoom = 20) {
         this.maps.setCenter(center)
         this.maps.setZoom(zoom)
-        this.props.onBoundsChange(this.maps.getBounds())
+        //this.props.onBoundsChange(this.maps.getBounds())
+        google.maps.event.trigger(this.maps, 'idle')
     }
 
     /**
@@ -73,10 +86,15 @@ export default class Map extends Component {
             return React.Children.map(this.props.children, child => {
                 if (child.type === Marker) {
                     return React.cloneElement(child, {
-                        maps    : this.maps,
-                        onCreate: (marker) => {
+                        maps     : this.maps,
+                        onCreate : (marker) => {
                             this.markers.push(marker)
                             this.createCluster()
+                        },
+                        onDestroy: (marker) => {
+                            this.markers = this.markers.filter(m => marker !== m)
+                            this.createCluster()
+                            marker.setMap(null)
                         }
                     })
                 } else {
@@ -88,17 +106,21 @@ export default class Map extends Component {
         return null
     }
 
+    getBounds() {
+        return this.maps.getBounds()
+    }
+
     /**
      * Create Cluster.
      */
     createCluster() {
-        // Create the cluster after we collect all the markers from the children list
-        // and only if the cluster hasn't been created yet.
-        if (this.cluster !== null) {
-            return
-        }
-
         if (this.props.children.length > 0 && this.markers.length === this.props.children.length) {
+            if (this.cluster !== null) {
+                this.cluster.clearMarkers()
+                this.cluster.addMarkers(this.markers)
+                return
+            }
+
             this.cluster = new MarkerClusterer(this.maps, this.markers, {
                 imagePath: '/images/map/m',
                 maxZoom  : window.Laravel.isAdmin ? 18 : 15

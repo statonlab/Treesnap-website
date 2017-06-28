@@ -21,7 +21,7 @@
             window.Laravel.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
         @endif
     </script>
-    <script src="/js/plugins/mapcluster.js"></script>
+    <script src="/js/plugins/mapcluster.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>
 </head>
 <body>
