@@ -114,6 +114,10 @@ export default class Map extends Component {
      * Create Cluster.
      */
     createCluster() {
+        if (this.props.children.length === 0 && this.cluster !== null) {
+            this.cluster.clearMarkers()
+        }
+
         if (this.props.children.length > 0 && this.markers.length === this.props.children.length) {
             if (this.cluster !== null) {
                 this.cluster.clearMarkers()
