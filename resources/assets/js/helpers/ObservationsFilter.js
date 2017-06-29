@@ -1,5 +1,8 @@
-export default class ObservationsFilter {
+import Filters from './Filters'
+
+export default class ObservationsFilter extends Filters {
     constructor(observations) {
+        super()
         this._observations = observations
         this._categoryName = ''
         this._searchTerm   = ''
@@ -28,17 +31,6 @@ export default class ObservationsFilter {
      */
     search(term) {
         this._searchTerm = term
-        return this._filter()
-    }
-
-    /**
-     * Set collection filter.
-     *
-     * @param collection_id
-     * @returns {*}
-     */
-    collection(collection_id) {
-        this._collectionID = collection_id
         return this._filter()
     }
 
@@ -90,18 +82,6 @@ export default class ObservationsFilter {
     }
 
     /**
-     * Check if string a contains string b.
-     *
-     * @param a
-     * @param b
-     * @returns {boolean}
-     * @private
-     */
-    _contains(a, b) {
-        return a.trim().toLowerCase().indexOf(b) > -1
-    }
-
-    /**
      * Search the observation category for a term.
      *
      * @param term
@@ -121,6 +101,17 @@ export default class ObservationsFilter {
         }
 
         return false
+    }
+
+    /**
+     * Set collection filter.
+     *
+     * @param collection_id
+     * @returns {*}
+     */
+    collection(collection_id) {
+        this._collectionID = collection_id
+        return this._filter()
     }
 
     /**
@@ -240,34 +231,6 @@ export default class ObservationsFilter {
     }
 
     /**
-     * Converts collections to array of IDs.
-     *
-     * @param collections
-     * @private
-     */
-    _flatten(collections) {
-        return collections.map(collection => parseInt(collection.id))
-    }
-
-    /**
-     * Checks if an observation is in a given collection.
-     *
-     * @param id
-     * @param observation
-     * @returns {boolean}
-     * @private
-     */
-    _collection(id, observation) {
-        id = parseInt(id)
-        if (id === -1) {
-            return true
-        }
-
-        let collections = this._flatten(observation.collections)
-        return collections.indexOf(id) > -1
-    }
-
-    /**
      * Checks if an observation is a given category.
      *
      * @param category
@@ -281,6 +244,24 @@ export default class ObservationsFilter {
         }
 
         return category === observation.observation_category
+    }
+
+    /**
+     * Checks if an observation is in a given collection.
+     *
+     * @param id
+     * @param observation
+     * @returns {boolean}
+     * @private
+     */
+    _collection(id, observation) {
+        id = parseInt(id)
+        if (id <= 0) {
+            return true
+        }
+
+        let collections = this._flatten(observation.collections)
+        return collections.indexOf(id) > -1
     }
 
     /**

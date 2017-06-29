@@ -15,6 +15,7 @@ import Spinner from '../components/Spinner'
 import Disclaimer from '../components/Disclaimer'
 import MarkersFilter from '../helpers/MarkersFilter'
 import Labels from '../helpers/Labels'
+import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 
 export default class App extends Component {
     constructor(props) {
@@ -39,7 +40,12 @@ export default class App extends Component {
             showSidebar       : false,
             loading           : false,
             showFilters       : false,
-            searchTerm        : ''
+            searchTerm        : '',
+            collections       : [],
+            selectedCollection: 0,
+            filters           : [],
+            selectedFilter    : 0,
+            showFiltersModal  : false
         }
     }
 
@@ -49,6 +55,8 @@ export default class App extends Component {
     componentWillMount() {
         this.loadObservations()
         this.loadCategories()
+        this.loadCollections()
+        this.loadFilters()
     }
 
     /**
@@ -65,7 +73,9 @@ export default class App extends Component {
         }
     }
 
-
+    /**
+     * Open the sidebar and reset the map size.
+     */
     openSidebar() {
         this.setState({
             showSidebar: true
@@ -73,6 +83,9 @@ export default class App extends Component {
         this.refs.maps.resize()
     }
 
+    /**
+     * Close the sidebar and reset the map size.
+     */
     closeSidebar() {
         this.setState({showSidebar: false})
         this.refs.maps.resize()
@@ -93,7 +106,13 @@ export default class App extends Component {
             if (!window.Laravel.isAdmin) {
                 this.disclaimer.show()
             }
-            this.filter  = new MarkersFilter(markers, this.state.selectedCategories)
+
+            if (!this.filter) {
+                this.filter = new MarkersFilter(markers, this.state.selectedCategories)
+            } else {
+                this.filter.replace(markers)
+            }
+
             let filtered = this.filter.bounds(this.refs.maps.getBounds())
             this.setState({markers: filtered})
             this.initSidebar()
@@ -104,6 +123,9 @@ export default class App extends Component {
         })
     }
 
+    /**
+     * Get available categories from the server.
+     */
     loadCategories() {
         axios.get('/observations/categories').then(response => {
             let categories = response.data.data
@@ -115,6 +137,35 @@ export default class App extends Component {
             if (this.filter) {
                 this.filter.setCategories(categories)
             }
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
+
+    /**
+     * Get available collections from the server.
+     */
+    loadCollections() {
+        axios.get('/collections/1').then(response => {
+            this.setState({collections: response.data.data})
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
+
+    /**
+     * Get available filters from the server.
+     */
+    loadFilters() {
+        axios.get('/api/filters').then(response => {
+            let filters = response.data.data.map(filter => {
+                return {
+                    label: filter.name,
+                    value: filter.id
+                }
+            })
+
+            this.setState({filters})
         }).catch(error => {
             console.log(error.response)
         })
@@ -204,14 +255,79 @@ export default class App extends Component {
     }
 
     /**
+     * Allows users to filter by collection.
+     *
+     * @param selectedCollection
+     */
+    changeCollection(selectedCollection) {
+        let markers = this.filter.collections(selectedCollection)
+        this.setState({markers, selectedCollection})
+    }
+
+    /**
+     * Allows users to reapply a saved advanced filter.
+     *
+     * @param selectedFilter
+     */
+    changeFilter(selectedFilter) {
+        selectedFilter = parseInt(selectedFilter)
+        this.setState({selectedFilter})
+        if (selectedFilter !== 0) {
+            this.applyAdvancedFilter(selectedFilter)
+        } else {
+            this.loadObservations()
+        }
+    }
+
+    /**
+     * Request filtered observations from server.
+     *
+     * @param selectedFilter
+     */
+    applyAdvancedFilter(selectedFilter) {
+        this.setState({loading: true})
+        axios.get(`/api/filter/${selectedFilter}`, {
+            params: {
+                map: 1
+            }
+        }).then(response => {
+            let markers = this.filter.replace(response.data.data.observations)
+            this.setState({
+                markers,
+                loading: false
+            })
+        }).catch(error => {
+            this.setState({loading: false})
+            console.log(error)
+        })
+    }
+
+    filterCreated(filter) {
+        if (filter.filter) {
+            let filters        = this.state.filters.concat({
+                label: filter.filter.name,
+                value: filter.filter.id
+            })
+            let selectedFilter = filter.filter.id
+
+            this.setState({
+                filters,
+                selectedFilter
+            })
+        }
+
+        let markers = this.filter.replace(filter.observations)
+        this.setState({markers, showFiltersModal: false})
+    }
+
+    /**
      * search by plant name or username.
      *
-     * @param event
+     * @param searchTerm
      */
-    search(event) {
-        let term    = event.target.value
-        let markers = this.filter.search(term)
-        this.setState({markers, searchTerm: term})
+    search(searchTerm) {
+        let markers = this.filter.search(searchTerm)
+        this.setState({markers, searchTerm})
     }
 
     /**
@@ -278,16 +394,20 @@ export default class App extends Component {
 
     _renderBottomBar() {
         return (
-            <div className="horizontal-bar" id="horizontal-bar-container">
+            <div className={`horizontal-bar${this.state.markers.length === 0 ? ' hide-scroll-bar' : ''}`}
+                 id="horizontal-bar-container">
                 <a href="javascript:;" className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
                     <i className="fa fa-chevron-left"></i>
                 </a>
                 <div className="bar-items-container dragscroll"
                      id="horizontal-bar"
                      onScroll={this.setScrollState.bind(this)}>
-                    {this.state.markers.slice(0, 20).map((marker, index) => {
+                    {this.state.markers.slice(0, 40).map((marker, index) => {
                         return this._renderSubmission(marker, index)
                     })}
+                    {this.state.markers.length === 0 ?
+                        <p className="ml-1 mt-1 has-text-white">No results found. Try zooming out or moving the map to cover the locations you are interested in.</p>
+                        : null}
                 </div>
                 <a href="javascript:;" className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
                     <i className="fa fa-chevron-right"></i>
@@ -354,21 +474,19 @@ export default class App extends Component {
                 <p className="mb-0" style={{marginTop: -10}}>
                     <b>Found {this.state.markers.length} Observations</b>
                 </p>
-                <form action="#" method="get" className="mb-1" onSubmit={e => e.preventDefault()}>
-                    <p className="mb-0"><b>Filters</b></p>
-                    <div className="field">
-                        <p className="control has-icon has-icon-right">
-                            <input className="input"
-                                   type="search"
-                                   placeholder="Search"
-                                   value={this.state.searchTerm}
-                                   onChange={this.search.bind(this)}/>
-                            <span className="icon is-small">
-                                <i className="fa fa-search"></i>
-                            </span>
-                        </p>
-                    </div>
-                </form>
+                <div className="field">
+                    <label className="label">Filters</label>
+                    <p className="control has-icon has-icon-right">
+                        <input className="input"
+                               type="search"
+                               placeholder="Search"
+                               value={this.state.searchTerm}
+                               onChange={({target}) => this.search(target.value)}/>
+                        <span className="icon is-small">
+                            <i className="fa fa-search"></i>
+                        </span>
+                    </p>
+                </div>
 
                 <div className="field">
                     <div className="control">
@@ -381,10 +499,10 @@ export default class App extends Component {
                                        onClick={() => {
                                            this.changeCategory(category)
                                        }}>
-                                        <span className="icon">
+                                        <span>{category}</span>
+                                        <span className="icon is-pulled-right">
                                             <i className="fa fa-check"></i>
                                         </span>
-                                        <span>{category}</span>
                                     </a>
                                 )
                             })}
@@ -392,22 +510,61 @@ export default class App extends Component {
                     </div>
                 </div>
 
-                <div className="field">
-                    <div className="control">
-                        <span className="select is-full-width">
-                            <select>
-                                <option value={0}>Select Collection</option>
-                            </select>
-                        </span>
-                        <p className="help">
-                            You can create or add observations to a collection using the
-                            <span className="ml-0 mr-0 icon is-small"><i className="fa fa-star"></i></span> icon.
-                        </p>
+                {this.state.collections.length > 0 ?
+                    <div className="field">
+                        <label className="label">Collections</label>
+                        <div className="control">
+                            <span className="select is-full-width">
+                                <select value={this.state.selectedCollection}
+                                        onChange={({target}) => this.changeCollection(target.value)}>
+                                    <option value={0}>Select Collection</option>
+                                    {this.state.collections.map(collection => {
+                                        return (
+                                            <option value={parseInt(collection.value)}
+                                                    key={collection.value}>
+                                                {collection.label}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            </span>
+                            <p className="help">
+                                You can create or add observations to a collection using the
+                                <span className="ml-0 mr-0 icon is-small"><i className="fa fa-star"></i></span> icon.
+                            </p>
+                        </div>
                     </div>
-                </div>
+                    : null}
 
-                <p className="mb-0">
-                    <a href="javascript:;" className="button is-primary">Advanced Filters</a>
+                {this.state.filters.length > 0 ?
+                    <div className="field">
+                        <label className="label">Saved Advanced Filters</label>
+                        <div className="control">
+                            <span className="select is-full-width">
+                                <select value={this.state.selectedFilter}
+                                        onChange={({target}) => this.changeFilter(target.value)}>
+                                    <option value={0}>Select Saved Filter</option>
+                                    {this.state.filters.map(filter => {
+                                        return (
+                                            <option value={parseInt(filter.value)}
+                                                    key={filter.value}>
+                                                {filter.label}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            </span>
+                            <p className="help">
+                                You can save advanced filters by providing a label before applying the filters.
+                            </p>
+                        </div>
+                    </div>
+                    : null}
+
+                <p className="mt-1 has-text-centered">
+                    <a href="javascript:;" onClick={() => this.setState({showFiltersModal: true})}>
+                        Advanced Filters
+                    </a>
                 </p>
             </div>
         )
@@ -583,7 +740,7 @@ export default class App extends Component {
     render() {
         return (
             <div className={this.state.showSidebar ? 'sidebar-visible' : ''}>
-                <Navbar/>
+                <Navbar container={true}/>
 
                 {this._renderSidebar()}
 
@@ -604,8 +761,16 @@ export default class App extends Component {
                     Notice: For privacy reasons, the location of the trees displayed on this map have been altered.
                     To learn more, visit our <a href="/faq">Frequently Asked Questions</a> page.
                 </Disclaimer>
+
                 <Copyright />
+
                 <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
+
+                <AdvancedFiltersModal
+                    visible={this.state.showFiltersModal}
+                    onCloseRequest={() => this.setState({showFiltersModal: false})}
+                    onCreate={this.filterCreated.bind(this)}
+                    map={true}/>
             </div>
         )
     }

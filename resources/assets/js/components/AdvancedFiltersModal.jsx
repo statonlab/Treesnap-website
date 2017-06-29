@@ -42,10 +42,6 @@ export default class AdvancedFiltersModal extends Component {
     }
 
     componentWillMount() {
-        this.setState({
-            visible: this.props.visible
-        })
-
         axios.get('/observations/categories').then(response => {
             this.setState({
                 categories: response.data.data
@@ -77,7 +73,8 @@ export default class AdvancedFiltersModal extends Component {
                 city  : this.state.city,
                 county: this.state.county,
                 state : this.state.state
-            }
+            },
+            map             : this.props.map
         }).then(response => {
             this.setState({
                 loading: false,
@@ -336,6 +333,12 @@ export default class AdvancedFiltersModal extends Component {
 }
 
 AdvancedFiltersModal.PropTypes = {
+    visible       : PropTypes.bool.isRequired,
     onCloseRequest: PropTypes.func.isRequired,
-    onCreate      : PropTypes.func.isRequired
+    onCreate      : PropTypes.func.isRequired,
+    map           : PropTypes.bool
+}
+
+AdvancedFiltersModal.defaultProps = {
+    map: false
 }
