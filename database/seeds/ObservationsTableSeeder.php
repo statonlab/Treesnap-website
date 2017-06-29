@@ -29,7 +29,7 @@ class ObservationsTableSeeder extends Seeder
             ],
             'is_private' => false,
             'collection_date' => \Carbon\Carbon::now(),
-            'mobile_id' => ((int)\Carbon\Carbon::now()->format('dmYH')) + 1
+            'mobile_id' => 1
         ]);
 
         \App\Observation::create([
@@ -50,7 +50,7 @@ class ObservationsTableSeeder extends Seeder
             ],
             'is_private' => false,
             'collection_date' => \Carbon\Carbon::now(),
-            'mobile_id' => ((int)\Carbon\Carbon::now()->format('dmYH')) + 2
+            'mobile_id' => 2
         ]);
 
         // Another user with a private record
@@ -69,7 +69,7 @@ class ObservationsTableSeeder extends Seeder
             'fuzzy_coords' => $this->fuzzify(44.354388, -93.998237),
             'is_private' => true,
             'collection_date' => \Carbon\Carbon::now(),
-            'mobile_id' => ((int)\Carbon\Carbon::now()->format('dmYH')) + 3
+            'mobile_id' => 3
         ]);
     }
 

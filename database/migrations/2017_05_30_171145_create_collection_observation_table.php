@@ -16,8 +16,8 @@ class CreateCollectionObservationTable extends Migration
         //Pivot table between tree_list and observation
 
         Schema::create('collection_observation', function (Blueprint $table) {
-            $table->integer('collection_id');
-            $table->integer('observation_id');
+            $table->integer('collection_id')->unsigned();
+            $table->integer('observation_id')->unsigned();
         });
     }
 

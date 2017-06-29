@@ -14,9 +14,6 @@ class AddForeignKeysToCollectionUserTable extends Migration
     public function up()
     {
         Schema::table('collection_user', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->change();
-            $table->integer('collection_id')->unsigned()->change();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');
         });

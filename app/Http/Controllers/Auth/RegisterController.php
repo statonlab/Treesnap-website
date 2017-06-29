@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Role;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -69,25 +70,27 @@ class RegisterController extends Controller
 
         return Validator::make($data, $validator_array);
     }
+
     /**
      * Create a new user instance after a valid registration.
      *
      * @param  array $data
-     * @return User
+     * @return User|\Illuminate\Database\Eloquent\Model
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        $role = Role::where('name', 'User')->first();
+
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'birth_year' => $data['birth_year'],
             'api_token' => $this->generateAPIToken(),
             'zipcode' => $data['zipcode'],
-            'is_private' => false
+            'is_private' => false,
+            'role_id' => $role->id,
         ]);
-
-        return $user;
     }
 
     /**

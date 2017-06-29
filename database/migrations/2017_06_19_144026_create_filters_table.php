@@ -15,7 +15,7 @@ class CreateFiltersTable extends Migration
     {
         Schema::create('filters', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->unsignedInteger('user_id');
             $table->string('name')->nullable();
             $table->json('rules');
             $table->boolean('notify_user')->default(false);

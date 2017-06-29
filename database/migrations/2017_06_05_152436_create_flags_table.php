@@ -15,8 +15,8 @@ class CreateFlagsTable extends Migration
     {
         Schema::create('flags', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('observation_id');
-            $table->integer('user_id')->default(0);
+            $table->unsignedInteger('observation_id');
+            $table->unsignedInteger('user_id')->default(0);
             $table->string('reason');
             $table->text('comments')->nullable();
             $table->timestamps();
