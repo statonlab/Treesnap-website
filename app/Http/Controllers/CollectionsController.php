@@ -15,7 +15,7 @@ class CollectionsController extends Controller
      * Get list of collections user has access to (owned and shared)
      *
      * @param Request $request
-     * @param boolean $paired if true, data will be mapped to json object of label value
+     * @param boolean $paired if true, data will be mapped to json object of {label, value}
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request, $paired = false)

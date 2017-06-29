@@ -1,13 +1,27 @@
-export default class MarkersFilter {
+import Filters from './Filters'
+
+export default class MarkersFilter extends Filters {
     constructor(markers, categories) {
-        if(typeof categories === 'undefined') {
+        super()
+
+        if (typeof categories === 'undefined') {
             categories = []
         }
 
-        this._markers    = markers
-        this._searchTerm = ''
-        this._categories = categories
-        this._mapBounds  = null
+        this._searchTerm   = ''
+        this._markers      = markers
+        this._categories   = categories
+        this._mapBounds    = null
+        this._collectionID = 0
+    }
+
+    // ==============
+    // PUBLIC METHODS
+    // ==============
+
+    replace(markers) {
+        this._markers = markers
+        return this._filter()
     }
 
     setCategories(categories) {
@@ -29,13 +43,14 @@ export default class MarkersFilter {
         return this._filter()
     }
 
-    _category(marker) {
-        if (this._categories.length === 0) {
-            return false
-        }
-
-        return this._categories.indexOf(marker.category) !== -1
+    collections(id) {
+        this._collectionID = parseInt(id)
+        return this._filter()
     }
+
+    // ===============
+    // PRIVATE METHODS
+    // ===============
 
     _search(marker) {
         if (this._searchTerm.length === 0) {
@@ -53,6 +68,14 @@ export default class MarkersFilter {
         return false
     }
 
+    _category(marker) {
+        if (this._categories.length === 0) {
+            return false
+        }
+
+        return this._categories.indexOf(marker.category) !== -1
+    }
+
     _bounds(marker) {
         if (this._mapBounds === null) {
             return true
@@ -66,15 +89,22 @@ export default class MarkersFilter {
         return this._mapBounds.contains(pos)
     }
 
-    _contains(a, b) {
-        return a.trim().toLowerCase().indexOf(b.trim()) !== -1
+    _collection(marker) {
+        if (this._collectionID <= 0) {
+            return true
+        }
+
+        let collections = this._flatten(marker.collections)
+        return collections.indexOf(this._collectionID) !== -1
     }
+
 
     _filter() {
         return this._markers.filter(marker => {
             return this._bounds(marker)
                 && this._search(marker)
                 && this._category(marker)
+                && this._collection(marker)
         })
     }
 }

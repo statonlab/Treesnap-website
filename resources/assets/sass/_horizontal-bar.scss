@@ -52,6 +52,12 @@
   }
 }
 
+.hide-scroll-bar {
+  .bar-items-container::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .bar-items-container {
   @include flexbox();
   @include flex-wrap(nowrap);

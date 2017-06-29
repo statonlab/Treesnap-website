@@ -106,4 +106,52 @@ trait Observable
             'longitude' => $longitude / 10000,
         ];
     }
+
+    /**
+     * Create a response optimized for the map.
+     *
+     * @param $observations
+     * @param $isAdmin
+     * @return mixed
+     */
+    protected function prepForMap($observations, $isAdmin)
+    {
+        return $observations->map(function ($observation) use ($isAdmin) {
+            $flattenedImages = [];
+            foreach ($observation->images as $images) {
+                foreach ($images as $image) {
+                    $flattenedImages[] = $image;
+                }
+            }
+
+            if (empty($observation->fuzzy_coords)) {
+                $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
+            }
+
+            $user = $observation->user;
+            $username = $user->is_ananymous && ! $isAdmin ? 'Anonymous' : $user->name;
+
+            $title = $observation->observation_category;
+            $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
+
+            return [
+                'id' => $observation->id,
+                'title' => $title,
+                'category' => $observation->observation_category,
+                'images' => $flattenedImages,
+                'position' => [
+                    'latitude' => $isAdmin ? $observation->latitude : $observation->fuzzy_coords['latitude'],
+                    'longitude' => $isAdmin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
+                    'address' => $isAdmin ? $observation->address : [],
+                    'accuracy' => $observation->location_accuracy,
+                ],
+                'owner' => $username,
+                'date' => $observation->collection_date->toDateString(),
+                'data' => $observation->data,
+                'ref' => null,
+                'collections' => $observation->collections ?: [],
+                'flags' => $observation->flags ?: [],
+            ];
+        });
+    }
 }

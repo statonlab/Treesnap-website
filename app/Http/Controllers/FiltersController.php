@@ -30,7 +30,12 @@ class FiltersController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->success($request->user()->filters);
+        $user = $request->user();
+        if (! $user) {
+            return $this->unauthorized();
+        }
+
+        return $this->success($user->filters);
     }
 
     /**
@@ -70,7 +75,7 @@ class FiltersController extends Controller
         $user = $request->user();
 
         // Save the filter if a name is provided
-        if (! empty($request->name)) {
+        if ($user && ! empty($request->name)) {
             $filter = Filter::create([
                 'user_id' => $user->id,
                 'name' => $request->name,
@@ -104,7 +109,18 @@ class FiltersController extends Controller
 
         $filtered = $this->apply($filters);
 
-        $filtered->chunk(200, function ($observations) use (&$all, $isAdmin, $user) {
+        if (! empty($request->map) && $request->map) {
+            return $this->prepForMap($filtered->get()->load([
+                'flags' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+                'collections' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+            ]), $isAdmin);
+        }
+
+        $filtered->chunk(1000, function ($observations) use (&$all, $isAdmin, $user) {
             $observations->load([
                 'confirmations' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
@@ -275,6 +291,9 @@ class FiltersController extends Controller
         }
 
         $cache_key = "filtered_observations_{$filter->id}";
+        if (! empty($request->map) && $request->map) {
+            $cache_key .= '_map';
+        }
 
         return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($request, $filter) {
             return $this->getFilteredObservations($request, $filter->rules);

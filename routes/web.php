@@ -55,6 +55,7 @@ Route::post('/user/subscribe', 'UsersController@subscribe');
 
 // Filters
 Route::post('/api/filter/count', 'FiltersController@count');
+Route::post('/api/filters', 'FiltersController@create');
 Route::get('/api/filters', 'FiltersController@index');
 
 // CSRF
@@ -63,7 +64,6 @@ Route::get('/api/_token', 'CSRFController@index');
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
     // Filters
-    Route::post('/api/filters', 'FiltersController@create');
     Route::delete('/api/filter/{id}', 'FiltersController@delete');
     Route::get('/api/filter/{id}', 'FiltersController@show');
 
