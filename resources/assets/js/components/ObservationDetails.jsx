@@ -70,7 +70,6 @@ export default class ObservationDetails extends Component {
                 <img
                     src={item.original}
                     alt="Plant Image"
-                    style={{maxHeight: window.innerHeight * .9, width: 'auto'}}
                 />
             </div>
         )

@@ -99,7 +99,10 @@ a.box {
   margin: 0 auto;
   text-align: center;
   img {
-    max-height: 800px;
+    max-height: 100vh;
+    max-width: 100%;
+    width: auto!important;
+    height: auto!important;
   }
 }
 

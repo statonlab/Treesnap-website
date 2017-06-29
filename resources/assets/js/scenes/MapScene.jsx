@@ -700,7 +700,6 @@ export default class App extends Component {
                 <img
                     src={item.original}
                     alt="Plant Image"
-                    style={{height: window.innerHeight * .9, width: 'auto'}}
                 />
             </div>
         )
