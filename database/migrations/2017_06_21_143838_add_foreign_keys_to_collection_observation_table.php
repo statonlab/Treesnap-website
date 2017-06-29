@@ -14,9 +14,6 @@ class AddForeignKeysToCollectionObservationTable extends Migration
     public function up()
     {
         Schema::table('collection_observation', function (Blueprint $table) {
-            $table->integer('observation_id')->unsigned()->change();
-            $table->integer('collection_id')->unsigned()->change();
-
             $table->foreign('observation_id')->references('id')->on('observations')->onDelete('cascade');
             $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');
         });

@@ -14,9 +14,6 @@ class AddForeignKeysToGroupUserTable extends Migration
     public function up()
     {
         Schema::table('group_user', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->change();
-            $table->integer('group_id')->unsigned()->change();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });

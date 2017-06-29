@@ -25,16 +25,30 @@ class MapController extends Controller
         return $this->success($this->prepForMap($observations, $isAdmin));
     }
 
+    /**
+     * If observations exist in cache, retrieve them. Otherwise, rerun the DB query.
+     *
+     * @param $isAdmin
+     * @param $user
+     * @return mixed
+     */
     public function getCachedObservations($isAdmin, $user)
     {
-        $cache_key = "map_observations_";
-        $cache_key .= $isAdmin ? 1 : 0;
+        $cache_key = "map_ready_observations_";
+        $cache_key .= $user ? $user->id : 'guest';
 
-        return Cache::tags(['observations'])->remember($cache_key, 60 * 24 * 356, function () use ($user, $isAdmin) {
+        return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($user, $isAdmin) {
             return $this->getObservationsFromDB($user, $isAdmin);
         });
     }
 
+    /**
+     * Query the database for observations.
+     *
+     * @param $user
+     * @param $isAdmin
+     * @return $this|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|static|static[]
+     */
     public function getObservationsFromDB($user, $isAdmin)
     {
         $observations = Observation::with('user');
@@ -43,7 +57,7 @@ class MapController extends Controller
             $observations = $observations->where('is_private', false);
         }
 
-        $observations = $observations->get();
+        $observations = $observations->orderBy('observations.id', 'desc')->get();
 
         if ($user) {
             $observations->load([

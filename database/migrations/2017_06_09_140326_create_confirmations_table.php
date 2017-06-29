@@ -15,8 +15,8 @@ class CreateConfirmationsTable extends Migration
     {
         Schema::create('confirmations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('observation_id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('observation_id');
             $table->boolean('correct');
             $table->timestamps();
         });

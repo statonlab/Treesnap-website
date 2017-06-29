@@ -211,14 +211,14 @@ export default class App extends Component {
      * @param index
      * @returns {XML}
      */
-    _renderSubmission(marker, index) {
+    _renderSubmission(marker) {
         let image = marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png'
         return (
             <a href="javascript:;"
                role="button"
                className="bar-item"
                style={{backgroundImage: `url(${image})`}}
-               key={index}
+               key={`marker_${marker.id}`}
                onClick={() => {
                    this.setState({
                        selectedMarker: marker,
@@ -631,17 +631,22 @@ export default class App extends Component {
                 </div>
                 <div className="sidebar-icons-container">
                     <div className="card-footer">
-                        <a href="javascript:;" className="sidebar-icon" onClick={() => {
-                            this.setState({galleryImages: marker.images})
-                            this.modal.open()
-                        }}>
+                        <a href="javascript:;"
+                           className="flex-column"
+                           onClick={() => {
+                               this.setState({galleryImages: marker.images})
+                               this.modal.open()
+                           }}>
                             <i className="fa fa-picture-o"></i>
+                            <span className="help">Images</span>
                         </a>
-                        <a href="javascript:;">
+                        <a href="javascript:;" className="flex-column">
                             <i className="fa fa-star"></i>
+                            <span className="help">Save</span>
                         </a>
-                        <a href="javascript:;">
+                        <a href="javascript:;" className="flex-column">
                             <i className="fa fa-flag"></i>
+                            <span className="help">Flag</span>
                         </a>
                     </div>
                 </div>
