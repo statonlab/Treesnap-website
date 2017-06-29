@@ -88,6 +88,7 @@ a.box {
 }
 
 .image-slider {
+  overflow: hidden;
   img {
     width: 100%;
     height: auto;
