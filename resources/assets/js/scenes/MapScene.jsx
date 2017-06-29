@@ -410,7 +410,7 @@ export default class App extends Component {
                 <div className="bar-items-container dragscroll"
                      id="horizontal-bar"
                      onScroll={this.setScrollState.bind(this)}>
-                    {this.state.markers.slice(0, 40).map((marker, index) => {
+                    {this.state.markers.slice(0, 20).map((marker, index) => {
                         return this._renderSubmission(marker, index)
                     })}
                     {this.state.markers.length === 0 ?
