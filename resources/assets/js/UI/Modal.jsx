@@ -26,11 +26,13 @@ export default class Modal extends Component {
     render() {
         return (
             <div className={`modal${this.state.open ? ' is-active' : ''}`}>
+                <button className="close-modal" onClick={this.close.bind(this)} style={{zIndex: 999999}}>
+                    <i className="fa fa-times"></i>
+                </button>
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
-                <div className="modal-content image-slider" style={{width: '100%', maxWidth: '700px', maxHeight: 'auto'}}>
+                <div className="modal-content image-slider" style={{width: '100%', maxWidth: '700px'}}>
                     {this.props.children}
                 </div>
-                <button className="modal-close" onClick={this.close.bind(this)}></button>
             </div>
         )
     }
