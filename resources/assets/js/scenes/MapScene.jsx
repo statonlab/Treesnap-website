@@ -149,6 +149,11 @@ export default class App extends Component {
         axios.get('/collections/1').then(response => {
             this.setState({collections: response.data.data})
         }).catch(error => {
+            if (error.response && error.response.status === 401) {
+                // Ignore unauthenticated error
+                return
+            }
+
             console.log(error.response)
         })
     }
@@ -167,6 +172,11 @@ export default class App extends Component {
 
             this.setState({filters})
         }).catch(error => {
+            if (error.response && error.response.status === 401) {
+                // Ignore unauthenticated error
+                return
+            }
+
             console.log(error.response)
         })
     }
@@ -198,24 +208,22 @@ export default class App extends Component {
     _renderSubmission(marker, index) {
         let image = marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png'
         return (
-            <a
-                href="javascript:;"
-                role="button"
-                className="bar-item"
-                style={{backgroundImage: `url(${image})`}}
-                key={index}
-                onClick={() => {
-                    this.setState({
-                        selectedMarker: marker,
-                        showFilters   : false
-                    })
-                    this.openSidebar()
-                    this.goToSubmission.call(this, marker, 18)
-                    if (marker.ref !== null) {
-                        marker.ref.openCallout()
-                    }
-                }}
-            >
+            <a href="javascript:;"
+               role="button"
+               className="bar-item"
+               style={{backgroundImage: `url(${image})`}}
+               key={index}
+               onClick={() => {
+                   this.setState({
+                       selectedMarker: marker,
+                       showFilters   : false
+                   })
+                   this.openSidebar()
+                   this.goToSubmission.call(this, marker, 18)
+                   if (marker.ref !== null) {
+                       marker.ref.openCallout()
+                   }
+               }}>
                 <div className="bar-item-field">
                     <strong style={{color: '#fff'}}>{marker.title}</strong>
                     <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>

@@ -101,7 +101,10 @@ class FiltersController extends Controller
     {
         $all = [];
         $user = $request->user();
-        $isAdmin = $user->isAdmin() || $user->isScientist();
+        $isAdmin = false;
+        if ($user) {
+            $isAdmin = $user->isAdmin() || $user->isScientist();
+        }
 
         if (! $filters) {
             $filters = $request->all();
@@ -110,14 +113,20 @@ class FiltersController extends Controller
         $filtered = $this->apply($filters);
 
         if (! empty($request->map) && $request->map) {
-            return $this->prepForMap($filtered->get()->load([
-                'flags' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                },
-                'collections' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                },
-            ]), $isAdmin);
+            if ($user) {
+                $filtered = $filtered->get()->load([
+                    'flags' => function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    },
+                    'collections' => function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    },
+                ]);
+            } else {
+                $filtered = $filtered->get();
+            }
+
+            return $this->prepForMap($filtered, $isAdmin);
         }
 
         $filtered->chunk(1000, function ($observations) use (&$all, $isAdmin, $user) {
