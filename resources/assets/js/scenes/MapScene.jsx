@@ -1,7 +1,3 @@
-/**
- * TreeSnap Map
- */
-// Bootstrap Everything (loads dash and a configured axios)
 import 'dragscroll'
 import React, {Component} from 'react'
 import Sidebar from '../components/Sidebar'
@@ -144,8 +140,13 @@ export default class App extends Component {
 
     /**
      * Get available collections from the server.
+     * Logged in users only.
      */
     loadCollections() {
+        if (!window.Laravel.isLoggedIn) {
+            return
+        }
+
         axios.get('/collections/1').then(response => {
             this.setState({collections: response.data.data})
         }).catch(error => {
@@ -160,8 +161,13 @@ export default class App extends Component {
 
     /**
      * Get available filters from the server.
+     * Logged in users only.
      */
     loadFilters() {
+        if (!window.Laravel.isLoggedIn) {
+            return
+        }
+
         axios.get('/api/filters').then(response => {
             let filters = response.data.data.map(filter => {
                 return {
@@ -402,13 +408,13 @@ export default class App extends Component {
 
     _renderBottomBar() {
         return (
-            <div className={`horizontal-bar${this.state.markers.length === 0 ? ' hide-scroll-bar' : ''}`}
-                 id="horizontal-bar-container">
+            <div className="horizontal-bar" id="horizontal-bar-container">
                 <a href="javascript:;" className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
                     <i className="fa fa-chevron-left"></i>
                 </a>
                 <div className="bar-items-container dragscroll"
                      id="horizontal-bar"
+                     style={{overflowX: this.state.markers.length === 0 ? 'hidden' : 'scroll'}}
                      onScroll={this.setScrollState.bind(this)}>
                     {this.state.markers.slice(0, 20).map((marker, index) => {
                         return this._renderSubmission(marker, index)
@@ -610,7 +616,7 @@ export default class App extends Component {
         return (
             <div>
                 <div className="sidebar-img"
-                     style={{backgroundImage: marker.images.length > 0 ? `url('${marker.images[0]}')` : `url("//${window.location.hostname}/images/placeholder.png")`}}>
+                     style={{backgroundImage: marker.images.length > 0 ? `url('${marker.images[0]}')` : `url('/images/placeholder.png')`}}>
                     <a href="javascript:;"
                        className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
                        onClick={() => {
