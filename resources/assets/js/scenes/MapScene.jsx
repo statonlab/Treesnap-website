@@ -499,10 +499,10 @@ export default class App extends Component {
                                        onClick={() => {
                                            this.changeCategory(category)
                                        }}>
-                                        <span>{category}</span>
-                                        <span className="icon is-pulled-right">
+                                        <span className="icon mr-0">
                                             <i className="fa fa-check"></i>
                                         </span>
+                                        <span>{category}</span>
                                     </a>
                                 )
                             })}
