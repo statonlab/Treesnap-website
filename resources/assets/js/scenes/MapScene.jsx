@@ -714,7 +714,7 @@ export default class App extends Component {
     _renderImagesModal() {
         if (this.state.galleryImages.length === 0) {
             return (
-                <Modal ref={ref => this.modal = ref}/>
+                <Modal ref={ref => this.modal = ref} large={true}/>
             )
         }
 
