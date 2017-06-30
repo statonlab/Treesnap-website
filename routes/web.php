@@ -47,25 +47,28 @@ Route::get('/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
 
 // Map
-Route::get('/api/map', 'MapController@index');
+Route::get('/web/map', 'MapController@index');
 
 // Users
 Route::get('/user/status', 'UsersController@status');
 Route::post('/user/subscribe', 'UsersController@subscribe');
 
 // Filters
-Route::post('/api/filter/count', 'FiltersController@count');
-Route::post('/api/filters', 'FiltersController@create');
-Route::get('/api/filters', 'FiltersController@index');
+Route::post('/web/filter/count', 'FiltersController@count');
+Route::post('/web/filters', 'FiltersController@create');
+Route::get('/web/filters', 'FiltersController@index');
 
 // CSRF
-Route::get('/api/_token', 'CSRFController@index');
+Route::get('/web/_token', 'CSRFController@index');
 
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
+    // Observations
+    Route::delete('/web/observation/{id}', 'ObservationsController@delete');
+
     // Filters
-    Route::delete('/api/filter/{id}', 'FiltersController@delete');
-    Route::get('/api/filter/{id}', 'FiltersController@show');
+    Route::delete('/web/filter/{id}', 'FiltersController@delete');
+    Route::get('/web/filter/{id}', 'FiltersController@show');
 
     // Users controller
     Route::get('/user', 'UsersController@show');
@@ -93,23 +96,23 @@ Route::group(['middleware' => ['auth']], function () {
 // Admin Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['admin']], function () {
     // Users
-    Route::get('/api/users', 'UsersController@index');
-    Route::get('/api/user/{id}', 'UsersController@show');
-    Route::put('/api/user/{id}', 'UsersController@update');
+    Route::get('/web/users', 'UsersController@index');
+    Route::get('/web/user/{id}', 'UsersController@show');
+    Route::put('/web/user/{id}', 'UsersController@update');
 
     // Groups
-    Route::get('/api/groups', 'GroupsController@index');
-    Route::post('/api/groups', 'GroupsController@create');
-    Route::get('/api/group/{id}', 'GroupsController@show');
-    Route::delete('/api/group/detach', 'GroupsController@detach');
-    Route::post('/api/group/attach', 'GroupsController@attach');
-    Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
+    Route::get('/web/groups', 'GroupsController@index');
+    Route::post('/web/groups', 'GroupsController@create');
+    Route::get('/web/group/{id}', 'GroupsController@show');
+    Route::delete('/web/group/detach', 'GroupsController@detach');
+    Route::post('/web/group/attach', 'GroupsController@attach');
+    Route::get('/web/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
     // Roles
-    Route::get('/api/roles', 'RolesController@index');
+    Route::get('/web/roles', 'RolesController@index');
 
     // Flags
-    Route::get('/api/flags', 'FlagsController@index');
+    Route::get('/web/flags', 'FlagsController@index');
 
     // Cache
     Route::get('/clear-cache', 'CacheController@clearCache');
@@ -118,31 +121,31 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 // Admin or Scientist Only Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['scientist']], function () {
     // Groups
-    Route::get('/api/groups', 'GroupsController@index');
-    Route::post('/api/groups', 'GroupsController@create');
-    Route::get('/api/group/{id}', 'GroupsController@show');
-    Route::delete('/api/group/detach', 'GroupsController@detach');
-    Route::post('/api/group/attach', 'GroupsController@attach');
-    Route::get('/api/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
+    Route::get('/web/groups', 'GroupsController@index');
+    Route::post('/web/groups', 'GroupsController@create');
+    Route::get('/web/group/{id}', 'GroupsController@show');
+    Route::delete('/web/group/detach', 'GroupsController@detach');
+    Route::post('/web/group/attach', 'GroupsController@attach');
+    Route::get('/web/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
     // Contact Controller
-    Route::post('/api/contact/user', 'ContactController@contactUser');
+    Route::post('/web/contact/user', 'ContactController@contactUser');
 
     // Confirmations Controller
-    Route::get('/api/confirmations', 'ConfirmationsController@index');
-    Route::post('/api/confirmations', 'ConfirmationsController@create');
-    Route::get('/api/confirmations/count/{id}', 'ConfirmationsController@count');
-    Route::delete('/api/confirmation/{id}', 'ConfirmationsController@delete');
+    Route::get('/web/confirmations', 'ConfirmationsController@index');
+    Route::post('/web/confirmations', 'ConfirmationsController@create');
+    Route::get('/web/confirmations/count/{id}', 'ConfirmationsController@count');
+    Route::delete('/web/confirmation/{id}', 'ConfirmationsController@delete');
 
     // Curations Controller
-    Route::get('/api/curate/observations/{limit?}', 'CurationsController@index');
+    Route::get('/web/curate/observations/{limit?}', 'CurationsController@index');
 
     // Analytics
-    Route::get('/api/analytics/users/count', 'AnalyticsController@usersCount');
-    Route::get('/api/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');
-    Route::get('/api/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
-    Route::get('/api/analytics/observations/count', 'AnalyticsController@observationsCount');
-    Route::get('/api/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
+    Route::get('/web/analytics/users/count', 'AnalyticsController@usersCount');
+    Route::get('/web/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');
+    Route::get('/web/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
+    Route::get('/web/analytics/observations/count', 'AnalyticsController@observationsCount');
+    Route::get('/web/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);

@@ -61,7 +61,7 @@ export default class ObservationCard extends Component {
     loadMarks() {
         let id = this.props.observation.observation_id
 
-        axios.get(`/admin/api/confirmations/count/${id}`).then(response => {
+        axios.get(`/admin/web/confirmations/count/${id}`).then(response => {
             let data = response.data.data
             this.setState({
                 correctMarks  : data.correct,
@@ -311,7 +311,7 @@ export default class ObservationCard extends Component {
             }
         }
 
-        axios.post('/admin/api/confirmations', {
+        axios.post('/admin/web/confirmations', {
             observation_id: observation.observation_id,
             correct
         }).then(response => {
@@ -350,7 +350,7 @@ export default class ObservationCard extends Component {
             }
         })
 
-        axios.delete(`/admin/api/confirmation/${confirmation.id}`).then(response => {
+        axios.delete(`/admin/web/confirmation/${confirmation.id}`).then(response => {
             //
         }).catch(error => {
             console.log(error.response)

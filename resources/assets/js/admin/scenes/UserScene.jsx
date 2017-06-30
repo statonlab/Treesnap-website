@@ -43,7 +43,7 @@ export default class UserScene extends Component {
      * Get all available roles
      */
     getRoles() {
-        axios.get('/admin/api/roles').then(response => {
+        axios.get('/admin/web/roles').then(response => {
             let roles = response.data.data
             this.setState({roles})
         }).catch(error => {
@@ -56,7 +56,7 @@ export default class UserScene extends Component {
      */
     getUser() {
         // Get the user
-        axios.get(`/admin/api/user/${this.props.match.params.id}`).then(response => {
+        axios.get(`/admin/web/user/${this.props.match.params.id}`).then(response => {
             let data = response.data.data
 
             let user = this._userObject(data.user)
@@ -113,7 +113,7 @@ export default class UserScene extends Component {
      */
     getGroups() {
         // Get all available groups
-        return axios.get('/admin/api/groups').then(response => {
+        return axios.get('/admin/web/groups').then(response => {
             let data   = response.data.data
             let groups = []
 
@@ -534,7 +534,7 @@ export default class UserScene extends Component {
             groups.push(group.value)
         })
 
-        axios.put(`/admin/api/user/${this.props.match.params.id}`, {
+        axios.put(`/admin/web/user/${this.props.match.params.id}`, {
             name        : this.state.name,
             email       : this.state.email,
             class       : this.state.class,

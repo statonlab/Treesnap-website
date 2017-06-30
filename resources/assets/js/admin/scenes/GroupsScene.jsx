@@ -21,7 +21,7 @@ export default class GroupsScene extends Component {
      */
     componentWillMount() {
         this.setState({loading: true})
-        axios.get('/admin/api/groups').then(response => {
+        axios.get('/admin/web/groups').then(response => {
             this.setState({groups: response.data.data, loading: false})
         }).catch(error => {
             console.log(error)
@@ -113,7 +113,7 @@ export default class GroupsScene extends Component {
      */
     submit(e) {
         e.preventDefault()
-        axios.post('/admin/api/groups', {
+        axios.post('/admin/web/groups', {
             name: this.state.name
         }).then(response => {
             let data   = response.data.data

@@ -14,7 +14,7 @@ window.axios.defaults.headers.common = {
 }
 
 window.Laravel.renewToken = () => {
-    axios.get('/api/_token').then(response => {
+    axios.get('/web/_token').then(response => {
         window.Laravel.csrfToken             = response.data.data
         window.axios.defaults.headers.common = {
             'X-CSRF-TOKEN'    : window.Laravel.csrfToken,

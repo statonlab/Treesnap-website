@@ -16,7 +16,7 @@ export default class UsersScene extends Component {
     }
 
     componentWillMount() {
-        axios.get('/admin/api/users').then(response => {
+        axios.get('/admin/web/users').then(response => {
             this.setState({users: response.data.data})
         }).catch(error => {
             console.log(error)

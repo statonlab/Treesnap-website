@@ -13,13 +13,13 @@ export default class DashboardScene extends Component {
 
                 <div className="columns is-desktop">
                     <div className="column">
-                        <InfoBox title="Registered Users" icon="fa-users" url="/admin/api/analytics/users/count"/>
+                        <InfoBox title="Registered Users" icon="fa-users" url="/admin/web/analytics/users/count"/>
                     </div>
                     <div className="column">
-                        <InfoBox title="Recorded Observations" icon="fa-users" url="/admin/api/analytics/observations/count"/>
+                        <InfoBox title="Recorded Observations" icon="fa-users" url="/admin/web/analytics/observations/count"/>
                     </div>
                     <div className="column">
-                        <InfoBox title="Trained Users" icon="fa-users" url="/admin/api/analytics/users/trained/percentage"/>
+                        <InfoBox title="Trained Users" icon="fa-users" url="/admin/web/analytics/users/trained/percentage"/>
                     </div>
                 </div>
 
@@ -27,7 +27,7 @@ export default class DashboardScene extends Component {
                     <div className="column is-6-desktop">
                         <div className="box is-full-height">
                             <h4 className="title is-5">Observations Distribution</h4>
-                            <DoughnutChart url="/admin/api/analytics/observations/distribution"/>
+                            <DoughnutChart url="/admin/web/analytics/observations/distribution"/>
                         </div>
                     </div>
                     <div className="column is-6-desktop">

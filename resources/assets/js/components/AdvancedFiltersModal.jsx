@@ -61,7 +61,7 @@ export default class AdvancedFiltersModal extends Component {
         e.preventDefault()
 
         this.setState({loading: true})
-        axios.post('/api/filters', {
+        axios.post('/web/filters', {
             name            : this.state.filterName,
             categories      : this.state.selectedCategories,
             ash             : this.state.ash,
@@ -104,7 +104,7 @@ export default class AdvancedFiltersModal extends Component {
             [key]  : changed[key]
         })
 
-        axios.post('/api/filter/count', {
+        axios.post('/web/filter/count', {
             categories      : filters.selectedCategories,
             ash             : filters.ash,
             americanChestnut: filters.americanChestnut,

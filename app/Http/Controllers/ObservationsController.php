@@ -6,8 +6,9 @@ use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Illuminate\Http\Request;
+use App\Events\ObservationDeleted;
 use Cache;
-use Illuminate\Validation\Rule;
+use Storage;
 
 class ObservationsController extends Controller
 {
@@ -170,5 +171,48 @@ class ObservationsController extends Controller
     public function getCategories()
     {
         return $this->success($this->observation_categories);
+    }
+
+    /**
+     * Delete observations.
+     * Admin and owner only can delete observations.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete($id, Request $request)
+    {
+        $user = $request->user();
+        $isAdmin = $user->isAdmin();
+
+        // Make sure the user is deleting a record that they own
+        $observation = Observation::where('id', $id)->first();
+
+        if (! $observation) {
+            return $this->notFound('The observation you requested was not found.');
+        }
+
+        if (!$isAdmin || $observation->user_id != $user->id) {
+            return $this->unauthorized();
+        }
+
+        // Delete All Images
+        foreach ($observation->images as $images) {
+            foreach ($images as $image) {
+                $image = str_replace('/storage/', 'public/', $image);
+                $image = trim($image, '/');
+                if (Storage::exists($image)) {
+                    Storage::delete($image);
+                }
+            }
+        }
+
+        $observation->delete();
+
+        // Broadcast that an observation has been deleted
+        event(new ObservationDeleted());
+
+        return $this->success('Observation has been deleted successfully');
     }
 }
