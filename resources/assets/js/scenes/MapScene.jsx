@@ -13,6 +13,7 @@ import MarkersFilter from '../helpers/MarkersFilter'
 import Labels from '../helpers/Labels'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import {Link} from 'react-router-dom'
+import Notify from '../components/Notify'
 
 export default class App extends Component {
     constructor(props) {
@@ -291,6 +292,7 @@ export default class App extends Component {
             this.applyAdvancedFilter(selectedFilter)
         } else {
             this.loadObservations()
+            Notify.push('Advanced filters removed.')
         }
     }
 
@@ -306,32 +308,40 @@ export default class App extends Component {
                 map: 1
             }
         }).then(response => {
-            let markers = this.filter.replace(response.data.data.observations)
+            let {observations, filter} = response.data.data
+            let markers                = this.filter.replace(observations)
             this.setState({
                 markers,
                 loading: false
             })
+            if (filter) {
+                Notify.push(`Filter "${filter.name}" has been applied.`)
+            }
         }).catch(error => {
             this.setState({loading: false})
             console.log(error)
         })
     }
 
-    filterCreated(filter) {
-        if (filter.filter) {
+    filterCreated(data) {
+        if (data.filter) {
             let filters        = this.state.filters.concat({
-                label: filter.filter.name,
-                value: filter.filter.id
+                label: data.filter.name,
+                value: data.filter.id
             })
-            let selectedFilter = filter.filter.id
+            let selectedFilter = data.filter.id
 
             this.setState({
                 filters,
                 selectedFilter
             })
+
+            Notify.push(`Filter "${data.filter.name}" has been created and applied.`)
+        } else {
+            Notify.push('Advanced filters applied.')
         }
 
-        let markers = this.filter.replace(filter.observations)
+        let markers = this.filter.replace(data.observations)
         this.setState({markers, showFiltersModal: false})
     }
 
@@ -719,9 +729,8 @@ export default class App extends Component {
     _renderImage(item) {
         return (
             <div className={`image-gallery-image${this.state.galleryImages.length > 1 ? ' show-scroll' : ''}`}>
-                <img
-                    src={item.original}
-                    alt="Plant Image"
+                <img src={item.original}
+                     alt="Plant Image"
                 />
             </div>
         )

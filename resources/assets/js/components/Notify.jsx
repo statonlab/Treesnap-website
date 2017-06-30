@@ -24,11 +24,6 @@ export default class Notify extends Component {
         }, 100)
     }
 
-    static _remove() {
-        document.body.removeChild(this.stack[0])
-        this.stack.shift()
-    }
-
     hide() {
         this.setState({hiding: true})
         clearTimeout(this.timer)
@@ -57,6 +52,12 @@ export default class Notify extends Component {
                 {this.props.message}
             </div>
         )
+    }
+
+    static _remove() {
+        if (this.stack && this.stack.length > 0) {
+            document.body.removeChild(this.stack.shift())
+        }
     }
 
     static push(message, type = 'success') {
