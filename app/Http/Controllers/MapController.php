@@ -22,7 +22,7 @@ class MapController extends Controller
 
         $observations = $this->getCachedObservations($isAdmin, $user);
 
-        return $this->success($this->prepForMap($observations, $isAdmin));
+        return $this->success($observations);
     }
 
     /**
@@ -70,6 +70,6 @@ class MapController extends Controller
             ]);
         }
 
-        return $observations;
+        return $this->prepForMap($observations, $isAdmin);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Events\ObservationCreated;
+use App\Events\ObservationDeleted;
 use App\Http\Controllers\Traits\Observable;
 use App\Observation;
 use Carbon\Carbon;
@@ -93,6 +94,9 @@ class ObservationsController extends Controller
         }
 
         $observation->delete();
+
+        // Broadcast that an observation has been deleted
+        event(new ObservationDeleted());
 
         return $this->success('Observation has been deleted successfully');
     }

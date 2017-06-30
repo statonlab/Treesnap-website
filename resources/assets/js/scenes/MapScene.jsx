@@ -12,6 +12,7 @@ import Disclaimer from '../components/Disclaimer'
 import MarkersFilter from '../helpers/MarkersFilter'
 import Labels from '../helpers/Labels'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
+import {Link} from 'react-router-dom'
 
 export default class App extends Component {
     constructor(props) {
@@ -669,6 +670,11 @@ export default class App extends Component {
                             </div>
                         )
                     })}
+
+                    <div className="sidebar-item">
+                        <h5><strong>Observation Page</strong></h5>
+                        <p className="ml-1"><Link to={`/observation/${marker.id}`}>Visit Observation Page</Link></p>
+                    </div>
                 </div>
             </div>
         )
@@ -687,9 +693,14 @@ export default class App extends Component {
                onClick={() => {
                    this.setState({
                        selectedMarker: null,
-                       showFilters   : !this.state.showFilters,
-                       showSidebar   : !this.state.showFilters
+                       showFilters   : !this.state.showFilters
                    })
+
+                   if (this.state.showFilters) {
+                       this.closeSidebar()
+                   } else {
+                       this.openSidebar()
+                   }
                }}>
                 <span className="icon">
                     <i className="fa fa-filter"></i>
