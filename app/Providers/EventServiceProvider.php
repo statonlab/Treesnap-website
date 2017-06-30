@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Listeners\AddAddressToObservation;
+use App\Listeners\ClearObservationsCache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -14,8 +16,11 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\ObservationCreated' => [
-            \App\Listeners\AddAddressToObservation::class,
-            \App\Listeners\ClearObservationsCache::class,
+            AddAddressToObservation::class,
+            ClearObservationsCache::class,
+        ],
+        'App\Events\ObservationDeleted' => [
+            ClearObservationsCache::class,
         ],
     ];
 
