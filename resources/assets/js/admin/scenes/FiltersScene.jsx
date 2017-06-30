@@ -14,7 +14,7 @@ export default class UsersScene extends Component {
     }
 
     componentWillMount() {
-        axios.get('/api/filters').then(response => {
+        axios.get('/web/filters').then(response => {
             this.setState({
                 loading: false,
                 filters: response.data.data
@@ -31,7 +31,7 @@ export default class UsersScene extends Component {
             return
         }
 
-        axios.delete(`/api/filter/${filter.id}`).then(response => {
+        axios.delete(`/web/filter/${filter.id}`).then(response => {
             let filters = this.state.filters.filter(oldFilter => {
                 return filter.id !== oldFilter.id
             })

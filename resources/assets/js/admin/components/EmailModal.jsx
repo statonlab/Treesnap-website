@@ -94,7 +94,7 @@ export default class EmailModal extends Component {
         console.log('clicked!')
 
         this.setState({loading: true})
-        axios.post('/admin/api/contact/user', {
+        axios.post('/admin/web/contact/user', {
             recipient          : this.state.to.user_id,
             from               : this.state.from,
             observation_id     : this.state.observation.observation_id,

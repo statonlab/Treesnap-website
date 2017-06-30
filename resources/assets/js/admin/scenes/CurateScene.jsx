@@ -48,7 +48,7 @@ export default class CurateScene extends Component {
             state = this.state
         }
 
-        axios.get(`/admin/api/curate/observations/${state.perPage}`, {
+        axios.get(`/admin/web/curate/observations/${state.perPage}`, {
             params: {
                 page    : state.page,
                 search  : state.search,

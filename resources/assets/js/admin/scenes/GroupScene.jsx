@@ -27,7 +27,7 @@ export default class GroupScene extends Component {
      * Get group info and users
      */
     getGroup() {
-        axios.get(`/admin/api/group/${this.props.match.params.id}`).then(response => {
+        axios.get(`/admin/web/group/${this.props.match.params.id}`).then(response => {
             let data = response.data.data
 
             this.setState({
@@ -48,7 +48,7 @@ export default class GroupScene extends Component {
     getUsers(term) {
         let id = this.props.match.params.id
 
-        return axios.get(`/admin/api/group/allowed/users/${id}`, {
+        return axios.get(`/admin/web/group/allowed/users/${id}`, {
             params: {
                 term
             }
@@ -80,7 +80,7 @@ export default class GroupScene extends Component {
             return
         }
 
-        axios.delete(`/admin/api/group/detach`, {
+        axios.delete(`/admin/web/group/detach`, {
             params: {
                 user_id : user.id,
                 group_id: this.props.match.params.id
@@ -169,7 +169,7 @@ export default class GroupScene extends Component {
             users.push(user.value)
         })
 
-        axios.post(`/admin/api/group/attach`, {
+        axios.post(`/admin/web/group/attach`, {
             users   : JSON.stringify(users),
             group_id: id
         }).then(response => {

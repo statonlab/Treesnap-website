@@ -43,7 +43,8 @@ export default class App extends Component {
             selectedCollection: 0,
             filters           : [],
             selectedFilter    : 0,
-            showFiltersModal  : false
+            showFiltersModal  : false,
+            total             : 0
         }
     }
 
@@ -95,7 +96,7 @@ export default class App extends Component {
     loadObservations() {
         this.setState({loading: true})
 
-        axios.get('/api/map').then(response => {
+        axios.get('/web/map').then(response => {
             // Setup the observations to be rendered into markers
             let markers = response.data.data
 
@@ -112,7 +113,7 @@ export default class App extends Component {
             }
 
             let filtered = this.filter.bounds(this.refs.maps.getBounds())
-            this.setState({markers: filtered})
+            this.setState({markers: filtered, total: markers.length})
             this.initSidebar()
         }).catch(error => {
             console.log(error)
@@ -145,7 +146,7 @@ export default class App extends Component {
      * Logged in users only.
      */
     loadCollections() {
-        if (!window.Laravel.isLoggedIn) {
+        if (!window.Laravel.loggedIn) {
             return
         }
 
@@ -166,11 +167,11 @@ export default class App extends Component {
      * Logged in users only.
      */
     loadFilters() {
-        if (!window.Laravel.isLoggedIn) {
+        if (!window.Laravel.loggedIn) {
             return
         }
 
-        axios.get('/api/filters').then(response => {
+        axios.get('/web/filters').then(response => {
             let filters = response.data.data.map(filter => {
                 return {
                     label: filter.name,
@@ -303,7 +304,7 @@ export default class App extends Component {
      */
     applyAdvancedFilter(selectedFilter) {
         this.setState({loading: true})
-        axios.get(`/api/filter/${selectedFilter}`, {
+        axios.get(`/web/filter/${selectedFilter}`, {
             params: {
                 map: 1
             }
@@ -312,7 +313,8 @@ export default class App extends Component {
             let markers                = this.filter.replace(observations)
             this.setState({
                 markers,
-                loading: false
+                loading: false,
+                total  : observations.length
             })
             if (filter) {
                 Notify.push(`Filter "${filter.name}" has been applied.`)
@@ -323,6 +325,11 @@ export default class App extends Component {
         })
     }
 
+    /**
+     * Deal with newly created advanced filters.
+     *
+     * @param data
+     */
     filterCreated(data) {
         if (data.filter) {
             let filters        = this.state.filters.concat({
@@ -338,11 +345,12 @@ export default class App extends Component {
 
             Notify.push(`Filter "${data.filter.name}" has been created and applied.`)
         } else {
+            this.setState({selectedFilter: 0})
             Notify.push('Advanced filters applied.')
         }
 
         let markers = this.filter.replace(data.observations)
-        this.setState({markers, showFiltersModal: false})
+        this.setState({markers, showFiltersModal: false, total: data.observations.length})
     }
 
     /**
@@ -497,7 +505,7 @@ export default class App extends Component {
         return (
             <div className="sidebar-filters">
                 <p className="mb-0" style={{marginTop: -10}}>
-                    <b>Found {this.state.markers.length} Observations</b>
+                    Showing {this.state.markers.length} out of {this.state.total}
                 </p>
                 <div className="field">
                     <label className="label">Filters</label>
@@ -687,7 +695,7 @@ export default class App extends Component {
 
     _renderMetaData(label, data, key) {
         if (typeof data !== 'string') {
-            if(Array.isArray(data)) {
+            if (Array.isArray(data)) {
                 return (
                     <div className="sidebar-item" key={key}>
                         <h5><strong>{label}</strong></h5>

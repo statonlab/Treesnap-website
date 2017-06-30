@@ -107,7 +107,7 @@ export default class ObservationsScene extends Component {
      * Load saved filters form server.
      */
     loadFilters() {
-        axios.get('/api/filters').then(response => {
+        axios.get('/web/filters').then(response => {
             let advancedFilters = response.data.data.map(filter => {
                 return {
                     label: filter.name,
@@ -365,7 +365,7 @@ export default class ObservationsScene extends Component {
             return
         }
 
-        axios.get(`/api/filter/${id}`).then(response => {
+        axios.get(`/web/filter/${id}`).then(response => {
             this.replaceObservations(response.data.data.observations)
             this.setState({loading: false})
         }).catch(error => {
