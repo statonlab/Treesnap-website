@@ -673,12 +673,7 @@ export default class App extends Component {
 
                     {Object.keys(data).map(key => {
                         const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-                        return (
-                            <div className="sidebar-item" key={key}>
-                                <h5><strong>{label}</strong></h5>
-                                <p className="ml-1">{data[key]}</p>
-                            </div>
-                        )
+                        return this._renderMetaData(label, data[key], key)
                     })}
 
                     <div className="sidebar-item">
@@ -686,6 +681,28 @@ export default class App extends Component {
                         <p className="ml-1"><Link to={`/observation/${marker.id}`}>Visit Observation Page</Link></p>
                     </div>
                 </div>
+            </div>
+        )
+    }
+
+    _renderMetaData(label, data, key) {
+        if (typeof data !== 'string') {
+            if(Array.isArray(data)) {
+                return (
+                    <div className="sidebar-item" key={key}>
+                        <h5><strong>{label}</strong></h5>
+                        {data.map((paragraph, index) => {
+                            return <p className="ml-1" key={index}>{paragraph}</p>
+                        })}
+                    </div>
+                )
+            }
+        }
+
+        return (
+            <div className="sidebar-item" key={key}>
+                <h5><strong>{label}</strong></h5>
+                <p className="ml-1">{data}</p>
             </div>
         )
     }
