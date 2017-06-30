@@ -30,6 +30,6 @@ class ClearObservationsCache implements ShouldQueue
      */
     public function handle($event)
     {
-        Cache::tags('observations')->flush();
+        Cache::flush();
     }
 }
