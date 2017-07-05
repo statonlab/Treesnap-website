@@ -129,7 +129,7 @@ trait Observable
             }
 
             $user = $observation->user;
-            $username = $user->is_ananymous && ! $isAdmin ? 'Anonymous' : $user->name;
+            $username = $user->is_anonymous && ! $isAdmin ? 'Anonymous' : $user->name;
 
             $title = $observation->observation_category;
             $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
