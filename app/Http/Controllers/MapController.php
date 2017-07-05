@@ -51,7 +51,11 @@ class MapController extends Controller
      */
     public function getObservationsFromDB($user, $isAdmin)
     {
-        $observations = Observation::with('user');
+        $observations = Observation::with('user')->withCount([
+            'confirmations' => function ($query) {
+                $query->where('correct', true);
+            },
+        ]);
 
         if (! $isAdmin) {
             $observations = $observations->where('is_private', false);

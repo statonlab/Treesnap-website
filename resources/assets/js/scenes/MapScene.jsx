@@ -28,23 +28,24 @@ export default class App extends Component {
         }
 
         this.state = {
-            markers           : [],
-            categories        : [],
-            selectedCategories: [],
-            center            : this.defaultMapPosition.center,
-            zoom              : this.defaultMapPosition.zoom,
-            selectedMarker    : null,
-            galleryImages     : [],
-            showSidebar       : false,
-            loading           : false,
-            showFilters       : false,
-            searchTerm        : '',
-            collections       : [],
-            selectedCollection: 0,
-            filters           : [],
-            selectedFilter    : 0,
-            showFiltersModal  : false,
-            total             : 0
+            markers             : [],
+            categories          : [],
+            selectedCategories  : [],
+            selectedConfirmation: 0,
+            center              : this.defaultMapPosition.center,
+            zoom                : this.defaultMapPosition.zoom,
+            selectedMarker      : null,
+            galleryImages       : [],
+            showSidebar         : false,
+            loading             : false,
+            showFilters         : false,
+            searchTerm          : '',
+            collections         : [],
+            selectedCollection  : 0,
+            filters             : [],
+            selectedFilter      : 0,
+            showFiltersModal    : false,
+            total               : 0
         }
     }
 
@@ -279,6 +280,18 @@ export default class App extends Component {
     changeCollection(selectedCollection) {
         let markers = this.filter.collections(selectedCollection)
         this.setState({markers, selectedCollection})
+    }
+
+    /**
+     * Allows users to view only confirmed observations.
+     *
+     * @param selectedConfirmation
+     */
+    changeConfirmation(selectedConfirmation) {
+        selectedConfirmation = parseInt(selectedConfirmation)
+        let markers          = this.filter.confirmed(selectedConfirmation)
+
+        this.setState({markers, selectedConfirmation})
     }
 
     /**
@@ -540,6 +553,22 @@ export default class App extends Component {
                                 )
                             })}
                         </div>
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Confirmed by Scientists</label>
+                    <div className="control">
+                        <span className="select is-full-width">
+                            <select value={this.state.selectedConfirmation}
+                                    onChange={({target}) => this.changeConfirmation(target.value)}>
+                                <option value={0}>Show All</option>
+                                <option value={1}>Show only confirmed observations</option>
+                            </select>
+                        </span>
+                        <p className="help">
+                            Allows you to view only confirmed observations.
+                        </p>
                     </div>
                 </div>
 
