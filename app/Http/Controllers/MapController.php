@@ -37,9 +37,9 @@ class MapController extends Controller
         $cache_key = "map_ready_observations_";
         $cache_key .= $user ? $user->id : 'guest';
 
-        return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($user, $isAdmin) {
+        //return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($user, $isAdmin) {
             return $this->getObservationsFromDB($user, $isAdmin);
-        });
+        //});
     }
 
     /**

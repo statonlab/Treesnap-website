@@ -14,6 +14,8 @@ import Labels from '../helpers/Labels'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import {Link} from 'react-router-dom'
 import Notify from '../components/Notify'
+import CollectionForm from '../components/CollectionForm'
+import FlagForm from '../components/FlagForm'
 
 export default class App extends Component {
     constructor(props) {
@@ -45,7 +47,9 @@ export default class App extends Component {
             filters             : [],
             selectedFilter      : 0,
             showFiltersModal    : false,
-            total               : 0
+            total               : 0,
+            showCollectionsForm : false,
+            showFlagForm        : false
         }
     }
 
@@ -87,7 +91,11 @@ export default class App extends Component {
      * Close the sidebar and reset the map size.
      */
     closeSidebar() {
-        this.setState({showSidebar: false})
+        this.setState({
+            showSidebar        : false,
+            showCollectionsForm: false,
+            showFlagForm       : false
+        })
         this.refs.maps.resize()
     }
 
@@ -212,7 +220,6 @@ export default class App extends Component {
      * Render individual submission.
      *
      * @param marker
-     * @param index
      * @returns {XML}
      */
     _renderSubmission(marker) {
@@ -410,8 +417,10 @@ export default class App extends Component {
                                 ref={(ref) => marker.ref = ref}
                                 onClick={() => {
                                     this.setState({
-                                        selectedMarker: marker,
-                                        showFilters   : false
+                                        selectedMarker     : marker,
+                                        showFilters        : false,
+                                        showCollectionsForm: false,
+                                        showFlagForm       : false
                                     })
                                     this.openSidebar()
                                 }}
@@ -438,6 +447,12 @@ export default class App extends Component {
         )
     }
 
+    /**
+     * Render bottom horizontal bar.
+     *
+     * @returns {XML}
+     * @private
+     */
     _renderBottomBar() {
         return (
             <div className="horizontal-bar" id="horizontal-bar-container">
@@ -462,6 +477,9 @@ export default class App extends Component {
         )
     }
 
+    /**
+     * Set the scroll bar position for the horizontal bar.
+     */
     setScrollState() {
         let bar            = document.getElementById('horizontal-bar')
         let container      = document.getElementById('horizontal-bar-container')
@@ -489,7 +507,8 @@ export default class App extends Component {
             scrolled += 5
             document.getElementById('horizontal-bar').scrollLeft += 5
         }
-        interval     = setInterval(scroll, 5)
+
+        interval = setInterval(scroll, 5)
     }
 
     /**
@@ -505,7 +524,8 @@ export default class App extends Component {
             scrolled += 5
             document.getElementById('horizontal-bar').scrollLeft -= 5
         }
-        interval     = setInterval(scroll, 5)
+
+        interval = setInterval(scroll, 5)
     }
 
     /**
@@ -645,9 +665,201 @@ export default class App extends Component {
         }
 
         return (
-            <Sidebar onCloseRequest={() => this.closeSidebar()}>
-                {this.state.showFilters ? this._renderFilters() : this._renderObservation()}
+            <Sidebar onCloseRequest={() => {
+                if (this.state.showCollectionsForm || this.state.showFlagForm) {
+                    this.setState({
+                        showCollectionsForm: false,
+                        showFlagForm       : false
+                    })
+                } else {
+                    this.closeSidebar()
+                }
+            }}>
+                {this.getSidebarContent()}
+
+                {this.state.showCollectionsForm || this.state.showFlagForm ?
+                    <div className="sidebar-bottom-bar">
+                        <a href="javascript:;" onClick={() => {
+                            this.setState({
+                                showCollectionsForm: false,
+                                showFlagForm       : false
+                            })
+                        }}>
+                            <span className="icon is-small">
+                                <i className="fa fa-arrow-left"></i>
+                            </span>
+                            <span>Return to Observation</span>
+                        </a>
+                    </div>
+                    : null }
             </Sidebar>
+        )
+    }
+
+    /**
+     * Get the correct sidebar content.
+     *
+     * @returns {*}
+     */
+    getSidebarContent() {
+        if (this.state.showFilters) {
+            return this._renderFilters()
+        }
+
+        if (this.state.selectedMarker !== null) {
+            if (this.state.showCollectionsForm) {
+                return this._renderCollectionsForm()
+            }
+
+            if (this.state.showFlagForm) {
+                return this._renderFlagForm()
+            }
+            return this._renderObservation()
+        }
+
+        return null
+    }
+
+    /**
+     * Set the state to show the collections form for the
+     * currently selected observation.
+     */
+    showCollectionsForm() {
+        this.setState({
+            showFilters        : false,
+            showFlagForm       : false,
+            showCollectionsForm: true
+        })
+    }
+
+    /**
+     * Set the state to show the flag form for the
+     * currently selected observation.
+     */
+    showFlagForm() {
+        this.setState({
+            showFilters        : false,
+            showFlagForm       : true,
+            showCollectionsForm: false
+        })
+    }
+
+    /**
+     * Render add to collection form.
+     *
+     * @returns {XML}
+     * @private
+     */
+    _renderCollectionsForm() {
+        return (
+            <div className="p-1">
+                <h4 className="title is-4 mb-1"
+                    style={{maxWidth: '225px'}}>Add {this.state.selectedMarker.title} to a collection</h4>
+                <CollectionForm
+                    observationId={this.state.selectedMarker.id}
+                    collections={this.state.collections}
+                    onSubmit={(collection) => {
+                        Notify.push(`Observation added to "${collection.label}" successfully`)
+                        this.setState({
+                            selectedMarker: this.filter.newCollection(this.state.selectedMarker, collection)
+                        })
+
+                        // Update all collections if a new one has been created.
+                        let collections = this.state.collections
+                        for (let i = 0; i < collections.length; i++) {
+                            if (collections[i].value === collection.id) {
+                                return
+                            }
+                        }
+
+                        collections.push({
+                            label: collection.label,
+                            value: collection.id
+                        })
+
+                        this.setState({collections})
+                    }}
+                />
+
+                {this.state.selectedMarker.collections.length > 0 ?
+                    <div className="field mt-1">
+                        <label className="label">This observation is in the following collections</label>
+                    </div>
+                    : null }
+
+                {this.state.selectedMarker.collections.map(collection => {
+                    return (
+                        <div key={collection.id} className="flexbox flex-space-between flex-v-center mt-1">
+                            <div>{collection.label}</div>
+                            <div>
+                                <button className="button is-small is-outlined is-danger"
+                                        type="button"
+                                        onClick={() => this.removeCollection(this.state.selectedMarker, collection)}>
+                                    <span className="icon is-small">
+                                        <i className="fa fa-times"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+
+    /**
+     * Remove collection to marker relationship.
+     *
+     * @param marker
+     * @param collection
+     */
+    removeCollection(marker, collection) {
+        axios.delete('/collection/detach', {
+            params: {
+                observation_id: marker.id,
+                collection_id : collection.id
+            }
+        }).then(response => {
+            this.setState({selectedMarker: this.filter.removeCollection(marker, parseInt(collection.id))})
+            Notify.push('Observation removed from collection successfully')
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    /**
+     * Render flag observation form.
+     *
+     * @returns {XML}
+     * @private
+     */
+    _renderFlagForm() {
+        let flagged = this.state.selectedMarker.flags.length > 0
+        return (
+            <div className="p-1">
+                <h4 className="title is-4 mb-1"
+                    style={{maxWidth: '225px'}}>Flag {this.state.selectedMarker.title}</h4>
+                <FlagForm
+                    observationId={this.state.selectedMarker.id}
+                    collections={this.state.collections}
+                    flagged={flagged}
+                    flagId={flagged ? this.state.selectedMarker.flags[0].id : 0}
+                    onSubmit={(flag) => {
+                        Notify.push('Observation has been flagged')
+                        this.setState({selectedMarker: this.filter.newFlag(this.state.selectedMarker, flag)})
+                    }}
+                    onUndo={flag => {
+                        Notify.push('Flag removed successfully')
+                        this.setState({selectedMarker: this.filter.removeFlag(this.state.selectedMarker, parseInt(flag.id))})
+                    }}
+                />
+
+                {flagged ?
+                    <button className="button is-link"
+                            style={{float: 'right', position: 'relative', top: -35}}
+                            onClick={() => this.setState({showFlagForm: false})}>Done</button>
+                    : null}
+            </div>
         )
     }
 
@@ -688,11 +900,15 @@ export default class App extends Component {
                             <i className="fa fa-picture-o"></i>
                             <span className="help">Images</span>
                         </a>
-                        <a href="javascript:;" className="flex-column">
+                        <a href="javascript:;"
+                           className={`flex-column${marker.collections.length > 0 ? ' is-success' : ''}`}
+                           onClick={this.showCollectionsForm.bind(this)}>
                             <i className="fa fa-star"></i>
                             <span className="help">Save</span>
                         </a>
-                        <a href="javascript:;" className="flex-column">
+                        <a href="javascript:;"
+                           className={`flex-column${marker.flags.length > 0 ? ' is-danger' : ''}`}
+                           onClick={this.showFlagForm.bind(this)}>
                             <i className="fa fa-flag"></i>
                             <span className="help">Flag</span>
                         </a>
@@ -722,6 +938,15 @@ export default class App extends Component {
         )
     }
 
+    /**
+     * Decode meta data.
+     *
+     * @param label
+     * @param data
+     * @param key
+     * @returns {XML}
+     * @private
+     */
     _renderMetaData(label, data, key) {
         if (typeof data !== 'string') {
             if (Array.isArray(data)) {
@@ -784,8 +1009,7 @@ export default class App extends Component {
         return (
             <div className={`image-gallery-image${this.state.galleryImages.length > 1 ? ' show-scroll' : ''}`}>
                 <img src={item.original}
-                     alt="Plant Image"
-                />
+                     alt="Plant Image"/>
             </div>
         )
     }

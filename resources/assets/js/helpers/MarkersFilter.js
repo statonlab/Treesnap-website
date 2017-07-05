@@ -54,6 +54,58 @@ export default class MarkersFilter extends Filters {
         return this._filter()
     }
 
+    newCollection(marker, collection) {
+        if (!window.Laravel.loggedIn) {
+            return
+        }
+
+        for (let i = 0; i < this._markers.length; i++) {
+            if (marker.id === this._markers[i].id) {
+                this._markers[i].collections.push(collection)
+                return this._markers[i]
+            }
+        }
+    }
+
+    newFlag(marker, flag) {
+        if (!window.Laravel.loggedIn) {
+            return
+        }
+
+        for (let i = 0; i < this._markers.length; i++) {
+            if (marker.id === this._markers[i].id) {
+                this._markers[i].flags.push(flag)
+                return this._markers[i]
+            }
+        }
+    }
+
+    removeCollection(marker, collection_id) {
+        if (!window.Laravel.loggedIn) {
+            return
+        }
+
+        for (let i = 0; i < this._markers.length; i++) {
+            if (marker.id === this._markers[i].id) {
+                this._markers[i].collections = this._markers[i].collections.filter(c => collection_id !== c.id)
+                return this._markers[i]
+            }
+        }
+    }
+
+    removeFlag(marker, flag_id) {
+        if (!window.Laravel.loggedIn) {
+            return
+        }
+
+        for (let i = 0; i < this._markers.length; i++) {
+            if (marker.id === this._markers[i].id) {
+                this._markers[i].flags = this._markers[i].flags.filter(f => parseInt(flag_id) !== f.id)
+                return this._markers[i]
+            }
+        }
+    }
+
     // ===============
     // PRIVATE METHODS
     // ===============

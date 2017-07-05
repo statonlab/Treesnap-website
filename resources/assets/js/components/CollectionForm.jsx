@@ -81,6 +81,15 @@ export default class CollectionForm extends Component {
     }
 
     render() {
+        if(!window.Laravel.loggedIn) {
+            return (
+                <div className="content">
+                    <p>You must be logged in to add this observation to a collection.</p>
+                    <p>Please <a href="/login">login</a> or <a href="/register">create an account</a> first.</p>
+                </div>
+            )
+        }
+
         return (
             <form action="#" method="POST" onSubmit={this.submit.bind(this)}>
                 <div className="field">
