@@ -4,7 +4,7 @@ export default class Sidebar extends Component {
     render() {
         return (
             <div className="sidebar">
-                <div className="sidebar-content-container">
+                <div className="sidebar-content-container flexbox flex-column flex-space-between">
                     <a className="close" onClick={this.props.onCloseRequest}>
                         <i className="fa fa-arrow-left"></i>
                     </a>

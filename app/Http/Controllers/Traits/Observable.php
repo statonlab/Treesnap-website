@@ -116,7 +116,8 @@ trait Observable
      */
     protected function prepForMap($observations, $isAdmin)
     {
-        return $observations->map(function ($observation) use ($isAdmin) {
+        $all = [];
+        foreach ($observations as $observation) {
             $flattenedImages = [];
             foreach ($observation->images as $images) {
                 foreach ($images as $image) {
@@ -130,11 +131,10 @@ trait Observable
 
             $user = $observation->user;
             $username = $user->is_anonymous && ! $isAdmin ? 'Anonymous' : $user->name;
-
             $title = $observation->observation_category;
             $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
 
-            return [
+            $all[] = [
                 'id' => $observation->id,
                 'title' => $title,
                 'category' => $observation->observation_category,
@@ -153,6 +153,11 @@ trait Observable
                 'flags' => $observation->flags ?: [],
                 'confirmations_count' => $observation->confirmations_count,
             ];
+        }
+
+        return $all;
+
+        return $observations->map(function ($observation) use ($isAdmin) {
         });
     }
 }

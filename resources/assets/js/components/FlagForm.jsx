@@ -60,7 +60,7 @@ export default class FlagForm extends Component {
             return
         }
 
-        this.setState({laoding: true})
+        this.setState({loading: true})
 
         axios.post('/flag', {
             observation_id: this.props.observationId,
@@ -180,6 +180,15 @@ export default class FlagForm extends Component {
     }
 
     render() {
+        if (!window.Laravel.loggedIn) {
+            return (
+                <div className="content">
+                    <p>You must be logged in to flag this observation.</p>
+                    <p>Please <a href="/login">login</a> or <a href="/register">create an account</a> first.</p>
+                </div>
+            )
+        }
+
         return (
             <div>
                 {this.state.flagged ? this.renderUndoForm() : this.renderFlagForm()}

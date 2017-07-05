@@ -27,6 +27,7 @@
 
 .sidebar-content-container {
   position: relative;
+  height: 100%;
 
   .close {
     display: block;
@@ -92,8 +93,17 @@
     @extend .card-footer-item;
     margin: 0 !important;
     color: #618293;
+
+    &.is-danger {
+      color: $danger;
+    }
+
+    &.is-success {
+      color: $success;
+    }
+
     &:hover {
-      color: $primary;
+      color: darken(#618293, 20%);
     }
   }
   border-bottom: 1px solid $laravel-border-color;
@@ -150,4 +160,25 @@
 
 .mt-0 {
   margin-top: 0.5rem;
+}
+
+.sidebar-bottom-bar {
+  position: relative;
+  background-color: white;
+  box-shadow: 0 -1px 1px rgba(10,10,10,.1);
+  text-align: center;
+  padding: 15px 0;
+  .icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    left: 10px;
+  }
+
+  > a {
+    color: #777;
+    &:hover {
+      color: $primary;
+    }
+  }
 }
