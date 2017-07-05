@@ -151,6 +151,7 @@ trait Observable
                 'ref' => null,
                 'collections' => $observation->collections ?: [],
                 'flags' => $observation->flags ?: [],
+                'confirmations_count' => $observation->confirmations_count,
             ];
         });
     }

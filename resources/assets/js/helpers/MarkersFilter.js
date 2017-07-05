@@ -13,6 +13,7 @@ export default class MarkersFilter extends Filters {
         this._categories   = categories
         this._mapBounds    = null
         this._collectionID = 0
+        this._confirmed    = false
     }
 
     // ==============
@@ -45,6 +46,11 @@ export default class MarkersFilter extends Filters {
 
     collections(id) {
         this._collectionID = parseInt(id)
+        return this._filter()
+    }
+
+    confirmed(value) {
+        this._confirmed = parseInt(value) === 1
         return this._filter()
     }
 
@@ -98,6 +104,13 @@ export default class MarkersFilter extends Filters {
         return collections.indexOf(this._collectionID) !== -1
     }
 
+    _confirmedOnly(marker) {
+        if (this._confirmed === false) {
+            return true
+        }
+
+        return marker.confirmations_count > 0
+    }
 
     _filter() {
         return this._markers.filter(marker => {
@@ -105,6 +118,7 @@ export default class MarkersFilter extends Filters {
                 && this._search(marker)
                 && this._category(marker)
                 && this._collection(marker)
+                && this._confirmedOnly(marker)
         })
     }
 }
