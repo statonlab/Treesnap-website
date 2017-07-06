@@ -13,6 +13,7 @@ import MapScene from './scenes/MapScene'
 import ContactUsScene from './scenes/ContactUsScene'
 import NotFoundScene from './scenes/NotFoundScene'
 import KnowledgeScene from './scenes/KnowledgeScene'
+import MyObservationsScene from './scenes/MyObservationsScene'
 
 class App extends Component {
     render() {
@@ -20,7 +21,8 @@ class App extends Component {
             <Router history={'browser'}>
                 <Switch>
                     <Route exact={true} path={'/'} component={WelcomeScene}/>
-                    <Route path={'/account'} component={AccountScene}/>
+                    <Route exact={true} path={'/account'} component={AccountScene}/>
+                    <Route exact={true} path={'/account/observations'} component={MyObservationsScene}/>
                     <Route path={'/observation/:id'} component={ObservationScene}/>
                     <Route path={'/map'} component={MapScene}/>
                     <Route path={'/contact'} component={ContactUsScene}/>

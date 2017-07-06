@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Email;
+use App\Http\Controllers\Traits\Observable;
 use App\Http\Controllers\Traits\Responds;
+use App\Observation;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    use Responds;
+    use Responds, Observable;
 
     /**
      * Get the user logged in status.
@@ -136,5 +138,36 @@ class UsersController extends Controller
         }
 
         return $this->validationError(['password' => ['Incorrect old password']]);
+    }
+
+    /**
+     * Get paginated observations for a user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function observations(Request $request)
+    {
+        $user = $request->user();
+
+        $observations = Observation::with([
+            'collections' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'flags' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'confirmations' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+        ])->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(6);
+
+        $data = [];
+        foreach ($observations as $observation) {
+            $json = $this->getObservationJson($observation, true);
+            $data[] = array_merge($json, ['user' => ['name' => $user->name, 'id' => $user->id]]);
+        }
+
+        return $this->success(array_merge($observations->toArray(), ['data' => $data, 'has_more_pages' => $observations->hasMorePages()]));
     }
 }

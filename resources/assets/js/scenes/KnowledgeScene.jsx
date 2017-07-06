@@ -2,9 +2,10 @@ import React, {Component} from 'react'
 import marked from 'marked'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
-import KnowledgeSidebar from '../components/KnowledgeSidebar'
+import LinksSidebar from '../components/LinksSidebar'
 import Spinner from '../components/Spinner'
 import PropTypes from 'prop-types'
+import KnowledgeSidebarLinks from '../helpers/KnowledgeSidebarLinks'
 
 export default class KnowledgeScene extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class KnowledgeScene extends Component {
                     <div className="container">
                         <div className="columns">
                             <div className="column is-3">
-                                <KnowledgeSidebar/>
+                                <LinksSidebar links={KnowledgeSidebarLinks} title="Knowledge Base"/>
                             </div>
                             <div className="column">
                                 <div className="box body">

@@ -16,7 +16,7 @@ export default class ObservationDetails extends Component {
                 lat: 40.354388,
                 lng: -95.998237
             },
-            zoom   : 11
+            zoom   : 4
         }
     }
 
@@ -25,9 +25,7 @@ export default class ObservationDetails extends Component {
     }
 
     componentDidMount() {
-        if (window.fixHeight) {
-            window.fixHeight()
-        }
+        window.fixHeight()
     }
 
     _setup(observation) {
@@ -51,7 +49,7 @@ export default class ObservationDetails extends Component {
                 lat: observation.latitude,
                 lng: observation.longitude
             },
-            zoom   : 13,
+            zoom   : 4,
             loading: false
         }))
 
@@ -59,7 +57,7 @@ export default class ObservationDetails extends Component {
             this.map.goTo({
                 lat: observation.latitude,
                 lng: observation.longitude
-            }, 13)
+            }, 4)
         }, 500)
     }
 
@@ -116,16 +114,14 @@ export default class ObservationDetails extends Component {
                                 <th style={{width: 150}}>Submitted By</th>
                                 <td>{this.observation.owner}</td>
                             </tr>
-                            {
-                                Object.keys(this.observation.meta_data).map((key) => {
-                                    return (
-                                        <tr key={key}>
-                                            <th>{key}</th>
-                                            <td>{this.observation.meta_data[key]}</td>
-                                        </tr>
-                                    )
-                                })
-                            }
+                            {Object.keys(this.observation.meta_data).map((key) => {
+                                return (
+                                    <tr key={key}>
+                                        <th>{key}</th>
+                                        <td>{this.observation.meta_data[key]}</td>
+                                    </tr>
+                                )
+                            })}
                             <tr>
                                 <th>Date Collected</th>
                                 <td>{ this.observation.collection_date }</td>
