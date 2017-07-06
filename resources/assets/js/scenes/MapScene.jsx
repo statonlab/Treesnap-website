@@ -16,6 +16,7 @@ import {Link} from 'react-router-dom'
 import Notify from '../components/Notify'
 import CollectionForm from '../components/CollectionForm'
 import FlagForm from '../components/FlagForm'
+import Utils from '../helpers/Utils'
 
 export default class App extends Component {
     constructor(props) {
