@@ -1,7 +1,7 @@
 import '../bootstrap'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import AdminSidebar from './components/AdminSidebar'
 import AdminNavbar from '../components/AdminNavbar'
 import DashboardScene from './scenes/DashboardScene'
@@ -10,9 +10,9 @@ import UserScene from './scenes/UserScene'
 import GroupsScene from './scenes/GroupsScene'
 import GroupScene from './scenes/GroupScene'
 import ObservationsScene from './scenes/ObservationsScene'
-import FiltersScene from './scenes/FiltersScene'
-import CollectionsScene from './scenes/CollectionsScene'
 import CurateScene from './scenes/CurateScene'
+import FiltersScene from '../scenes/FiltersScene'
+import CollectionsScene from '../scenes/CollectionsScene'
 
 class Admin extends Component {
     render() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import Spinner from '../../components/Spinner'
+import Spinner from '../components/Spinner'
 import {Link} from 'react-router-dom'
-import Tooltip from '../../components/Tooltip'
+import Tooltip from '../components/Tooltip'
 
 export default class UsersScene extends Component {
     constructor(props) {
@@ -11,6 +11,8 @@ export default class UsersScene extends Component {
             filters: [],
             loading: true
         }
+
+        this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
     }
 
     componentWillMount() {
@@ -22,6 +24,7 @@ export default class UsersScene extends Component {
         }).catch(error => {
             this.setState({loading: false})
         })
+
     }
 
     deleteFilter(e, filter) {
@@ -86,11 +89,12 @@ export default class UsersScene extends Component {
                         :
                         <p className="text-muted">
                             You haven't created any filters yet.
-                            You can create new filters in the <Link to="/observations">Observations</Link> page.
+                            You can create new filters in the {
+                            this.account ? <Link to="/map">Map</Link> : <Link to="/observations">Observations</Link>
+                        } page.
                         </p>
                     }
                 </div>
-
 
                 <Spinner visible={this.state.loading}/>
             </div>

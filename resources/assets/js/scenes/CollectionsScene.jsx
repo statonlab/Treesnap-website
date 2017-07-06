@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import Spinner from '../../components/Spinner'
+import Spinner from '../components/Spinner'
 import {Link} from 'react-router-dom'
-import Tooltip from '../../components/Tooltip'
+import Tooltip from '../components/Tooltip'
 
 export default class CollectionsScene extends Component {
     constructor(props) {
@@ -11,6 +11,8 @@ export default class CollectionsScene extends Component {
             collections: [],
             loading    : true
         }
+
+        this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
     }
 
     componentWillMount() {
@@ -71,7 +73,9 @@ export default class CollectionsScene extends Component {
                         :
                         <p>
                             You have not created any collections yet.
-                            You can create new collections in the <Link to="/observations">Observations</Link> page.
+                            You can create new collections in the {
+                            this.account ? <Link to="/map">Map</Link> : <Link to="/observations">Observations</Link>
+                        } page.
                         </p>
                     }
                 </div>

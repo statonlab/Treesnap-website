@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
-import Navbar from '../components/Navbar'
-import HomeFooter from '../components/HomeFooter'
-import AccountLinks from '../helpers/AccountLinks'
-import LinksSidebar from '../components/LinksSidebar'
 import ObservationCard from '../components/ObservationCard'
 import Spinner from '../components/Spinner'
 import Path from '../helpers/Path'
+import AccountView from '../components/AccountView'
 
 export default class MyObservationsScene extends Component {
     constructor(props) {
@@ -20,7 +17,8 @@ export default class MyObservationsScene extends Component {
             total        : 0,
             page_loading : true,
             pages        : [],
-            loading      : false
+            loading      : false,
+            count        : 0
         }
     }
 
@@ -57,6 +55,7 @@ export default class MyObservationsScene extends Component {
                 total         : data.total,
                 per_age       : data.per_page,
                 has_more_pages: data.has_more_pages,
+                count         : data.count,
                 page_loading  : false,
                 pages         : this.generatePages(data.total, data.per_page),
                 loading       : false
@@ -163,17 +162,19 @@ export default class MyObservationsScene extends Component {
                    disabled={this.state.page === 1}>
                     Previous
                 </a>
-                <ul className="pagination-list">
-                    <li>
-                        Page <span className="select is-small">
-                        <select value={this.state.page} onChange={({target}) => this.goToPage(target.value)}>
-                            {this.state.pages.map(page => {
-                                return <option value={page} key={`page_${page}`}>{page}</option>
-                            })}
-                        </select>
-                    </span> out of {this.state.pages.length} pages
-                    </li>
-                </ul>
+                {this.state.pages.length > 0 ?
+                    <ul className="pagination-list">
+                        <li>
+                            Page <span className="select is-small">
+                            <select value={this.state.page} onChange={({target}) => this.goToPage(target.value)}>
+                                {this.state.pages.map(page => {
+                                    return <option value={page} key={`page_${page}`}>{page}</option>
+                                })}
+                            </select>
+                        </span> out of {this.state.pages.length} pages
+                        </li>
+                    </ul>
+                : null }
                 <a href="javascript:;"
                    className="pagination-next"
                    onClick={this.nextPage.bind(this)}
@@ -230,40 +231,30 @@ export default class MyObservationsScene extends Component {
      * @returns {XML}
      */
     render() {
+        const showing = this.state.count
+        const total   = this.state.total
         return (
-            <div>
-                <Navbar/>
-                <div className="home-section short-content">
-                    <div className="container">
-                        <div className="columns">
-                            <div className="column is-3">
-                                <LinksSidebar links={AccountLinks} title="Members"/>
-                            </div>
-                            <div className="column is-9">
-                                <div className="columns">
-                                    <div className="column">
-                                        <h3 className="title is-3">My Observations</h3>
-                                    </div>
-                                    <div className="column has-text-right">
-                                        <p>
-                                            Showing {this.state.per_page} out of {this.state.total} observations
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {this.state.observations.length === 0 ? this.getEmptyMessage() : null}
-                                <div className="columns is-multiline">
-                                    {this.state.observations.map(this._renderObservation.bind(this))}
-                                </div>
-
-                                {this._renderPageLinks()}
-                            </div>
-                        </div>
+            <AccountView>
+                <div className="columns">
+                    <div className="column">
+                        <h3 className="title is-3">My Observations</h3>
+                    </div>
+                    <div className="column has-text-right">
+                        <p>
+                            Showing {showing} out of {total} observations
+                        </p>
                     </div>
                 </div>
-                <HomeFooter/>
+
+                {this.state.observations.length === 0 ? this.getEmptyMessage() : null}
+                <div className="columns is-multiline">
+                    {this.state.observations.map(this._renderObservation.bind(this))}
+                </div>
+
+                {this._renderPageLinks()}
+
                 <Spinner visible={this.state.page_loading}/>
-            </div>
+            </AccountView>
         )
     }
 }

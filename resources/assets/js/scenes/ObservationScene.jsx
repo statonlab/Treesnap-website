@@ -42,7 +42,7 @@ export default class ObservationScene extends Component {
                 <div className="home-section short-content">
                     <div className="container">
                         {this.state.observation !== null ?
-                            <ObservationDetails observation={this.state.observation}/>
+                            <ObservationDetails observation={this.state.observation} showControls={true}/>
                             : null}
                     </div>
                 </div>

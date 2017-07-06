@@ -102,10 +102,37 @@ export default class ObservationDetails extends Component {
         )
     }
 
+
+    _renderControls() {
+        if (this.props.showControls === false) {
+            return null
+        }
+
+        return (
+            <div>
+                <div className="flexbox observation-tools">
+                    <a className="button  is-outlined">
+                        <span className="icon is-small">
+                            <i className="fa fa-star text-success"></i>
+                        </span>
+                        <span>Add to Collection</span>
+                    </a>
+                    <a className="button is-outlined">
+                        <span className="icon is-small">
+                            <i className="fa fa-flag text-danger"></i>
+                        </span>
+                        <span>Flag Observation</span>
+                    </a>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="box">
                 <h3 className="title is-4">{this.observation.observation_category}</h3>
+
                 <div className="columns">
                     <div className="column is-8-desktop">
                         <table className="table is-striped">
@@ -142,6 +169,8 @@ export default class ObservationDetails extends Component {
                             }
                             </tbody>
                         </table>
+
+                        {this._renderControls()}
                     </div>
 
                     <div className="column">
@@ -181,5 +210,10 @@ export default class ObservationDetails extends Component {
 }
 
 ObservationDetails.PropTypes = {
-    observation: PropTypes.object.isRequired
+    observation : PropTypes.object.isRequired,
+    showControls: PropTypes.bool
+}
+
+ObservationDetails.defaultProps = {
+    showControls: false
 }
