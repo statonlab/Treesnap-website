@@ -16,6 +16,7 @@ import {Link} from 'react-router-dom'
 import Notify from '../components/Notify'
 import CollectionForm from '../components/CollectionForm'
 import FlagForm from '../components/FlagForm'
+import Utils from '../helpers/Utils'
 
 export default class App extends Component {
     constructor(props) {
@@ -948,17 +949,16 @@ export default class App extends Component {
      * @private
      */
     _renderMetaData(label, data, key) {
-        if (typeof data !== 'string') {
-            if (Array.isArray(data)) {
-                return (
-                    <div className="sidebar-item" key={key}>
-                        <h5><strong>{label}</strong></h5>
-                        {data.map((paragraph, index) => {
-                            return <p className="ml-1" key={index}>{paragraph}</p>
-                        })}
-                    </div>
-                )
-            }
+        if (Utils.isJson(data)) {
+            data = JSON.parse(data)
+            return (
+                <div className="sidebar-item" key={key}>
+                    <h5><strong>{label}</strong></h5>
+                    {data.map((paragraph, index) => {
+                        return <p className="ml-1" key={index}>{paragraph}</p>
+                    })}
+                </div>
+            )
         }
 
         return (
