@@ -236,7 +236,7 @@ export default class App extends Component {
                        showFilters   : false
                    })
                    this.openSidebar()
-                   this.goToSubmission(marker, 20)
+                   this.goToSubmission(marker, 17)
                    if (marker.ref !== null) {
                        marker.ref.openCallout()
                    }
