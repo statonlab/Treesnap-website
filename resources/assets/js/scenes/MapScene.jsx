@@ -948,7 +948,7 @@ export default class App extends Component {
      * @private
      */
     _renderMetaData(label, data, key) {
-        if (Utils.isJson(data) === true) {
+        /*if (Utils.isJson(data) === true) {
             data = JSON.parse(data)
             console.log(data)
             return (
@@ -959,7 +959,7 @@ export default class App extends Component {
                     })}
                 </div>
             )
-        }
+        }*/
 
         return (
             <div className="sidebar-item" key={key}>
