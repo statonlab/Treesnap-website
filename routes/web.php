@@ -74,6 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
+    Route::get('/user/observations', 'UsersController@observations');
+
 
     // Allow only authenticated users to access Account Page
     Route::get('/account', 'HomeController@index');

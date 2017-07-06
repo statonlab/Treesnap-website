@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import moment from 'moment'
+import AccountLinks from '../helpers/AccountLinks'
+import LinksSidebar from '../components/LinksSidebar'
 
 export default class AccountScene extends Component {
     constructor(props) {
@@ -170,7 +172,10 @@ export default class AccountScene extends Component {
                 <div className="home-section short-content">
                     <div className="container">
                         <div className="columns">
-                            <div className="column">
+                            <div className="column is-3">
+                                <LinksSidebar links={AccountLinks} title="Members"/>
+                            </div>
+                            <div className="column is-9">
                                 <div className="box">
                                     <h1 className="title is-4">Personal Information</h1>
 
@@ -250,9 +255,6 @@ export default class AccountScene extends Component {
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-
-                            <div className="column">
                                 <div className="box">
                                     <h1 className="title is-4">Password</h1>
                                     <form action="#" method="post" onSubmit={this.submitPassword.bind(this)}>

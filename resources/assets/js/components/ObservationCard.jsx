@@ -134,7 +134,7 @@ export default class ObservationCard extends Component {
                      lat: observation.location.latitude,
                      lng: observation.location.longitude
                  }}
-                 zoom={18}>
+                 zoom={4}>
                 <Marker
                     title={observation.observation_category}
                     position={observation.location}
@@ -402,25 +402,29 @@ export default class ObservationCard extends Component {
                             {name}
                         </p>
 
-                        <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
-                           onClick={() => this.confirm(false, observation)}>
-                            <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
-                                     hideOnClick={false}>
-                                <span className="icon">
-                                    <i className="fa fa-times"></i>
-                                </span>
-                            </Tooltip>
-                        </a>
+                        {this.props.owner ? null :
+                            <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+                               onClick={() => this.confirm(false, observation)}>
+                                <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                                         hideOnClick={false}>
+                                    <span className="icon">
+                                        <i className="fa fa-times"></i>
+                                    </span>
+                                </Tooltip>
+                            </a>
+                        }
 
-                        <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
-                           onClick={() => this.confirm(true, observation)}>
-                            <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
-                                     hideOnClick={false}>
-                                <span className="icon">
-                                    <i className="fa fa-check"></i>
-                                </span>
-                            </Tooltip>
-                        </a>
+                        {this.props.owner ? null :
+                            <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+                               onClick={() => this.confirm(true, observation)}>
+                                <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                                         hideOnClick={false}>
+                                    <span className="icon">
+                                        <i className="fa fa-check"></i>
+                                    </span>
+                                </Tooltip>
+                            </a>
+                        }
                     </header>
                     <div className="relative-block">
                         <Spinner visible={this.state.loading}/>
@@ -436,7 +440,7 @@ export default class ObservationCard extends Component {
 
                         <div className="card-content">
                             <div className="content">
-                                By {observation.user.name}<br/>
+                                {this.props.owner ? null : <span>By {observation.user.name}<br/></span>}
                                 <a href="javascript:;" onClick={(e) => {
                                     e.preventDefault()
                                     this.setState({showDetailsModal: true})
@@ -475,6 +479,7 @@ export default class ObservationCard extends Component {
                                 </span>
                             </Tooltip>
                         </a>
+
                         <a href="javascript:;"
                            className="card-footer-item is-paddingless"
                            onClick={() => this.shouldSlide('map')}>
@@ -484,27 +489,31 @@ export default class ObservationCard extends Component {
                                 </span>
                             </Tooltip>
                         </a>
-                        {window.Laravel.isAdmin &&
-                        <a href="javascript:;"
-                           className="card-footer-item is-paddingless"
-                           onClick={() => {
-                               this.props.onEmailRequest(observation)
-                           }}>
-                            <Tooltip label="Contact Submitter" style={{padding: '0.75rem'}}>
-                                <span className="icon is-small is-marginless">
-                                    <i className="fa fa-envelope"></i>
-                                </span>
-                            </Tooltip>
-                        </a>}
-                        <a href="javascript:;"
-                           className="card-footer-item is-paddingless"
-                           onClick={() => this.shouldSlide('flag')}>
-                            <Tooltip label="Flag as Inappropriate" style={{padding: '0.75rem'}}>
-                                <span className="icon is-small is-marginless">
-                                    <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
-                                </span>
-                            </Tooltip>
-                        </a>
+
+                        {window.Laravel.isAdmin && !this.props.owner ?
+                            <a href="javascript:;"
+                               className="card-footer-item is-paddingless"
+                               onClick={() => {
+                                   this.props.onEmailRequest(observation)
+                               }}>
+                                <Tooltip label="Contact Submitter" style={{padding: '0.75rem'}}>
+                                    <span className="icon is-small is-marginless">
+                                        <i className="fa fa-envelope"></i>
+                                    </span>
+                                </Tooltip>
+                            </a> : null}
+
+                        {this.props.owner ? null :
+                            <a href="javascript:;"
+                               className="card-footer-item is-paddingless"
+                               onClick={() => this.shouldSlide('flag')}>
+                                <Tooltip label="Flag as Inappropriate" style={{padding: '0.75rem'}}>
+                                    <span className="icon is-small is-marginless">
+                                        <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
+                                    </span>
+                                </Tooltip>
+                            </a>
+                        }
                     </footer>
                 </div>
                 {this.state.showDetailsModal ?
@@ -525,7 +534,8 @@ ObservationCard.PropTypes = {
     onEmailRequest         : PropTypes.func,
     collections            : PropTypes.array,
     loading                : PropTypes.bool,
-    showMarks              : PropTypes.bool
+    showMarks              : PropTypes.bool,
+    owner                  : PropTypes.bool
 }
 
 ObservationCard.defaultProps = {
@@ -539,5 +549,6 @@ ObservationCard.defaultProps = {
     },
     collections: [],
     loading    : false,
-    showMarks  : false
+    showMarks  : false,
+    owner      : false
 }
