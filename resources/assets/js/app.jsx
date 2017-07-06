@@ -14,6 +14,8 @@ import ContactUsScene from './scenes/ContactUsScene'
 import NotFoundScene from './scenes/NotFoundScene'
 import KnowledgeScene from './scenes/KnowledgeScene'
 import MyObservationsScene from './scenes/MyObservationsScene'
+import AccountCollectionsScene from './scenes/AccountCollectionsScene'
+import AccountFiltersScene from './scenes/AccountFiltersScene'
 
 class App extends Component {
     render() {
@@ -23,6 +25,8 @@ class App extends Component {
                     <Route exact={true} path={'/'} component={WelcomeScene}/>
                     <Route exact={true} path={'/account'} component={AccountScene}/>
                     <Route exact={true} path={'/account/observations'} component={MyObservationsScene}/>
+                    <Route exact={true} path={'/account/collections'} component={AccountCollectionsScene}/>
+                    <Route exact={true} path={'/account/filters'} component={AccountFiltersScene}/>
                     <Route path={'/observation/:id'} component={ObservationScene}/>
                     <Route path={'/map'} component={MapScene}/>
                     <Route path={'/contact'} component={ContactUsScene}/>

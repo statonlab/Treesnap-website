@@ -7,7 +7,22 @@ const AccountLinks = [
     {
         to   : '/account/observations',
         icon : 'fa-tree',
-        label: 'My Observations'
+        label: 'Observations'
+    },
+    /*{
+        to: '/account/groups',
+        icon: 'fa-users',
+        label: 'Groups'
+    },*/
+    {
+        to: '/account/collections',
+        icon: 'fa-th',
+        label: 'Collections'
+    },
+    {
+        to: '/account/filters',
+        icon: 'fa-filter',
+        label: 'Filters'
     }
 ]
 

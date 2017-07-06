@@ -17,6 +17,7 @@
             loggedIn : '{{ auth()->check() ? '1' : '0'}}' === '1',
             isAdmin  : false
         }
+
         @if(auth()->check())
             window.Laravel.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
         @endif
@@ -29,6 +30,8 @@
 <div id="app-root"></div>
 
 <script>
+    window.__globalHeightTimer = false
+
     window.fixHeight = function () {
         var windowHeight = window.innerHeight
         var footer       = document.querySelector('.home-footer').clientHeight
@@ -38,6 +41,13 @@
         if (content) {
             content.style.minHeight = (windowHeight - (footer + header)) + 'px'
         }
+
+        if (window.__globalHeightTimer) {
+            return
+        }
+
+        window.addEventListener('resize', window.fixHeight.bind(this), false)
+        window.__globalHeightTimer = true
     }
 </script>
 <script src="{{ mix('js/app.js') }}"></script>

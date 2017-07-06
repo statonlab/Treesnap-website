@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // Allow only authenticated users to access Account Page
-    Route::get('/account', 'HomeController@index');
+    Route::get('/account/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
 
     // Collections
     Route::get('/collections/{paired?}', 'CollectionsController@index');

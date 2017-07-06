@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 @yield('js')
 <script>
-    window.fixHeight = function () {
+    window.fixHeight           = function () {
         var windowHeight = window.innerHeight
         var footer       = document.querySelector('.home-footer').clientHeight
         var header       = document.querySelector('#app-navbar').clientHeight
@@ -68,16 +68,10 @@
         if (content) {
             content.style.minHeight = (windowHeight - footer - header - 36) + 'px'
         }
-        console.log('loaded')
     }
 
-    if (typeof attachEvent !== 'undefined') {
-        window.attachEvent('load', fixHeight)
-        window.attachEvent('resize', fixHeight)
-    } else {
-        window.addEventListener('load', fixHeight)
-        window.addEventListener('resize', fixHeight)
-    }
+    window.addEventListener('load', window.fixHeight, false)
+    window.addEventListener('resize', window.fixHeight, false)
 </script>
 </body>
 </html>

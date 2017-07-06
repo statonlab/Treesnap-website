@@ -168,6 +168,10 @@ class UsersController extends Controller
             $data[] = array_merge($json, ['user' => ['name' => $user->name, 'id' => $user->id]]);
         }
 
-        return $this->success(array_merge($observations->toArray(), ['data' => $data, 'has_more_pages' => $observations->hasMorePages()]));
+        return $this->success(array_merge($observations->toArray(), [
+            'data' => $data,
+            'has_more_pages' => $observations->hasMorePages(),
+            'count' => $observations->count(),
+        ]));
     }
 }
