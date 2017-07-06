@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import marked from 'marked'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
-import KnowledgeSidebar from '../components/KnowledgeSidebar'
+import LinksSidebar from '../components/LinksSidebar'
 import ReCaptcha from 'react-google-recaptcha'
+import KnowledgeSidebarLinks from '../helpers/KnowledgeSidebarLinks'
 
 export default class ContactUsScene extends Component {
     constructor(props) {
@@ -102,7 +102,7 @@ export default class ContactUsScene extends Component {
                     <div className="container">
                         <div className="columns">
                             <div className="column is-3">
-                                <KnowledgeSidebar/>
+                                <LinksSidebar links={KnowledgeSidebarLinks} title="Knowledge Base"/>
                             </div>
                             <div className="column">
                                 <div className="box">
