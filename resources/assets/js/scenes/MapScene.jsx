@@ -207,7 +207,7 @@ export default class App extends Component {
      */
     goToSubmission(marker, zoom) {
         if (typeof zoom === 'undefined') {
-            zoom = 24
+            zoom = 10
         }
 
         this.refs.maps.goTo({
@@ -236,7 +236,7 @@ export default class App extends Component {
                        showFilters   : false
                    })
                    this.openSidebar()
-                   this.goToSubmission(marker, 7)
+                   this.goToSubmission(marker, 10)
                    if (marker.ref !== null) {
                        marker.ref.openCallout()
                    }
