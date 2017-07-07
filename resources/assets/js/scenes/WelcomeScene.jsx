@@ -6,6 +6,12 @@ import HomeFooter from '../components/HomeFooter'
 import GetAppRow from '../components/GetAppRow'
 
 export default class Welcome extends Component {
+    constructor(props) {
+        super(props)
+
+        document.title = "TreeSnap - Help Our Nation's Trees!"
+    }
+    
     /**
      * Render the scene.
      *

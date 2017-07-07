@@ -44,7 +44,7 @@ Route::get('/logout', function () {
 // Observations
 Route::get('/observations/categories', 'ObservationsController@getCategories');
 Route::get('/observations/{limit?}', 'ObservationsController@index');
-Route::get('/web/observation/{id}', 'ObservationsController@ajaxShow');
+Route::get('/web/observation/{id}', 'ObservationsController@show');
 
 // Map
 Route::get('/web/map', 'MapController@index');
@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/collection/{id}', 'CollectionsController@show');
     Route::post('/collection/attach', 'CollectionsController@attach');
     Route::delete('/collection/detach', 'CollectionsController@detach');
-    Route::delete('/collection/delete', 'CollectionsController@delete');
+    Route::delete('/collection/{id}', 'CollectionsController@delete');
     Route::post('/collection/share', 'CollectionsController@share');
     Route::delete('/collection/unshare', 'CollectionsController@unshare');
 

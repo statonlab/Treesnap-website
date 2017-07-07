@@ -51,7 +51,10 @@
     left: $sidebar-width + 10px;
   }
   @include mobile() {
-    display: none;
+    left: 0;
+    .sidebar-visible & {
+      left: $sidebar-width + 10px;
+    }
   }
 }
 

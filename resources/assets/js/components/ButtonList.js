@@ -39,8 +39,7 @@ export default class ButtonList extends Component {
                 return one !== item
             })
         } else {
-            selected = this.state.selected
-            selected.push(item)
+            selected = this.state.selected.concat(item)
         }
 
         this.setState({selected})

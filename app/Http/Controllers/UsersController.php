@@ -148,8 +148,11 @@ class UsersController extends Controller
      */
     public function observations(Request $request)
     {
-        $user = $request->user();
+        $this->validate($request, [
+            'per_page' => 'nullable|in:6,12,24,48'
+        ]);
 
+        $user = $request->user();
         $observations = Observation::with([
             'collections' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
@@ -160,11 +163,11 @@ class UsersController extends Controller
             'confirmations' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             },
-        ])->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(6);
+        ])->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($request->per_page);
 
         $data = [];
         foreach ($observations as $observation) {
-            $json = $this->getObservationJson($observation, true);
+            $json = $this->getObservationJson($observation, true, $user);
             $data[] = array_merge($json, ['user' => ['name' => $user->name, 'id' => $user->id]]);
         }
 
@@ -173,5 +176,9 @@ class UsersController extends Controller
             'has_more_pages' => $observations->hasMorePages(),
             'count' => $observations->count(),
         ]));
+    }
+
+    protected function applyFilters($request) {
+
     }
 }

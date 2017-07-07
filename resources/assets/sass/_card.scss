@@ -42,7 +42,7 @@
   right: 0;
   background-color: #f7f7f7;
   z-index: 5;
-  overflow: auto !important;
+  overflow-y: auto !important;
   -webkit-transform: translate(0, 130%);
   -moz-transform: translate(0, 130%);
   -ms-transform: translate(0, 130%);
@@ -85,7 +85,8 @@
 
 .card-slide-container {
   max-height: 100%;
-  overflow: auto;
+  overflow-y: auto !important;
+  overflow-x: hidden;
 }
 
 .card-footer,

@@ -52,6 +52,8 @@ export default class App extends Component {
             showCollectionsForm : false,
             showFlagForm        : false
         }
+
+        document.title = "TreeSnap - Map"
     }
 
     /**
@@ -62,6 +64,10 @@ export default class App extends Component {
         this.loadCategories()
         this.loadCollections()
         this.loadFilters()
+        document.body.className = 'map-page'
+    }
+    componentWillUnmount() {
+        document.body.className = ''
     }
 
     /**

@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
-        window.Laravel             = {
+        window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
             loggedIn : '{{ auth()->check() ? '1' : '0'}}' === '1',
             isAdmin  : false
@@ -39,25 +39,19 @@
 <div id="app-root"></div>
 
 <script>
-    window.__globalHeightTimer = false
-
     window.fixHeight = function () {
-        var windowHeight = window.innerHeight
-        var footer       = document.querySelector('.home-footer').clientHeight
-        var header       = document.querySelectorAll('nav.nav')[0].clientHeight
-        var content      = document.querySelector('nav.nav + .home-section')
-
-        if (content) {
-            content.style.minHeight = (windowHeight - (footer + header)) + 'px'
-        }
-
-        if (window.__globalHeightTimer) {
+        var content = document.querySelector('.short-content')
+        if (!content) {
             return
         }
 
-        window.addEventListener('resize', window.fixHeight.bind(this), false)
-        window.__globalHeightTimer = true
+        var windowHeight        = window.innerHeight
+        var footer              = document.querySelector('.home-footer').clientHeight
+        var header              = document.querySelectorAll('nav.nav')[0].clientHeight
+        content.style.minHeight = (windowHeight - (footer + header)) + 'px'
     }
+
+    window.addEventListener('resize', window.fixHeight.bind(this), false)
 </script>
 <script src="{{ mix('js/app.js') }}"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

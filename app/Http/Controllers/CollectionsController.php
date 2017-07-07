@@ -250,26 +250,25 @@ class CollectionsController extends Controller
     /**
      * Delete a specified collection
      *
+     * @param integer $id Collection id
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request)
+    public function delete($id, Request $request)
     {
-        $this->validate($request, [
-            'collection_id' => 'required|exists:collections,id',
-        ]);
-
-        $collection = Collection::findOrFail($request->collection_id);
+        $id = intval($id);
+        $collection = Collection::findOrFail($id);
 
         if ($request->user()->id !== $collection->user_id) {
             return $this->unauthorized();
         }
 
+        $collection->observations()->detach();
+        $collection->users()->detach();
         $collection->delete();
 
         return $this->created([
-            'id' => $request->id,
-            'label' => $request->label,
+            'id' => $id,
         ]);
     }
 }
