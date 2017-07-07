@@ -13,8 +13,12 @@ const KnowledgeSidebarLinks = [
         label: 'Partners'
     }, {
         to   : '/faq',
-        icon : 'fa-eye-slash',
+        icon : 'fa-question-circle-o',
         label: 'FAQ'
+    }, {
+        to   : '/privacy-policy',
+        icon : 'fa-eye-slash',
+        label: 'Privacy Policy'
     }, {
         to   : '/terms-of-use',
         icon : 'fa-file-text-o',
