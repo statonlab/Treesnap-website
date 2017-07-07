@@ -15,6 +15,8 @@ export default class KnowledgeScene extends Component {
             content: '',
             loading: true
         }
+
+        document.title = "TreeSnap - About Us"
     }
 
     componentDidMount() {

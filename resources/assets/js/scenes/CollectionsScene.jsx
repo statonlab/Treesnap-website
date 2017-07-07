@@ -13,6 +13,8 @@ export default class CollectionsScene extends Component {
         }
 
         this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
+
+        document.title = "User Saved Collections"
     }
 
     componentWillMount() {

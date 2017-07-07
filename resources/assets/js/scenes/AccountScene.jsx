@@ -24,6 +24,8 @@ export default class AccountScene extends Component {
             password_errors          : [],
             password_message         : ''
         }
+
+        document.title = "User Account"
     }
 
     /**

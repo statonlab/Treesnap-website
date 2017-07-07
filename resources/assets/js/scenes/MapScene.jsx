@@ -52,6 +52,8 @@ export default class App extends Component {
             showCollectionsForm : false,
             showFlagForm        : false
         }
+
+        document.title = "TreeSnap - Map"
     }
 
     /**

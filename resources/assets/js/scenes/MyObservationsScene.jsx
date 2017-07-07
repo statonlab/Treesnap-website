@@ -25,6 +25,8 @@ export default class MyObservationsScene extends Component {
             categories        : [],
             selectedCategory  : 0
         }
+
+        document.title = "My Observations"
     }
 
     /**

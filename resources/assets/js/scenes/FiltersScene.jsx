@@ -13,6 +13,8 @@ export default class UsersScene extends Component {
         }
 
         this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
+
+        document.title = "User Saved Filters"
     }
 
     componentWillMount() {

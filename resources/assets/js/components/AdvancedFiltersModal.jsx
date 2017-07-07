@@ -267,17 +267,19 @@ export default class AdvancedFiltersModal extends Component {
 
                 <div className="column is-6"></div>
 
-                <div className="column is-12">
-                    <div className="field">
-                        <div className="control">
-                            <label className="label checkbox">
-                                <input type="checkbox" className="mr-0" defaultChecked={false}/>
-                                Notify me via email if new observations fitting this criteria get submitted
-                            </label>
-                            <p className="help mr-1">Maximum of 3 emails per week.</p>
+                {window.Laravel.loggedIn ?
+                    <div className="column is-12">
+                        <div className="field">
+                            <div className="control">
+                                <label className="label checkbox">
+                                    <input type="checkbox" className="mr-0" defaultChecked={false}/>
+                                    Notify me via email if new observations fitting this criteria get submitted
+                                </label>
+                                <p className="help mr-1">Maximum of 3 emails per week.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    : null }
             </div>
         )
     }

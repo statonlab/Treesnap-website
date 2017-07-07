@@ -24,6 +24,8 @@ export default class ObservationScene extends Component {
                 observation: data,
                 loading    : false
             })
+
+            document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
         }).catch(error => {
             this.setState({loading: false})
             if (error.response && error.response.status === 404) {

@@ -1,6 +1,20 @@
 import React, {Component} from 'react'
 
 export default class HomeFooter extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            isHome: false
+        }
+    }
+
+    componentWillMount() {
+        this.setState({
+            isHome: window.location.pathname === '/'
+        })
+    }
+
     render() {
         return (
             <div className="home-footer">
@@ -10,9 +24,13 @@ export default class HomeFooter extends Component {
                     </p>
 
                     <p>
-                        <a href="/privacy-policy">Privacy Policy and Terms of Use</a> | Icons by
-                        <a href="http://www.flaticon.com/authors/vectors-market"> Vectors Market</a>
+                        <a href="/privacy-policy">Privacy Policy and Terms of Use</a>
                     </p>
+                    {this.state.isHome ?
+                        <p>
+                            Icons by <a href="http://www.flaticon.com/authors/vectors-market"> Vectors Market</a>
+                        </p>
+                        : null }
                     <div className="columns logos">
                         <div className="column has-text-centered">
                             <a href="https://www.utk.edu/">
