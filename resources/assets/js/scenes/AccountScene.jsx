@@ -179,7 +179,8 @@ export default class AccountScene extends Component {
                     <form action="#"
                           method="post"
                           onSubmit={this.submit.bind(this)}>
-                        <div className="field">
+
+                        <div className="field limit-width">
                             <label className="label">Name</label>
                             <div className="control">
                                 <input type="text"
@@ -192,7 +193,7 @@ export default class AccountScene extends Component {
                             </div>
                         </div>
 
-                        <div className="field">
+                        <div className="field limit-width">
                             <label className="label">Email</label>
                             <div className="control">
                                 <input type="email"
@@ -235,6 +236,7 @@ export default class AccountScene extends Component {
                                 {this.state.errors.is_anonymous.map((error, index) => {
                                     return <p className="help is-danger" key={index}>{error}</p>
                                 })}
+                                <p className="help">Anonymous users have their information hidden from other users.</p>
                             </div>
                         </div>
 
@@ -256,7 +258,7 @@ export default class AccountScene extends Component {
                             </div>
                             : null}
 
-                        <div className="field">
+                        <div className="field limit-width">
                             <label className="label">Old Password</label>
                             <div className="control">
                                 <input type="password"
@@ -267,7 +269,7 @@ export default class AccountScene extends Component {
                             </div>
                         </div>
 
-                        <div className="field">
+                        <div className="field limit-width">
                             <label className="label">New Password</label>
                             <div className="control">
                                 <input type="password"
@@ -278,7 +280,7 @@ export default class AccountScene extends Component {
                             </div>
                         </div>
 
-                        <div className="field">
+                        <div className="field limit-width">
                             <label className="label">Repeat Password</label>
                             <div className="control">
                                 <input type="password"

@@ -33,6 +33,75 @@ export default class ObservationScene extends Component {
         })
     }
 
+    _renderContent(observation) {
+        if (observation === null) {
+            return null
+        }
+
+        return (
+            <div>
+                <ObservationDetails observation={observation} showControls={true}/>
+
+                <div className="columns">
+                    <div className="column is-6">
+                        <div className="box">
+                            <h4 className="title is-5">Notes</h4>
+                            <div className="field">
+                                <div className="control">
+                                    <textarea className="textarea" placeholder="Private Notes"></textarea>
+                                </div>
+                                <p className="help">You may add private notes to this observation by filling the text box above.</p>
+
+                            </div>
+
+                            <div className="field">
+                                <div className="control">
+                                    <button className="button is-primary" type="button">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="column is-6">
+                        <div className="box">
+                            <h4 className="title is-5">Collections</h4>
+                            {observation.collections.length === 0 ?
+                                <p>You have not added this observation to any collections yet.</p>
+                                : null}
+                            {observation.collections.map(collection => {
+                                return (
+                                    <div className="flexbox flex-space-between" key={collection.id}>
+                                        <p>{collection.label}</p>
+                                        <button className="button is-small is-outlined is-danger">Remove</button>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="box">
+                            <h4 className="title is-5">Flags</h4>
+                            {observation.flags.length === 0 ?
+                                <p>You have not flagged this observation.</p>
+                                : null}
+                            {observation.flags.map(flag => {
+                                return (
+                                    <div className="flexbox flex-space-between" key={flag.id}>
+                                        <div>
+                                            <p>
+                                                You have flagged this observation as: "<b>{flag.reason}</b>"
+                                            </p>
+                                            <p>
+                                                {flag.comments}
+                                            </p>
+                                        </div>
+                                        <button className="button is-danger is-outlined is-small">Remove Flag</button>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     render() {
         return (
@@ -41,9 +110,7 @@ export default class ObservationScene extends Component {
                 <Spinner visible={this.state.loading}/>
                 <div className="home-section short-content">
                     <div className="container">
-                        {this.state.observation !== null ?
-                            <ObservationDetails observation={this.state.observation} showControls={true}/>
-                            : null}
+                        {this._renderContent(this.state.observation)}
                     </div>
                 </div>
                 <HomeFooter/>

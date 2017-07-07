@@ -202,7 +202,7 @@ export default class AdvancedFiltersModal extends Component {
                         </div>
                     </div>
                     : null }
-                    
+
                 <div className="column is-6">
                     <div className="field">
                         <label className="label">Species</label>
@@ -271,7 +271,7 @@ export default class AdvancedFiltersModal extends Component {
                     <div className="field">
                         <div className="control">
                             <label className="label checkbox">
-                                <input type="checkbox" className="mr-0" defaultChecked={true}/>
+                                <input type="checkbox" className="mr-0" defaultChecked={false}/>
                                 Notify me via email if new observations fitting this criteria get submitted
                             </label>
                             <p className="help mr-1">Maximum of 3 emails per week.</p>
@@ -321,7 +321,9 @@ export default class AdvancedFiltersModal extends Component {
                                 onClick={this.submit.bind(this)}>
                             Apply
                         </button>
-                        <p>Found <b>{this.state.resultsCount}</b> observations that fit your criteria</p>
+                        <p>
+                            Found <b>{this.state.resultsCount || 0}</b> observations that fit your criteria
+                        </p>
                         <button type="button"
                                 className="button"
                                 onClick={this.close.bind(this)}>

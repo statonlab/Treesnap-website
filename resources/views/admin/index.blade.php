@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
         window.Laravel = {
+            loggedIn   : {{ auth()->check() ? 'true' : 'false' }},
             csrfToken  : '{{ csrf_token() }}',
             isAdmin    : true,
             isScientist: {{ auth()->user()->isScientist() ? 1 : 0 }}

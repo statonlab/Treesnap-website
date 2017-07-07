@@ -395,7 +395,7 @@ export default class ObservationCard extends Component {
             addressLine2 = address.join(',')
         }
         return (
-            <div>
+            <div className="observation-card-container">
                 <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
                     <header className="card-header">
                         <p className="card-header-title text-ellipsis">
@@ -475,7 +475,7 @@ export default class ObservationCard extends Component {
                            onClick={() => this.shouldSlide('addToCollection')}>
                             <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
                                 <span className="icon is-small is-marginless">
-                                    <i className="fa fa-plus"></i>
+                                    <i className="fa fa-star"></i>
                                 </span>
                             </Tooltip>
                         </a>
@@ -514,6 +514,18 @@ export default class ObservationCard extends Component {
                                 </Tooltip>
                             </a>
                         }
+
+                        {!this.props.owner ? null :
+                            <a href="javascript:;"
+                               className="card-footer-item is-paddingless"
+                               onClick={() => this.shouldSlide('flag')}>
+                                <Tooltip label="Share" style={{padding: '0.75rem'}}>
+                                    <span className="icon is-small is-marginless">
+                                        <i className="fa fa-share"></i>
+                                    </span>
+                                </Tooltip>
+                            </a>
+                        }
                     </footer>
                 </div>
                 {this.state.showDetailsModal ?
@@ -541,7 +553,7 @@ ObservationCard.PropTypes = {
 ObservationCard.defaultProps = {
     onFlagChange() {
     },
-    onCollectionCreated() {
+    onCollectionCreated(collection) {
     },
     onEmailRequest(observation){
     },

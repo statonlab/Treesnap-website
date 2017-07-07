@@ -143,7 +143,7 @@ class FiltersController extends Controller
             ]);
 
             foreach ($observations as $observation) {
-                $all[] = array_merge($this->getObservationJson($observation, $isAdmin), [
+                $all[] = array_merge($this->getObservationJson($observation, $isAdmin, $user), [
                     'user' => [
                         'name' => $observation->user->name,
                         'id' => $observation->user->id,

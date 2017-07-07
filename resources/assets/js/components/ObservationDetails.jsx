@@ -28,6 +28,10 @@ export default class ObservationDetails extends Component {
         window.fixHeight()
     }
 
+    componentWillReceiveProps(props) {
+        this._setup(props.observation)
+    }
+
     _setup(observation) {
         if (typeof observation.location !== 'undefined') {
             observation.latitude        = observation.location.latitude
@@ -111,7 +115,7 @@ export default class ObservationDetails extends Component {
         return (
             <div>
                 <div className="flexbox observation-tools">
-                    <a className="button  is-outlined">
+                    <a className="button is-outlined">
                         <span className="icon is-small">
                             <i className="fa fa-star text-success"></i>
                         </span>
@@ -119,10 +123,18 @@ export default class ObservationDetails extends Component {
                     </a>
                     <a className="button is-outlined">
                         <span className="icon is-small">
-                            <i className="fa fa-flag text-danger"></i>
+                            <i className="fa fa-share text-success"></i>
                         </span>
-                        <span>Flag Observation</span>
+                        <span>Share Link</span>
                     </a>
+                    {this.observation.flags.length === 0 ?
+                        <a className="button is-outlined">
+                            <span className="icon is-small">
+                                <i className="fa fa-flag text-danger"></i>
+                            </span>
+                            <span>Flag Observation</span>
+                        </a>
+                        : null }
                 </div>
             </div>
         )
@@ -133,44 +145,42 @@ export default class ObservationDetails extends Component {
             <div className="box">
                 <h3 className="title is-4">{this.observation.observation_category}</h3>
 
-                <div className="columns">
-                    <div className="column is-8-desktop">
-                        <table className="table is-striped">
-                            <tbody>
-                            <tr>
-                                <th style={{width: 150}}>Submitted By</th>
-                                <td>{this.observation.owner}</td>
-                            </tr>
-                            {Object.keys(this.observation.meta_data).map((key) => {
-                                return (
-                                    <tr key={key}>
-                                        <th>{key}</th>
-                                        <td>{this.observation.meta_data[key]}</td>
-                                    </tr>
-                                )
-                            })}
-                            <tr>
-                                <th>Date Collected</th>
-                                <td>{ this.observation.collection_date }</td>
-                            </tr>
-                            {this.observation.images.length === 0 ? null :
+                <div className="columns mb-none">
+                    <div className="column is-8-desktop" style={{minHeight: '300px'}}>
+                        <div className="flexbox flex-column flex-space-between" style={{minHeight: '300px'}}>
+                            <table className="table is-striped">
+                                <tbody>
                                 <tr>
-                                    <th>Photos</th>
-                                    <td>
-                                        <a href="#" onClick={(e) => {
-                                            this.modal.open()
-                                            if (e)
-                                                e.nativeEvent.preventDefault()
-                                        }}>
-                                            See All Photos
-                                        </a>
-                                    </td>
+                                    <th style={{width: 150}}>Submitted By</th>
+                                    <td>{this.observation.user.name}</td>
                                 </tr>
-                            }
-                            </tbody>
-                        </table>
+                                {Object.keys(this.observation.meta_data).map((key) => {
+                                    return (
+                                        <tr key={key}>
+                                            <th>{key}</th>
+                                            <td>{this.observation.meta_data[key]}</td>
+                                        </tr>
+                                    )
+                                })}
+                                <tr>
+                                    <th>Date Collected</th>
+                                    <td>{ this.observation.collection_date }</td>
+                                </tr>
+                                {this.observation.images.length === 0 ? null :
+                                    <tr>
+                                        <th>Photos</th>
+                                        <td>
+                                            <a href="javascript:;" onClick={() => this.modal.open()}>
+                                                See All Photos
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
 
-                        {this._renderControls()}
+                            {this._renderControls()}
+                        </div>
                     </div>
 
                     <div className="column">

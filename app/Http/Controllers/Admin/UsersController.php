@@ -67,7 +67,7 @@ class UsersController extends Controller
 
         $all = [];
         foreach ($observations as $observation) {
-            $all[] = array_merge(array_except($this->getObservationJson($observation, true), ['is_private']), [
+            $all[] = array_merge(array_except($this->getObservationJson($observation, true, $user), ['is_private']), [
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,

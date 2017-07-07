@@ -1,9 +1,18 @@
+.map-page {
+  .nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
 .nav {
-  z-index: 10;
+  z-index: 2000;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   background-color: $primary;
   .nav-item {
-    color: #fff;
+    color: #fff !important;
   }
 
   .container.is-fluid {
@@ -60,7 +69,7 @@
 @include mobile() {
   .nav-menu {
     .nav-item {
-      color: #444;
+      color: #444 !important;
     }
   }
 }
@@ -73,11 +82,11 @@
   .nav-right {
     @include mobile() {
       a.nav-item {
-        color: #777;
+        color: #777 !important;
         &.is-active,
         &:hover {
           @include mobile() {
-            color: #000;
+            color: #000 !important;
           }
         }
       }
@@ -87,8 +96,8 @@
   a.nav-item,
   .nav-toggle {
     &.is-active {
-      border-bottom-color: #fff;
-      background-color: transparent;
+      border-bottom-color: #fff !important;
+      background-color: transparent !important;
     }
 
     &:hover {
@@ -106,7 +115,7 @@
   }
 
   .logo-img {
-    height: 48px!important;
+    height: 48px !important;
     max-height: 48px;
     margin-right: 10px;
   }
