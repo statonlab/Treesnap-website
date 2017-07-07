@@ -14,15 +14,11 @@
   @include mobile() {
     &,
     .sidebar-visible & {
-      left: -$sidebar-width;
+      //left: -$sidebar-width;
     }
   }
 
   -ms-overflow-style: -ms-autohiding-scrollbar;
-
-  &::-webkit-scrollbar {
-    // display: none;
-  }
 }
 
 .sidebar-content-container {

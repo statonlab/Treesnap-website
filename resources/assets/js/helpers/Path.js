@@ -1,5 +1,9 @@
 class Path {
     constructor() {
+        this.setPath()
+    }
+
+    setPath() {
         this.path = window.location.pathname
         if (this.path !== '/') {
             this.path.replace(/\/$/g, '')
@@ -7,6 +11,7 @@ class Path {
     }
 
     isActive(url, exact = true, className = 'is-active') {
+        this.setPath()
         if (exact && this.path === url) {
             return className
         } else if (!exact && this.path.indexOf(url) >= 0) {

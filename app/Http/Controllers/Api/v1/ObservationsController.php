@@ -31,7 +31,7 @@ class ObservationsController extends Controller
         $data = [];
 
         foreach ($observations as $observation) {
-            $data[] = $this->getObservationJson($observation);
+            $data[] = $this->getObservationJson($observation, true, false);
         }
 
         return $this->success($data);
@@ -57,7 +57,7 @@ class ObservationsController extends Controller
             return $this->unauthorized();
         }
 
-        return $this->success($this->getObservationJson($observation));
+        return $this->success($this->getObservationJson($observation, true, false));
     }
 
     /**

@@ -15,9 +15,13 @@ export default class KnowledgeScene extends Component {
             content: '',
             loading: true
         }
+
+        document.title = "TreeSnap - About Us"
     }
 
     componentDidMount() {
+        window.fixHeight()
+
         axios.get(this.props.docPath).then(response => {
             this.setState({content: response.data.data})
         }).catch(error => {

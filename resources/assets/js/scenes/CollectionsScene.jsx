@@ -13,15 +13,34 @@ export default class CollectionsScene extends Component {
         }
 
         this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
+
+        document.title = "User Saved Collections"
     }
 
     componentWillMount() {
         axios.get('/collections').then(response => {
-            this.setState({collections: response.data.data})
+            this.setState({
+                collections: response.data.data,
+                loading    : false
+            })
         }).catch(error => {
             console.log(error)
-        }).then(() => {
             this.setState({loading: false})
+        })
+    }
+
+    deleteCollection(collection) {
+        if (!confirm(`Are you sure you want to delete ${collection.label}?`)) {
+            return
+        }
+
+        axios.delete(`/collection/${collection.id}`).then(response => {
+            const id = parseInt(response.data.data.id)
+            this.setState({
+                collections: this.state.collections.filter(collection => collection.id !== id)
+            })
+        }).catch(error => {
+            console.log(error)
         })
     }
 
@@ -39,7 +58,9 @@ export default class CollectionsScene extends Component {
                             </Tooltip>
                         </span>
                     </button>
-                    <button type="button" className="button is-small is-danger ml-0">
+                    <button type="button"
+                            className="button is-small is-danger ml-0"
+                            onClick={() => this.deleteCollection(collection)}>
                         <span className="icon is-small">
                             <Tooltip label="Delete">
                                 <i className="fa fa-times"></i>

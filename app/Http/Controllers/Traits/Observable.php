@@ -46,7 +46,7 @@ trait Observable
      * @param  $observation
      * @return array
      */
-    protected function getObservationJson($observation, $admin = false)
+    protected function getObservationJson($observation, $admin = false, $user = false)
     {
         // Set Image Urls
         $images = [
@@ -79,9 +79,9 @@ trait Observable
             'date' => $observation->collection_date,
             'is_private' => $observation->is_private,
             'mobile_id' => $observation->mobile_id,
-            'flags' => isset($observation->flags) ? $observation->flags : [],
-            'collections' => isset($observation->collections) ? $observation->collections : [],
-            'confirmations' => isset($observation->confirmations) ? $observation->confirmations : [],
+            'flags' => $user ? $observation->flags : [],
+            'collections' => $user ? $observation->collections : [],
+            'confirmations' => $user ? $observation->confirmations : [],
         ];
     }
 

@@ -1,6 +1,11 @@
 import React, {Component} from 'react'
 
 export default class NotFoundScene extends Component {
+    constructor(props) {
+        super(props)
+
+        document.title = "404 - Not Found | TreeSnap"
+    }
     render() {
         return (
             <div className="error-page">

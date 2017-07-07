@@ -18,6 +18,8 @@ export default class ContactUsScene extends Component {
             form_message: '',
             errors      : {}
         }
+
+        document.title = "TreeSnap - Contact Us"
     }
 
     componentDidMount() {

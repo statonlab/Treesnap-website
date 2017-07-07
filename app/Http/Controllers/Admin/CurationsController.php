@@ -45,7 +45,7 @@ class CurationsController extends Controller
         foreach ($observations as $observation) {
             // Compile the data into a standardized response
             $oUser = $observation->user;
-            $data[] = array_merge($this->getObservationJson($observation, true), [
+            $data[] = array_merge($this->getObservationJson($observation, true, $user), [
                 'user' => [
                     'id' => $oUser->id,
                     'name' => $oUser->name,
