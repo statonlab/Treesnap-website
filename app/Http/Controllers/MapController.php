@@ -74,6 +74,6 @@ class MapController extends Controller
             ]);
         }
 
-        return $this->prepForMap($observations, $isAdmin);
+        return $this->prepForMap($observations, $isAdmin, $user);
     }
 }

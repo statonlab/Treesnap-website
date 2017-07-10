@@ -8,6 +8,8 @@ import moment from 'moment'
 import BoxModal from './BoxModal'
 import FlagFrom from './FlagForm'
 import CollectionForm from './CollectionForm'
+import Labels from '../helpers/Labels'
+import Utils from '../helpers/Utils'
 
 export default class ObservationDetails extends Component {
     constructor(props) {
@@ -77,23 +79,27 @@ export default class ObservationDetails extends Component {
         this.observation = observation
 
         this.setState(Object.assign({}, observation, {
-            markers: [{
+            markers    : [{
                 image   : observation.images.images ? observation.images.images[0] : '',
                 position: {
                     latitude : observation.latitude,
                     longitude: observation.longitude
                 }
             }],
-            center : {
+            center     : {
                 lat: observation.latitude,
                 lng: observation.longitude
             },
-            zoom   : 4,
-            loading: false,
+            zoom       : 4,
+            loading    : false,
             collections: this.state.collections
         }))
 
         setTimeout(() => {
+            if (!this.map) {
+                return
+            }
+
             this.map.goTo({
                 lat: observation.latitude,
                 lng: observation.longitude
@@ -168,11 +174,11 @@ export default class ObservationDetails extends Component {
                         <span>Add to Collection</span>
                     </a>
                     {/*<a className="button is-outlined">
-                        <span className="icon is-small">
-                            <i className="fa fa-share text-success"></i>
-                        </span>
-                        <span>Share Link</span>
-                    </a>*/}
+                     <span className="icon is-small">
+                     <i className="fa fa-share text-success"></i>
+                     </span>
+                     <span>Share Link</span>
+                     </a>*/}
                     {this.observation.flags.length === 0 ?
                         <a className="button is-outlined"
                            onClick={() => this.setState({controlModalContent: 'flag', showControlModal: true})}>
@@ -239,7 +245,37 @@ export default class ObservationDetails extends Component {
         )
     }
 
+    /**
+     * Decode meta data.
+     *
+     * @param label
+     * @param data
+     * @param key
+     * @returns {XML}
+     * @private
+     */
+    _renderMetaData(label, data, key) {
+        if (Utils.isJson(data) === true) {
+            data = JSON.parse(data)
+        }
+
+        return (
+            <tr key={key}>
+                <th>{label}</th>
+                <td>
+                    {data}{key === 'comment' ? <p className="help">
+                    <span className="icon is-small">
+                        <i className="fa fa-lock"></i>
+                    </span>
+                    <span>Only you can see this comment</span>
+                </p> : null}
+                </td>
+            </tr>
+        )
+    }
+
     render() {
+        let data = this.observation.meta_data
         return (
             <div className="box">
                 <h3 className="title is-4">{this.observation.observation_category}</h3>
@@ -253,13 +289,9 @@ export default class ObservationDetails extends Component {
                                     <th style={{width: 150}}>Submitted By</th>
                                     <td>{this.observation.user.name}</td>
                                 </tr>
-                                {Object.keys(this.observation.meta_data).map((key) => {
-                                    return (
-                                        <tr key={key}>
-                                            <th>{key}</th>
-                                            <td>{this.observation.meta_data[key]}</td>
-                                        </tr>
-                                    )
+                                {Object.keys(data).map(key => {
+                                    const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
+                                    return this._renderMetaData(label, data[key], key)
                                 })}
                                 <tr>
                                     <th>Date Collected</th>

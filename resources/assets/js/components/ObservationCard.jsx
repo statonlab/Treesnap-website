@@ -399,11 +399,19 @@ export default class ObservationCard extends Component {
             <div className="observation-card-container">
                 <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
                     <header className="card-header">
-                        <Link to={`/observation/${observation.observation_id}`}
-                              className="card-header-title text-ellipsis"
-                              title="Visit Observation Page">
-                            {name}
-                        </Link>
+                        {this.props.owner ?
+                            <Link to={`/observation/${observation.observation_id}`}
+                                  className="card-header-title text-ellipsis"
+                                  title="Visit Observation Page">
+                                {name}
+                            </Link>
+                            :
+                            <a href={`/observation/${observation.observation_id}`}
+                               className="card-header-title text-ellipsis"
+                               title="Visit Observation Page">
+                                {name}
+                            </a>
+                        }
 
                         {this.props.owner ? null :
                             <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}

@@ -126,7 +126,7 @@ class FiltersController extends Controller
                 $filtered = $filtered->get();
             }
 
-            return $this->prepForMap($filtered, $isAdmin);
+            return $this->prepForMap($filtered, $isAdmin, $user);
         }
 
         $filtered->chunk(1000, function ($observations) use (&$all, $isAdmin, $user) {
