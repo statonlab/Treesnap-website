@@ -49,7 +49,6 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function faq()
     {
         $contents = Storage::get('docs/FAQ.md');
@@ -62,7 +61,6 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function trees()
     {
         $contents = Storage::get('docs/Trees.md');
@@ -75,7 +73,6 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function partners()
     {
         $contents = Storage::get('docs/Partners.md');

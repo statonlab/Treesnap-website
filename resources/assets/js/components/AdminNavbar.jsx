@@ -17,7 +17,7 @@ export default class AdminNavbar extends Component {
      * Get user logged in status.
      */
     componentDidMount() {
-        axios.get('/user/status').then(response => {
+        axios.get('/web/user/status').then(response => {
             let data = response.data.data
             this.setState({
                 isLoggedIn: data.logged_in,

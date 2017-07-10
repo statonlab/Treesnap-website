@@ -7,13 +7,13 @@
     <title>{{ $title or 'TreeSnap' }}</title>
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
-        window.Laravel             = {
+        window.TreeSnap             = {
             csrfToken: '{{ csrf_token() }}',
             loggedIn : {{ auth()->check() ? 1 : 0}},
             isAdmin  : false
         }
         @if(auth()->check())
-            window.Laravel.isAdmin = {{ auth()->user()->isAdmin() ? 1 : 0 }}
+            window.TreeSnap.isAdmin = {{ auth()->user()->isAdmin() ? 1 : 0 }}
         @endif
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>

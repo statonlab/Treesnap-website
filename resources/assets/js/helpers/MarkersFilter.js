@@ -55,7 +55,7 @@ export default class MarkersFilter extends Filters {
     }
 
     newCollection(marker, collection) {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return
         }
 
@@ -68,7 +68,7 @@ export default class MarkersFilter extends Filters {
     }
 
     newFlag(marker, flag) {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return
         }
 
@@ -81,7 +81,7 @@ export default class MarkersFilter extends Filters {
     }
 
     removeCollection(marker, collection_id) {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return
         }
 
@@ -94,7 +94,7 @@ export default class MarkersFilter extends Filters {
     }
 
     removeFlag(marker, flag_id) {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return
         }
 

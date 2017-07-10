@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
-        window.Laravel = {
+        window.TreeSnap = {
             csrfToken: '{{ csrf_token() }}'
         }
     </script>

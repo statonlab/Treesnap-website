@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 
 export default class Sidebar extends Component {
     _renderCommands() {
-        if (window.Laravel.isScientist) {
+        if (window.TreeSnap.isScientist) {
             return null
         }
 
@@ -32,7 +32,7 @@ export default class Sidebar extends Component {
                                 <i className="fa fa-dashboard"></i> Dashboard
                             </NavLink>
                         </li>
-                        {window.Laravel.isScientist ? null :
+                        {window.TreeSnap.isScientist ? null :
                             <li>
                                 <NavLink to="/users" activeClassName="is-active">
                                     <i className="fa fa-user"></i> Users

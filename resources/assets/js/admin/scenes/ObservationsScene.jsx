@@ -46,7 +46,7 @@ export default class ObservationsScene extends Component {
      * Get observations from server.
      */
     componentWillMount() {
-        axios.get('/observations').then(response => {
+        axios.get('/web/observations').then(response => {
             this.setState({loading: false})
             this.allObservations = response.data.data
             this.filter          = new ObservationsFilter(this.allObservations)
@@ -68,7 +68,7 @@ export default class ObservationsScene extends Component {
      * Load available collections.
      */
     loadCollections() {
-        axios.get('/collections/mapped').then(response => {
+        axios.get('/web/collections/mapped').then(response => {
             this.setState({collections: response.data.data})
         }).catch(error => {
             console.log(error)
@@ -79,7 +79,7 @@ export default class ObservationsScene extends Component {
      * Load user info.
      */
     loadUser() {
-        axios.get('/user').then(response => {
+        axios.get('/web/user').then(response => {
             this.setState({user: response.data.data})
         }).catch(error => {
             console.log(error)
@@ -90,7 +90,7 @@ export default class ObservationsScene extends Component {
      * Load observation categories from server.
      */
     loadCategories() {
-        axios.get('/observations/categories').then(response => {
+        axios.get('/web/observations/categories').then(response => {
             let categories = response.data.data.map(category => {
                 return {
                     label: category,
@@ -354,7 +354,7 @@ export default class ObservationsScene extends Component {
         }
 
         if (parseInt(id) === -1) {
-            axios.get('/observations').then(response => {
+            axios.get('/web/observations').then(response => {
                 this.replaceObservations(response.data.data)
                 this.setState({loading: false})
             }).catch(error => {

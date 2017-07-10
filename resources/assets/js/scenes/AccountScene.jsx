@@ -32,7 +32,7 @@ export default class AccountScene extends Component {
      * Get the user record from the server.
      */
     componentDidMount() {
-        axios.get('/user').then(response => {
+        axios.get('/web/user').then(response => {
             let user = response.data.data
             this.setState({
                 name        : user.name,
@@ -55,7 +55,7 @@ export default class AccountScene extends Component {
     submit(e) {
         e.preventDefault()
 
-        axios.put('/user', {
+        axios.put('/web/user', {
             name        : this.state.name,
             email       : this.state.email,
             is_anonymous: this.state.is_anonymous,
@@ -99,7 +99,7 @@ export default class AccountScene extends Component {
     submitPassword(e) {
         e.preventDefault()
 
-        axios.patch('/user/password', {
+        axios.patch('/web/user/password', {
             new_password             : this.state.new_password,
             new_password_confirmation: this.state.new_password_confirmation,
             old_password             : this.state.old_password

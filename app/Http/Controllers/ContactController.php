@@ -40,5 +40,7 @@ class ContactController extends Controller
         }
 
         Mail::to(config('mail.from.address'))->queue(new ContactRequest((object) $request->all()));
+
+        return $this->success('Message Sent');
     }
 }

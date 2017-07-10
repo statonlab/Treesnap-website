@@ -139,12 +139,22 @@ class User extends Authenticatable
     }
 
     /**
-     * Confirmations.
+     * Get related confirmations.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function confirmations()
     {
         return $this->hasMany('App\Confirmation');
+    }
+
+    /**
+     * Get related notes.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notes()
+    {
+        return $this->hasMany('App\Note');
     }
 }

@@ -5,33 +5,68 @@ import Marker from '../UI/Marker'
 import Modal from '../UI/Modal'
 import ImageGallery from 'react-image-gallery'
 import moment from 'moment'
+import BoxModal from './BoxModal'
+import FlagFrom from './FlagForm'
+import CollectionForm from './CollectionForm'
 
 export default class ObservationDetails extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            markers: [],
-            center : {
+            markers            : [],
+            center             : {
                 lat: 40.354388,
                 lng: -95.998237
             },
-            zoom   : 4
+            zoom               : 4,
+            showControlModal   : false,
+            controlModalContent: '',
+            collections        : []
         }
     }
 
+    /**
+     * Set up the observation state.
+     */
     componentWillMount() {
         this._setup(this.props.observation)
     }
 
+    /**
+     * Fix height and load collections.
+     */
     componentDidMount() {
         window.fixHeight()
+        this.loadCollections()
     }
 
+    /**
+     * If the observation changes, reset the observation state.
+     */
     componentWillReceiveProps(props) {
         this._setup(props.observation)
     }
 
+    /**
+     * Load all collections that a user has created.
+     */
+    loadCollections() {
+        if (!this.props.showControls) {
+            return
+        }
+
+        axios.get('/web/collections/mapped').then(response => {
+            let collections = response.data.data
+            this.setState({collections})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    /**
+     * Set up the state.
+     */
     _setup(observation) {
         if (typeof observation.location !== 'undefined') {
             observation.latitude        = observation.location.latitude
@@ -54,7 +89,8 @@ export default class ObservationDetails extends Component {
                 lng: observation.longitude
             },
             zoom   : 4,
-            loading: false
+            loading: false,
+            collections: this.state.collections
         }))
 
         setTimeout(() => {
@@ -65,6 +101,9 @@ export default class ObservationDetails extends Component {
         }, 500)
     }
 
+    /**
+     * Render each image for the image gallery.
+     */
     _renderImage(item) {
         return (
             <div className='image-gallery-image'
@@ -77,6 +116,9 @@ export default class ObservationDetails extends Component {
         )
     }
 
+    /**
+     * Render the images modal
+     */
     _renderImagesModal() {
         if (this.observation.images.images.length === 0)
             return null
@@ -107,6 +149,9 @@ export default class ObservationDetails extends Component {
     }
 
 
+    /**
+     * Render the card control buttons.
+     */
     _renderControls() {
         if (this.props.showControls === false) {
             return null
@@ -115,20 +160,22 @@ export default class ObservationDetails extends Component {
         return (
             <div>
                 <div className="flexbox observation-tools">
-                    <a className="button is-outlined">
+                    <a className="button is-outlined"
+                       onClick={() => this.setState({controlModalContent: 'collection', showControlModal: true})}>
                         <span className="icon is-small">
                             <i className="fa fa-star text-success"></i>
                         </span>
                         <span>Add to Collection</span>
                     </a>
-                    <a className="button is-outlined">
+                    {/*<a className="button is-outlined">
                         <span className="icon is-small">
                             <i className="fa fa-share text-success"></i>
                         </span>
                         <span>Share Link</span>
-                    </a>
+                    </a>*/}
                     {this.observation.flags.length === 0 ?
-                        <a className="button is-outlined">
+                        <a className="button is-outlined"
+                           onClick={() => this.setState({controlModalContent: 'flag', showControlModal: true})}>
                             <span className="icon is-small">
                                 <i className="fa fa-flag text-danger"></i>
                             </span>
@@ -136,7 +183,59 @@ export default class ObservationDetails extends Component {
                         </a>
                         : null }
                 </div>
+
+                {this._renderControlModal()}
             </div>
+        )
+    }
+
+    /**
+     * Render the control modal where users can add the
+     * observation to a collection, flag it, etc.
+     * @returns {XML}
+     * @private
+     */
+    _renderControlModal() {
+        return (
+            <BoxModal
+                visible={this.state.showControlModal}
+                onCloseRequest={() => this.setState({showControlModal: false})}>
+                {this.state.controlModalContent === 'flag' ? this._renderFlagForm() : null}
+                {this.state.controlModalContent === 'collection' ? this._renderCollectionForm() : null}
+            </BoxModal>
+        )
+    }
+
+    /**
+     * Render the flagging form.
+     *
+     * @returns {XML}
+     * @private
+     */
+    _renderFlagForm() {
+        return (
+            <FlagFrom observationId={this.observation.observation_id}
+                      onSubmit={(flag) => {
+                          this.props.onFlagCreated(flag)
+                          this.setState({showControlModal: false})
+                      }}/>
+        )
+    }
+
+    /**
+     * Render the collection form.
+     *
+     * @returns {XML}
+     * @private
+     */
+    _renderCollectionForm() {
+        return (
+            <CollectionForm observationId={this.observation.observation_id}
+                            collections={this.state.collections}
+                            onSubmit={(collection) => {
+                                this.props.onAddedToCollection(collection)
+                                this.setState({showControlModal: false})
+                            }}/>
         )
     }
 
@@ -220,10 +319,16 @@ export default class ObservationDetails extends Component {
 }
 
 ObservationDetails.PropTypes = {
-    observation : PropTypes.object.isRequired,
-    showControls: PropTypes.bool
+    observation        : PropTypes.object.isRequired,
+    showControls       : PropTypes.bool,
+    onAddedToCollection: PropTypes.func,
+    onFlagCreated      : PropTypes.func
 }
 
 ObservationDetails.defaultProps = {
-    showControls: false
+    showControls: false,
+    onFlagCreated(flag) {
+    },
+    onAddedToCollection(collection) {
+    }
 }

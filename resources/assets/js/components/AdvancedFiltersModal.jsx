@@ -42,7 +42,7 @@ export default class AdvancedFiltersModal extends Component {
     }
 
     componentWillMount() {
-        axios.get('/observations/categories').then(response => {
+        axios.get('/web/observations/categories').then(response => {
             this.setState({
                 categories: response.data.data
                 //selectedCategories: response.data.data
@@ -185,7 +185,7 @@ export default class AdvancedFiltersModal extends Component {
     renderForm() {
         return (
             <div className="columns is-multiline">
-                {window.Laravel.loggedIn ?
+                {window.TreeSnap.loggedIn ?
                     <div className="column is-12">
                         <div className="field">
                             <label className="label">Filter Name</label>
@@ -267,7 +267,7 @@ export default class AdvancedFiltersModal extends Component {
 
                 <div className="column is-6"></div>
 
-                {window.Laravel.loggedIn ?
+                {window.TreeSnap.loggedIn ?
                     <div className="column is-12">
                         <div className="field">
                             <div className="control">

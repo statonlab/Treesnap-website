@@ -118,7 +118,7 @@ export default class App extends Component {
 
             // Add the markers to the state
 
-            if (!window.Laravel.isAdmin) {
+            if (!window.TreeSnap.isAdmin) {
                 this.disclaimer.show()
             }
 
@@ -142,7 +142,7 @@ export default class App extends Component {
      * Get available categories from the server.
      */
     loadCategories() {
-        axios.get('/observations/categories').then(response => {
+        axios.get('/web/observations/categories').then(response => {
             let categories = response.data.data
             this.setState({
                 categories        : categories,
@@ -162,11 +162,11 @@ export default class App extends Component {
      * Logged in users only.
      */
     loadCollections() {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return
         }
 
-        axios.get('/collections/1').then(response => {
+        axios.get('/web/collections/1').then(response => {
             this.setState({collections: response.data.data})
         }).catch(error => {
             if (error.response && error.response.status === 401) {
@@ -183,7 +183,7 @@ export default class App extends Component {
      * Logged in users only.
      */
     loadFilters() {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return
         }
 
@@ -821,7 +821,7 @@ export default class App extends Component {
      * @param collection
      */
     removeCollection(marker, collection) {
-        axios.delete('/collection/detach', {
+        axios.delete('/web/collection/detach', {
             params: {
                 observation_id: marker.id,
                 collection_id : collection.id

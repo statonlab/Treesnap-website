@@ -79,7 +79,7 @@ export default class CurateScene extends Component {
      * Load user info.
      */
     loadUser() {
-        axios.get('/user').then(response => {
+        axios.get('/web/user').then(response => {
             this.setState({user: response.data.data})
         }).catch(error => {
             console.log(error)
@@ -90,7 +90,7 @@ export default class CurateScene extends Component {
      * Load observation categories from server.
      */
     loadCategories() {
-        axios.get('/observations/categories').then(response => {
+        axios.get('/web/observations/categories').then(response => {
             let categories = response.data.data.map(category => {
                 return {
                     label: category,
