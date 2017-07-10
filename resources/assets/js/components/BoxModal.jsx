@@ -10,7 +10,9 @@ export default class ObservationControlsModal extends Component {
         return (
             <div className={`modal${this.props.visible ? ' is-active' : ''}`}>
                 <div className="modal-background" onClick={this.props.onCloseRequest}></div>
-                <button className="modal-close is-large" onClick={this.props.onCloseRequest}></button>
+                <button className="close-modal" onClick={this.props.onCloseRequest} style={{zIndex: 999999}}>
+                    <i className="fa fa-times"></i>
+                </button>
                 <div className="modal-content">
                     <div className="box">
                         {this.props.children}

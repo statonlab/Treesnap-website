@@ -64,11 +64,17 @@ trait Observable
             $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
         }
 
+        if ($user && $user->id === $observation->user_id) {
+            $data = $observation->data;
+        } else {
+            $data = array_except($observation->data, ['comment']);
+        }
+
         return [
             'observation_id' => $observation->id,
             'user_id' => $observation->user_id,
             'observation_category' => $observation->observation_category,
-            'meta_data' => $observation->data,
+            'meta_data' => $data,
             'location' => [
                 'latitude' => $admin ? $observation->latitude : $observation->fuzzy_coords['latitude'],
                 'longitude' => $admin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
@@ -112,9 +118,10 @@ trait Observable
      *
      * @param $observations
      * @param $isAdmin
+     * @param $authenticated_user
      * @return mixed
      */
-    protected function prepForMap($observations, $isAdmin)
+    protected function prepForMap($observations, $isAdmin, $authenticated_user = false)
     {
         $all = [];
         foreach ($observations as $observation) {
@@ -134,6 +141,12 @@ trait Observable
             $title = $observation->observation_category;
             $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
 
+            if ($authenticated_user && $authenticated_user->id === $observation->user_id) {
+                $data = $observation->data;
+            } else {
+                $data = array_except($observation->data, ['comment']);
+            }
+
             $all[] = [
                 'id' => $observation->id,
                 'title' => $title,
@@ -147,17 +160,14 @@ trait Observable
                 ],
                 'owner' => $username,
                 'date' => $observation->collection_date->toDateString(),
-                'data' => $observation->data,
+                'data' => $data,
                 'ref' => null,
-                'collections' => $observation->collections ?: [],
-                'flags' => $observation->flags ?: [],
+                'flags' => $user ? $observation->flags : [],
+                'collections' => $user ? $observation->collections : [],
                 'confirmations_count' => $observation->confirmations_count,
             ];
         }
 
         return $all;
-
-        return $observations->map(function ($observation) use ($isAdmin) {
-        });
     }
 }

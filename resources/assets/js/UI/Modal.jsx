@@ -39,7 +39,7 @@ export default class Modal extends Component {
 }
 
 Modal.PropTypes = {
-    show: PropTypes.bool
+    show: PropTypes.bool.isRequired
 }
 
 Modal.defaultProps = {
