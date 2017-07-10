@@ -12,14 +12,14 @@
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     <script>
-        window.Laravel = {
+        window.TreeSnap = {
             csrfToken: '{{ csrf_token() }}',
             loggedIn : '{{ auth()->check() ? '1' : '0'}}' === '1',
             isAdmin  : false
         }
 
         @if(auth()->check())
-            window.Laravel.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
+            window.TreeSnap.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
         @endif
     </script>
     <script src="/js/plugins/mapcluster.min.js"></script>

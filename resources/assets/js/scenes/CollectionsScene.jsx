@@ -18,7 +18,7 @@ export default class CollectionsScene extends Component {
     }
 
     componentWillMount() {
-        axios.get('/collections').then(response => {
+        axios.get('/web/collections').then(response => {
             this.setState({
                 collections: response.data.data,
                 loading    : false

@@ -26,7 +26,7 @@ export default class MyObservationsScene extends Component {
             selectedCategory  : 0
         }
 
-        document.title = "My Observations"
+        document.title = 'My Observations'
     }
 
     /**
@@ -49,7 +49,7 @@ export default class MyObservationsScene extends Component {
     loadObservations(state) {
         this.setState({loading: true})
 
-        axios.get('/user/observations', {
+        axios.get('/web/user/observations', {
             params: {
                 page       : state.page,
                 per_page   : state.per_page,
@@ -81,7 +81,7 @@ export default class MyObservationsScene extends Component {
     }
 
     loadCollections() {
-        axios.get('/collections').then(response => {
+        axios.get('/web/collections').then(response => {
             const collections = response.data.data.map(collection => {
                 return {
                     label: collection.label,
@@ -287,6 +287,14 @@ export default class MyObservationsScene extends Component {
         this.loadObservations(state)
     }
 
+    changePerPage(per_page) {
+        let state      = this.state
+        state.per_page = per_page
+        state.page = 1
+        this.setState({per_page, page: 1})
+        this.loadObservations(state)
+    }
+
     /**
      * Render filter bar.
      *
@@ -301,7 +309,7 @@ export default class MyObservationsScene extends Component {
                 <div className="column is-8 has-text-right">
                     <span className="select is-small">
                         <select value={this.state.per_page}
-                                onChange={({target}) => this.changePerPage.call(this, target.value)}>
+                                onChange={({target}) => this.changePerPage(target.value)}>
                             <option value="6">6</option>
                             <option value="12">12</option>
                             <option value="24">24</option>

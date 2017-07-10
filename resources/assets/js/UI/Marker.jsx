@@ -48,7 +48,7 @@ export default class Marker extends Component {
         this.marker.addListener('click', this.openCallout.bind(this))
 
         let icon
-        if (window.Laravel.isAdmin) {
+        if (window.TreeSnap.isAdmin) {
             icon = this.colors[this.marker.title] || 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
         } else {
             icon = '/images/map/q-dot.png'

@@ -4,6 +4,12 @@
   height: 100%;
 }
 
+a.card-header-title {
+  &:hover {
+    color: $primary;
+  }
+}
+
 .card-header-icon.is-clear {
   color: #aaa;
   padding-right: 0.25rem;
@@ -21,7 +27,6 @@
       color: $primary;
     }
   }
-
 }
 
 .fade {

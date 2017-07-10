@@ -44,7 +44,7 @@ export default class FlagForm extends Component {
         event.preventDefault()
 
         this.setState({loading: true})
-        axios.delete('/flag/' + this.state.flag_id).then(response => {
+        axios.delete(`/web/flag/${this.state.flag_id}`).then(response => {
             this.setState({loading: false})
             this.props.onUndo(response.data.data)
         }).catch(error => {
@@ -62,7 +62,7 @@ export default class FlagForm extends Component {
 
         this.setState({loading: true})
 
-        axios.post('/flag', {
+        axios.post('/web/flag', {
             observation_id: this.props.observationId,
             reason        : this.state.reason,
             comments      : this.state.comments
@@ -180,7 +180,7 @@ export default class FlagForm extends Component {
     }
 
     render() {
-        if (!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return (
                 <div className="content">
                     <p>You must be logged in to flag this observation.</p>

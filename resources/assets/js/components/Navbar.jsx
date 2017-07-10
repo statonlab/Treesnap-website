@@ -59,29 +59,29 @@ export default class Navbar extends Component {
                             About
                         </NavLink>
 
-                        {window.Laravel.loggedIn ?
+                        {window.TreeSnap.loggedIn ?
                             <NavLink to="/account" className={`nav-item`} activeClassName={'is-active'}>
                                 Account
                             </NavLink>
                             : null}
 
-                        {!window.Laravel.loggedIn ?
+                        {!window.TreeSnap.loggedIn ?
                             <a href="/login" className={`nav-item ${Path.isActive('/login')}`}>
                                 Login
                             </a>
                             : null}
 
-                        {!window.Laravel.loggedIn ?
+                        {!window.TreeSnap.loggedIn ?
                             <a href="/register" className={`nav-item ${Path.isActive('/register')}`}>
                                 Register
                             </a>
                             : null}
 
-                        {window.Laravel.isAdmin ?
+                        {window.TreeSnap.isAdmin ?
                             <a href="/admin" className={`nav-item ${Path.isActive('/admin', false)}`}>Admin</a>
                             : null}
 
-                        {window.Laravel.loggedIn ?
+                        {window.TreeSnap.loggedIn ?
                             <a href="/logout" className="nav-item">
                                 Logout
                             </a>

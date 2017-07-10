@@ -17,12 +17,12 @@ Route::get('/test/{id}', 'CollectionsController@show');
 Route::get('/', 'HomeController@index');
 
 // Documentation Routes
-Route::get('/docs/about', 'DocumentController@about');
-Route::get('/docs/terms', 'DocumentController@terms');
-Route::get('/docs/privacy', 'DocumentController@policy');
-Route::get('/docs/faq', 'DocumentController@faq');
-Route::get('/docs/trees', 'DocumentController@trees');
-Route::get('/docs/partners', 'DocumentController@partners');
+Route::get('/web/docs/about', 'DocumentController@about');
+Route::get('/web/docs/terms', 'DocumentController@terms');
+Route::get('/web/docs/privacy', 'DocumentController@policy');
+Route::get('/web/docs/faq', 'DocumentController@faq');
+Route::get('/web/docs/trees', 'DocumentController@trees');
+Route::get('/web/docs/partners', 'DocumentController@partners');
 
 // Contact
 Route::post('/contact', 'ContactController@send');
@@ -42,16 +42,16 @@ Route::get('/logout', function () {
 });
 
 // Observations
-Route::get('/observations/categories', 'ObservationsController@getCategories');
-Route::get('/observations/{limit?}', 'ObservationsController@index');
+Route::get('/web/observations/categories', 'ObservationsController@getCategories');
+Route::get('/web/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@show');
 
 // Map
 Route::get('/web/map', 'MapController@index');
 
 // Users
-Route::get('/user/status', 'UsersController@status');
-Route::post('/user/subscribe', 'UsersController@subscribe');
+Route::get('/web/user/status', 'UsersController@status');
+Route::post('/web/user/subscribe', 'UsersController@subscribe');
 
 // Filters
 Route::post('/web/filter/count', 'FiltersController@count');
@@ -71,28 +71,33 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/web/filter/{id}', 'FiltersController@show');
 
     // Users controller
-    Route::get('/user', 'UsersController@show');
-    Route::put('/user', 'UsersController@update');
-    Route::patch('/user/password', 'UsersController@updatePassword');
-    Route::get('/user/observations', 'UsersController@observations');
-
+    Route::get('/web/user', 'UsersController@show');
+    Route::put('/web/user', 'UsersController@update');
+    Route::patch('/web/user/password', 'UsersController@updatePassword');
+    Route::get('/web/user/observations', 'UsersController@observations');
 
     // Allow only authenticated users to access Account Page
     Route::get('/account/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
 
     // Collections
-    Route::get('/collections/{paired?}', 'CollectionsController@index');
-    Route::post('/collections', 'CollectionsController@create');
-    Route::get('/collection/{id}', 'CollectionsController@show');
-    Route::post('/collection/attach', 'CollectionsController@attach');
-    Route::delete('/collection/detach', 'CollectionsController@detach');
-    Route::delete('/collection/{id}', 'CollectionsController@delete');
-    Route::post('/collection/share', 'CollectionsController@share');
-    Route::delete('/collection/unshare', 'CollectionsController@unshare');
+    Route::get('/web/collections/{paired?}', 'CollectionsController@index');
+    Route::post('/web/collections', 'CollectionsController@create');
+    Route::get('/web/collection/{id}', 'CollectionsController@show');
+    Route::post('/web/collection/attach', 'CollectionsController@attach');
+    Route::delete('/web/collection/detach', 'CollectionsController@detach');
+    Route::delete('/web/collection/{id}', 'CollectionsController@delete');
+    Route::post('/web/collection/share', 'CollectionsController@share');
+    Route::delete('/web/collection/unshare', 'CollectionsController@unshare');
 
     // Flags
-    Route::post('/flag', 'FlagsController@create');
-    Route::delete('flag/{id}', 'FlagsController@delete');
+    Route::post('/web/flag', 'FlagsController@create');
+    Route::delete('/web/flag/{id}', 'FlagsController@delete');
+
+    // Notes
+    Route::get('/web/notes', 'NotesController@index');
+    Route::post('/web/notes', 'NotesController@create');
+    Route::get('/web/note/{id}', 'NotesController@show');
+    Route::delete('/web/note/{id}', 'NotesController@delete');
 });
 
 // Admin Route Group

@@ -58,7 +58,7 @@ export default class SubscribeRow extends Component {
     submit(event) {
         event.preventDefault()
 
-        axios.post('/user/subscribe', {
+        axios.post('/web/user/subscribe', {
             email: this.state.email
         }).then(response => {
             this.setState({

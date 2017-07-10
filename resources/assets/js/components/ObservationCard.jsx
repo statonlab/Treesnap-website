@@ -9,6 +9,7 @@ import Marker from '../UI/Marker'
 import Spinner from './Spinner'
 import Notify from './Notify'
 import ObservationDetailsModal from './ObservationDetailsModal'
+import {Link} from 'react-router-dom'
 
 export default class ObservationCard extends Component {
     constructor(props) {
@@ -167,7 +168,7 @@ export default class ObservationCard extends Component {
      */
     removeFromCollection(collection, observation) {
         this.setState({loading: true})
-        axios.delete('/collection/detach', {
+        axios.delete('/web/collection/detach', {
             params: {
                 collection_id : collection.id,
                 observation_id: observation.observation_id
@@ -398,9 +399,11 @@ export default class ObservationCard extends Component {
             <div className="observation-card-container">
                 <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
                     <header className="card-header">
-                        <p className="card-header-title text-ellipsis">
+                        <Link to={`/observation/${observation.observation_id}`}
+                              className="card-header-title text-ellipsis"
+                              title="Visit Observation Page">
                             {name}
-                        </p>
+                        </Link>
 
                         {this.props.owner ? null :
                             <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
@@ -445,7 +448,7 @@ export default class ObservationCard extends Component {
                                     e.preventDefault()
                                     this.setState({showDetailsModal: true})
                                 }}>
-                                    See Full Details
+                                    Quick View
                                 </a><br/>
 
                                 <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
@@ -490,7 +493,7 @@ export default class ObservationCard extends Component {
                             </Tooltip>
                         </a>
 
-                        {window.Laravel.isAdmin && !this.props.owner ?
+                        {window.TreeSnap.isAdmin && !this.props.owner ?
                             <a href="javascript:;"
                                className="card-footer-item is-paddingless"
                                onClick={() => {
@@ -516,9 +519,8 @@ export default class ObservationCard extends Component {
                         }
 
                         {!this.props.owner ? null :
-                            <a href="javascript:;"
-                               className="card-footer-item is-paddingless"
-                               onClick={() => this.shouldSlide('flag')}>
+                            <a href={`mailto:?body=${this.createUrl(observation.observation_id)}`}
+                               className="card-footer-item is-paddingless">
                                 <Tooltip label="Share" style={{padding: '0.75rem'}}>
                                     <span className="icon is-small is-marginless">
                                         <i className="fa fa-share"></i>
@@ -535,6 +537,15 @@ export default class ObservationCard extends Component {
                     : null}
             </div>
         )
+    }
+
+    createUrl(id) {
+        let location = window.location
+        if (location.port) {
+            return `${location.protocol}//${location.hostname}:${location.port}/observation/${id}`
+        }
+
+        return `${location.protocol}//${location.hostname}/observation/${id}`
     }
 }
 

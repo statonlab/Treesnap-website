@@ -28,13 +28,12 @@ export default class CollectionForm extends Component {
 
         let id = parseInt(this.state.collection_id)
 
-        axios.post('/collection/attach', {
+        axios.post('/web/collection/attach', {
             observation_id: this.props.observationId,
             collection_id : id !== 0 ? id : '',
             label         : this.state.label
         }).then(response => {
             this.setState({
-                loading      : false,
                 label        : '',
                 collection_id: 0,
                 errors       : {
@@ -48,8 +47,7 @@ export default class CollectionForm extends Component {
             if (response && response.status === 422) {
                 const data = response.data
                 this.setState({
-                    loading: false,
-                    errors : {
+                    errors: {
                         label        : data.label || [],
                         collection_id: data.collection_id || []
                     }
@@ -59,6 +57,8 @@ export default class CollectionForm extends Component {
             }
 
             console.log(error)
+        }).then(() => {
+            this.setState({loading: false})
         })
     }
 
@@ -81,7 +81,7 @@ export default class CollectionForm extends Component {
     }
 
     render() {
-        if(!window.Laravel.loggedIn) {
+        if (!window.TreeSnap.loggedIn) {
             return (
                 <div className="content">
                     <p>You must be logged in to add this observation to a collection.</p>

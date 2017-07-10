@@ -30,12 +30,12 @@ class App extends Component {
                     <Route path={'/observation/:id'} component={ObservationScene}/>
                     <Route path={'/map'} component={MapScene}/>
                     <Route path={'/contact'} component={ContactUsScene}/>
-                    <Route path={'/about'} component={() => (<KnowledgeScene docPath='/docs/about'/>) }/>
-                    <Route path={'/privacy-policy'} component={() => (<KnowledgeScene docPath='/docs/privacy'/>)}/>
-                    <Route path={'/terms-of-use'} component={() => (<KnowledgeScene docPath='/docs/terms'/>)}/>
-                    <Route path={'/faq'} component={() => (<KnowledgeScene docPath='/docs/faq'/>)}/>
-                    <Route path={'/trees'} component={() => (<KnowledgeScene docPath='/docs/trees'/>)}/>
-                    <Route path={'/partners'} component={() => (<KnowledgeScene docPath='/docs/partners'/>)}/>
+                    <Route path={'/about'} component={() => (<KnowledgeScene docPath='/web/docs/about'/>) }/>
+                    <Route path={'/privacy-policy'} component={() => (<KnowledgeScene docPath='/web/docs/privacy'/>)}/>
+                    <Route path={'/terms-of-use'} component={() => (<KnowledgeScene docPath='/web/docs/terms'/>)}/>
+                    <Route path={'/faq'} component={() => (<KnowledgeScene docPath='/web/docs/faq'/>)}/>
+                    <Route path={'/trees'} component={() => (<KnowledgeScene docPath='/web/docs/trees'/>)}/>
+                    <Route path={'/partners'} component={() => (<KnowledgeScene docPath='/web/docs/partners'/>)}/>
                     <Route component={NotFoundScene}/>
                 </Switch>
             </Router>

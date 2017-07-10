@@ -1,0 +1,27 @@
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+
+export default class ObservationControlsModal extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+            <div className={`modal${this.props.visible ? ' is-active' : ''}`}>
+                <div className="modal-background" onClick={this.props.onCloseRequest}></div>
+                <button className="modal-close is-large" onClick={this.props.onCloseRequest}></button>
+                <div className="modal-content">
+                    <div className="box">
+                        {this.props.children}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
+ObservationControlsModal.PropTypes = {
+    visible: PropTypes.bool.isRequired,
+    onCloseRequest: PropTypes.func.isRequired
+}
