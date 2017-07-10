@@ -51,7 +51,7 @@
     left: $sidebar-width + 10px;
   }
   @include mobile() {
-    left: 0;
+    left: 10px;
     .sidebar-visible & {
       left: $sidebar-width + 10px;
     }

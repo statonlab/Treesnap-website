@@ -53,7 +53,7 @@ export default class App extends Component {
             showFlagForm        : false
         }
 
-        document.title = "TreeSnap - Map"
+        document.title = 'TreeSnap - Map'
     }
 
     /**
@@ -66,6 +66,7 @@ export default class App extends Component {
         this.loadFilters()
         document.body.className = 'map-page'
     }
+
     componentWillUnmount() {
         document.body.className = ''
     }
@@ -243,7 +244,7 @@ export default class App extends Component {
                        showFilters   : false
                    })
                    this.openSidebar()
-                   this.goToSubmission(marker, 17)
+                   this.goToSubmission(marker, 10)
                    if (marker.ref !== null) {
                        marker.ref.openCallout()
                    }
@@ -429,7 +430,10 @@ export default class App extends Component {
                                         showCollectionsForm: false,
                                         showFlagForm       : false
                                     })
-                                    this.openSidebar()
+
+                                    if (window.innerWidth > 797) {
+                                        this.openSidebar()
+                                    }
                                 }}
                         >
                             <div className="media callout">
