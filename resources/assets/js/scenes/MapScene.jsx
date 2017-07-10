@@ -961,21 +961,21 @@ export default class App extends Component {
     _renderMetaData(label, data, key) {
         if (Utils.isJson(data) === true) {
             data = JSON.parse(data)
-            console.log(data)
-            // return (
-            //     <div className="sidebar-item" key={key}>
-            //         <h5><strong>{label}</strong></h5>
-            //         {data.map((paragraph, index) => {
-            //             return <p className="ml-1" key={index}>{paragraph}</p>
-            //         })}
-            //     </div>
-            // )
         }
 
         return (
             <div className="sidebar-item" key={key}>
                 <h5><strong>{label}</strong></h5>
-                <p className="ml-1">{data}</p>
+                <div className="ml-1">
+                    {data} {key === 'comment' ?
+                    <p className="help">
+                        <span className="icon is-small">
+                            <i className="fa fa-lock"></i>
+                        </span>
+                        <span>Only you can see this comment</span>
+                    </p>
+                    : null}
+                </div>
             </div>
         )
     }

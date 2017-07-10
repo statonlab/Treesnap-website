@@ -263,12 +263,14 @@ export default class ObservationDetails extends Component {
             <tr key={key}>
                 <th>{label}</th>
                 <td>
-                    {data}{key === 'comment' ? <p className="help">
-                    <span className="icon is-small">
-                        <i className="fa fa-lock"></i>
-                    </span>
-                    <span>Only you can see this comment</span>
-                </p> : null}
+                    {data} {key === 'comment' ?
+                    <p className="help">
+                        <span className="icon is-small">
+                            <i className="fa fa-lock"></i>
+                        </span>
+                        <span>Only you can see this comment</span>
+                    </p>
+                    : null}
                 </td>
             </tr>
         )
