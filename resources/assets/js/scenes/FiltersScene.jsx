@@ -52,20 +52,23 @@ export default class UsersScene extends Component {
             <tr key={filter.id}>
                 <td>{filter.name}</td>
                 <td className="has-text-right">
-                    <a className="button is-small is-warning mr-0">
+                    {/*<a className="button is-small is-warning mr-0">
                         <span className="icon is-small">
                             <Tooltip label="Edit">
                                 <i className="fa fa-pencil" style={{color: '#fff'}}></i>
                             </Tooltip>
                         </span>
-                    </a>
-                    <a className="button is-small is-danger" onClick={(e) => this.deleteFilter(e, filter)}>
+                    </a>*/}
+
+                    <button type="button"
+                            className="button is-small is-danger"
+                            onClick={(e) => this.deleteFilter(e, filter)}>
                         <span className="icon is-small">
                             <Tooltip label="Delete">
                                 <i className="fa fa-times"></i>
                             </Tooltip>
                         </span>
-                    </a>
+                    </button>
                 </td>
             </tr>
         )

@@ -43,13 +43,16 @@
   height: 2.5em;
   font-weight: bold;
   padding: 0 15px;
+
   &:hover {
     background: #ddd;
     color: #000;
   }
+
   .sidebar-visible & {
     left: $sidebar-width + 10px;
   }
+
   @include mobile() {
     left: 10px;
     .sidebar-visible & {
