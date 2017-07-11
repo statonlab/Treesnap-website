@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
             ClearObservationsCache::class,
             CreateObservationThumbnails::class,
         ],
+        'App\Events\ObservationUpdated' => [
+            CreateObservationThumbnails::class,
+        ],
         'App\Events\ObservationDeleted' => [
             ClearObservationsCache::class,
         ],

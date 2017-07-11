@@ -11,19 +11,25 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ObservationDeleted
+class ObservationUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * The updated observation.
+     *
+     * @var \App\Observation
+     */
+    public $observation;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Observation $observation)
     {
-        //
+        $this->observation = $observation;
     }
 
     /**
