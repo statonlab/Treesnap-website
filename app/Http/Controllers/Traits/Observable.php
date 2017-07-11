@@ -38,6 +38,7 @@ trait Observable
         'observations.collection_date',
         'observations.is_private',
         'observations.mobile_id',
+        'observations.thumbnail',
     ];
 
     /**
