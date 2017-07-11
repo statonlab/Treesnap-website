@@ -18,74 +18,95 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <nav className={`nav${this.props.home ? ' home-nav' : ''}`}>
+            <nav className={`navbar${this.props.home ? ' home-nav' : ''}`}>
                 <div className={`${!this.props.container ? 'container' : 'container is-fluid'}`}>
-                    <div className="nav-left nav-brand">
-                        <NavLink to="/" className="nav-item">
-                            <img src={`/logo/ts-logo-${this.props.home ? '96' : '32'}.png`} alt="Logo" className="logo-img"/>
+                    <div className="navbar-brand">
+                        <NavLink to="/" className="navbar-item">
+                            <img src={`/logo/ts-logo-${this.props.home ? '96' : '32'}.png`}
+                                 alt="Logo"
+                                 className="logo-img"/>
                             <span className="logo-text"><b>Tree</b><span style={{fontWeight: 300}}>Snap</span></span>
                         </NavLink>
+
+                        <div className="navbar-burger" onClick={this.toggle.bind(this)}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
 
-                    <div className="nav-center">
-                        <a href="https://www.facebook.com/treesnapapp/" className="nav-item">
-                            <span className="icon">
-                                <i className="fa fa-facebook"></i>
-                            </span>
-                        </a>
-                        <a href="https://twitter.com/Treesnapapp" className="nav-item">
-                            <span className="icon">
-                                <i className="fa fa-twitter"></i>
-                            </span>
-                        </a>
-                    </div>
+                    <div className={`navbar-menu${this.state.isActive ? ' is-active' : ''}`}>
+                        <div className="navbar-end">
+                            <a href="https://www.facebook.com/treesnapapp/" className="navbar-item">
+                                <span className="icon">
+                                    <i className="fa fa-facebook"></i>
+                                </span>
+                            </a>
+                            <a href="https://twitter.com/Treesnapapp" className="navbar-item">
+                                <span className="icon">
+                                    <i className="fa fa-twitter"></i>
+                                </span>
+                            </a>
+                        </div>
 
-                    <div className="nav-toggle" onClick={this.toggle.bind(this)}>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
-                        <NavLink exact={true} to="/" className={`nav-item`} activeClassName={'is-active'}>
-                            Home
-                        </NavLink>
-
-                        <NavLink to="/map" className={`nav-item`} activeClassName={'is-active'}>
-                            Map
-                        </NavLink>
-
-                        <NavLink to="/about" className={`nav-item`} activeClassName={'is-active'}>
-                            About
-                        </NavLink>
-
-                        {window.TreeSnap.loggedIn ?
-                            <NavLink to="/account" className={`nav-item`} activeClassName={'is-active'}>
-                                Account
+                        <div className="navbar-end">
+                            <NavLink exact={true} to="/" className={`navbar-item`} activeClassName={'is-active'}>
+                                Home
                             </NavLink>
-                            : null}
 
-                        {!window.TreeSnap.loggedIn ?
-                            <a href="/login" className={`nav-item ${Path.isActive('/login')}`}>
-                                Login
-                            </a>
-                            : null}
+                            <NavLink to="/map" className={`navbar-item`} activeClassName={'is-active'}>
+                                Map
+                            </NavLink>
 
-                        {!window.TreeSnap.loggedIn ?
-                            <a href="/register" className={`nav-item ${Path.isActive('/register')}`}>
-                                Register
-                            </a>
-                            : null}
+                            <NavLink to="/about" className={`navbar-item`} activeClassName={'is-active'}>
+                                About
+                            </NavLink>
+                            {window.TreeSnap.loggedIn ?
+                                <div className="navbar-item has-dropdown is-hoverable">
+                                    <NavLink to="/account" className={`navbar-link`} activeClassName={'is-active'}>
+                                        Account
+                                    </NavLink>
+                                    <div className="navbar-dropdown">
+                                        <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
+                                            My Observations
+                                        </NavLink>
+                                        <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
+                                            Collections
+                                        </NavLink>
+                                        <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
+                                            Filters
+                                        </NavLink>
+                                        <hr className="navbar-divider"/>
+                                        <NavLink to="/account" className={`navbar-item`} activeClassName={'is-active'}>
+                                            Settings
+                                        </NavLink>
+                                    </div>
+                                </div>
+                                : null}
 
-                        {window.TreeSnap.isAdmin ?
-                            <a href="/admin" className={`nav-item ${Path.isActive('/admin', false)}`}>Admin</a>
-                            : null}
 
-                        {window.TreeSnap.loggedIn ?
-                            <a href="/logout" className="nav-item">
-                                Logout
-                            </a>
-                            : null}
+                            {!window.TreeSnap.loggedIn ?
+                                <a href="/login" className={`navbar-item ${Path.isActive('/login')}`}>
+                                    Login
+                                </a>
+                                : null}
+
+                            {!window.TreeSnap.loggedIn ?
+                                <a href="/register" className={`navbar-item ${Path.isActive('/register')}`}>
+                                    Register
+                                </a>
+                                : null}
+
+                            {window.TreeSnap.isAdmin ?
+                                <a href="/admin" className={`navbar-item ${Path.isActive('/admin', false)}`}>Admin</a>
+                                : null}
+
+                            {window.TreeSnap.loggedIn ?
+                                <a href="/logout" className="navbar-item">
+                                    Logout
+                                </a>
+                                : null}
+                        </div>
                     </div>
                 </div>
             </nav>

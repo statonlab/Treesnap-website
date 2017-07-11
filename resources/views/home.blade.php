@@ -47,7 +47,7 @@
 
         var windowHeight        = window.innerHeight
         var footer              = document.querySelector('.home-footer').clientHeight
-        var header              = document.querySelectorAll('nav.nav')[0].clientHeight
+        var header              = document.querySelectorAll('nav.navbar')[0].clientHeight
         content.style.minHeight = (windowHeight - (footer + header)) + 'px'
     }
 

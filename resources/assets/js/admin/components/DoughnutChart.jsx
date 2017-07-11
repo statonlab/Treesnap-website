@@ -17,7 +17,7 @@ export default class DoughnutChart extends Component {
         return (
             <div>
                 <Spinner visible={this.state.loading} inline={true}/>
-                <canvas ref="canvas" style={{height: '100px'}}></canvas>
+                <canvas ref="canvas" style={{height: '200px', width: '100%'}}></canvas>
             </div>
         )
     }
@@ -34,15 +34,15 @@ export default class DoughnutChart extends Component {
     }
 
     createChart(labels, data) {
-        let el    = ReactDOM.findDOMNode(this.refs.canvas)
-        let ctx   = el.getContext('2d')
+        let el  = ReactDOM.findDOMNode(this.refs.canvas)
+        let ctx = el.getContext('2d')
         new Chart(ctx, {
-            type: 'doughnut',
-            data: {
+            type   : 'doughnut',
+            data   : {
                 labels  : labels,
                 datasets: [{
-                    data                : data,
-                    backgroundColor     : [
+                    data           : data,
+                    backgroundColor: [
                         '#2A9D8F',
                         '#4d7ec8',
                         '#f39c12',
@@ -51,10 +51,10 @@ export default class DoughnutChart extends Component {
                 }]
             },
             options: {
-                legend: {
+                legend    : {
                     position: 'right'
                 },
-                responsive: true
+                responsive: false
             }
         })
     }
