@@ -40,6 +40,8 @@ class Thumbnail
      */
     public function make()
     {
+        $this->deleteExistingThumbnail();
+
         $path = $this->flattenImages($this->observation->images);
 
         if ($path === false) {
@@ -83,14 +85,34 @@ class Thumbnail
     /**
      * Get the storage path for the image.
      *
-     * @param $image
+     * @param string $image
+     * @param boolean $thumbnail whether the image is a thumbnail or a full image.
      * @return string
      */
-    protected function extractPath($image)
+    protected function extractPath($image, $thumbnail = false)
     {
         $parts = explode('/', $image);
         $name = $parts[count($parts) - 1];
+        $subPath = $thumbnail ? 'images' : 'thumbnails';
 
-        return "app/public/images/{$name}";
+        return "app/public/{$subPath}/{$name}";
+    }
+
+    /**
+     * Delete any existing thumbnails from storage.
+     */
+    protected function deleteExistingThumbnail()
+    {
+        if (empty($this->observation->thumbnail)) {
+            return;
+        }
+
+        $path = str_replace('app/', '', $this->extractPath($this->observation->thumbnail, true));
+
+        if (! Storage::exists($path)) {
+            return;
+        }
+
+        Storage::delete($path);
     }
 }
