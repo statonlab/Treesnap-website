@@ -29,9 +29,19 @@
 </head>
 <body>
 
-<div id="app" class="admin-app"></div>
+<div id="app" class="admin-app">
+    <div class="spinner-overlay">
+        <div class="has-text-centered">
+            <img src="/logo/ts-logo-144.png" alt="TreeSnap Logo">
+            <h1 class="title"><b>Tree</b>Snap</h1>
+            <div>
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
-<script src="{{ mix('js/admin.js') }}"></script>
+<script async src="{{ mix('js/admin.js') }}"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 </html>
