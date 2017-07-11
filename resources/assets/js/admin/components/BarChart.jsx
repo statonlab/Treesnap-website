@@ -17,7 +17,7 @@ export default class BarChart extends Component {
         return (
             <div>
                 <Spinner visible={this.state.loading} inline={true}/>
-                <canvas ref="canvas" style={{height: '100px'}}></canvas>
+                <canvas ref="canvas" style={{height: '200px', width: '100%'}}></canvas>
             </div>
         )
     }
@@ -57,7 +57,7 @@ export default class BarChart extends Component {
                 }]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 legend    : {
                     display: true,
                     position: 'bottom'

@@ -35,61 +35,66 @@ export default class AdminNavbar extends Component {
     render() {
         return (
             <div>
-                <nav className="nav">
+                <nav className="navbar">
                     <div className={this.props.container ? 'container' : 'container is-fluid'}>
-                        <div className="nav-left nav-brand">
-                            <a href="/" className="nav-item">
-                                <img src={`/logo/ts-logo-${this.props.home ? '96' : '32'}.png`} alt="Logo" className="logo-img"/>
+                        <div className="navbar-brand">
+                            <a href="/" className="navbar-item">
+                                <img src={`/logo/ts-logo-${this.props.home ? '96' : '32'}.png`}
+                                     alt="Logo"
+                                     className="logo-img"/>
                                 <span className="logo-text"><b>Tree</b><span style={{fontWeight: 300}}>Snap</span></span>
                             </a>
+
+                            <div className="navbar-burger" onClick={this.toggle.bind(this)}>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
                         </div>
 
-                        <div className="nav-toggle" onClick={this.toggle.bind(this)}>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
-                        <div className={`nav-right nav-menu${this.state.isActive ? ' is-active' : ''}`}>
-                            <a href="/" className={`nav-item ${Path.isActive('/')}`}>
-                                Home
-                            </a>
-
-                            <a href="/map" className={`nav-item ${Path.isActive('/map')}`}>
-                                Map
-                            </a>
-
-                            <a href="/about" className={`nav-item ${Path.isActive('/about')}`}>
-                                About
-                            </a>
-
-                            {!this.state.isLoggedIn ?
-                                <a href="/login" className={`nav-item ${Path.isActive('/login')}`}>
-                                    Login
+                        <div className={`navbar-menu${this.state.isActive ? ' is-active' : ''}`}>
+                            <div className="navbar-end">
+                                <a href="/" className={`navbar-item ${Path.isActive('/')}`}>
+                                    Home
                                 </a>
-                                : null}
 
-                            {!this.state.isLoggedIn ?
-                                <a href="/register" className={`nav-item ${Path.isActive('/register')}`}>
-                                    Register
+                                <a href="/map" className={`navbar-item ${Path.isActive('/map')}`}>
+                                    Map
                                 </a>
-                                : null}
 
-                            {this.state.isLoggedIn ?
-                                <a href="/account" className="nav-item">
-                                    Account
+                                <a href="/about" className={`navbar-item ${Path.isActive('/about')}`}>
+                                    About
                                 </a>
-                                : null}
 
-                            {this.state.isAdmin ?
-                                <a href="/admin" className={`nav-item ${Path.isActive('/admin', false)}`}>Admin</a>
-                                : null}
+                                {!this.state.isLoggedIn ?
+                                    <a href="/login" className={`navbar-item ${Path.isActive('/login')}`}>
+                                        Login
+                                    </a>
+                                    : null}
 
-                            {this.state.isLoggedIn ?
-                                <a href="/logout" className="nav-item">
-                                    Logout
-                                </a>
-                                : null}
+                                {!this.state.isLoggedIn ?
+                                    <a href="/register" className={`navbar-item ${Path.isActive('/register')}`}>
+                                        Register
+                                    </a>
+                                    : null}
+
+                                {this.state.isLoggedIn ?
+                                    <a href="/account" className="navbar-item">
+                                        Account
+                                    </a>
+                                    : null}
+
+                                {this.state.isAdmin ?
+                                    <a href="/admin"
+                                       className={`navbar-item ${Path.isActive('/admin', false)}`}>Admin</a>
+                                    : null}
+
+                                {this.state.isLoggedIn ?
+                                    <a href="/logout" className="navbar-item">
+                                        Logout
+                                    </a>
+                                    : null}
+                            </div>
                         </div>
                     </div>
                 </nav>

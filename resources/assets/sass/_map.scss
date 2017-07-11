@@ -1,6 +1,6 @@
 #map {
   position: absolute;
-  top: $nav-height;
+  top: $navbar-height;
   left: $sidebar-width;
   bottom: 0;
   right: 0;
@@ -12,7 +12,7 @@
 
 #map2 {
   position: absolute;
-  top: $nav-height;
+  top: $navbar-height;
   left: 0;
   bottom: $bottom-bar-height;
   right: 0;
@@ -32,7 +32,7 @@
 .reset-map-button,
 .filters-button {
   position: absolute;
-  top: $nav-height + 1em;
+  top: $navbar-height + 1em;
   left: 10px;
   background: #fff;
   border-radius: $radius;
@@ -62,7 +62,7 @@
 }
 
 .reset-map-button {
-  top: $nav-height + 4em;
+  top: $navbar-height + 4em;
 }
 
 .sidebar-filters {

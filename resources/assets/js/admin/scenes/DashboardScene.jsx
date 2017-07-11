@@ -11,7 +11,7 @@ export default class DashboardScene extends Component {
             <div>
                 <h1 className="title is-3">Dashboard</h1>
 
-                <div className="columns is-desktop">
+                <div className="columns">
                     <div className="column">
                         <InfoBox title="Registered Users" icon="fa-users" url="/admin/web/analytics/users/count"/>
                     </div>
@@ -23,14 +23,14 @@ export default class DashboardScene extends Component {
                     </div>
                 </div>
 
-                <div className="columns is-desktop">
-                    <div className="column is-6-desktop">
+                <div className="columns">
+                    <div className="column">
                         <div className="box is-full-height">
                             <h4 className="title is-5">Observations Distribution</h4>
                             <DoughnutChart url="/admin/web/analytics/observations/distribution"/>
                         </div>
                     </div>
-                    <div className="column is-6-desktop">
+                    <div className="column">
                         <div className="box is-full-height">
                             <h4 className="title is-5">Users</h4>
                             <LineChart/>
@@ -39,13 +39,13 @@ export default class DashboardScene extends Component {
                 </div>
 
                 <div className="columns is-desktop">
-                    <div className="column is-6-desktop">
+                    <div className="column">
                         <div className="box is-full-height">
                             <h4 className="title is-5">Observations by Season</h4>
                             <BarChart/>
                         </div>
                     </div>
-                    <div className="column is-6-desktop">
+                    <div className="column">
                         <div className="box is-full-height">
                             <h4 className="title is-5">Observations by State</h4>
                             <table className="table mb-none">

@@ -1,5 +1,5 @@
 .map-page {
-  .nav {
+  .navbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -7,19 +7,42 @@
   }
 }
 
-.nav {
+.navbar {
   z-index: 900;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   background-color: $primary;
-  .nav-item {
+
+  > .container {
+    @extend .navbar;
+    box-shadow: none;
+  }
+
+  .navbar-item,
+  .has-dropdown > .navbar-link {
     color: #fff !important;
+    &:after {
+      border-color: #fff;
+    }
+  }
+
+  .has-dropdown:hover {
+    > .navbar-link {
+      background-color: darken($primary, 5%);
+    }
+    .navbar-item {
+      background-color: #fff;
+      color: #444!important;
+      &:hover {
+        background-color: #f7f7f7;
+      }
+    }
   }
 
   .container.is-fluid {
     width: 100%;
   }
 
-  a.nav-item {
+  a.navbar-item {
     border-bottom: 2px solid transparent;
 
     &.is-active,
@@ -37,27 +60,27 @@
 
   .logo-img {
     margin-right: 5px;
-    height: $nav-height / 2;
+    height: $navbar-height / 2;
     width: auto;
-    line-height: $nav-height;
+    line-height: $navbar-height;
   }
 }
 
-.nav-brand {
+.navbar-brand {
   overflow: hidden;
-  > .nav-item {
+  > .navbar-item {
     font-size: 1.6rem;
     font-weight: 400;
     > b {
       font-weight: 700;
     }
   }
-  > small.nav-item {
+  > small.navbar-item {
     font-size: 14px;
   }
 }
 
-.nav-toggle {
+.navbar-burger {
   > span {
     background-color: #fff;
   }
@@ -66,11 +89,29 @@
   }
 }
 
-@include mobile() {
-  .nav-menu {
-    .nav-item {
+@include until($desktop) {
+  .navbar .navbar-menu {
+    background-color: white !important;
+    margin: 0 -16px;
+
+    .navbar-item {
       color: #444 !important;
-      background-color: #fff!important;
+    }
+
+    .navbar-end:first-of-type {
+      @include flexbox();
+      @include justify-content(center);
+      border-bottom: 1px solid $laravel-border-color;
+      .navbar-item {
+        border-bottom-width: 0;
+      }
+    }
+
+    .navbar-end .navbar-item {
+      border-bottom: 1px solid $laravel-border-color;
+      &:last-of-type {
+        border-bottom: 0;
+      }
       &.is-active,
       &:hover {
         background-color: #f4f4f4 !important;
@@ -79,14 +120,29 @@
   }
 }
 
-.home .nav.home-nav {
+.navbar.home-nav,
+.navbar.home-nav > .container {
   position: relative;
-  background-color: transparent;
+  background-color: transparent !important;
   box-shadow: none;
 
-  .nav-right {
+  .has-dropdown:hover {
+    > .navbar-link {
+      background-color: rgba(255, 255, 255, .1);
+    }
+
+    .navbar-item {
+      background-color: #fff;
+      color: #444!important;
+      &:hover {
+        background-color: #f7f7f7;
+      }
+    }
+  }
+
+  .navbar-end {
     @include mobile() {
-      a.nav-item {
+      a.navbar-item {
         color: #777 !important;
         &.is-active,
         &:hover {
@@ -98,10 +154,13 @@
     }
   }
 
-  a.nav-item,
-  .nav-toggle {
+  a.navbar-item,
+  .navbar-toggle {
     &.is-active {
-      border-bottom-color: #fff !important;
+      @include from($desktop) {
+        border-bottom-color: #fff !important;
+      }
+
       background-color: transparent !important;
     }
 
@@ -110,7 +169,7 @@
     }
   }
 
-  .nav-brand > .nav-item {
+  .navbar-brand > .navbar-item {
     font-size: 1.6rem;
     padding-left: 0;
     &:hover {
