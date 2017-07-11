@@ -19,21 +19,34 @@
 
   .navbar-item,
   .has-dropdown > .navbar-link {
-    color: #fff !important;
+    color: white !important;
     &:after {
-      border-color: #fff;
+      border-color: white;
     }
   }
 
-  .has-dropdown:hover {
-    > .navbar-link {
-      background-color: darken($primary, 5%);
-    }
-    .navbar-item {
-      background-color: #fff;
-      color: #444!important;
+  .navbar-item.has-dropdown {
+    @include until($desktop) {
+      > a.navbar-link {
+        color: #4a4a4a !important;
+      }
       &:hover {
-        background-color: #f7f7f7;
+        > a.navbar-link {
+          background-color: #f7f7f7 !important;
+        }
+      }
+    }
+
+    &:hover {
+      > .navbar-link {
+        background-color: darken($primary, 5%);
+      }
+      .navbar-item {
+        background-color: white;
+        color: #4a4a4a !important;
+        &:hover {
+          background-color: #f7f7f7;
+        }
       }
     }
   }
@@ -47,7 +60,7 @@
 
     &.is-active,
     &:hover {
-      color: #fff;
+      color: white;
       background: darken($primary, 5%);
     }
   }
@@ -82,7 +95,7 @@
 
 .navbar-burger {
   > span {
-    background-color: #fff;
+    background-color: white;
   }
   &:hover {
     background-color: darken($primary, 5%);
@@ -95,20 +108,20 @@
     margin: 0 -16px;
 
     .navbar-item {
-      color: #444 !important;
+      color: #4a4a4a !important;
     }
 
     .navbar-end:first-of-type {
       @include flexbox();
       @include justify-content(center);
-      border-bottom: 1px solid $laravel-border-color;
+      //border-bottom: 1px solid $laravel-border-color;
       .navbar-item {
         border-bottom-width: 0;
       }
     }
 
-    .navbar-end .navbar-item {
-      border-bottom: 1px solid $laravel-border-color;
+    .navbar-end a.navbar-item {
+      //border-bottom: 1px solid $laravel-border-color;
       &:last-of-type {
         border-bottom: 0;
       }
@@ -132,8 +145,8 @@
     }
 
     .navbar-item {
-      background-color: #fff;
-      color: #444!important;
+      background-color: white;
+      color: #4a4a4a !important;
       &:hover {
         background-color: #f7f7f7;
       }
@@ -155,10 +168,10 @@
   }
 
   a.navbar-item,
-  .navbar-toggle {
+  .navbar-burger {
     &.is-active {
       @include from($desktop) {
-        border-bottom-color: #fff !important;
+        border-bottom-color: white !important;
       }
 
       background-color: transparent !important;
