@@ -70,10 +70,10 @@ export default class Navbar extends Component {
                                         <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
                                             My Observations
                                         </NavLink>
-                                        <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
+                                        <NavLink to="/account/collections" className={`navbar-item`} activeClassName={'is-active'}>
                                             Collections
                                         </NavLink>
-                                        <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
+                                        <NavLink to="/account/filters" className={`navbar-item`} activeClassName={'is-active'}>
                                             Filters
                                         </NavLink>
                                         <hr className="navbar-divider"/>

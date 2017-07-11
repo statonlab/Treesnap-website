@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar'
 import HomeJumbotron from '../components/HomeJumbotron'
 import FeaturesList from '../components/FeaturesList'
 import HomeFooter from '../components/HomeFooter'
-import GetAppRow from '../components/GetAppRow'
 
 export default class Welcome extends Component {
     constructor(props) {
@@ -24,7 +23,6 @@ export default class Welcome extends Component {
                     <Navbar home={true}/>
                     <HomeJumbotron/>
                 </div>
-                <GetAppRow/>
                 <FeaturesList/>
                 <HomeFooter/>
             </div>
