@@ -84,4 +84,31 @@ class AnalyticsController extends Controller
 
         return $this->success($data);
     }
+
+    public function observationsCountByState()
+    {
+        $observations = Observation::select('address')->get();
+
+        $states = [
+            'Tennessee' => 1,
+        ];
+
+        foreach ($observations as $observation) {
+            if (empty($observation->address)) {
+                continue;
+            }
+
+            foreach ($observation->address['components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types'])) {
+                    if (isset($states[$component['long_name']])) {
+                        $states[$component['long_name']]++;
+                    } else {
+                        $states[$component['long_name']] = 1;
+                    }
+                }
+            }
+        }
+
+        return $this->success($states);
+    }
 }
