@@ -17,10 +17,14 @@ export default class DashboardScene extends Component {
                         <InfoBox title="Registered Users" icon="fa-users" url="/admin/web/analytics/users/count"/>
                     </div>
                     <div className="column">
-                        <InfoBox title="Recorded Observations" icon="fa-users" url="/admin/web/analytics/observations/count"/>
+                        <InfoBox title="Recorded Observations"
+                                 icon="fa-users"
+                                 url="/admin/web/analytics/observations/count"/>
                     </div>
                     <div className="column">
-                        <InfoBox title="Trained Users" icon="fa-users" url="/admin/web/analytics/users/trained/percentage"/>
+                        <InfoBox title="Trained Users"
+                                 icon="fa-users"
+                                 url="/admin/web/analytics/users/trained/percentage"/>
                     </div>
                 </div>
 
@@ -51,6 +55,7 @@ export default class DashboardScene extends Component {
                         <div className="box is-full-height">
                             <h4 className="title is-5">Observations by State</h4>
                             <ObservationsByStateTable/>
+                            <p className="help">Sorted by number of observations and limited to top 5.</p>
                         </div>
                     </div>
                 </div>
