@@ -442,7 +442,7 @@ export default class ObservationCard extends Component {
                         <div className="has-bg-image relative-block">
                             <div className="card-image"
                                  style={{
-                                     backgroundImage: `url(${observation.images.images[0] || '/images/placeholder.png'})`
+                                     backgroundImage: `url(${observation.thumbnail})`
                                  }}>
                             </div>
                         </div>

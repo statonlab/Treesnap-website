@@ -15,6 +15,7 @@ class Observation extends Model
         'user_id',
         'observation_category',
         'images',
+        'thumbnails',
         'longitude',
         'latitude',
         'data',
@@ -47,6 +48,7 @@ class Observation extends Model
         'data' => 'array',
         'address' => 'array',
         'fuzzy_coords' => 'array',
+        'thumbnails' => 'array',
     ];
 
     /**

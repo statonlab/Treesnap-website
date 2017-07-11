@@ -88,6 +88,7 @@ trait Observable
             'flags' => $user ? $observation->flags : [],
             'collections' => $user ? $observation->collections : [],
             'confirmations' => $user ? $observation->confirmations : [],
+            'thumbnail' => $observation->thumbnail,
         ];
     }
 
@@ -165,6 +166,7 @@ trait Observable
                 'flags' => $user ? $observation->flags : [],
                 'collections' => $user ? $observation->collections : [],
                 'confirmations_count' => $observation->confirmations_count,
+                'thumbnail' => $observation->thumbnail,
             ];
         }
 

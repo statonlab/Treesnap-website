@@ -33,7 +33,13 @@ class NotesController extends Controller
     public function show($observation_id, Request $request)
     {
         $user = $request->user();
-        $note = Note::where(['observation_id' => $observation_id, 'user_id' => $user->id])->firstOrFail();
+        $note = Note::where(['observation_id' => $observation_id, 'user_id' => $user->id])->first();
+
+        if (! $note) {
+            return $this->success([
+                'not_found' => true,
+            ]);
+        }
 
         return $this->success($note);
     }
