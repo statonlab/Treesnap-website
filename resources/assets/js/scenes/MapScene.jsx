@@ -118,7 +118,6 @@ export default class App extends Component {
             let markers = response.data.data
 
             // Add the markers to the state
-
             if (!window.TreeSnap.isAdmin) {
                 this.disclaimer.show()
             }
@@ -231,12 +230,11 @@ export default class App extends Component {
      * @returns {XML}
      */
     _renderSubmission(marker) {
-        let image = marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png'
         return (
             <a href="javascript:;"
                role="button"
                className="bar-item"
-               style={{backgroundImage: `url(${image})`}}
+               style={{backgroundImage: `url(${marker.thumbnail})`}}
                key={`marker_${marker.id}`}
                onClick={() => {
                    this.setState({
@@ -436,9 +434,9 @@ export default class App extends Component {
                                     }
                                 }}
                         >
-                            <div className="media callout">
+                            <div className="media callout is-flex flex-v-center">
                                 <div className="media-left mr-0">
-                                    <img src={marker.images.length > 0 ? marker.images[0] : '/images/placeholder.png'}
+                                    <img src={marker.thumbnail}
                                          alt={marker.title}
                                          style={{
                                              width : 50,
@@ -883,11 +881,10 @@ export default class App extends Component {
     _renderObservation() {
         let marker = this.state.selectedMarker
         let data   = marker.data
-
         return (
             <div>
                 <div className="sidebar-img"
-                     style={{backgroundImage: marker.images.length > 0 ? `url('${marker.images[0]}')` : `url('/images/placeholder.png')`}}>
+                     style={{backgroundImage: `url(${marker.thumbnail})`}}>
                     <a href="javascript:;"
                        className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
                        onClick={() => {
@@ -1080,10 +1077,12 @@ export default class App extends Component {
                     </span>
                     <span>Reset Position</span>
                 </button>
+
                 {this._renderMap()}
                 {this._renderFilterButton()}
                 {this._renderBottomBar()}
                 {this._renderImagesModal()}
+
                 <Disclaimer ref={(ref) => this.disclaimer = ref}>
                     Notice: For privacy reasons, the location of the trees displayed on this map have been altered.
                     To learn more, visit our <a href="/faq">Frequently Asked Questions</a> page.

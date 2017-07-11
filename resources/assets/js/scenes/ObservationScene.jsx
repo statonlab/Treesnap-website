@@ -56,6 +56,13 @@ export default class ObservationScene extends Component {
 
         axios.get(`/web/note/${observation_id}`).then(response => {
             let note = response.data.data
+
+            if (note.not_found) {
+                // The use did not create a note yet
+                // Ignore the error
+                return
+            }
+
             this.setState({
                 note       : note.note,
                 noteSavedAt: note.updated_at

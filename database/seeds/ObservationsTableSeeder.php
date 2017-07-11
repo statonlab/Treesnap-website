@@ -29,7 +29,8 @@ class ObservationsTableSeeder extends Seeder
             ],
             'is_private' => false,
             'collection_date' => \Carbon\Carbon::now(),
-            'mobile_id' => 1
+            'mobile_id' => 1,
+            'thumbnail' => '/images/am.jpg',
         ]);
 
         \App\Observation::create([
@@ -50,7 +51,8 @@ class ObservationsTableSeeder extends Seeder
             ],
             'is_private' => false,
             'collection_date' => \Carbon\Carbon::now(),
-            'mobile_id' => 2
+            'mobile_id' => 2,
+            'thumbnail' => '/images/oak.jpg',
         ]);
 
         // Another user with a private record
@@ -69,7 +71,8 @@ class ObservationsTableSeeder extends Seeder
             'fuzzy_coords' => $this->fuzzify(44.354388, -93.998237),
             'is_private' => true,
             'collection_date' => \Carbon\Carbon::now(),
-            'mobile_id' => 3
+            'mobile_id' => 3,
+            'thumbnail' => '/images/ash.jpg',
         ]);
     }
 
@@ -80,11 +83,13 @@ class ObservationsTableSeeder extends Seeder
      * @param $lng
      * @return array
      */
-    private function fuzzify($lat, $lng) {
+    private function fuzzify($lat, $lng)
+    {
         $miles = 5;
         $range = $miles / 69;
         $latitude = $lat + mt_rand($range * (-1), $range);
         $longitude = $lng + mt_rand($range * (-1), $range);
+
         return [
             'latitude' => $latitude,
             'longitude' => $longitude,

@@ -5,7 +5,8 @@ export default class Disclaimer extends Component {
         super(props)
 
         this.state = {
-            visible: false
+            visible: false,
+            shown  : false
         }
     }
 
@@ -14,7 +15,11 @@ export default class Disclaimer extends Component {
     }
 
     show() {
-        this.setState({visible: true})
+        if (this.state.shown) {
+            return
+        }
+
+        this.setState({visible: true, shown: true})
     }
 
     render() {
