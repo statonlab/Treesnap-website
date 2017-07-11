@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import Spinner from '../components/Spinner'
@@ -281,15 +282,23 @@ export default class ObservationScene extends Component {
     render() {
         return (
             <div>
-                <Navbar/>
+                {this.props.admin ? null : <Navbar/>}
                 <Spinner visible={this.state.loading}/>
                 <div className="home-section short-content">
-                    <div className="container">
+                    <div className={this.props.admin ? '' : 'container'}>
                         {this._renderContent(this.state.observation)}
                     </div>
                 </div>
-                <HomeFooter/>
+                {this.props.admin ? null : <HomeFooter/>}
             </div>
         )
     }
+}
+
+ObservationScene.PropTypes = {
+    admin: PropTypes.bool
+}
+
+ObservationScene.defaultProps = {
+    admin: false
 }
