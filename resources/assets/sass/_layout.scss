@@ -102,8 +102,8 @@ a.box {
   img {
     max-height: 100vh;
     max-width: 100%;
-    width: auto!important;
-    height: auto!important;
+    width: auto !important;
+    height: auto !important;
   }
 }
 
@@ -200,6 +200,9 @@ a.box {
 .feature-icon {
   width: 100px;
   height: auto;
+  @include until($desktop) {
+    width: 70px;
+  }
 }
 
 .feature-tile {
@@ -210,7 +213,13 @@ a.box {
   }
 
   .media-right {
-    paddint-left: 10px;
+    padding-left: 10px;
+  }
+
+  @include until($desktop) {
+    .title {
+      font-size: 1.6rem;
+    }
   }
 }
 
@@ -265,5 +274,11 @@ a.box {
 .image-gallery-image {
   &.show-scroll {
     background-color: #222;
+  }
+}
+
+.has-text-centered-mobile {
+  @include mobile() {
+    text-align: center;
   }
 }

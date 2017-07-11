@@ -255,6 +255,9 @@ export default class MyObservationsScene extends Component {
                 <div className="content">
                     <p>You have not submitted any observations yet.</p>
                     <p>
+                        {/* Unfortunately the links have to be structured this way or otherwise the spacing
+                         ** will be wrong and words wouldn't get separated by a space
+                         **/}
                         To submit new observations, please download the TreeSnap mobile app
                         from <a href="https://play.google.com/store/apps/details?id=com.treesource">
                         Google Play for Android
@@ -290,7 +293,7 @@ export default class MyObservationsScene extends Component {
     changePerPage(per_page) {
         let state      = this.state
         state.per_page = per_page
-        state.page = 1
+        state.page     = 1
         this.setState({per_page, page: 1})
         this.loadObservations(state)
     }
