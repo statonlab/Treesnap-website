@@ -80,6 +80,9 @@ export default class Navbar extends Component {
                                         <NavLink to="/account" className={`navbar-item`} activeClassName={'is-active'}>
                                             Settings
                                         </NavLink>
+                                        <a href="/logout" className="navbar-item">
+                                            Logout
+                                        </a>
                                     </div>
                                 </div>
                                 : null}
@@ -99,12 +102,6 @@ export default class Navbar extends Component {
 
                             {window.TreeSnap.isAdmin ?
                                 <a href="/admin" className={`navbar-item ${Path.isActive('/admin', false)}`}>Admin</a>
-                                : null}
-
-                            {window.TreeSnap.loggedIn ?
-                                <a href="/logout" className="navbar-item">
-                                    Logout
-                                </a>
                                 : null}
                         </div>
                     </div>
