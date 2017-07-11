@@ -13,6 +13,7 @@ import ObservationsScene from './scenes/ObservationsScene'
 import CurateScene from './scenes/CurateScene'
 import FiltersScene from '../scenes/FiltersScene'
 import CollectionsScene from '../scenes/CollectionsScene'
+import ObservationScene from '../scenes/ObservationScene'
 
 class Admin extends Component {
     render() {
@@ -41,6 +42,7 @@ class Admin extends Component {
                                         <Route path="/observations" component={ObservationsScene}/>
                                         <Route path="/collections" component={CollectionsScene}/>
                                         <Route path="/curate" component={CurateScene}/>
+                                        <Route path="/observation/:id" render={props => <ObservationScene admin="true" {...props}/>}/>
                                         <Route render={() => {
                                             window.location.replace('/no-match')
                                             return null
