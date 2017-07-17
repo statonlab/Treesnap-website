@@ -134,13 +134,16 @@ export default class Group extends Component {
                     return (
                         <tr key={index}>
                             <td><Link to={`/user/${user.id}`}>{user.name}</Link></td>
-                            {this.state.isOwner && this.state.leader.id !== user.id ?
+                            {this.state.isOwner ?
                                 <td className="has-text-right">
-                                    <button className="button is-danger is-small"
-                                            onClick={() => this._handleDetach.call(this, user)}>
-                                        <i className="fa fa-times"></i></button>
+                                    {this.state.leader.id !== user.id ?
+                                        <button className="button is-danger is-small"
+                                                onClick={() => this._handleDetach.call(this, user)}>
+                                            <i className="fa fa-times"></i></button>
+                                        : null}
+
                                 </td>
-                                : null}
+                                : null }
                         </tr>
                     )
                 })}
