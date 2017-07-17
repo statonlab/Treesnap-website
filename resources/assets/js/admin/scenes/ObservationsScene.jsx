@@ -40,6 +40,8 @@ export default class ObservationsScene extends Component {
             selectedFilter    : -1,
             showHelpModal     : false
         }
+
+        document.title = 'Observations - TreeSnap'
     }
 
     /**

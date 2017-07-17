@@ -32,6 +32,8 @@ export default class CurateScene extends Component {
                 observation: {}
             }
         }
+
+        document.title = 'Curate - TreeSnap'
     }
 
     componentDidMount() {

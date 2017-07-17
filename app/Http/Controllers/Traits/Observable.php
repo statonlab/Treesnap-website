@@ -164,8 +164,8 @@ trait Observable
                 'date' => $observation->collection_date->toDateString(),
                 'data' => $data,
                 'ref' => null,
-                'flags' => $user ? $observation->flags : [],
-                'collections' => $user ? $observation->collections : [],
+                'flags' => $authenticated_user ? $observation->flags : [],
+                'collections' => $authenticated_user ? $observation->collections : [],
                 'confirmations_count' => $observation->confirmations_count,
                 'thumbnail' => $observation->thumbnail,
             ];

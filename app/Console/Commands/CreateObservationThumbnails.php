@@ -39,12 +39,12 @@ class CreateObservationThumbnails extends Command
      */
     public function handle()
     {
-        $observations = Observation::all();
-
-        $observations->map(function ($observation) {
-            $thumbnail = new Thumbnail($observation);
-            $observation->thumbnail = $thumbnail->make();
-            $observation->save();
+        Observation::chunk(200, function ($observations) {
+            foreach ($observations as $observation) {
+                $thumbnail = new Thumbnail($observation);
+                $observation->thumbnail = $thumbnail->make();
+                $observation->save();
+            }
         });
 
         $this->info('Thumbnails created successfully');

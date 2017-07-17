@@ -6,6 +6,10 @@ import BarChart from '../components/BarChart'
 import ObservationsByStateTable from '../components/ObservationsByStateTable'
 
 export default class DashboardScene extends Component {
+    constructor(props) {
+        super(props)
+        document.title = 'Admin Dashboard - TreeSnap'
+    }
 
     render() {
         return (

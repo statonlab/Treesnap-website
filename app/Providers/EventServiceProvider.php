@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Listeners\AddAddressToObservation;
 use App\Listeners\ClearObservationsCache;
 use App\Listeners\CreateObservationThumbnails;
+use App\Listeners\SendInvitation;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -26,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\ObservationDeleted' => [
             ClearObservationsCache::class,
+        ],
+        'App\Events\InvitationCreated' => [
+            SendInvitation::class,
         ],
     ];
 

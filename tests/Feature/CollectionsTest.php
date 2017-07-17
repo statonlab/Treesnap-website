@@ -69,7 +69,7 @@ class CollectionsTest extends TestCase
 
         $collection->users()->attach($user->id);
 
-        $response = $this->delete("/collection/delete", [
+        $response = $this->delete("/web/collection/delete", [
             'collection_id' => $collection->id,
         ]);
 
@@ -91,7 +91,7 @@ class CollectionsTest extends TestCase
         $user = User::first();
         $this->actingAs($user);
 
-        $response = $this->post("/collections", [
+        $response = $this->post("/web/collections", [
             'label' => 'Test collection',
             'description' => 'this is a test collection',
         ]);
@@ -103,8 +103,8 @@ class CollectionsTest extends TestCase
                 'label',
                 'description',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ])->assertStatus(201);
     }
 
@@ -121,7 +121,7 @@ class CollectionsTest extends TestCase
         // Make up a weird id
         $id = 'ua700xf';
 
-        $response = $this->get("/collection/{$id}");
+        $response = $this->get("/web/collection/{$id}");
 
         $response->assertStatus(404);
     }

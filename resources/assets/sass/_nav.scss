@@ -77,6 +77,13 @@
     width: auto;
     line-height: $navbar-height;
   }
+
+  .navbar-item:last-of-type {
+    .navbar-dropdown {
+      left: auto;
+      right: 0;
+    }
+  }
 }
 
 .navbar-brand {

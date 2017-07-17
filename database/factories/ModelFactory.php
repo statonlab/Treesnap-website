@@ -71,5 +71,6 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'address' => $Addresses[rand() % count($Addresses)],
         'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
+        'thumbnail' => '',
     ];
 });

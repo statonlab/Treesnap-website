@@ -13,6 +13,8 @@ export default class UsersScene extends Component {
             users  : [],
             loading: true
         }
+
+        document.title = 'Users - TreeSnap'
     }
 
     componentWillMount() {

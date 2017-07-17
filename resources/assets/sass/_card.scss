@@ -114,5 +114,7 @@ a.card-header-title {
 }
 
 .box {
-  overflow-x: auto;
+  @include mobile() {
+    overflow-x: auto;
+  }
 }

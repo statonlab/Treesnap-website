@@ -19,7 +19,7 @@ export default class ContactUsScene extends Component {
             errors      : {}
         }
 
-        document.title = "TreeSnap - Contact Us"
+        document.title = 'Contact Us - TreeSnap'
     }
 
     componentDidMount() {

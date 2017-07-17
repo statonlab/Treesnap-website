@@ -7,8 +7,8 @@ import AdminNavbar from '../components/AdminNavbar'
 import DashboardScene from './scenes/DashboardScene'
 import UsersScene from './scenes/UsersScene'
 import UserScene from './scenes/UserScene'
-import GroupsScene from './scenes/GroupsScene'
-import GroupScene from './scenes/GroupScene'
+import Groups from '../components/Groups'
+import Group from '../components/Group'
 import ObservationsScene from './scenes/ObservationsScene'
 import CurateScene from './scenes/CurateScene'
 import FiltersScene from '../scenes/FiltersScene'
@@ -36,8 +36,8 @@ class Admin extends Component {
                                         {window.TreeSnap.isScientist ? null
                                             : <Route path="/user/:id" component={UserScene}/>
                                         }
-                                        <Route path="/groups" component={GroupsScene}/>
-                                        <Route path="/group/:id" component={GroupScene}/>
+                                        <Route path="/groups" component={Groups}/>
+                                        <Route path="/group/:id" component={Group}/>
                                         <Route path="/filters" component={FiltersScene}/>
                                         <Route path="/observations" component={ObservationsScene}/>
                                         <Route path="/collections" component={CollectionsScene}/>

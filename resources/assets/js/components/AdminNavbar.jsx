@@ -79,20 +79,34 @@ export default class AdminNavbar extends Component {
                                     : null}
 
                                 {this.state.isLoggedIn ?
-                                    <a href="/account" className="navbar-item">
-                                        Account
-                                    </a>
+                                    <div className="navbar-item has-dropdown is-hoverable">
+                                        <a href="/account" className={`navbar-link`}>
+                                            Account
+                                        </a>
+                                        <div className="navbar-dropdown">
+                                            <a href="/account/observations" className={`navbar-item`}>
+                                                My Observations
+                                            </a>
+                                            <a href="/account/collections" className={`navbar-item`}>
+                                                Collections
+                                            </a>
+                                            <a href="/account/filters" className={`navbar-item`}>
+                                                Filters
+                                            </a>
+                                            <hr className="navbar-divider"/>
+                                            <a href="/account" className={`navbar-item`}>
+                                                Settings
+                                            </a>
+                                            <a href="/logout" className="navbar-item">
+                                                Logout
+                                            </a>
+                                        </div>
+                                    </div>
                                     : null}
 
                                 {this.state.isAdmin ?
                                     <a href="/admin"
                                        className={`navbar-item ${Path.isActive('/admin', false)}`}>Admin</a>
-                                    : null}
-
-                                {this.state.isLoggedIn ?
-                                    <a href="/logout" className="navbar-item">
-                                        Logout
-                                    </a>
                                     : null}
                             </div>
                         </div>

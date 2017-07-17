@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
+    /**
+     * Fillable columns.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
+        'user_id',
     ];
 
     /**
@@ -18,5 +24,15 @@ class Group extends Model
     public function users()
     {
         return $this->belongsToMany('App\User');
+    }
+
+    /**
+     * Get the owner of the group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo('App\User', 'user_id', 'id');
     }
 }

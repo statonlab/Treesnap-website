@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
-import Spinner from '../../components/Spinner'
+import PropTypes from 'prop-types'
+import Spinner from './Spinner'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
+import Notify from './Notify'
 
-export default class GroupsScene extends Component {
+export default class Groups extends Component {
     constructor(props) {
         super(props)
 
@@ -14,6 +16,8 @@ export default class GroupsScene extends Component {
             success: false,
             loading: false
         }
+
+        document.title = 'Groups - TreeSnap'
     }
 
     /**
@@ -21,8 +25,9 @@ export default class GroupsScene extends Component {
      */
     componentWillMount() {
         this.setState({loading: true})
-        axios.get('/admin/web/groups').then(response => {
-            this.setState({groups: response.data.data, loading: false})
+        axios.get('/web/groups').then(response => {
+            let data = response.data.data
+            this.setState({groups: data, loading: false})
         }).catch(error => {
             console.log(error)
             this.setState({loading: false})
@@ -37,16 +42,23 @@ export default class GroupsScene extends Component {
      */
     _renderGroupsTable() {
         if (this.state.groups.length === 0) {
-            return (<p>There are no available groups yet. You can add one using the form below.</p>)
+            return (
+                <div>
+                    <p>There are no available groups yet. You can create a group using the form below.</p>
+                    <p>If someone else invites you to join their group, the group will show up here once you accept the invitation.</p>
+                </div>
+            )
         }
+
+        const admin = this.props.admin
 
         return (
             <table className="table is-striped mb-none" id="groups-table">
                 <thead>
                 <tr>
-                    <th style={{width: '50px'}}>ID</th>
                     <th>Name</th>
-                    <th># Users</th>
+                    <th>Users</th>
+                    <th>Leader</th>
                     <th>Date Created</th>
                 </tr>
                 </thead>
@@ -54,9 +66,9 @@ export default class GroupsScene extends Component {
                 {this.state.groups.map((group, index) => {
                     return (
                         <tr key={index}>
-                            <td>{group.id}</td>
-                            <td><Link to={`/group/${group.id}`}>{group.name}</Link></td>
-                            <td>{group.users}</td>
+                            <td><Link to={`${!admin ? '/account' : ''}/group/${group.id}`}>{group.name}</Link></td>
+                            <td>{group.users_count}</td>
+                            <td>{group.owner.name}</td>
                             <td>{moment(group.created_at).format('MMM Do, YYYY')}</td>
                         </tr>
                     )
@@ -75,11 +87,10 @@ export default class GroupsScene extends Component {
     _renderForm() {
         return (
             <form action="#" onSubmit={this.submit.bind(this)}>
-                <div className="field">
-                    <label className="label">Group Name</label>
-                    <div className="control">
+                <div className="field has-addons limit-width">
+                    <div className="control is-expanded">
                         <input type="text"
-                               className={`input limit-width ${this.state.errors.length > 0 && 'is-danger'}`}
+                               className={`input ${this.state.errors.length > 0 && 'is-danger'}`}
                                value={this.state.name}
                                placeholder="Group Name"
                                onChange={e => {
@@ -97,10 +108,9 @@ export default class GroupsScene extends Component {
                             )
                         })}
                     </div>
-                </div>
-
-                <div className="box-footer">
-                    <button type="submit" className="button is-primary">Create Group</button>
+                    <div className="control">
+                        <button type="submit" className="button is-primary">Create Group</button>
+                    </div>
                 </div>
             </form>
         )
@@ -113,14 +123,14 @@ export default class GroupsScene extends Component {
      */
     submit(e) {
         e.preventDefault()
-        axios.post('/admin/web/groups', {
+        axios.post('/web/groups', {
             name: this.state.name
         }).then(response => {
             let data   = response.data.data
-            data.users = 0
             let groups = this.state.groups
             groups.push(data)
-            this.setState({name: '', groups, success: true})
+            this.setState({name: '', groups})
+            Notify.push('Group created successfully.')
         }).catch(error => {
             if (error.response && error.response.status === 422) {
                 this.setState({errors: error.response.data.name})
@@ -138,11 +148,18 @@ export default class GroupsScene extends Component {
                 </div>
 
                 <div className="box">
-                    <h4 className="title is-4">Add Group</h4>
                     {this._renderForm()}
                 </div>
                 <Spinner visible={this.state.loading}/>
             </div>
         )
     }
+}
+
+Groups.PropTypes = {
+    admin: PropTypes.bool
+}
+
+Groups.defaultProps = {
+    admin: false
 }
