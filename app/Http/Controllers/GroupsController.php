@@ -75,6 +75,7 @@ class GroupsController extends Controller
         $group = Group::with([
             'users' => function ($query) {
                 $query->select(['id', 'name']);
+                $query->orderBy('name', 'asc');
             },
         ])->findOrFail($id);
 
