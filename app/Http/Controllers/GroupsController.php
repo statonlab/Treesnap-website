@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Observation;
 
 class GroupsController extends Controller
 {
-    use Responds;
+    use Responds, Observes;
 
     /**
      * Get list of groups.
@@ -93,6 +95,62 @@ class GroupsController extends Controller
             'owner' => $group->users->where('id', $group->user_id)->first(),
             'is_owner' => $user->id === $group->user_id,
         ]);
+    }
+
+    /**
+     * Get observations belonging to a group.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function groupObservations($id, Request $request)
+    {
+        $user = $request->user();
+
+        $group = Group::with([
+            'users' => function ($query) {
+                $query->select(['id', 'name']);
+                $query->orderBy('name', 'asc');
+            },
+        ])->findOrFail($id);
+
+        // Protect group from being accessed by unauthorized users
+        if (! $group->users->where('id', $user->id)->first()) {
+            return $this->unauthorized();
+        }
+
+        $observations = Observation::join('group_user', 'group_user.user_id', '=', 'observations.user_id')
+                                   ->where('group_user.group_id', $id)
+                                   ->orderBy('observations.id', 'desc')
+                                   ->paginate(6);
+
+        $observations->load([
+            'confirmations' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'flags' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'collections' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'user' => function ($query) {
+                $query->select('name', 'id');
+            },
+        ]);
+
+        $data = [];
+        foreach ($observations as $observation) {
+            $json = $this->getObservationJson($observation, true, $user);
+            $data[] = array_merge($json, ['user' => $observation->user]);
+        }
+
+        return $this->success(array_merge($observations->toArray(), [
+            'data' => $data,
+            'has_more_pages' => $observations->hasMorePages(),
+            'count' => $observations->count(),
+        ]));
     }
 
     /**

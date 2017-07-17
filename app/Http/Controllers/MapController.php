@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Traits\Observable;
+use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use Cache;
 
 class MapController extends Controller
 {
-    use Responds, Observable;
+    use Responds, Observes;
 
     public function index(Request $request)
     {

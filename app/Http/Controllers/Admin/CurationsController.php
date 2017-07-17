@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Traits\Observable;
+use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class CurationsController extends Controller
 {
-    use Observable, Responds;
+    use Observes, Responds;
 
     /**
      * Get filtered and paged observations.

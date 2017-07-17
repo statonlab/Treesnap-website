@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
-trait Observable
+trait Observes
 {
     /**
      * Observation Categories.
