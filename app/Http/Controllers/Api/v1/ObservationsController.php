@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Events\ObservationCreated;
 use App\Events\ObservationDeleted;
-use App\Http\Controllers\Traits\Observable;
+use App\Http\Controllers\Traits\Observes;
 use App\Observation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ use Storage;
 
 class ObservationsController extends Controller
 {
-    use Responds, Observable;
+    use Responds, Observes;
 
     /**
      * Get all observations related to a user.

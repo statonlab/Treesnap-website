@@ -6,6 +6,8 @@ import BoxModal from './BoxModal'
 import Notify from './Notify'
 import moment from 'moment'
 import Utils from '../helpers/Utils'
+import ObservationCard from '../components/ObservationCard'
+import Path from '../helpers/Path'
 
 export default class Group extends Component {
     constructor(props) {
@@ -15,6 +17,7 @@ export default class Group extends Component {
             name              : '',
             users             : [],
             loading           : true,
+            pageLoading       : true,
             formUsers         : [],
             formErrors        : [],
             isOwner           : false,
@@ -22,7 +25,15 @@ export default class Group extends Component {
             showInviteModal   : false,
             inviteEmail       : '',
             sendingInvite     : false,
-            pendingInvitations: []
+            pendingInvitations: [],
+            observations      : [],
+            count             : 0,
+            total             : 0,
+            page              : 1,
+            hasMorePages      : false,
+            lastPage          : 1,
+            pages             : [],
+            collections: []
         }
     }
 
@@ -31,6 +42,11 @@ export default class Group extends Component {
      */
     componentWillMount() {
         this.loadGroup()
+        this.loadCollections()
+        
+        let state  = this.state
+        state.page = this.getBrowserPage()
+        this.loadObservations(state)
     }
 
     /**
@@ -54,6 +70,7 @@ export default class Group extends Component {
                 this.loadPendingInvites()
             }
         }).catch(error => {
+            console.log(error)
             if (error.response && (error.response.status === 401 || error.response.status === 404)) {
                 this.props.history.replace('/no-match')
                 return
@@ -61,7 +78,21 @@ export default class Group extends Component {
 
             console.log(error.response)
         }).then(() => {
-            this.setState({loading: false})
+            this.setState({pageLoading: false})
+        })
+    }
+
+    loadCollections() {
+        axios.get('/web/collections').then(response => {
+            const collections = response.data.data.map(collection => {
+                return {
+                    label: collection.label,
+                    value: collection.id
+                }
+            })
+            this.setState({collections})
+        }).catch(error => {
+            console.log(error)
         })
     }
 
@@ -75,6 +106,85 @@ export default class Group extends Component {
         }).catch(error => {
             console.log(error)
         })
+    }
+
+    /**
+     * Set browser history based on current state.
+     * @param state
+     */
+    setBrowserHistory(state) {
+        let id = this.props.match.params.id
+
+        if (this.props.admin) {
+            this.props.history.replace(`/admin/group/${id}/?page=${state.page}`)
+        } else {
+            this.props.history.replace(`/account/group/${id}/?page=${state.page}`)
+        }
+    }
+
+    /**
+     * Get page number from the browser url.
+     * @returns {*}
+     */
+    getBrowserPage() {
+        let params = Path.parseUrl(this.props.history.location.search)
+        if (typeof params.page !== 'undefined') {
+            let p = parseInt(params.page)
+            if (!isNaN(p)) {
+                return p
+            }
+        }
+
+        return 1
+    }
+
+    /**
+     * Load observations.
+     *
+     * @param state
+     */
+    loadObservations(state) {
+        this.setState({loading: true})
+        let id = this.props.match.params.id
+        axios.get(`/web/group/${id}/observations`, {
+            params: {
+                page: state.page
+            }
+        }).then(response => {
+            const data = response.data.data
+
+            let pages = this.createPages(data.last_page)
+
+            this.setState({
+                observations: data.data,
+                total       : data.total,
+                count       : data.count,
+                page        : data.current_page,
+                hasMorePages: data.has_more_pages,
+                lastPage    : data.last_page,
+                loading     : false,
+                pages
+            })
+        }).catch(error => {
+            this.setState({loading: false})
+
+            consoe.log(error)
+        })
+    }
+
+    /**
+     * Create array of pages.
+     *
+     * @param lastPage
+     * @returns {Array}
+     */
+    createPages(lastPage) {
+        let pages = []
+        for (let i = 1; i <= lastPage; i++) {
+            pages.push(i)
+        }
+
+        return pages
     }
 
     /**
@@ -273,16 +383,57 @@ export default class Group extends Component {
         )
     }
 
-    _renderDeleteGroup() {
-        if (!this.state.isOwner) {
-            return null
-        }
+    /**
+     * Render the observation card.
+     *
+     * @param observation
+     * @returns {XML}
+     * @private
+     */
+    _renderObservation(observation) {
+        return (
+            <div className="column is-4-widescreen is-6-desktop is-6-tablet" key={observation.observation_id}>
+                <ObservationCard
+                    owner={true}
+                    observation={observation}
+                    loading={this.state.loading}
+                    collections={this.state.collections}
+                    onCollectionCreated={collection => {
+                        let exists = !observation.collections.every(c => c.id !== collection.id)
+
+                        if (exists) {
+                            return
+                        }
+
+                        observation.collections.push(collection)
+                        this.forceUpdate()
+                    }}
+                    onRemovedFromCollection={(collection) => {
+                        observation.collections = observation.collections.filter(c => c.id !== collection.id)
+                        this.forceUpdate()
+                    }}
+                />
+            </div>
+        )
+    }
+
+    _renderObservations() {
+        let count = this.state.count
+        let total = this.state.total
 
         return (
-            <div className="has-text-right">
-                <button type="button" className="button is-gray" onClick={this._deleteGroup.bind(this)}>
-                    Delete Group
-                </button>
+            <div className="mb-2">
+                <div className="columns">
+                    <div className="column">
+                        <h4 className="title is-4">Group Observations</h4>
+                    </div>
+                    <div className="column has-text-right">
+                        Showing {count} out of {total}
+                    </div>
+                </div>
+                <div className="columns is-multiline">
+                    {this.state.observations.map(this._renderObservation.bind(this))}
+                </div>
             </div>
         )
     }
@@ -319,6 +470,82 @@ export default class Group extends Component {
         )
     }
 
+    /**
+     * Go to the next page.
+     */
+    nextPage() {
+        if (!this.state.hasMorePages) {
+            return
+        }
+
+        let page = this.state.page + 1
+        this.goToPage(page)
+    }
+
+    /**
+     * Go to the previous page.
+     */
+    prevPage() {
+        if (this.state.page === 1) {
+            return
+        }
+
+        let page = this.state.page - 1
+        this.goToPage(page)
+    }
+
+    /**
+     * Go to a specific page number.
+     *
+     * @param page
+     */
+    goToPage(page) {
+        let state  = this.state
+        state.page = page
+        this.loadObservations(state)
+        this.setBrowserHistory(state)
+
+        document.body.scrollTop = 0
+    }
+
+    /**
+     * Render page links.
+     *
+     * @returns {XML}
+     * @private
+     */
+    _renderPageLinks() {
+        return (
+            <nav className="pagination is-centered">
+                <a href="javascript:;"
+                   className="pagination-previous"
+                   onClick={this.prevPage.bind(this)}
+                   disabled={this.state.page === 1}>
+                    Previous
+                </a>
+                {this.state.pages.length > 0 ?
+                    <ul className="pagination-list">
+                        <li>
+                            Page <span className="select is-small">
+                            <select value={this.state.page} onChange={({target}) => this.goToPage(target.value)}>
+                                {this.state.pages.map(page => {
+                                    return <option value={page} key={`page_${page}`}>{page}</option>
+                                })}
+                            </select>
+                        </span> out of {this.state.pages.length} pages
+                        </li>
+                    </ul>
+                    : null }
+                <a href="javascript:;"
+                   className="pagination-next"
+                   onClick={this.nextPage.bind(this)}
+                   disabled={!this.state.hasMorePages}>
+                    Next
+                </a>
+            </nav>
+        )
+    }
+
     render() {
         return (
             <div>
@@ -332,10 +559,16 @@ export default class Group extends Component {
                         {this.state.isOwner ?
                             <div className="column has-text-right">
                                 <button type="button"
-                                        className="button is-primary"
-                                        onClick={() => this.setState({showInviteModal: true})}
-                                >
+                                        className="button is-primary mr-0"
+                                        onClick={() => this.setState({showInviteModal: true})}>
                                     <span>Invite Users</span>
+                                </button>
+                                <button type="button"
+                                        className="button is-gray"
+                                        onClick={this._deleteGroup.bind(this)}>
+                                    <span className="icon is-small">
+                                        <i className="fa fa-trash"></i>
+                                    </span>
                                 </button>
                             </div>
                             : null}
@@ -350,6 +583,7 @@ export default class Group extends Component {
                           onCloseRequest={() => this.setState({showInviteModal: false})}>
                     <h4 className="title is-4">
                         Invite Users
+
                         <button className="delete is-pulled-right"
                                 onClick={() => this.setState({showInviteModal: false})}
                                 type="button">
@@ -358,11 +592,12 @@ export default class Group extends Component {
 
                     {this._renderForm()}
                     {this._renderFormErrors()}
-
                 </BoxModal>
 
-                {this._renderDeleteGroup()}
-                <Spinner visible={this.state.loading}/>
+                {this._renderObservations()}
+                {this._renderPageLinks()}
+
+                <Spinner visible={this.state.pageLoading}/>
             </div>
         )
     }

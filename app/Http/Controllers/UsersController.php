@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Collection;
 use App\Email;
-use App\Http\Controllers\Traits\Observable;
+use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
 use Carbon\Carbon;
@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
-    use Responds, Observable;
+    use Responds, Observes;
 
     /**
      * Get the user logged in status.
@@ -155,6 +155,7 @@ class UsersController extends Controller
             'search' => 'nullable',
             'collection_id' => 'nullable|exists:collections,id',
             'category' => ['nullable', Rule::in($this->observation_categories)],
+            'group_id' => 'nullable|exists:groups,id'
         ]);
 
         $user = $request->user();

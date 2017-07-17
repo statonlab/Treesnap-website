@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\Responds;
-use App\Http\Controllers\Traits\Observable;
+use App\Http\Controllers\Traits\Observes;
 use App\Observation;
 use Illuminate\Http\Request;
 use App\Events\ObservationDeleted;
@@ -12,7 +12,7 @@ use Storage;
 
 class ObservationsController extends Controller
 {
-    use Responds, Observable;
+    use Responds, Observes;
 
     /**
      * Get all public observations.

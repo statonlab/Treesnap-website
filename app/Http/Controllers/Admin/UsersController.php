@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Traits\Observable;
+use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
 use App\User;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    use Responds, Observable;
+    use Responds, Observes;
 
     /**
      * Get all users.
