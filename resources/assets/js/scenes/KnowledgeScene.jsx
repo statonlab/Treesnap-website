@@ -15,8 +15,6 @@ export default class KnowledgeScene extends Component {
             content: '',
             loading: true
         }
-
-        document.title = "TreeSnap - About Us"
     }
 
     componentDidMount() {
@@ -30,6 +28,9 @@ export default class KnowledgeScene extends Component {
             this.setState({loading: false})
             window.fixHeight()
         })
+
+        let title      = this.props.title || 'About Us'
+        document.title = `${title} - TreeSnap`
     }
 
     render() {
@@ -57,6 +58,12 @@ export default class KnowledgeScene extends Component {
         )
     }
 }
+
 KnowledgeScene.PropTypes = {
-    docPath: PropTypes.string.isRequired
+    docPath: PropTypes.string.isRequired,
+    title  : PropTypes.string
+}
+
+KnowledgeSidebarLinks.defaultProps = {
+    title: false
 }

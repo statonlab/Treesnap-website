@@ -9,19 +9,19 @@ const AccountLinks = [
         icon : 'fa-tree',
         label: 'Observations'
     },
-    /*{
-        to: '/account/groups',
-        icon: 'fa-users',
-        label: 'Groups'
-    },*/
     {
-        to: '/account/collections',
-        icon: 'fa-th',
+        to   : '/account/groups',
+        icon : 'fa-users',
+        label: 'Groups'
+    },
+    {
+        to   : '/account/collections',
+        icon : 'fa-th',
         label: 'Collections'
     },
     {
-        to: '/account/filters',
-        icon: 'fa-filter',
+        to   : '/account/filters',
+        icon : 'fa-filter',
         label: 'Filters'
     }
 ]

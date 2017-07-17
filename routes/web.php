@@ -61,6 +61,11 @@ Route::get('/web/filters', 'FiltersController@index');
 // CSRF
 Route::get('/web/_token', 'CSRFController@index');
 
+// Invitation acceptance routes
+Route::post('/invitations/accept/login/{id}', 'InvitesController@acceptLogin');
+Route::post('/invitations/accept/register/{id}', 'InvitesController@acceptRegister');
+Route::get('/invitations/accept/{id}', 'InvitesController@accept');
+
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
     // Observations
@@ -89,6 +94,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/web/collection/share', 'CollectionsController@share');
     Route::delete('/web/collection/unshare', 'CollectionsController@unshare');
 
+    // Groups
+    Route::get('/web/groups', 'GroupsController@index');
+    Route::post('/web/groups', 'GroupsController@create');
+    Route::get('/web/group/{id}', 'GroupsController@show');
+    Route::delete('/web/group/detach', 'GroupsController@detach');
+    Route::delete('/web/group/{id}', 'GroupsController@delete');
+    Route::post('/web/group/attach', 'GroupsController@attach');
+
     // Flags
     Route::post('/web/flag', 'FlagsController@create');
     Route::delete('/web/flag/{id}', 'FlagsController@delete');
@@ -98,6 +111,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/web/notes', 'NotesController@create');
     Route::get('/web/note/{id}', 'NotesController@show');
     Route::delete('/web/note/{id}', 'NotesController@delete');
+
+    // Invitations
+    Route::get('/web/invites/{group_id}', 'InvitesController@showPendingInvitations');
+    Route::post('/web/invite', 'InvitesController@newInvitation');
 });
 
 // Admin Route Group
@@ -106,14 +123,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/web/users', 'UsersController@index');
     Route::get('/web/user/{id}', 'UsersController@show');
     Route::put('/web/user/{id}', 'UsersController@update');
-
-    // Groups
-    Route::get('/web/groups', 'GroupsController@index');
-    Route::post('/web/groups', 'GroupsController@create');
-    Route::get('/web/group/{id}', 'GroupsController@show');
-    Route::delete('/web/group/detach', 'GroupsController@detach');
-    Route::post('/web/group/attach', 'GroupsController@attach');
-    Route::get('/web/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
 
     // Roles
     Route::get('/web/roles', 'RolesController@index');
@@ -127,14 +136,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
 // Admin or Scientist Only Route Group
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['scientist']], function () {
-    // Groups
-    Route::get('/web/groups', 'GroupsController@index');
-    Route::post('/web/groups', 'GroupsController@create');
-    Route::get('/web/group/{id}', 'GroupsController@show');
-    Route::delete('/web/group/detach', 'GroupsController@detach');
-    Route::post('/web/group/attach', 'GroupsController@attach');
-    Route::get('/web/group/allowed/users/{id}', 'GroupsController@getAllowedUsers');
-
     // Contact Controller
     Route::post('/web/contact/user', 'ContactController@contactUser');
 

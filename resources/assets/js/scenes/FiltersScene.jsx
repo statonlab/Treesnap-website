@@ -14,7 +14,7 @@ export default class UsersScene extends Component {
 
         this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
 
-        document.title = "User Saved Filters"
+        document.title = 'Saved Filters - TreeSnap'
     }
 
     componentWillMount() {
@@ -53,12 +53,12 @@ export default class UsersScene extends Component {
                 <td>{filter.name}</td>
                 <td className="has-text-right">
                     {/*<a className="button is-small is-warning mr-0">
-                        <span className="icon is-small">
-                            <Tooltip label="Edit">
-                                <i className="fa fa-pencil" style={{color: '#fff'}}></i>
-                            </Tooltip>
-                        </span>
-                    </a>*/}
+                     <span className="icon is-small">
+                     <Tooltip label="Edit">
+                     <i className="fa fa-pencil" style={{color: '#fff'}}></i>
+                     </Tooltip>
+                     </span>
+                     </a>*/}
 
                     <button type="button"
                             className="button is-small is-danger"

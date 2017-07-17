@@ -304,8 +304,12 @@ export default class AdvancedFiltersModal extends Component {
     }
 
     render() {
+        if (!this.props.visible) {
+            return null
+        }
+
         return (
-            <div className={`modal${this.props.visible ? ' is-active' : ''}`}>
+            <div className={`modal is-active`}>
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-card modal-card-lg">
                     <header className="modal-card-head">

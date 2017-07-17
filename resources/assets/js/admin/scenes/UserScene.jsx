@@ -65,6 +65,8 @@ export default class UserScene extends Component {
                 observations: data.observations,
                 numPages    : Math.ceil(data.observations.length / this.state.perPage)
             }))
+
+            document.title = `${user.name} - TreeSnap`
         }).catch(error => {
             console.log(error)
         }).then(() => {

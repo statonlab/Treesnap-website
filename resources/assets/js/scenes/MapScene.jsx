@@ -53,7 +53,7 @@ export default class App extends Component {
             showFlagForm        : false
         }
 
-        document.title = 'TreeSnap - Map'
+        document.title = 'Map - TreeSnap'
     }
 
     /**

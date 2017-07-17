@@ -79,6 +79,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all groups a user owns.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ownedGroups() {
+        return $this->hasMany('App\Group');
+    }
+
+    /**
      * Determine if a user is an admin.
      *
      * @return bool

@@ -93,7 +93,7 @@ class Thumbnail
     {
         $parts = explode('/', $image);
         $name = $parts[count($parts) - 1];
-        $subPath = $thumbnail ? 'images' : 'thumbnails';
+        $subPath = $thumbnail ? 'thumbnails' : 'images';
 
         return "app/public/{$subPath}/{$name}";
     }

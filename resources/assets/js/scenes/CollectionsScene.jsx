@@ -14,7 +14,7 @@ export default class CollectionsScene extends Component {
 
         this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
 
-        document.title = "User Saved Collections"
+        document.title = 'Saved Collections - TreeSnap'
     }
 
     componentWillMount() {
@@ -34,7 +34,7 @@ export default class CollectionsScene extends Component {
             return
         }
 
-        axios.delete(`/collection/${collection.id}`).then(response => {
+        axios.delete(`/web/collection/${collection.id}`).then(response => {
             const id = parseInt(response.data.data.id)
             this.setState({
                 collections: this.state.collections.filter(collection => collection.id !== id)
@@ -52,12 +52,12 @@ export default class CollectionsScene extends Component {
                 <td>{collection.users_count - 1} users</td>
                 <td className="has-text-right">
                     {/*<button type="button" className="button is-small is-info">
-                        <span className="icon is-small">
-                            <Tooltip label="Share">
-                                <i className="fa fa-share"></i>
-                            </Tooltip>
-                        </span>
-                    </button>*/}
+                     <span className="icon is-small">
+                     <Tooltip label="Share">
+                     <i className="fa fa-share"></i>
+                     </Tooltip>
+                     </span>
+                     </button>*/}
                     <button type="button"
                             className="button is-small is-danger"
                             onClick={() => this.deleteCollection(collection)}>
