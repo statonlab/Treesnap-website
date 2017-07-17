@@ -39,7 +39,8 @@ export default class CollectionForm extends Component {
                 errors       : {
                     label        : [],
                     collection_id: []
-                }
+                },
+                loading      : false
             })
             this.props.onSubmit(response.data.data)
         }).catch(error => {
@@ -47,18 +48,17 @@ export default class CollectionForm extends Component {
             if (response && response.status === 422) {
                 const data = response.data
                 this.setState({
-                    errors: {
+                    errors : {
                         label        : data.label || [],
                         collection_id: data.collection_id || []
-                    }
+                    },
+                    loading: false
                 })
 
                 return
             }
 
             console.log(error)
-        }).then(() => {
-            this.setState({loading: false})
         })
     }
 
