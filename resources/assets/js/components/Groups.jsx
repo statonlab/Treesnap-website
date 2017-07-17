@@ -161,5 +161,5 @@ Groups.PropTypes = {
 }
 
 Groups.defaultProps = {
-    admin: false
+    admin: true
 }

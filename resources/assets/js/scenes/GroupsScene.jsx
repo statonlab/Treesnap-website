@@ -10,7 +10,7 @@ export default class GroupsScene extends Component {
     render() {
         return (
             <AccountView>
-                <Groups admin={false}/>
+                <Groups admin={false} {...this.props}/>
             </AccountView>
         )
     }

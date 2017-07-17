@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Spinner from './Spinner'
 import BoxModal from './BoxModal'
@@ -121,6 +122,8 @@ export default class Group extends Component {
                 <p>This group has no users. Start inviting users using the "Invite Users" button on the top right corner.</p>)
         }
 
+        const admin = this.props.admin
+
         return (
             <table className="table is-striped">
                 <thead>
@@ -133,14 +136,18 @@ export default class Group extends Component {
                 {this.state.users.map((user, index) => {
                     return (
                         <tr key={index}>
-                            <td><Link to={`/user/${user.id}`}>{user.name}</Link></td>
+                            <td>
+                                {admin && window.TreeSnap.isAdmin ?
+                                    <Link to={`/user/${user.id}`}>{user.name}</Link>
+                                    : user.name }
+                            </td>
                             {this.state.isOwner ?
                                 <td className="has-text-right">
                                     {this.state.leader.id !== user.id ?
                                         <button className="button is-danger is-small"
                                                 onClick={() => this._handleDetach.call(this, user)}>
                                             <i className="fa fa-times"></i></button>
-                                        : null}
+                                        : 'Leader'}
 
                                 </td>
                                 : null }
@@ -359,4 +366,12 @@ export default class Group extends Component {
             </div>
         )
     }
+}
+
+Group.PropTypes = {
+    admin: PropTypes.bool
+}
+
+Group.defaultProps = {
+    admin: true
 }
