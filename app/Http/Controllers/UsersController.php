@@ -9,6 +9,7 @@ use App\Observation;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -149,7 +150,7 @@ class UsersController extends Controller
     public function observations(Request $request)
     {
         $this->validate($request, [
-            'per_page' => 'nullable|in:6,12,24,48'
+            'per_page' => 'nullable|in:6,12,24,48',
         ]);
 
         $user = $request->user();
@@ -178,7 +179,19 @@ class UsersController extends Controller
         ]));
     }
 
-    protected function applyFilters($request) {
+    protected function applyFilters($request)
+    {
+    }
 
+    /**
+     * Log users out.
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->to('/');
     }
 }

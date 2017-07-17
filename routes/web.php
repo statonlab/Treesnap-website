@@ -35,11 +35,7 @@ Route::post('/contact', 'ContactController@send');
  * Reset Password: /password/reset
  */
 Auth::routes();
-Route::get('/logout', function () {
-    Auth::logout();
-
-    return redirect('/');
-});
+Route::get('/logout', 'UsersController@logout');
 
 // Observations
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');
