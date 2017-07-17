@@ -22,23 +22,7 @@ class ObservationsController extends Controller
      */
     public function index(Request $request, $limit = null)
     {
-        $is_admin = false;
-        $user = $request->user();
-        if ($user) {
-            $is_admin = $user->isAdmin() || $user->isScientist();
-        }
-        $cache_key = $is_admin ? 1 : 0;
-        $uid = $user ? $user->id : 'guest';
-        //$cache_key = "all_observations_{$cache_key}_{$uid}";
-
-        // Get data from the cache if a limit is not set
-        if (! $limit) {
-            //$data = Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($limit, $request) {
-            $data = $this->getObservationsFromDB($request, $limit);
-            //});
-        } else {
-            $data = $this->getObservationsFromDB($request, $limit);
-        }
+        $data = $this->getObservationsFromDB($request, $limit);
 
         return $this->success($data);
     }

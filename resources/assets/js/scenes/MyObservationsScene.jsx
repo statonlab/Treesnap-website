@@ -12,18 +12,19 @@ export default class MyObservationsScene extends Component {
             collections       : [],
             selectedCollection: 0,
             page              : 1,
-            last_page         : 59,
-            next_page_url     : '',
-            prev_page_url     : '',
-            per_page          : 6,
+            lastPage          : 59,
+            nextPageUrl       : '',
+            prevPageUrl       : '',
+            perPage           : 6,
             total             : 0,
-            page_loading      : true,
+            pageLoading       : true,
             pages             : [],
             loading           : false,
             count             : 0,
             search            : [],
             categories        : [],
-            selectedCategory  : 0
+            selectedCategory  : '',
+            hasMorePages      : false
         }
 
         document.title = 'My Observations'
@@ -38,6 +39,7 @@ export default class MyObservationsScene extends Component {
         state.page = page
         this.loadObservations(state)
         this.loadCollections()
+        this.loadCategories()
         window.fixHeight()
     }
 
@@ -51,31 +53,31 @@ export default class MyObservationsScene extends Component {
 
         axios.get('/web/user/observations', {
             params: {
-                page       : state.page,
-                per_page   : state.per_page,
-                search_term: state.search || '',
-                category   : state.selectedCategory || '',
-                collection : state.selectedCollection || ''
+                page         : state.page,
+                per_page     : state.perPage,
+                search       : state.search || '',
+                category     : state.selectedCategory || '',
+                collection_id: parseInt(state.selectedCollection) || ''
             }
         }).then(response => {
             const data  = response.data.data
             const state = {
-                observations  : data.data,
-                page          : data.current_page,
-                next_page_url : data.next_page_url,
-                prev_page_url : data.prev_page_url,
-                total         : data.total,
-                per_page      : data.per_page,
-                has_more_pages: data.has_more_pages,
-                count         : data.count,
-                page_loading  : false,
-                pages         : this.generatePages(data.total, data.per_page),
-                loading       : false
+                observations: data.data,
+                page        : data.current_page,
+                nextPageUrl : data.next_page_url,
+                prevPageUrl : data.prev_page_url,
+                total       : data.total,
+                perPage     : data.per_page,
+                hasMorePages: data.has_more_pages,
+                count       : data.count,
+                pageLoading : false,
+                pages       : this.generatePages(data.total, data.per_page),
+                loading     : false
             }
             this.setState(state)
             this.setBrowserHistory(state)
         }).catch(error => {
-            this.setState({page_loading: false})
+            this.setState({pageLoading: false})
             alert('Network Error. Please contact us to resolve this issue.')
         })
     }
@@ -89,6 +91,19 @@ export default class MyObservationsScene extends Component {
                 }
             })
             this.setState({collections})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    loadCategories() {
+        axios.get('/web/observations/categories').then(response => {
+            let data = response.data.data
+            this.setState({
+                categories: data.map(category => {
+                    return {label: category, value: category}
+                })
+            })
         }).catch(error => {
             console.log(error)
         })
@@ -139,7 +154,7 @@ export default class MyObservationsScene extends Component {
      * Go to the next page.
      */
     nextPage() {
-        if (!this.state.has_more_pages) {
+        if (!this.state.hasMorePages) {
             return
         }
 
@@ -204,7 +219,7 @@ export default class MyObservationsScene extends Component {
                 <a href="javascript:;"
                    className="pagination-next"
                    onClick={this.nextPage.bind(this)}
-                   disabled={!this.state.has_more_pages}>
+                   disabled={!this.state.hasMorePages}>
                     Next
                 </a>
             </nav>
@@ -271,7 +286,8 @@ export default class MyObservationsScene extends Component {
 
     searchFilter(search) {
         let state    = this.state
-        state.seatch = search
+        state.search = search
+        state.page   = 1
         this.setState({search})
         this.loadObservations(state)
     }
@@ -279,6 +295,7 @@ export default class MyObservationsScene extends Component {
     collectionFilter(selectedCollection) {
         let state                = this.state
         state.selectedCollection = selectedCollection
+        state.page               = 1
         this.setState({selectedCollection})
         this.loadObservations(state)
     }
@@ -286,15 +303,16 @@ export default class MyObservationsScene extends Component {
     categoriesFilter(selectedCategory) {
         let state              = this.state
         state.selectedCategory = selectedCategory
+        state.page             = 1
         this.setState({selectedCategory})
         this.loadObservations(state)
     }
 
-    changePerPage(per_page) {
-        let state      = this.state
-        state.per_page = per_page
-        state.page     = 1
-        this.setState({per_page, page: 1})
+    changePerPage(perPage) {
+        let state     = this.state
+        state.perPage = perPage
+        state.page    = 1
+        this.setState({perPage, page: 1})
         this.loadObservations(state)
     }
 
@@ -311,7 +329,7 @@ export default class MyObservationsScene extends Component {
                 </div>
                 <div className="column is-8 has-text-right">
                     <span className="select is-small">
-                        <select value={this.state.per_page}
+                        <select value={this.state.perPage}
                                 onChange={({target}) => this.changePerPage(target.value)}>
                             <option value="6">6</option>
                             <option value="12">12</option>
@@ -363,7 +381,7 @@ export default class MyObservationsScene extends Component {
                             <span className="select is-full-width">
                                 <select value={this.state.selectedCategory}
                                         onChange={({target}) => this.categoriesFilter(target.value)}>
-                                    <option value={0}>All Species</option>
+                                    <option value={''}>All Species</option>
                                     {this.state.categories.map(category => {
                                         return (
                                             <option key={category.value}
@@ -389,6 +407,7 @@ export default class MyObservationsScene extends Component {
     render() {
         const showing = this.state.count
         const total   = this.state.total
+
         return (
             <AccountView>
                 <div className="columns">
@@ -411,7 +430,7 @@ export default class MyObservationsScene extends Component {
 
                 {this._renderPageLinks()}
 
-                <Spinner visible={this.state.page_loading}/>
+                <Spinner visible={this.state.pageLoading}/>
             </AccountView>
         )
     }

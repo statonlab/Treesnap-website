@@ -30,19 +30,22 @@ class Admin extends Component {
                                 <div className="column">
                                     <Switch>
                                         <Route exact={true} path="/" component={DashboardScene}/>
-                                        {window.TreeSnap.isScientist ? null
+                                        {window.TreeSnap.isScientist
+                                            ? null
                                             : <Route path="/users" component={UsersScene}/>
                                         }
-                                        {window.TreeSnap.isScientist ? null
+                                        {window.TreeSnap.isScientist
+                                            ? null
                                             : <Route path="/user/:id" component={UserScene}/>
                                         }
-                                        <Route path="/groups" component={Groups}/>
-                                        <Route path="/group/:id" component={Group}/>
+                                        <Route path="/groups" render={props => <Groups admin={true} {...props}/>}/>
+                                        <Route path="/group/:id" render={props => <Group admin={true} {...props}/>}/>
                                         <Route path="/filters" component={FiltersScene}/>
                                         <Route path="/observations" component={ObservationsScene}/>
                                         <Route path="/collections" component={CollectionsScene}/>
                                         <Route path="/curate" component={CurateScene}/>
-                                        <Route path="/observation/:id" render={props => <ObservationScene admin="true" {...props}/>}/>
+                                        <Route path="/observation/:id"
+                                               render={props => <ObservationScene admin={true} {...props}/>}/>
                                         <Route render={() => {
                                             window.location.replace('/no-match')
                                             return null

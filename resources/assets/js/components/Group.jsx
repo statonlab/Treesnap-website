@@ -122,7 +122,7 @@ export default class Group extends Component {
                 <p>This group has no users. Start inviting users using the "Invite Users" button on the top right corner.</p>)
         }
 
-        const admin = this.props.admin
+        let admin = this.props.admin
 
         return (
             <table className="table is-striped">

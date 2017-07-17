@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Collection;
 use App\Email;
 use App\Http\Controllers\Traits\Observable;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -151,20 +152,14 @@ class UsersController extends Controller
     {
         $this->validate($request, [
             'per_page' => 'nullable|in:6,12,24,48',
+            'search' => 'nullable',
+            'collection_id' => 'nullable|exists:collections,id',
+            'category' => ['nullable', Rule::in($this->observation_categories)],
         ]);
 
         $user = $request->user();
-        $observations = Observation::with([
-            'collections' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            },
-            'flags' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            },
-            'confirmations' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            },
-        ])->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($request->per_page);
+
+        $observations = $this->getFilteredObservations($request);
 
         $data = [];
         foreach ($observations as $observation) {
@@ -174,18 +169,63 @@ class UsersController extends Controller
 
         return $this->success(array_merge($observations->toArray(), [
             'data' => $data,
-            'has_more_pages' => $observations->hasMorePages(),
+            'per_page' => $request->per_page,
             'count' => $observations->count(),
+            'has_more_pages' => $observations->hasMorePages(),
         ]));
     }
 
-    protected function applyFilters($request)
+    /**
+     * Apply observation filters.
+     *
+     * @param $request
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    protected function getFilteredObservations($request)
     {
+        $user = $request->user();
+
+        if (empty($request->per_page)) {
+            $request->per_page = 6;
+        }
+
+        $with = [
+            'collections' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'flags' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'confirmations' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+        ];
+
+        if (! empty($request->collection_id)) {
+            $observations = Collection::findOrFail($request->collection_id)->observations()->with($with);
+        } else {
+            $observations = Observation::with($with);
+        }
+
+        if (! empty($request->category)) {
+            $observations->where('observation_category', $request->category);
+        }
+
+        if (! empty($request->search)) {
+            $term = $request->search;
+            $observations->where(function ($query) use ($term) {
+                $query->where('observation_category', 'like', "%$term%");
+                $query->orWhere('data->otherLabel', 'like', "%$term%");
+                $query->orWhere('address->formatted', 'like', "%$term%");
+            });
+        }
+
+        return $observations->where('user_id', $user->id)->orderBy('id', 'desc')->paginate($request->per_page);
     }
 
     /**
      * Log users out.
-     * 
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function logout()
