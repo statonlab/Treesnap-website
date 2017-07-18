@@ -21,7 +21,7 @@ export default class AdminNavbar extends Component {
             let data = response.data.data
             this.setState({
                 isLoggedIn: data.logged_in,
-                isAdmin   : data.is_admin
+                isAdmin   : data.is_admin || window.TreeSnap.isScientist
             })
         }).catch(error => {
             console.log(error)

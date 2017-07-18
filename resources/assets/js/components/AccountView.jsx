@@ -5,6 +5,8 @@ import HomeFooter from '../components/HomeFooter'
 import LinksSidebar from '../components/LinksSidebar'
 
 export default class AccountView extends Component {
+    componentWillMount() {}
+
     render() {
         return (
             <div>

@@ -3,9 +3,9 @@ import React, {Component} from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import Copyright from '../components/Copyright'
-import Map from '../UI/Map'
-import Marker from '../UI/Marker'
-import Modal from '../UI/Modal'
+import Map from '../components/Map'
+import Marker from '../components/Marker'
+import Modal from '../components/Modal'
 import ImageGallery from 'react-image-gallery'
 import Spinner from '../components/Spinner'
 import Disclaimer from '../components/Disclaimer'
@@ -888,8 +888,7 @@ export default class App extends Component {
                     <a href="javascript:;"
                        className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
                        onClick={() => {
-                           this.setState({galleryImages: marker.images})
-                           this.modal.open()
+                           this.setState({galleryImages: marker.images, showModal: true})
                        }}>
                         <i className="fa fa-photo"></i>
                         <div className="has-text-centered">
@@ -902,8 +901,7 @@ export default class App extends Component {
                         <a href="javascript:;"
                            className="flex-column"
                            onClick={() => {
-                               this.setState({galleryImages: marker.images})
-                               this.modal.open()
+                               this.setState({galleryImages: marker.images, showModal: true})
                            }}>
                             <i className="fa fa-picture-o"></i>
                             <span className="help">Images</span>
@@ -1029,9 +1027,13 @@ export default class App extends Component {
      * @private
      */
     _renderImagesModal() {
+        if (!this.state.showModal) {
+            return null
+        }
+
         if (this.state.galleryImages.length === 0) {
             return (
-                <Modal ref={ref => this.modal = ref} large={true}/>
+                <Modal large={true} onCloseRequest={() => this.setState({showModal: false})}/>
             )
         }
 
@@ -1044,7 +1046,7 @@ export default class App extends Component {
         })
 
         return (
-            <Modal ref={ref => this.modal = ref}>
+            <Modal onCloseRequest={() => this.setState({showModal: false})}>
                 <ImageGallery
                     items={images}
                     showThumbnails={false}
