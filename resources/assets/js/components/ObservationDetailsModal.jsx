@@ -11,6 +11,10 @@ export default class ObservationDetailsModal extends Component {
         this.props.onCloseRequest()
     }
 
+    componentDidMount() {
+        console.log(this.props.observation)
+    }
+
     render() {
         return (
             <div className={`modal${this.props.visible ? ' is-active' : ''}`}>

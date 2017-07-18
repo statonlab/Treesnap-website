@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\Traits\Observes;
 use App\Observation;
+use App\User;
 use Illuminate\Http\Request;
 use App\Events\ObservationDeleted;
 use Cache;
@@ -42,7 +43,7 @@ class ObservationsController extends Controller
         $observations = Observation::with('user');
 
         if ($user) {
-            $is_admin = $user->isScientist() || $user->isAdmin();
+            $is_admin = User::hasRole(['admin', 'scientist'], $user);
         }
 
         if (! $is_admin) {
@@ -71,16 +72,7 @@ class ObservationsController extends Controller
             foreach ($observations as $observation) {
                 // Compile the data into a standardized response
                 // Remove the is_private value from the response
-                $user = $observation->user;
-                $json_ready = array_except($this->getObservationJson($observation, $is_admin, $user), ['is_private']);
-                $mapped = array_merge($json_ready, [
-                    'user' => [
-                        'id' => $user->id,
-                        'name' => ! $is_admin && $user->is_anonymous ? 'Anonymous' : $user->name,
-                    ],
-                ]);
-
-                $data[] = $mapped;
+                $data[] = array_except($this->getObservationJson($observation, $is_admin, $user), ['is_private']);
             }
         };
 
@@ -97,7 +89,7 @@ class ObservationsController extends Controller
                 'previousPageUrl' => $observations->previousPageUrl(),
             ];
         } else {
-            $observations->chunk(1000, $mapper);
+            $observations->chunk(100, $mapper);
         }
 
         return $data;
@@ -115,7 +107,7 @@ class ObservationsController extends Controller
         $user = $request->user();
         $is_admin = false;
         if ($user) {
-            $is_admin = $user->isAdmin() || $user->isScientist();
+            $is_admin = User::hasRole(['admin', 'scientist'], $user);
         }
         $observation = Observation::with('user')->findOrFail($id);
 
@@ -139,12 +131,7 @@ class ObservationsController extends Controller
             ]);
         }
 
-        $json = $this->getObservationJson($observation, $is_admin, $user);
-        $user = [
-            'name' => $observation->user->is_anonymous && ! $is_admin ? 'Anonymous' : $observation->user->name,
-        ];
-
-        return $this->success(array_merge($json, compact('user')));
+        return $this->success($this->getObservationJson($observation, $is_admin, $user));
     }
 
     /**

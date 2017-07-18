@@ -33,7 +33,7 @@ export default class Group extends Component {
             hasMorePages      : false,
             lastPage          : 1,
             pages             : [],
-            collections: []
+            collections       : []
         }
     }
 
@@ -43,7 +43,7 @@ export default class Group extends Component {
     componentWillMount() {
         this.loadGroup()
         this.loadCollections()
-        
+
         let state  = this.state
         state.page = this.getBrowserPage()
         this.loadObservations(state)
@@ -356,7 +356,11 @@ export default class Group extends Component {
         }
         let id = this.props.match.params.id
         axios.delete(`/web/group/${id}`).then(response => {
-            this.props.history.push('/groups')
+            if (this.props.admin) {
+                this.props.history.push('/groups')
+            } else {
+                this.props.history.push('/account/groups')
+            }
         }).catch(error => {
             alert('An error occurred while we were attempting to delete this group. Please contact us to fix this issue.')
         })

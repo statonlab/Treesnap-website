@@ -1,16 +1,27 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import Spinner from '../components/Spinner'
-import {Link} from 'react-router-dom'
 import Tooltip from '../components/Tooltip'
+import Modal from '../components/Modal'
+import Select from 'react-select'
+import Notify from '../components/Notify'
+import {Link} from 'react-router-dom'
 
 export default class CollectionsScene extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            collections: [],
-            loading    : true
+            collections       : [],
+            loading           : true,
+            showShareModal    : false,
+            selectedCollection: {},
+            term              : '',
+            selectedUser      : null,
+            sharing           : false,
+            sharingErrors     : []
         }
+
 
         this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
 
@@ -44,6 +55,149 @@ export default class CollectionsScene extends Component {
         })
     }
 
+    showShareModal(collection) {
+        this.setState({
+            showShareModal    : true,
+            selectedCollection: collection
+        })
+    }
+
+    shareCollection(event) {
+        event.preventDefault()
+
+        if (this.state.selectedUser === null) {
+            this.setState({sharingErrors: ['Please select a user to share with first']})
+            return
+        }
+
+        this.setState({sharing: true, sharingErrors: []})
+
+        const id = parseInt(this.state.selectedCollection.id)
+
+        axios.post(`/web/collection/${id}/share`, {
+            user_id: this.state.selectedUser.value
+        }).then(() => {
+            Notify.push(`You successfully shared ${this.state.selectedCollection.label} with ${this.state.selectedUser.label}`)
+
+            let collections = this.state.collections.map(collection => {
+                if (this.state.selectedCollection.id === collection.id) {
+                    collection.users_count += 1
+                }
+                return collection
+            })
+
+            this.setState({
+                sharing       : false,
+                selectedUser  : null,
+                showShareModal: false,
+                collections
+            })
+        }).catch(error => {
+            this.setState({
+                sharing: false
+            })
+
+            const response = error.response
+
+            if (response && response.status === 422) {
+                let sharingErrors = Object.keys(response.data).map(key => {
+                    return response.data[key][0]
+                })
+
+                this.setState({
+                    sharingErrors
+                })
+
+                return
+            }
+
+            console.log(error)
+            Notify.push('Network Error. Please contact us to fix this issue', 'danger')
+        })
+    }
+
+    searchUsers(term) {
+        return axios.get('/web/groups/members', {
+            params: {
+                term
+            }
+        }).then(response => {
+            return {options: response.data.data}
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    _renderOption(option) {
+        return (
+            <div>
+                <p>{option.label}</p>
+                <small>{option.email}</small>
+            </div>
+        )
+    }
+
+    _renderShareModal() {
+        if (!this.state.showShareModal) {
+            return null
+        }
+
+        let collection = this.state.selectedCollection
+
+        return (
+            <Modal showClose={false}
+                   onCloseRequest={() => this.setState({showShareModal: false})}>
+                <form action="#" onSubmit={this.shareCollection.bind(this)}>
+                    <div className="box">
+                        <div className="content">
+                            <p className="modal-card-title">
+                                Share "{collection.label}" With Others
+                                <button className="delete is-pulled-right"
+                                        type="button"
+                                        onClick={() => this.setState({showShareModal: false})}></button>
+                            </p>
+
+                            <p>
+                                To share a collection with someone, you must both be members of a group.
+                                Please {this.props.admin ?
+                                <Link to={'/groups'}>visit the groups page</Link>
+                                :
+                                <Link to={'/account/groups'}>visit the groups page</Link>} to invite others to a group or create a new group
+                            </p>
+                        </div>
+
+                        <div className="field">
+                            <div className="control">
+                                <Select.Async
+                                    value={this.state.selectedUser}
+                                    loadOptions={this.searchUsers.bind(this)}
+                                    onChange={selectedUser => this.setState({selectedUser})}
+                                    optionRenderer={this._renderOption.bind(this)}
+                                    disabled={this.state.sharing}/>
+                            </div>
+                            {this.state.sharingErrors.map((error, i) => {
+                                return (
+                                    <p key={i} className="help is-danger">
+                                        {error}
+                                    </p>
+                                )
+                            })}
+                        </div>
+                        <div className="is-flex flex-space-between mt-2">
+                            <button
+                                type="submit"
+                                className={`button is-primary${this.state.sharing ? ' is-loading' : ''}`}
+                                disabled={this.state.sharing}>
+                                Share
+                            </button>
+                            <button className="button" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+        )
+    }
+
     _renderRow(collection) {
         return (
             <tr key={collection.id}>
@@ -51,7 +205,9 @@ export default class CollectionsScene extends Component {
                 <td>{collection.observations_count}</td>
                 <td>{collection.users_count - 1} users</td>
                 <td className="has-text-right">
-                    <button type="button" className="button is-small is-info mr-0">
+                    <button type="button"
+                            className="button is-small is-info mr-0"
+                            onClick={() => this.showShareModal(collection)}>
                         <span className="icon is-small">
                             <Tooltip label="Share">
                                 <i className="fa fa-share"></i>
@@ -101,7 +257,16 @@ export default class CollectionsScene extends Component {
                     }
                 </div>
                 <Spinner visible={this.state.loading}/>
+                {this._renderShareModal()}
             </div>
         )
     }
+}
+
+CollectionsScene.PropTypes = {
+    admin: PropTypes.bool
+}
+
+CollectionsScene.defaultProps = {
+    admin: false
 }

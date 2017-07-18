@@ -10,9 +10,11 @@ export default class Modal extends Component {
     render() {
         return (
             <div className="modal is-active">
-                <button className="close-modal" onClick={this.close.bind(this)} style={{zIndex: 999999}}>
-                    <i className="fa fa-times"></i>
-                </button>
+                {this.props.permanent || !this.props.showClose ? null :
+                    <button className="close-modal" onClick={this.close.bind(this)} style={{zIndex: 999999}}>
+                        <i className="fa fa-times"></i>
+                    </button>
+                }
                 <div className="modal-background" onClick={this.close.bind(this)}></div>
                 <div className="modal-content image-slider" style={{width: '100%', maxWidth: '700px'}}>
                     {this.props.children}
@@ -24,5 +26,11 @@ export default class Modal extends Component {
 
 Modal.PropTypes = {
     onCloseRequest: PropTypes.func.isRequired,
-    permanent     : false
+    permanent     : PropTypes.bool,
+    showClose     : PropTypes.bool
+}
+
+Modal.defaultProps = {
+    permanent: false,
+    showClose: true
 }

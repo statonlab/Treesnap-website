@@ -45,9 +45,11 @@ trait Observes
      * Formats the observation record into the expected response.
      *
      * @param  $observation
+     * @param $admin
+     * @param $user
      * @return array
      */
-    protected function getObservationJson($observation, $admin = false, $user = false)
+    protected function getObservationJson($observation, $admin = false, $user = null)
     {
         // Set Image Urls
         $images = [
@@ -65,11 +67,21 @@ trait Observes
             $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
         }
 
+        $isOwner = false;
+        $inGroup = false;
+
         if ($user && $user->id === $observation->user_id) {
             $data = $observation->data;
+            $isOwner = true;
         } else {
             $data = array_except($observation->data, ['comment']);
         }
+
+        if ($user && ! $admin && ! $isOwner) {
+            $inGroup = $user->hasFriend($observation->user_id);
+        }
+
+        $showData = $admin || $isOwner || $inGroup;
 
         return [
             'observation_id' => $observation->id,
@@ -77,10 +89,10 @@ trait Observes
             'observation_category' => $observation->observation_category,
             'meta_data' => $data,
             'location' => [
-                'latitude' => $admin ? $observation->latitude : $observation->fuzzy_coords['latitude'],
-                'longitude' => $admin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
+                'latitude' => $showData ? $observation->latitude : $observation->fuzzy_coords['latitude'],
+                'longitude' => $showData ? $observation->longitude : $observation->fuzzy_coords['longitude'],
                 'accuracy' => $observation->location_accuracy,
-                'address' => $admin ? $observation->address : [],
+                'address' => $showData ? $observation->address : [],
             ],
             'images' => $images,
             'date' => $observation->collection_date,
@@ -90,6 +102,24 @@ trait Observes
             'collections' => $user ? $observation->collections : [],
             'confirmations' => $user ? $observation->confirmations : [],
             'thumbnail' => $observation->thumbnail,
+            'user' => $this->getUserDetails($observation, $user, $inGroup, $admin),
+        ];
+    }
+
+    protected function getUserDetails($observation, $user, $inGroup, $isAdmin)
+    {
+        $anonymous = $observation->user->is_anonymous;
+        $owner = false;
+
+        if ($user) {
+            $owner = $observation->user->id === $user->id;
+        }
+
+        $displayName = $isAdmin || ! $anonymous || $owner || $inGroup;
+
+        return [
+            'name' => $displayName ? $observation->user->name : 'Anonymous',
+            'id' => $observation->user->id,
         ];
     }
 
@@ -138,10 +168,20 @@ trait Observes
                 $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
             }
 
-            $user = $observation->user;
-            $username = $user->is_anonymous && ! $isAdmin ? 'Anonymous' : $user->name;
+            $inGroup = false;
+            $owner = false;
+
+            if ($authenticated_user) {
+                $owner = $observation->user_id === $authenticated_user->id;
+            }
+
+            if ($authenticated_user && ! $isAdmin && ! $owner) {
+                $inGroup = $authenticated_user->hasFriend($observation->user_id);
+            }
+
             $title = $observation->observation_category;
             $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
+            $shareData = $isAdmin || $inGroup || $owner;
 
             if ($authenticated_user && $authenticated_user->id === $observation->user_id) {
                 $data = $observation->data;
@@ -155,12 +195,12 @@ trait Observes
                 'category' => $observation->observation_category,
                 'images' => $flattenedImages,
                 'position' => [
-                    'latitude' => $isAdmin ? $observation->latitude : $observation->fuzzy_coords['latitude'],
-                    'longitude' => $isAdmin ? $observation->longitude : $observation->fuzzy_coords['longitude'],
-                    'address' => $isAdmin ? $observation->address : [],
+                    'latitude' => $shareData ? $observation->latitude : $observation->fuzzy_coords['latitude'],
+                    'longitude' => $shareData ? $observation->longitude : $observation->fuzzy_coords['longitude'],
+                    'address' => $shareData ? $observation->address : [],
                     'accuracy' => $observation->location_accuracy,
                 ],
-                'owner' => $username,
+                'owner' => $this->getUserDetails($observation, $authenticated_user, $inGroup, $isAdmin)['name'],
                 'date' => $observation->collection_date->toDateString(),
                 'data' => $data,
                 'ref' => null,

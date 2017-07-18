@@ -49,6 +49,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * IDs of users who share a group with the current user.
+     *
+     * @var array
+     */
+    protected $friends = [];
+
+    /**
      * Get the observations of a user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -83,7 +90,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ownedGroups() {
+    public function ownedGroups()
+    {
         return $this->hasMany('App\Group');
     }
 
@@ -94,15 +102,14 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->role()->first()->is_admin;
+        return $this->role->is_admin;
     }
 
     /**
      * Get user collections that are shared with them
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-
     public function collections()
     {
         return $this->belongsToMany('App\Collection');
@@ -113,10 +120,9 @@ class User extends Authenticatable
      *
      * @return bool
      */
-
     public function isScientist()
     {
-        return $this->role()->first()->name === 'Scientist';
+        return $this->role->name === 'Scientist';
     }
 
     /**
@@ -129,12 +135,12 @@ class User extends Authenticatable
     public static function hasRole($role, $user)
     {
         if (is_array($role)) {
-            return in_array(strtolower($user->role()->first()->name), array_map(function ($r) {
-                return strtolower($r);
+            return in_array(strtolower($user->role->name), array_map(function ($role) {
+                return strtolower($role);
             }, $role));
         }
 
-        return strtolower($user->role()->first()->name) === strtolower(trim($role));
+        return strtolower($user->role->name) === strtolower(trim($role));
     }
 
     /**
@@ -165,5 +171,58 @@ class User extends Authenticatable
     public function notes()
     {
         return $this->hasMany('App\Note');
+    }
+
+    /**
+     * Check whether a user shares a group with another
+     * user with user_id.
+     *
+     * @param $user_id
+     * @return bool
+     */
+    public function hasFriend($user_id)
+    {
+        if (empty($this->friends)) {
+            $this->generateFriends();
+        }
+
+        return in_array($user_id, $this->friends);
+    }
+
+    /**
+     * Generate friends list.
+     */
+    protected function generateFriends()
+    {
+        $groups = $this->groups()->with('users')->get();
+
+        foreach ($groups as $group) {
+            foreach ($group->users as $user) {
+                $this->friends[] = $user->id;
+            }
+        }
+    }
+
+    /**
+     * If the user shares group with another user whose id is $user_id.
+     *
+     * @param int $user_id the user id.
+     * @return bool
+     */
+    public function sharesGroupWith($user_id)
+    {
+        $groups = $this->groups()->withCount([
+            'users' => function ($query) use ($user_id) {
+                $query->where('users.id', $user_id);
+            },
+        ])->get();
+
+        foreach ($groups as $group) {
+            if ($group->users_count > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

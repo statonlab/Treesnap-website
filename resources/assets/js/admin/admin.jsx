@@ -42,7 +42,8 @@ class Admin extends Component {
                                         <Route path="/group/:id" render={props => <Group admin={true} {...props}/>}/>
                                         <Route path="/filters" component={FiltersScene}/>
                                         <Route path="/observations" component={ObservationsScene}/>
-                                        <Route path="/collections" component={CollectionsScene}/>
+                                        <Route path="/collections"
+                                               render={props => <CollectionsScene admin={true} {...props}/>}/>
                                         <Route path="/curate" component={CurateScene}/>
                                         <Route path="/observation/:id"
                                                render={props => <ObservationScene admin={true} {...props}/>}/>
@@ -51,8 +52,15 @@ class Admin extends Component {
                                             return null
                                         }}/>
                                     </Switch>
-                                    <div className="app-footer admin-footer">
-                                        Copyright &copy; 2017 University of Tennessee at Knoxville
+                                    <div className="app-footer admin-footer is-flex flex-space-between">
+                                        <div>
+                                            Copyright &copy; 2017&nbsp;
+                                            <b><a href="https://utk.edu">University of Tennessee at Knoxville</a></b>
+                                        </div>
+                                        <div>
+                                            <a href="/privacy-policy">Privacy Policy</a> |
+                                            <a href="/terms-of-use">Terms of Use</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

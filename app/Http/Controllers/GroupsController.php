@@ -242,4 +242,50 @@ class GroupsController extends Controller
             'users' => $group->users,
         ]);
     }
+
+    /**
+     * Get users that belong to the same group as the
+     * currently authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getGroupUsers(Request $request)
+    {
+        $this->validate($request, [
+            'term' => 'nullable|max:100',
+        ]);
+
+        $user = $request->user();
+
+        $groups = $user->groups()->with([
+            'users' => function ($query) use ($user, $request) {
+                $query->where('users.id', '!=', $user->id);
+                if (! empty($request->term)) {
+                    $query->where(function ($query) use ($request) {
+                        $query->where('users.name', 'like', "%{$request->term}%");
+                        $query->orWhere('users.email', 'like', "%{$request->term}%");
+                    });
+                }
+            },
+        ])->get();
+
+        $users = [];
+        $ids = [];
+        foreach ($groups as $group) {
+            foreach ($group->users as $user) {
+                if (in_array($user->id, $ids)) {
+                    continue;
+                }
+                $ids[] = $user->id;
+                $users[] = [
+                    'label' => $user->name,
+                    'value' => $user->id,
+                    'email' => $user->email,
+                ];
+            }
+        }
+
+        return $this->success($users);
+    }
 }

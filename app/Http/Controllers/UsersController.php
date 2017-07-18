@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\User;
 use App\Email;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
@@ -155,17 +156,18 @@ class UsersController extends Controller
             'search' => 'nullable',
             'collection_id' => 'nullable|exists:collections,id',
             'category' => ['nullable', Rule::in($this->observation_categories)],
-            'group_id' => 'nullable|exists:groups,id'
+            'group_id' => 'nullable|exists:groups,id',
         ]);
 
         $user = $request->user();
+        $admin = User::hasRole(['scientist', 'admin'], $user);
 
         $observations = $this->getFilteredObservations($request);
 
         $data = [];
         foreach ($observations as $observation) {
-            $json = $this->getObservationJson($observation, true, $user);
-            $data[] = array_merge($json, ['user' => ['name' => $user->name, 'id' => $user->id]]);
+            $json = $this->getObservationJson($observation, $admin, $user);
+            $data[] = $json;
         }
 
         return $this->success(array_merge($observations->toArray(), [
@@ -200,12 +202,13 @@ class UsersController extends Controller
             'confirmations' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             },
+            'user',
         ];
 
         if (! empty($request->collection_id)) {
-            $observations = Collection::findOrFail($request->collection_id)->observations()->with($with);
+            $observations = $user->collections()->findOrFail($request->collection_id)->observations()->with($with);
         } else {
-            $observations = Observation::with($with);
+            $observations = Observation::with($with)->where('user_id', $user->id);
         }
 
         if (! empty($request->category)) {
@@ -221,7 +224,7 @@ class UsersController extends Controller
             });
         }
 
-        return $observations->where('user_id', $user->id)->orderBy('id', 'desc')->paginate($request->per_page);
+        return $observations->orderBy('id', 'desc')->paginate($request->per_page);
     }
 
     /**
