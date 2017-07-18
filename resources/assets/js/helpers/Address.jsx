@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import GeoCoder from '../helpers/GeoCoder'
+import GeoCoder from './GeoCoder'
 
 export default class Address extends Component {
     constructor(props) {

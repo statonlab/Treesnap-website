@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Map from '../UI/Map'
-import Marker from '../UI/Marker'
-import Modal from '../UI/Modal'
+import Map from './Map'
+import Marker from './Marker'
+import Modal from './Modal'
 import ImageGallery from 'react-image-gallery'
 import moment from 'moment'
 import BoxModal from './BoxModal'
@@ -24,7 +24,8 @@ export default class ObservationDetails extends Component {
             zoom               : 4,
             showControlModal   : false,
             controlModalContent: '',
-            collections        : []
+            collections        : [],
+            showModal          : false
         }
     }
 
@@ -128,8 +129,9 @@ export default class ObservationDetails extends Component {
      * Render the images modal
      */
     _renderImagesModal() {
-        if (this.observation.images.images.length === 0)
+        if (!this.state.showModal || this.observation.images.images.length === 0) {
             return null
+        }
 
         let images       = []
         let imagesObject = this.observation.images
@@ -143,7 +145,7 @@ export default class ObservationDetails extends Component {
         })
 
         return (
-            <Modal ref={ref => this.modal = ref}>
+            <Modal onCloseRequest={() => this.setState({showModal: false})}>
                 <ImageGallery
                     items={images}
                     slideInterval={2000}
@@ -305,7 +307,7 @@ export default class ObservationDetails extends Component {
                                     <tr>
                                         <th>Photos</th>
                                         <td>
-                                            <a href="javascript:;" onClick={() => this.modal.open()}>
+                                            <a href="javascript:;" onClick={() => this.setState({showModal: true})}>
                                                 See All Photos
                                             </a>
                                         </td>

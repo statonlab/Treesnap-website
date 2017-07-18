@@ -9,8 +9,8 @@
         window.TreeSnap = {
             loggedIn   : {{ auth()->check() ? 'true' : 'false' }},
             csrfToken  : '{{ csrf_token() }}',
-            isAdmin    : true,
-            isScientist: {{ auth()->user()->isScientist() ? 1 : 0 }}
+            isAdmin    : {{ auth()->user()->isAdmin() ? 'true' : 'false' }},
+            isScientist: {{ auth()->user()->isScientist() ? 'true' : 'false' }}
         }
     </script>
 
