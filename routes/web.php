@@ -87,12 +87,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/web/collection/attach', 'CollectionsController@attach');
     Route::delete('/web/collection/detach', 'CollectionsController@detach');
     Route::delete('/web/collection/{id}', 'CollectionsController@delete');
-    Route::post('/web/collection/share', 'CollectionsController@share');
+    Route::post('/web/collection/{id}/share', 'CollectionsController@share');
     Route::delete('/web/collection/unshare', 'CollectionsController@unshare');
 
     // Groups
     Route::get('/web/groups', 'GroupsController@index');
     Route::post('/web/groups', 'GroupsController@create');
+    Route::get('/web/groups/members', 'GroupsController@getGroupUsers');
     Route::get('/web/group/{id}', 'GroupsController@show');
     Route::get('/web/group/{id}/observations', 'GroupsController@groupObservations');
     Route::delete('/web/group/detach', 'GroupsController@detach');

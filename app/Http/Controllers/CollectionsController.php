@@ -22,7 +22,15 @@ class CollectionsController extends Controller
     {
         $user = $request->user();
 
-        $collections = $user->collections()->withCount(['observations', 'users'])->get();
+        $collections = $user->collections()->select([
+            'collections.id',
+            'collections.label',
+            'collections.description',
+            'collections.created_at',
+            'collections.updated_at',
+            'collections.user_id',
+            \DB::raw("IF(collections.user_id = {$user->id}, true, false) as is_owner")
+        ])->withCount(['observations', 'users'])->get();
 
         if (! $paired) {
             return $this->success($collections);
@@ -147,28 +155,37 @@ class CollectionsController extends Controller
     /**
      * Grant access to collection, given a userID and collection ID.
      *
+     * @param int $id the collection id
      * @param \Illuminate\Http\Request $request
      * @return mixed
      */
-    public function share(Request $request)
+    public function share($id, Request $request)
     {
         $user = $request->user();
 
         $this->validate($request, [
-            'collection_id' => 'required|exists:collections,id',
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $collection = Collection::findOrFail($request->collection_id);
+        $collection = Collection::findOrFail($id);
 
         // Allow only owners to share
         if ($collection->user_id !== $user->id) {
             return $this->unauthorized();
         }
 
+        // Allow sharing only with users who have a group in common
+        if (! $user->sharesGroupWith($request->user_id)) {
+            return $this->unauthorized();
+        }
+
+        if ($collection->users()->where('id', $request->user_id)->first()) {
+            return $this->validationError(['user_id' => ['User already exists']]);
+        }
+
         $collection->users()->syncWithoutDetaching($request->user_id);
 
-        return $this->success([
+        return $this->created([
             'id' => $collection->id,
             'label' => $collection->label,
             'added' => $request->user_id,

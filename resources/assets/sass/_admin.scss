@@ -133,3 +133,9 @@ $select-link-hover-color: $select-input-border-focus;
 $select-padding-vertical: 8px;
 $select-padding-horizontal: 10px;
 @import "node_modules/react-select/scss/default";
+
+.Select-menu-outer {
+  position: relative!important;
+  max-height: 200px;
+  overflow: auto;
+}
