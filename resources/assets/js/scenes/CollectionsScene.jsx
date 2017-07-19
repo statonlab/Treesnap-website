@@ -205,24 +205,28 @@ export default class CollectionsScene extends Component {
                 <td>{collection.observations_count}</td>
                 <td>{collection.users_count - 1} users</td>
                 <td className="has-text-right">
-                    <button type="button"
-                            className="button is-small is-info mr-0"
-                            onClick={() => this.showShareModal(collection)}>
-                        <span className="icon is-small">
-                            <Tooltip label="Share">
-                                <i className="fa fa-share"></i>
-                            </Tooltip>
-                        </span>
-                    </button>
-                    <button type="button"
-                            className="button is-small is-danger"
-                            onClick={() => this.deleteCollection(collection)}>
-                        <span className="icon is-small">
-                            <Tooltip label="Delete">
-                                <i className="fa fa-times"></i>
-                            </Tooltip>
-                        </span>
-                    </button>
+                    {collection.is_owner ?
+                        <div>
+                            <button type="button"
+                                    className="button is-small is-info mr-0"
+                                    onClick={() => this.showShareModal(collection)}>
+                                <span className="icon is-small">
+                                    <Tooltip label="Share">
+                                        <i className="fa fa-share"></i>
+                                    </Tooltip>
+                                </span>
+                            </button>
+                            < button type='button'
+                                     className='button is-small is-danger'
+                                     onClick={() => this.deleteCollection(collection)}>
+                                <span className='icon is-small'>
+                                    <Tooltip label='Delete'>
+                                        <i className='fa fa-times'></i>
+                                    </Tooltip>
+                                </span>
+                            </button>
+                        </div>
+                        : null }
                 </td>
             </tr>
         )
