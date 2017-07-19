@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/account/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
 
     // Collections
+    Route::get('/web/collections/owned/{paired?}', 'CollectionsController@ownedCollections');
     Route::get('/web/collections/{paired?}', 'CollectionsController@index');
     Route::post('/web/collections', 'CollectionsController@create');
     Route::get('/web/collection/{id}', 'CollectionsController@show');

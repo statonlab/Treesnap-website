@@ -50,7 +50,8 @@ export default class App extends Component {
             showFiltersModal    : false,
             total               : 0,
             showCollectionsForm : false,
-            showFlagForm        : false
+            showFlagForm        : false,
+            ownedCollections    : []
         }
 
         document.title = 'Map - TreeSnap'
@@ -168,6 +169,17 @@ export default class App extends Component {
 
         axios.get('/web/collections/1').then(response => {
             this.setState({collections: response.data.data})
+        }).catch(error => {
+            if (error.response && error.response.status === 401) {
+                // Ignore unauthenticated error
+                return
+            }
+
+            console.log(error.response)
+        })
+
+        axios.get('/web/collections/owned/1').then(response => {
+            this.setState({ownedCollections: response.data.data})
         }).catch(error => {
             if (error.response && error.response.status === 401) {
                 // Ignore unauthenticated error
@@ -766,7 +778,7 @@ export default class App extends Component {
                     style={{maxWidth: '225px'}}>Add {this.state.selectedMarker.title} to a collection</h4>
                 <CollectionForm
                     observationId={this.state.selectedMarker.id}
-                    collections={this.state.collections}
+                    collections={this.state.ownedCollections}
                     onSubmit={(collection) => {
                         Notify.push(`Observation added to "${collection.label}" successfully`)
                         this.setState({

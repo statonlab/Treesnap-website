@@ -61,7 +61,7 @@ export default class ObservationDetails extends Component {
             return
         }
 
-        axios.get('/web/collections/mapped').then(response => {
+        axios.get('/web/collections/owned/1').then(response => {
             let collections = response.data.data
             this.setState({collections})
         }).catch(error => {
@@ -240,12 +240,15 @@ export default class ObservationDetails extends Component {
      */
     _renderCollectionForm() {
         return (
-            <CollectionForm observationId={this.observation.observation_id}
-                            collections={this.state.collections}
-                            onSubmit={(collection) => {
-                                this.props.onAddedToCollection(collection)
-                                this.setState({showControlModal: false})
-                            }}/>
+            <div>
+                <h3 className="title is-4">Add to Collection</h3>
+                <CollectionForm observationId={this.observation.observation_id}
+                                collections={this.state.collections}
+                                onSubmit={(collection) => {
+                                    this.props.onAddedToCollection(collection)
+                                    this.setState({showControlModal: false})
+                                }}/>
+            </div>
         )
     }
 

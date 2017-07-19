@@ -17,8 +17,8 @@
             window.TreeSnap.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
         @endif
     </script>
-    <script src="/js/plugins/mapcluster.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>
+    <script async src="/js/plugins/mapcluster.min.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvvX3eEFf8L6hfCZA-MzmZJTMUhVJjV4I"></script>
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r
