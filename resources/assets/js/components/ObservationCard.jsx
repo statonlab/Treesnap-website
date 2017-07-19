@@ -383,18 +383,41 @@ export default class ObservationCard extends Component {
         )
     }
 
+    getAddress(observation) {
+        let address       = observation.location.address
+        let defaultObject = {
+            addressLine1: '',
+            addressLine2: '',
+            address     : ''
+        }
+        if (typeof address !== 'object') {
+            return defaultObject
+        }
+
+        if (Array.isArray(address)) {
+            return defaultObject
+        }
+
+        address = address.formatted
+        address = address.split(',')
+
+        return {
+            addressLine1: address.shift(),
+            addressLine2: address.join(','),
+            address
+        }
+    }
+
     render() {
         let observation  = this.props.observation
-        let confirmation = this.state.confirmation
         let name         = observation.observation_category + (observation.observation_category === 'Other' ? ` (${observation.meta_data.otherLabel})` : '')
-        let address      = observation.location.address !== null ? observation.location.address.formatted : null
-        let addressLine1 = ''
-        let addressLine2 = ''
-        if (address !== null) {
-            address      = address.split(',')
-            addressLine1 = address.shift()
-            addressLine2 = address.join(',')
-        }
+        let confirmation = this.state.confirmation
+        let {
+                address,
+                addressLine1,
+                addressLine2
+            }            = this.getAddress(observation)
+
         return (
             <div className="observation-card-container">
                 <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
@@ -452,13 +475,13 @@ export default class ObservationCard extends Component {
                                 </a><br/>
 
                                 <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
-                                {address !== null ?
+                                {address !== '' ?
                                     <div className="text-ellipsis" title={observation.location.address.formatted}>
                                         <small><b>Near</b> {addressLine1}</small>
                                         <br/>
                                         <small style={{marginLeft: '35px'}}>{addressLine2}</small>
                                     </div>
-                                    : <div style={{height: 48}}></div>}
+                                    : <div style={{height: 48}}>Address is marked as private</div>}
                             </div>
                         </div>
                         <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
