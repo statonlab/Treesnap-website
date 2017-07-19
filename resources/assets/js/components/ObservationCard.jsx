@@ -472,7 +472,7 @@ export default class ObservationCard extends Component {
                             </div>
                         </div>
                     </div>
-                    <footer className="card-footer">
+                    <footer className="card-footer card-footer-z-index">
                         <a href="javascript:;"
                            className="card-footer-item is-paddingless"
                            onClick={() => this.shouldSlide('addToCollection')}>

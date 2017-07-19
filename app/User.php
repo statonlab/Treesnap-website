@@ -116,6 +116,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get only the collections that the user owns.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ownedCollections()
+    {
+        return $this->hasMany('App\Collection');
+    }
+
+    /**
      * Determine if a user is a scientist.
      *
      * @return bool

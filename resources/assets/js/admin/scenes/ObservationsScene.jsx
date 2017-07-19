@@ -20,6 +20,7 @@ export default class ObservationsScene extends Component {
             perPage           : 6,
             pages             : [],
             collections       : [],
+            ownedCollections  : [],
             showEmail         : false,
             showFiltersModal  : false,
             contact           : {
@@ -72,6 +73,12 @@ export default class ObservationsScene extends Component {
     loadCollections() {
         axios.get('/web/collections/mapped').then(response => {
             this.setState({collections: response.data.data})
+        }).catch(error => {
+            console.log(error)
+        })
+
+        axios.get('/web/collections/owned/mapped').then(response => {
+            this.setState({ownedCollections: response.data.data})
         }).catch(error => {
             console.log(error)
         })
@@ -632,7 +639,7 @@ export default class ObservationsScene extends Component {
                                  className="column is-4-widescreen is-6-desktop is-6-tablet">
                                 <ObservationCard
                                     observation={observation}
-                                    collections={this.state.collections}
+                                    collections={this.state.ownedCollections}
                                     onEmailRequest={(observation) => {
                                         this.setState({
                                             showEmail: true,

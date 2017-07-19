@@ -83,7 +83,7 @@ export default class Group extends Component {
     }
 
     loadCollections() {
-        axios.get('/web/collections').then(response => {
+        axios.get('/web/collections/owned').then(response => {
             const collections = response.data.data.map(collection => {
                 return {
                     label: collection.label,

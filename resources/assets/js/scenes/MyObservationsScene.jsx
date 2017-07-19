@@ -24,10 +24,11 @@ export default class MyObservationsScene extends Component {
             search            : [],
             categories        : [],
             selectedCategory  : '',
-            hasMorePages      : false
+            hasMorePages      : false,
+            ownedCollections  : []
         }
 
-        document.title = 'My Observations'
+        document.title = 'My Observations - TreeSnap'
     }
 
     /**
@@ -82,20 +83,27 @@ export default class MyObservationsScene extends Component {
         })
     }
 
+    /**
+     * Load all collections.
+     */
     loadCollections() {
-        axios.get('/web/collections').then(response => {
-            const collections = response.data.data.map(collection => {
-                return {
-                    label: collection.label,
-                    value: collection.id
-                }
-            })
+        axios.get('/web/collections/1').then(response => {
+            const collections = response.data.data
             this.setState({collections})
+        }).catch(error => {
+            console.log(error)
+        })
+
+        axios.get('/web/collections/owned/1').then(response => {
+            this.setState({ownedCollections: response.data.data})
         }).catch(error => {
             console.log(error)
         })
     }
 
+    /**
+     * Get available categories.
+     */
     loadCategories() {
         axios.get('/web/observations/categories').then(response => {
             let data = response.data.data
@@ -240,7 +248,7 @@ export default class MyObservationsScene extends Component {
                     owner={true}
                     observation={observation}
                     loading={this.state.loading}
-                    collections={this.state.collections}
+                    collections={this.state.ownedCollections}
                     onCollectionCreated={collection => {
                         let exists = !observation.collections.every(c => c.id !== collection.id)
 

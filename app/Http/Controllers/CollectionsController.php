@@ -23,13 +23,53 @@ class CollectionsController extends Controller
         $user = $request->user();
 
         $collections = $user->collections()->select([
+            'collections.*',
+            \DB::raw("IF(collections.user_id = {$user->id}, true, false) as is_owner"),
+        ])->with([
+            'owner' => function ($query) {
+                $query->select('name', 'id');
+            },
+        ])->withCount(['observations', 'users'])->get();
+
+        if (! $paired) {
+            return $this->success($collections);
+        }
+
+        $mapped = [];
+        foreach ($collections as $collection) {
+            $label = $collection->label;
+
+            if ($collection->owner->id !== $user->id) {
+                $label .= " by {$collection->owner->name}";
+            }
+
+            $mapped[] = [
+                'label' => $label,
+                'value' => $collection->id,
+            ];
+        }
+
+        return $this->success($mapped);
+    }
+
+    /**
+     * Get the collections that the current authenticated user owns.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param bool $paired
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ownedCollections(Request $request, $paired = false)
+    {
+        $user = $request->user();
+
+        $collections = $user->ownedCollections()->select([
             'collections.id',
             'collections.label',
             'collections.description',
             'collections.created_at',
             'collections.updated_at',
             'collections.user_id',
-            \DB::raw("IF(collections.user_id = {$user->id}, true, false) as is_owner")
         ])->withCount(['observations', 'users'])->get();
 
         if (! $paired) {

@@ -111,7 +111,7 @@ class CurationsController extends Controller
             $observations->join('users', 'observations.user_id', '=', 'users.id');
             $observations->where(function ($query) use ($request) {
                 $query->where('observation_category', 'like', "%{$request->search}%");
-                $query->orWhere('data->otherLabel', 'like', "%{$request->search}%");
+                $query->orWhere(\DB::raw('LOWER(data->"$.otherLabel")'), 'like', '%'.strtolower($request->search).'%');
                 $query->orWhere('name', 'like', "%{$request->search}%");
             });
         }

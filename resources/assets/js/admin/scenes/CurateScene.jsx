@@ -23,6 +23,7 @@ export default class CurateScene extends Component {
             selectedStatus    : 0,
             showEmail         : false,
             user              : {},
+            collections       : [],
             contact           : {
                 to         : {
                     user_id: 0,
@@ -41,6 +42,7 @@ export default class CurateScene extends Component {
         this.loadObservations(Object.assign({}, this.state, {page}))
         this.loadUser()
         this.loadCategories()
+        this.loadCollections()
     }
 
     loadObservations(state) {
@@ -295,6 +297,14 @@ export default class CurateScene extends Component {
         )
     }
 
+    loadCollections() {
+        axios.get('/web/collections/owned/1').then(response => {
+            this.setState({collections: response.data.data})
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     /**
      * Render observation card.
      *
@@ -309,6 +319,7 @@ export default class CurateScene extends Component {
                     observation={observation}
                     showMarks={true}
                     loading={this.state.loading}
+                    collections={this.state.collections}
                     onEmailRequest={(observation) => {
                         this.setState({
                             showEmail: true,
