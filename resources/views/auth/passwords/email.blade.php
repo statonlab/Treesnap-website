@@ -8,8 +8,9 @@
                     <div class="title is-4">Reset Password</div>
                     <div class="panel-body">
                         @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
+                            <div class="alert is-success">
+                                <p>{{ session('status') }}</p>
+                                <p>Please allow at least 30 minutes for your request to be completed.</p>
                             </div>
                         @endif
 
