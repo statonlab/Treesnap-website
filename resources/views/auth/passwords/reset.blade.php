@@ -78,7 +78,7 @@
 
                             <div class="form-group">
                                 <div class="control col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="button is-primary">
                                         Reset Password
                                     </button>
                                 </div>
