@@ -159,7 +159,7 @@ class ObservationsController extends Controller
         $user = $request->user();
 
         // Make sure the user is updating a record that they own
-        $observation = Observation::where('id', $id)->first();
+        $observation = Observation::find($id);
 
         if (! $observation) {
             return $this->notFound('The observation you requested was not found.');
