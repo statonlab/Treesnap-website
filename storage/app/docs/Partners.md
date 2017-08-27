@@ -24,11 +24,11 @@ The [Forest Restoration Alliance](https://threatenedforests.com/) works to resto
 The American Chestnut Foundation will use data on chestnuts to find trees that are resistant to chestnut blight to be added to breeding and research programs.  In addition to sampling with the TreeSnap app, please submit a physical sample of the tree to the American Chestnut Foundation since other species can easily be confused with American chestnut.   You can find full instructions, as well as addresses to ship samples to, [here](https://www.acf.org/va/contact-us/report-live-tree/).
 
 # Forest Health Research and Education Center
- [The Forest Health Research and Education Center's](www.foresthealthcenter.org) mission is to advance the conservation of forested ecosystems by integrating genetics-based biological research with social science research and education and outreach on factors affecting tree health and forest restoration.
+ [The Forest Health Research and Education Center's](http://www.foresthealthcenter.org) mission is to advance the conservation of forested ecosystems by integrating genetics-based biological research with social science research and education and outreach on factors affecting tree health and forest restoration.
  
  
 The Forest Health Research and Education Center will use data on white oak to build a breeding program.  Their goal is to be better prepared in the event that any invasive pests that target white oak are introduced in the future.
 
 # Get involved
 
-Have a project or tree breeding program you want involved?  Let us know! You can visit our [contact page](http://treesnap.app/contact), or find us on [Facebook](https://www.facebook.com/treesnapapp/) or [Twitter](https://twitter.com/Treesnapapp).
+Have a project or tree breeding program you want involved?  Let us know! You can visit our [contact page](/contact), or find us on [Facebook](https://www.facebook.com/treesnapapp/) or [Twitter](https://twitter.com/Treesnapapp).
