@@ -2,7 +2,7 @@
 
 ## American chestnut
 
-American chestnut (_Castanea dentata_) was once a dominant tree in eastern North American forests but a deadly funal disease wiped out most of these trees in the early 1900s.
+American chestnut (_Castanea dentata_) was once a dominant tree in eastern North American forests but a deadly fungal disease wiped out most of these trees in the early 1900s.
 
 ### Chestnut blight
  Chestnut blight is caused by the fungus _Cryphonectria parasitica_.  It was introduced to North America in the early 1900s by accidentally importing infected Asian chestnut trees. Most Asian chestnuts are quite resistant to the fungus but American chestnut proved highly susceptible and by 1940 few mature chestnut trees were left.
