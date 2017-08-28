@@ -1,5 +1,11 @@
 {
+<<<<<<< HEAD
   "/js/app.js": "/js/app.b04611395616a61fecf4.js",
   "/css/app.css": "/css/app.ec47ddc97e22fffc81c0.css",
   "/js/admin.js": "/js/admin.254675814883a49d58b8.js"
+=======
+  "/js/app.js": "/js/app.7c3e19a901c357f81049.js",
+  "/css/app.css": "/css/app.2962d6e91f6c735228ed.css",
+  "/js/admin.js": "/js/admin.a1d0da51ba7e7fbc6d05.js"
+>>>>>>> cc36f6f0f3735137253cc20983c6c17480d29ae9
 }
