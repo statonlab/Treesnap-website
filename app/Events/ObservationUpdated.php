@@ -23,13 +23,24 @@ class ObservationUpdated
     public $observation;
 
     /**
+     * Whether to broadcast the action.
+     *
+     * @var bool
+     */
+    public $broadcast;
+
+    /**
      * Create a new event instance.
      *
+     * @param Observation $observation The updated observation
+     * @param bool $broadcast Whether to broadcast the update event. This allows
+     *                          the mobile app to update their local records.
      * @return void
      */
-    public function __construct(Observation $observation)
+    public function __construct(Observation $observation, $broadcast = false)
     {
         $this->observation = $observation;
+        $this->broadcast = $broadcast;
     }
 
     /**

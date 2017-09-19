@@ -26,6 +26,9 @@ Route::group([
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
+
+    // Actions
+    Route::get('/actions', 'ActionsController@index');
 });
 
 // Methods that do not require an api_key

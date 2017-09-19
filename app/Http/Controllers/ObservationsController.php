@@ -164,7 +164,7 @@ class ObservationsController extends Controller
             return $this->notFound('The observation you requested was not found.');
         }
 
-        if (! $isAdmin || $observation->user_id != $user->id) {
+        if (! $isAdmin && $observation->user_id != $user->id) {
             return $this->unauthorized();
         }
 
@@ -179,10 +179,13 @@ class ObservationsController extends Controller
             }
         }
 
-        $observation->delete();
-
         // Broadcast that an observation has been deleted
-        event(new ObservationDeleted());
+        event(new ObservationDeleted([
+            'id' => $observation->id,
+            'user_id' => $observation->user_id
+        ]));
+
+        $observation->delete();
 
         return $this->success('Observation has been deleted successfully');
     }

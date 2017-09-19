@@ -15,15 +15,22 @@ class ObservationDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * Observation that got deleted.
+     * ['id', 'user_id']
+     *
+     * @var array|null
+     */
+    public $observation;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($observation = null)
     {
-        //
+        $this->observation = $observation;
     }
 
     /**

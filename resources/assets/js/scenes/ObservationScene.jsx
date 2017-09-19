@@ -32,11 +32,15 @@ export default class ObservationScene extends Component {
     this.loadObservation(id)
     this.loadNotes(id)
 
-    EventEmitter.listen('observation_deleted', () => this.setState({deleted: true}))
+    EventEmitter.listen('observation_deleted', this.observationDeleted.bind(this))
   }
 
   componentWillUnmount() {
-    EventEmitter.remove('observation_deleted')
+    //EventEmitter.remove('observation_deleted', this.observationDeleted.bind(this))
+  }
+
+  observationDeleted() {
+    this.setState({deleted: true})
   }
 
   loadObservation(id) {
