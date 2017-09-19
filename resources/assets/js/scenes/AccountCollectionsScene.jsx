@@ -3,15 +3,15 @@ import CollectionsScene from './CollectionsScene'
 import AccountView from '../components/AccountView'
 
 export default class AccountCollectionsScene extends Component {
-    componentDidMount() {
-        window.fixHeight()
-    }
+  componentDidMount() {
+    window.fixHeight()
+  }
 
-    render() {
-        return (
-            <AccountView>
-                <CollectionsScene/>
-            </AccountView>
-        )
-    }
+  render() {
+    return (
+      <AccountView>
+        <CollectionsScene/>
+      </AccountView>
+    )
+  }
 }

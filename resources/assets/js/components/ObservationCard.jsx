@@ -10,6 +10,7 @@ import Spinner from './Spinner'
 import Notify from './Notify'
 import ObservationDetailsModal from './ObservationDetailsModal'
 import {Link} from 'react-router-dom'
+import User from '../helpers/User'
 
 export default class ObservationCard extends Component {
   constructor(props) {
@@ -131,34 +132,34 @@ export default class ObservationCard extends Component {
     const observation = this.props.observation
     const image       = observation.images.images ? observation.images.images[0] : '/images/placeholder.png'
     return (
-        <Map style={{height: '100%', zIndex: '0'}}
-             center={{
-               lat: observation.location.latitude,
-               lng: observation.location.longitude
-             }}
-             zoom={4}>
-          <Marker
-              title={observation.observation_category}
-              position={observation.location}
-              show={true}>
-            <div className="media callout">
-              <div className="media-left mr-0">
-                <img src={image}
-                     alt={observation.observation_category}
-                     style={{
-                       width : 50,
-                       height: 'auto'
-                     }}/>
-              </div>
-              <div className="media-content">
-                <div className="mb-0">
-                  <strong>{observation.observation_category}</strong></div>
-                <div className="mb-0">By {observation.user.name}</div>
-                <a href={`/observation/${observation.observation_id}`}>See full description</a>
-              </div>
+      <Map style={{height: '100%', zIndex: '0'}}
+           center={{
+             lat: observation.location.latitude,
+             lng: observation.location.longitude
+           }}
+           zoom={4}>
+        <Marker
+          title={observation.observation_category}
+          position={observation.location}
+          show={true}>
+          <div className="media callout">
+            <div className="media-left mr-0">
+              <img src={image}
+                   alt={observation.observation_category}
+                   style={{
+                     width : 50,
+                     height: 'auto'
+                   }}/>
             </div>
-          </Marker>
-        </Map>
+            <div className="media-content">
+              <div className="mb-0">
+                <strong>{observation.observation_category}</strong></div>
+              <div className="mb-0">By {observation.user.name}</div>
+              <a href={`/observation/${observation.observation_id}`}>See full description</a>
+            </div>
+          </div>
+        </Marker>
+      </Map>
     )
   }
 
@@ -192,51 +193,51 @@ export default class ObservationCard extends Component {
   renderCollectionForm() {
     let observation = this.props.observation
     return (
-        <div className="card-slide-container">
-          <h3 className="title is-5">Add to Collection</h3>
-          {this.state.addedToCollection ?
-              <div className="content">
-                <p className="text-success">
-                  Observation was successfully added to your collection.
-                </p>
+      <div className="card-slide-container">
+        <h3 className="title is-5">Add to Collection</h3>
+        {this.state.addedToCollection ?
+          <div className="content">
+            <p className="text-success">
+              Observation was successfully added to your collection.
+            </p>
 
-                <div className="flexbox flex-row flex-v-center flex-space-between">
-                  <button type="button"
-                          className="button is-link is-paddingless"
-                          onClick={() => this.setState({addedToCollection: false})}>
-                    Add to Another Collection
-                  </button>
+            <div className="flexbox flex-row flex-v-center flex-space-between">
+              <button type="button"
+                      className="button is-link is-paddingless"
+                      onClick={() => this.setState({addedToCollection: false})}>
+                Add to Another Collection
+              </button>
 
-                  <button className="button" type="button" onClick={() => {
-                    this.setState({addedToCollection: false})
-                    this.slowCloseSlideContent()
-                  }}>
-                    Done
-                  </button>
-                </div>
-              </div> :
-              <CollectionForm observationId={observation.observation_id}
-                              collections={this.props.collections}
-                              onSubmit={(data) => {
-                                this.setState({addedToCollection: true})
-                                this.props.onCollectionCreated(data)
-                              }}
-              />
-          }
+              <button className="button" type="button" onClick={() => {
+                this.setState({addedToCollection: false})
+                this.slowCloseSlideContent()
+              }}>
+                Done
+              </button>
+            </div>
+          </div> :
+          <CollectionForm observationId={observation.observation_id}
+                          collections={this.props.collections}
+                          onSubmit={(data) => {
+                            this.setState({addedToCollection: true})
+                            this.props.onCollectionCreated(data)
+                          }}
+          />
+        }
 
-          {observation.collections.map(collection => {
-            return (
-                <div key={`collection_${collection.id}`}
-                     className="mt-1 flexbox flex-row flex-v-center flex-space-between"
-                     style={{marginBottom: '0.1rem'}}>
-                  <p style={{paddingRight: '5px'}}>Found in "{collection.label}"</p>
-                  <button onClick={() => this.removeFromCollection(collection, observation)}
-                          className="button is-small is-danger is-outlined">Remove
-                  </button>
-                </div>
-            )
-          })}
-        </div>
+        {observation.collections.map(collection => {
+          return (
+            <div key={`collection_${collection.id}`}
+                 className="mt-1 flexbox flex-row flex-v-center flex-space-between"
+                 style={{marginBottom: '0.1rem'}}>
+              <p style={{paddingRight: '5px'}}>Found in "{collection.label}"</p>
+              <button onClick={() => this.removeFromCollection(collection, observation)}
+                      className="button is-small is-danger is-outlined">Remove
+              </button>
+            </div>
+          )
+        })}
+      </div>
     )
   }
 
@@ -253,20 +254,20 @@ export default class ObservationCard extends Component {
         break
       case 'flag':
         return (
-            <div className="card-slide-container">
-              <h3 className="title is-5">Flag Observation</h3>
-              <FlagForm observationId={observation.observation_id}
-                        onSubmit={(data) => {
-                          this.setState({flagged: true, flag_id: data.id})
-                          this.props.onFlagChange('added', data)
-                        }}
-                        onUndo={(data) => {
-                          this.setState({flagged: false, flag_id: 0})
-                          this.props.onFlagChange('removed', data)
-                        }}
-                        flagged={this.state.flagged}
-                        flagId={this.state.flag_id}/>
-            </div>
+          <div className="card-slide-container">
+            <h3 className="title is-5">Flag Observation</h3>
+            <FlagForm observationId={observation.observation_id}
+                      onSubmit={(data) => {
+                        this.setState({flagged: true, flag_id: data.id})
+                        this.props.onFlagChange('added', data)
+                      }}
+                      onUndo={(data) => {
+                        this.setState({flagged: false, flag_id: 0})
+                        this.props.onFlagChange('removed', data)
+                      }}
+                      flagged={this.state.flagged}
+                      flagId={this.state.flag_id}/>
+          </div>
         )
         break
       case 'map':
@@ -369,22 +370,22 @@ export default class ObservationCard extends Component {
     }
 
     return (
-        <div className="card-footer marks-section">
-          <div className="card-footer-item">
-            <span>{this.state.incorrectMarks}</span>
-            <span className="icon ml-0 mr-0">
-              <b className="fa fa-times text-danger"></b>
-            </span>
-            <span>Marks</span>
-          </div>
-          <div className="card-footer-item">
-            <span>{this.state.correctMarks}</span>
-            <span className="icon ml-0 mr-0">
-              <b className="fa fa-check text-success"></b>
-            </span>
-            <span>Marks</span>
-          </div>
+      <div className="card-footer marks-section">
+        <div className="card-footer-item">
+          <span>{this.state.incorrectMarks}</span>
+          <span className="icon ml-0 mr-0">
+            <b className="fa fa-times text-danger"></b>
+          </span>
+          <span>Marks</span>
         </div>
+        <div className="card-footer-item">
+          <span>{this.state.correctMarks}</span>
+          <span className="icon ml-0 mr-0">
+            <b className="fa fa-check text-success"></b>
+          </span>
+          <span>Marks</span>
+        </div>
+      </div>
     )
   }
 
@@ -421,157 +422,154 @@ export default class ObservationCard extends Component {
     let observation  = this.props.observation
     let name         = observation.observation_category + (observation.observation_category === 'Other' ? ` (${observation.meta_data.otherLabel})` : '')
     let confirmation = this.state.confirmation
-    let {
-          address,
-          addressLine1,
-          addressLine2
-        }            = this.getAddress(observation)
+
+    let {address, addressLine1, addressLine2} = this.getAddress(observation)
 
     return (
-        <div className="observation-card-container">
-          <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
-            <header className="card-header">
-              <Link to={`/observation/${observation.observation_id}`}
-                    className="card-header-title text-ellipsis"
-                    title="Visit Observation Page">
-                {name}
-              </Link>
+      <div className="observation-card-container">
+        <div className="card" style={{opacity: this.props.loading ? 0.1 : 1}}>
+          <header className="card-header">
+            <Link to={`/observation/${observation.observation_id}`}
+                  className="card-header-title text-ellipsis"
+                  title="Visit Observation Page">
+              {name}
+            </Link>
 
-              {this.props.owner ? null :
-                  <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
-                     onClick={() => this.confirm(false, observation)}>
-                    <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
-                             hideOnClick={false}>
-                      <span className="icon">
-                        <i className="fa fa-times"></i>
-                      </span>
-                    </Tooltip>
-                  </a>
-              }
+            {User.can('confirm species') ?
+              <a className={`card-header-icon is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+                 onClick={() => this.confirm(false, observation)}>
+                <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                         hideOnClick={false}>
+                  <span className="icon">
+                    <i className="fa fa-times"></i>
+                  </span>
+                </Tooltip>
+              </a>
+              : null}
 
-              {this.props.owner ? null :
-                  <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
-                     onClick={() => this.confirm(true, observation)}>
-                    <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
-                             hideOnClick={false}>
-                      <span className="icon">
-                        <i className="fa fa-check"></i>
-                      </span>
-                    </Tooltip>
-                  </a>
-              }
-            </header>
-            <div className="relative-block">
-              <Spinner visible={this.state.loading}/>
-              <div className="has-bg-image relative-block">
-                <div className="card-image"
-                     style={{
-                       backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`
-                     }}>
-                </div>
-              </div>
-
-              {this._renderMarks()}
-
-              <div className="card-content">
-                <div className="content">
-                  {this.props.owner ? null :
-                      <span>By {observation.user.name}<br/></span>}
-                  <a href="javascript:;" onClick={(e) => {
-                    e.preventDefault()
-                    this.setState({showDetailsModal: true})
-                  }}>
-                    Quick View
-                  </a><br/>
-
-                  <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
-                  {address !== '' ?
-                      <div className="text-ellipsis" title={address}>
-                        <small><b>Near</b> {addressLine1}</small>
-                        <br/>
-                        <small style={{marginLeft: '35px'}}>{addressLine2}</small>
-                      </div>
-                      :
-                      <div style={{height: 48}}>Address is marked as private</div>}
-                </div>
-              </div>
-              <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
-                <div className="p-1 relative-block">
-                  <button href="javascript:;"
-                          className="close button"
-                          type="button"
-                          onClick={this.slowCloseSlideContent.bind(this)}>
-                    <i className="fa fa-times"></i></button>
-                  {this.renderSlideContent(this.state.slideContent)}
-                </div>
+            {User.can('confirm species') ?
+              <a className={`card-header-icon is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+                 onClick={() => this.confirm(true, observation)}>
+                <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                         hideOnClick={false}>
+                  <span className="icon">
+                    <i className="fa fa-check"></i>
+                  </span>
+                </Tooltip>
+              </a>
+              : null}
+          </header>
+          <div className="relative-block">
+            <Spinner visible={this.state.loading}/>
+            <div className="has-bg-image relative-block">
+              <div className="card-image"
+                   style={{
+                     backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`
+                   }}>
               </div>
             </div>
-            <footer className="card-footer card-footer-z-index">
-              <a href="javascript:;"
-                 className="card-footer-item is-paddingless"
-                 onClick={() => this.shouldSlide('addToCollection')}>
-                <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
-                  <span className="icon is-small is-marginless">
-                    <i className="fa fa-star"></i>
-                  </span>
-                </Tooltip>
-              </a>
 
-              <a href="javascript:;"
-                 className="card-footer-item is-paddingless"
-                 onClick={() => this.shouldSlide('map')}>
-                <Tooltip label="Show on Map" style={{padding: '0.75rem'}}>
-                  <span className="icon is-small is-marginless">
-                    <i className="fa fa-map"></i>
-                  </span>
-                </Tooltip>
-              </a>
+            {this._renderMarks()}
 
-              {window.TreeSnap.isAdmin && !this.props.owner ?
-                  <a href="javascript:;"
-                     className="card-footer-item is-paddingless"
-                     onClick={() => {
-                       this.props.onEmailRequest(observation)
-                     }}>
-                    <Tooltip label="Contact Submitter"
-                             style={{padding: '0.75rem'}}>
-                      <span className="icon is-small is-marginless">
-                        <i className="fa fa-envelope"></i>
-                      </span>
-                    </Tooltip>
-                  </a> : null}
+            <div className="card-content">
+              <div className="content">
+                {this.props.owner ? null :
+                  <span>By {observation.user.name}<br/></span>}
+                <a href="javascript:;" onClick={(e) => {
+                  e.preventDefault()
+                  this.setState({showDetailsModal: true})
+                }}>
+                  Quick View
+                </a><br/>
 
-              {this.props.owner ? null :
-                  <a href="javascript:;"
-                     className="card-footer-item is-paddingless"
-                     onClick={() => this.shouldSlide('flag')}>
-                    <Tooltip label="Flag as Inappropriate"
-                             style={{padding: '0.75rem'}}>
-                      <span className="icon is-small is-marginless">
-                        <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
-                      </span>
-                    </Tooltip>
-                  </a>
-              }
-
-              {!this.props.owner ? null :
-                  <a href={`mailto:?body=${this.createUrl(observation.observation_id)}`}
-                     className="card-footer-item is-paddingless">
-                    <Tooltip label="Share" style={{padding: '0.75rem'}}>
-                      <span className="icon is-small is-marginless">
-                        <i className="fa fa-share"></i>
-                      </span>
-                    </Tooltip>
-                  </a>
-              }
-            </footer>
+                <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
+                {address !== '' ?
+                  <div className="text-ellipsis" title={address}>
+                    <small><b>Near</b> {addressLine1}</small>
+                    <br/>
+                    <small style={{marginLeft: '35px'}}>{addressLine2}</small>
+                  </div>
+                  :
+                  <div style={{height: 48}}>Address is marked as private</div>}
+              </div>
+            </div>
+            <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
+              <div className="p-1 relative-block">
+                <button href="javascript:;"
+                        className="close button"
+                        type="button"
+                        onClick={this.slowCloseSlideContent.bind(this)}>
+                  <i className="fa fa-times"></i></button>
+                {this.renderSlideContent(this.state.slideContent)}
+              </div>
+            </div>
           </div>
-          {this.state.showDetailsModal ?
-              <ObservationDetailsModal observation={observation}
-                                       onCloseRequest={() => this.setState({showDetailsModal: false})}
-                                       visible={true}/>
-              : null}
+          <footer className="card-footer card-footer-z-index">
+            <a href="javascript:;"
+               className="card-footer-item is-paddingless"
+               onClick={() => this.shouldSlide('addToCollection')}>
+              <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
+                <span className="icon is-small is-marginless">
+                  <i className="fa fa-star"></i>
+                </span>
+              </Tooltip>
+            </a>
+
+            <a href="javascript:;"
+               className="card-footer-item is-paddingless"
+               onClick={() => this.shouldSlide('map')}>
+              <Tooltip label="Show on Map" style={{padding: '0.75rem'}}>
+                <span className="icon is-small is-marginless">
+                  <i className="fa fa-map"></i>
+                </span>
+              </Tooltip>
+            </a>
+
+            {User.can('contact users') && !this.props.owner ?
+              <a href="javascript:;"
+                 className="card-footer-item is-paddingless"
+                 onClick={() => {
+                   this.props.onEmailRequest(observation)
+                 }}>
+                <Tooltip label="Contact Submitter"
+                         style={{padding: '0.75rem'}}>
+                  <span className="icon is-small is-marginless">
+                    <i className="fa fa-envelope"></i>
+                  </span>
+                </Tooltip>
+              </a> : null}
+
+            {this.props.owner ? null :
+              <a href="javascript:;"
+                 className="card-footer-item is-paddingless"
+                 onClick={() => this.shouldSlide('flag')}>
+                <Tooltip label="Flag as Inappropriate"
+                         style={{padding: '0.75rem'}}>
+                  <span className="icon is-small is-marginless">
+                    <i className={`fa fa-flag${this.state.flagged ? ' text-danger' : ''}`}></i>
+                  </span>
+                </Tooltip>
+              </a>
+            }
+
+            {!this.props.owner ? null :
+              <a href={`mailto:?body=${this.createUrl(observation.observation_id)}`}
+                 className="card-footer-item is-paddingless">
+                <Tooltip label="Share" style={{padding: '0.75rem'}}>
+                  <span className="icon is-small is-marginless">
+                    <i className="fa fa-share"></i>
+                  </span>
+                </Tooltip>
+              </a>
+            }
+          </footer>
         </div>
+        {this.state.showDetailsModal ?
+          <ObservationDetailsModal observation={observation}
+                                   onCloseRequest={() => this.setState({showDetailsModal: false})}
+                                   visible={true}/>
+          : null}
+      </div>
     )
   }
 

@@ -7,16 +7,9 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
     <script>
-      window.TreeSnap = {
-        csrfToken: '{{ csrf_token() }}',
-        loggedIn : '{{ auth()->check() ? '1' : '0'}}' === '1',
-        isAdmin  : false
-      }
-
-      @if(auth()->check())
-          window.TreeSnap.isAdmin = '{{ \App\User::hasRole(['Admin', 'Scientist'], auth()->user()) ? '1' : '0' }}' === '1'
-        @endif
+      window.TreeSnap = {!! json_encode($TreeSnap) !!}
     </script>
+
     <script>
       (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r
@@ -24,7 +17,7 @@
           (i[r].q = i[r].q || []).push(arguments)
         }, i[r].l = 1 * new Date()
         a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0]
+          m = s.getElementsByTagName(o)[0]
         a.async = 1
         a.src   = g
         m.parentNode.insertBefore(a, m)

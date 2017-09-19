@@ -3,15 +3,15 @@ import Groups from '../components/Groups'
 import AccountView from '../components/AccountView'
 
 export default class GroupsScene extends Component {
-    componentDidMount() {
-        window.fixHeight()
-    }
+  componentDidMount() {
+    window.fixHeight()
+  }
 
-    render() {
-        return (
-            <AccountView>
-                <Groups admin={false} {...this.props}/>
-            </AccountView>
-        )
-    }
+  render() {
+    return (
+      <AccountView>
+        <Groups admin={false} {...this.props}/>
+      </AccountView>
+    )
+  }
 }

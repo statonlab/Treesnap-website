@@ -15,21 +15,21 @@
     "jquery": "^3.2.1",
     "laravel-mix": "^0.8.3",
     "lodash": "^4.17.4",
-    "vue": "^2.4.2"
+    "vue": "^2.4.4"
   },
   "dependencies": {
     "amdefine": "^1.0.1",
     "array-flatten": "^2.1.1",
     "bulma": "^0.4.4",
     "camelizer": "^0.1.0",
-    "chart.js": "^2.6.0",
+    "chart.js": "^2.7.0",
     "content-disposition": "^0.5.2",
-    "content-type": "^1.0.2",
+    "content-type": "^1.0.4",
     "datatables-bulma": "^1.0.1",
-    "datatables.net": "^1.10.15",
+    "datatables.net": "^1.10.16",
     "dragscroll": "0.0.8",
     "font-awesome": "^4.7.0",
-    "fuse.js": "^3.0.5",
+    "fuse.js": "^3.1.0",
     "google-maps-react": "^1.1.0",
     "lodash._baseassign": "^3.2.0",
     "lodash._baseclone": "^4.5.7",
@@ -50,7 +50,7 @@
     "react-image-gallery": "^0.7.16",
     "react-router-dom": "^4.2.2",
     "react-rte": "^0.11.0",
-    "react-select": "^1.0.0-rc.5",
+    "react-select": "^1.0.0-rc.10",
     "slick-carousel": "^1.7.1",
     "type-is": "^1.6.15"
   }
