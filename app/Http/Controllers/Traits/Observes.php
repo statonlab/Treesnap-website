@@ -189,6 +189,8 @@ trait Observes
                 $data = array_except($observation->data, ['comment']);
             }
 
+            $owner = $this->getUserDetails($observation, $authenticated_user, $inGroup, $isAdmin);
+
             $all[] = [
                 'id' => $observation->id,
                 'title' => $title,
@@ -200,7 +202,8 @@ trait Observes
                     'address' => $shareData ? $observation->address : [],
                     'accuracy' => $observation->location_accuracy,
                 ],
-                'owner' => $this->getUserDetails($observation, $authenticated_user, $inGroup, $isAdmin)['name'],
+                'owner' => $owner['name'],
+                'user_id' => $owner['id'],
                 'date' => $observation->collection_date->toDateString(),
                 'data' => $data,
                 'ref' => null,

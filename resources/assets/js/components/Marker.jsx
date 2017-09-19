@@ -49,7 +49,7 @@ export default class Marker extends Component {
     this.marker.addListener('click', this.openCallout.bind(this))
 
     let icon
-    if (User.scientist() || User.admin()) {
+    if (User.can('view accurate location') || User.owns(this.props.owner_id)) {
       icon = this.colors[this.marker.title] || 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
     } else {
       icon = '/images/map/q-dot.png'
@@ -108,7 +108,8 @@ Marker.PropTypes = {
   show     : PropTypes.bool,
   onCreate : PropTypes.func,
   onClick  : PropTypes.func,
-  onDestroy: PropTypes.func
+  onDestroy: PropTypes.func,
+  owner_id: PropTypes.number
 }
 
 Marker.defaultProps = {
@@ -119,5 +120,6 @@ Marker.defaultProps = {
   onClick() {
   },
   onHide() {
-  }
+  },
+  owner_id: 0
 }

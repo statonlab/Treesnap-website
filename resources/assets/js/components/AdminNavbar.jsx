@@ -105,7 +105,7 @@ export default class AdminNavbar extends Component {
                   </div>
                   : null}
 
-                {this.state.isAdmin ?
+                {User.can('access admin pages') ?
                   <a href="/admin"
                      className={`navbar-item ${Path.isActive('/admin', false)}`}>Admin</a>
                   : null}
