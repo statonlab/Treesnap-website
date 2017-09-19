@@ -68,7 +68,10 @@ class SendFilterNotifications extends Command
     protected function send(Filter $filter)
     {
         $user = $filter->user;
-        $observations = Filter::apply($filter->rules)->where('observations.created_at', '>', $filter->notifications_sent_at)->paginate(4);
+        $observations = Filter::apply($filter->rules)
+            ->where('observations.created_at', '>', $filter->notifications_sent_at)
+            ->where('observations.user_id', '!=', $user->id)
+            ->paginate(4);
         $total = $observations->total();
         if ($total === 0) {
             return;
