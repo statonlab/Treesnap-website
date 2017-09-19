@@ -62,7 +62,17 @@ class User extends Authenticatable
      */
     public function observations()
     {
-        return $this->hasMany('App\Observation');
+        return $this->hasMany(Observation::class);
+    }
+
+    /**
+     * Get actions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function actions()
+    {
+        return $this->hasMany(Action::class);
     }
 
     /**
@@ -72,7 +82,7 @@ class User extends Authenticatable
      */
     public function role()
     {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo(Role::class);
     }
 
     /**
@@ -82,7 +92,7 @@ class User extends Authenticatable
      */
     public function groups()
     {
-        return $this->belongsToMany('App\Group');
+        return $this->belongsToMany(Group::class);
     }
 
     /**
@@ -92,7 +102,7 @@ class User extends Authenticatable
      */
     public function ownedGroups()
     {
-        return $this->hasMany('App\Group');
+        return $this->hasMany(Group::class);
     }
 
     /**
@@ -112,7 +122,7 @@ class User extends Authenticatable
      */
     public function collections()
     {
-        return $this->belongsToMany('App\Collection');
+        return $this->belongsToMany(Collection::class);
     }
 
     /**
@@ -122,7 +132,7 @@ class User extends Authenticatable
      */
     public function ownedCollections()
     {
-        return $this->hasMany('App\Collection');
+        return $this->hasMany(Collection::class);
     }
 
     /**
@@ -160,7 +170,7 @@ class User extends Authenticatable
      */
     public function filters()
     {
-        return $this->hasMany('App\Filter');
+        return $this->hasMany(Filter::class);
     }
 
     /**
@@ -170,7 +180,7 @@ class User extends Authenticatable
      */
     public function confirmations()
     {
-        return $this->hasMany('App\Confirmation');
+        return $this->hasMany(Confirmation::class);
     }
 
     /**
@@ -180,7 +190,7 @@ class User extends Authenticatable
      */
     public function notes()
     {
-        return $this->hasMany('App\Note');
+        return $this->hasMany(Note::class);
     }
 
     /**

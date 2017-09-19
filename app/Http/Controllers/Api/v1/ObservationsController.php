@@ -93,10 +93,10 @@ class ObservationsController extends Controller
             }
         }
 
-        $observation->delete();
-
         // Broadcast that an observation has been deleted
         event(new ObservationDeleted());
+
+        $observation->delete();
 
         return $this->success('Observation has been deleted successfully');
     }

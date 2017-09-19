@@ -14,8 +14,8 @@ class EventEmitter {
     document.addEventListener(type, callback)
   }
 
-  remove(type) {
-    document.removeEventListener(type)
+  remove(type, callback) {
+    document.removeEventListener(type, callback)
   }
 }
 

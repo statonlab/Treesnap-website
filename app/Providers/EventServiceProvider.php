@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Listeners\AddAddressToObservation;
+use App\Listeners\BroadcastObservationDeleted;
+use App\Listeners\BroadcastObservationUpdated;
 use App\Listeners\ClearObservationsCache;
 use App\Listeners\CreateObservationThumbnails;
 use App\Listeners\SendInvitation;
@@ -24,9 +26,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\ObservationUpdated' => [
             CreateObservationThumbnails::class,
+            BroadcastObservationUpdated::class,
         ],
         'App\Events\ObservationDeleted' => [
             ClearObservationsCache::class,
+            BroadcastObservationDeleted::class,
         ],
         'App\Events\InvitationCreated' => [
             SendInvitation::class,
