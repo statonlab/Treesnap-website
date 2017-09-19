@@ -8,37 +8,37 @@ window._ = require('lodash')
 window.axios = require('axios')
 
 window.axios.defaults.headers.common = {
-    'X-CSRF-TOKEN'    : window.TreeSnap.csrfToken,
-    'X-Requested-With': 'XMLHttpRequest',
-    'Accept'          : 'application/json'
+  'X-CSRF-TOKEN'    : window.TreeSnap.csrfToken,
+  'X-Requested-With': 'XMLHttpRequest',
+  'Accept'          : 'application/json'
 }
 
 window.renewLaravelToken = () => {
-    axios.get('/web/_token').then(response => {
-        let data = response.data.data
+  axios.get('/web/_token').then(response => {
+    let data = response.data.data
 
-        window.TreeSnap.csrfToken             = data._token
-        window.axios.defaults.headers.common = {
-            'X-CSRF-TOKEN'    : data._token,
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept'          : 'application/json'
-        }
+    window.TreeSnap.csrfToken            = data._token
+    window.axios.defaults.headers.common = {
+      'X-CSRF-TOKEN'    : data._token,
+      'X-Requested-With': 'XMLHttpRequest',
+      'Accept'          : 'application/json'
+    }
 
-        const _tokens = document.querySelectorAll('input[name="_token"]')
-        if (_tokens) {
-            _token.forEach(token => {
-                token.value = data._token
-            })
-        }
-    }).catch(error => {
-        if (error.response && (error.response.status === 302 || error.response.status === 401)) {
-            if (confirm('You have been logged out due to inactivity.')) {
-                window.location.replace('/login')
-            } else {
-                window.location.replace('/login')
-            }
-        }
-    })
+    const _tokens = document.querySelectorAll('input[name="_token"]')
+    if (_tokens) {
+      _token.forEach(token => {
+        token.value = data._token
+      })
+    }
+  }).catch(error => {
+    if (error.response && (error.response.status === 302 || error.response.status === 401)) {
+      if (confirm('You have been logged out due to inactivity.')) {
+        window.location.replace('/login')
+      } else {
+        window.location.replace('/login')
+      }
+    }
+  })
 }
 
 // Renew the CSRF token every 30 minutes

@@ -8,62 +8,62 @@ import PropTypes from 'prop-types'
 import KnowledgeSidebarLinks from '../helpers/KnowledgeSidebarLinks'
 
 export default class KnowledgeScene extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.state = {
-            content: '',
-            loading: true
-        }
+    this.state = {
+      content: '',
+      loading: true
     }
+  }
 
-    componentDidMount() {
-        window.fixHeight()
+  componentDidMount() {
+    window.fixHeight()
 
-        axios.get(this.props.docPath).then(response => {
-            this.setState({content: response.data.data})
-        }).catch(error => {
-            console.log(error)
-        }).then(() => {
-            this.setState({loading: false})
-            window.fixHeight()
-        })
+    axios.get(this.props.docPath).then(response => {
+      this.setState({content: response.data.data})
+    }).catch(error => {
+      console.log(error)
+    }).then(() => {
+      this.setState({loading: false})
+      window.fixHeight()
+    })
 
-        let title      = this.props.title || 'About Us'
-        document.title = `${title} - TreeSnap`
-    }
+    let title      = this.props.title || 'About Us'
+    document.title = `${title} - TreeSnap`
+  }
 
-    render() {
-        return (
-            <div className="document">
-                <Navbar/>
-                <Spinner visible={this.state.loading}/>
-                <div className="home-section short-content">
-                    <div className="container">
-                        <div className="columns">
-                            <div className="column is-3">
-                                <LinksSidebar links={KnowledgeSidebarLinks} title="Knowledge Base"/>
-                            </div>
-                            <div className="column">
-                                <div className="box body">
-                                    <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}}></div>
-                                    <Spinner visible={this.state.loading} inline={true}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  render() {
+    return (
+      <div className="document">
+        <Navbar/>
+        <Spinner visible={this.state.loading}/>
+        <div className="home-section short-content">
+          <div className="container">
+            <div className="columns">
+              <div className="column is-3">
+                <LinksSidebar links={KnowledgeSidebarLinks} title="Knowledge Base"/>
+              </div>
+              <div className="column">
+                <div className="box body">
+                  <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}}></div>
+                  <Spinner visible={this.state.loading} inline={true}/>
                 </div>
-                <HomeFooter/>
+              </div>
             </div>
-        )
-    }
+          </div>
+        </div>
+        <HomeFooter/>
+      </div>
+    )
+  }
 }
 
 KnowledgeScene.PropTypes = {
-    docPath: PropTypes.string.isRequired,
-    title  : PropTypes.string
+  docPath: PropTypes.string.isRequired,
+  title  : PropTypes.string
 }
 
 KnowledgeSidebarLinks.defaultProps = {
-    title: false
+  title: false
 }
