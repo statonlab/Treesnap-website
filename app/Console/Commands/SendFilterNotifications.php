@@ -15,7 +15,7 @@ class SendFilterNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:filters';
+    protected $signature = 'notify:filters {-p|--print=0}';
 
     /**
      * The console command description.
@@ -43,6 +43,9 @@ class SendFilterNotifications extends Command
     {
         // Get all filters that are notifiable and last notified was 3 days ago.
         Filter::notifiable()->chunk(200, function ($filters) {
+            $count = $filters->count();
+            $this->say("Processing {$count} filters.");
+
             foreach ($filters as $filter) {
                 if (empty($filter->notifications_sent_at)) {
                     $filter->notifications_sent_at = Carbon::now();
@@ -51,7 +54,9 @@ class SendFilterNotifications extends Command
 
                 // make sure we didn't recently notify the user
                 // of new observations (once every 2 days)
-                if ($filter->notifications_sent_at->addDays(2)->lessThan(Carbon::now())) {
+                if ($filter->notifications_sent_at->addDays(2)->greaterThan(Carbon::now())) {
+                    $date = $filter->notifications_sent_at->diffForHumans();
+                    $this->say("Ignoring '{$filter->name}' because a notification was sent {$date}");
                     continue;
                 }
 
@@ -74,12 +79,28 @@ class SendFilterNotifications extends Command
             ->paginate(4);
         $total = $observations->total();
         if ($total === 0) {
+            $this->say("Ignoring '{$filter->name}' because there are 0 observations that fit the criteria");
+
             return;
         }
 
         Mail::send(new FilterNotification($user, $observations, $total, $filter));
 
+        $this->say("Notification for {$filter->name} has been queued.");
+
         $filter->notifications_sent_at = Carbon::now();
         $filter->save();
+    }
+
+    /**
+     * Print message if the print option is selected.
+     *
+     * @param $line
+     */
+    protected function say($line)
+    {
+        if (intval($this->option('print')) !== 0) {
+            $this->line($line);
+        }
     }
 }

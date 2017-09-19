@@ -114,6 +114,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Invitations
     Route::get('/web/invites/{group_id}', 'InvitesController@showPendingInvitations');
     Route::post('/web/invite', 'InvitesController@newInvitation');
+
+    // Unsubscribe
+    Route::get('/services/unsubscribe/filter/{filter}', 'SubscriptionsController@unsubscribeFilter');
 });
 
 // Admin Route Group
