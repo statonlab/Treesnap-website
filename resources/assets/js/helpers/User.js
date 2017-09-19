@@ -79,7 +79,6 @@ class User {
    * @returns {Boolean}
    */
   owns(object, foreign_key) {
-    console.log(this._user)
     if (typeof foreign_key === 'undefined') {
       foreign_key = 'user_id'
     }

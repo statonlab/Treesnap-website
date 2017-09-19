@@ -87,6 +87,7 @@ export default class ObservationDetails extends Component {
 
     this.setState(Object.assign({}, observation, {
       markers    : [{
+        user_id : observation.user_id,
         image   : observation.images.images ? observation.images.images[0] : '',
         position: {
           latitude : observation.latitude,
@@ -400,6 +401,7 @@ export default class ObservationDetails extends Component {
                 {this.state.markers.map((marker, index) => {
                   return (
                     <Marker
+                      owner_id={marker.user_id}
                       key={index}
                       position={marker.position}
                       show={true}

@@ -434,6 +434,7 @@ export default class App extends Component {
                     position={marker.position}
                     title={marker.title}
                     ref={(ref) => marker.ref = ref}
+                    owner_id={marker.user_id}
                     onClick={() => {
                       this.setState({
                         selectedMarker     : marker,

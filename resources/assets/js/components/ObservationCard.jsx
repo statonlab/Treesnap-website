@@ -141,6 +141,7 @@ export default class ObservationCard extends Component {
         <Marker
           title={observation.observation_category}
           position={observation.location}
+          owner_id={observation.user_id}
           show={true}>
           <div className="media callout">
             <div className="media-left mr-0">
