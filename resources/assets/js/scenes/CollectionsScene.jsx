@@ -6,6 +6,7 @@ import Modal from '../components/Modal'
 import Select from 'react-select'
 import Notify from '../components/Notify'
 import {Link} from 'react-router-dom'
+import Dropdown from '../components/Dropdown'
 
 export default class CollectionsScene extends Component {
   constructor(props) {
@@ -205,15 +206,27 @@ export default class CollectionsScene extends Component {
         <td>{collection.observations_count}</td>
         <td>{collection.users_count - 1} users</td>
         <td className="has-text-right">
-          <a href={`/services/download/collection/${collection.id}`} className="button is-default is-small mr-0">
-            <span className="icon is-small">
-              <i className="fa fa-download"></i>
-            </span>
-          </a>
+          <Dropdown right={true} trigger={(
+            <button className="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span className="icon is-small">
+                <i className="fa fa-download"></i>
+              </span>
+              <span className="icon is-small">
+                <i className="fa fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          )}>
+            <a href={`/services/download/collection/${collection.id}/tsv`} className="dropdown-item">
+              TSV Format
+            </a>
+            <a href={`/services/download/collection/${collection.id}/csv`} className="dropdown-item">
+              CSV Format
+            </a>
+          </Dropdown>
           {collection.is_owner ?
             <div style={{display: 'inline-block'}}>
               <button type="button"
-                      className="button is-small is-info mr-0"
+                      className="button is-small is-info ml-0"
                       onClick={() => this.showShareModal(collection)}>
                 <span className="icon is-small">
                   <Tooltip label="Share">
@@ -222,7 +235,7 @@ export default class CollectionsScene extends Component {
                 </span>
               </button>
               <button type='button'
-                      className='button is-small is-danger'
+                      className='button is-small is-danger ml-0'
                       onClick={() => this.deleteCollection(collection)}>
                 <span className='icon is-small'>
                   <Tooltip label='Delete'>
