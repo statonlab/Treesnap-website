@@ -34,8 +34,10 @@ class DownloadsController extends Controller
             return abort(400, 'Invalid extension');
         }
 
-        $path = 'downloads/'.$collection->label.'_'.uniqid().'.'.$extension;
-        $name = $collection->label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
+        $label = $this->fileNameEscape($collection->label);
+
+        $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
+        $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
 
         $header = [
             'Observation Category',
@@ -121,6 +123,13 @@ class DownloadsController extends Controller
         return in_array($ext, $this->extensions);
     }
 
+    /**
+     * Create a file DB record that can be auto removed.
+     *
+     * @param $path
+     * @param $user_id
+     * @return $this|\Illuminate\Database\Eloquent\Model
+     */
     protected function createAutoRemovableFile($path, $user_id)
     {
         return File::create([
@@ -128,5 +137,19 @@ class DownloadsController extends Controller
             'path' => $path,
             'auto_delete' => true,
         ]);
+    }
+
+    /**
+     * Clean up file names.
+     *
+     * @param $name
+     * @return mixed
+     */
+    protected function fileNameEscape($name)
+    {
+        $name = str_replace('/', '_', $name);
+        $name = str_replace(' ', '_', $name);
+
+        return $name;
     }
 }
