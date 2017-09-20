@@ -19,7 +19,8 @@ class ActionsController extends Controller
      */
     public function index(Request $request)
     {
-        $actions = $request->user()->actions()->where('completed', false)->orderBy('id', 'asc')->get();
+        $user = $request->user();
+        $actions = $user->actions()->where('completed', false)->orderBy('id', 'asc')->get();
 
         return $this->success($actions);
     }
