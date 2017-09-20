@@ -21,7 +21,6 @@ class HomeController extends Controller
         $TreeSnap = [
             'csrfToken' => csrf_token(),
             'loggedIn' => $user ? true : false,
-            'isAdmin' => User::hasRole(['Admin', 'Scientist'], auth()->user()) ? true : false,
             'role' => auth()->user() ? auth()->user()->role->name : null,
             'user' => false,
         ];
