@@ -9,17 +9,25 @@ use Storage;
 
 class DownloadsController extends Controller
 {
-    public function collection(Collection $collection, Request $request)
+    protected $extensions = [
+        'csv',
+        'tsv',
+    ];
+
+    public function collection(Collection $collection, Request $request, $extension = 'tsv')
     {
         if (! $collection->users->contains('id', $request->user()->id)) {
             return abort(403);
         }
 
+        if (! $this->allowedExtension($extension)) {
+            return abort(400, 'Invalid extension');
+        }
+
         $observations = $collection->observations;
 
-        $path = 'downloads/'.$collection->label.'_'.uniqid() . '.tsv';
-        $name = $collection->label.'_'.Carbon::now()->format('m_d_Y').'.tsv';
-
+        $path = 'downloads/'.$collection->label.'_'.uniqid().'.'.$extension;
+        $name = $collection->label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
 
         $header = [
             'Observation Category',
@@ -28,9 +36,9 @@ class DownloadsController extends Controller
             'Address',
             'Collection Date',
         ];
-        Storage::disk('local')->put($path, implode("\t", $header) . "\n");
+        Storage::disk('local')->put($path, $this->line($header, $extension));
 
-        $observations->map(function ($observation) use ($path) {
+        $observations->map(function ($observation) use ($path, $extension) {
             $line = [
                 $observation->observation_category,
                 "{$observation->latitude}, {$observation->longitude}",
@@ -38,11 +46,40 @@ class DownloadsController extends Controller
                 $observation->address['formatted'],
                 $observation->collection_date->toDateString(),
             ];
-            Storage::disk('local')->append($path, implode("\t", $line)."\n");
+            Storage::disk('local')->append($path, $this->line($line, $extension));
         });
 
-        $file = Storage::disk('local')->get($path);
+        return response()->download(storage_path('app/'.$path), $name);
+    }
 
-        return response()->download(base_path('storage/app/'.$path), $name);
+    protected function line(array $row, $extension)
+    {
+        switch ($extension) {
+            case "tsv":
+                return $this->tsvLine($row);
+                break;
+            case "csv":
+                return $this->csvLine($row);
+                break;
+        }
+    }
+
+    protected function csvLine(array $row)
+    {
+        foreach ($row as $key => $value) {
+            $row[$key] = '"'.$value.'"';
+        }
+
+        return implode(",", $row)."\n";
+    }
+
+    protected function tsvLine(array $row)
+    {
+        return implode("\t", $row)."\n";
+    }
+
+    protected function allowedExtension($ext)
+    {
+        return in_array($ext, $this->extensions);
     }
 }
