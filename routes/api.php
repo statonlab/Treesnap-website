@@ -29,6 +29,7 @@ Route::group([
 
     // Actions
     Route::get('/actions', 'ActionsController@index');
+    Route::post('/action/completed/{action}', 'ActionsController@completed');
 });
 
 // Methods that do not require an api_key

@@ -482,6 +482,11 @@ export default class ObservationCard extends Component {
                 }}>
                   Quick View
                 </a><br/>
+                {this.props.owner || User.can('view accurate location') ?
+                <small>
+                  {observation.location.latitude}, {observation.location.longitude}<br/>
+                </small>
+                  : null}
 
                 <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
                 {address !== '' ?
