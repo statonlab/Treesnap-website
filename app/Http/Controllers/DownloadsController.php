@@ -42,7 +42,7 @@ class DownloadsController extends Controller
             $line = [
                 $observation->observation_category,
                 "{$observation->latitude}, {$observation->longitude}",
-                isset($observation->data['comments']) ? $observation->data['comments'] : 'NULL',
+                isset($observation->data['comment']) ? $observation->data['comment'] : 'NULL',
                 $observation->address['formatted'],
                 $observation->collection_date->toDateString(),
             ];
