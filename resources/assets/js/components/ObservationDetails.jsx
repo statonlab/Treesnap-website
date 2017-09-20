@@ -369,7 +369,7 @@ export default class ObservationDetails extends Component {
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
                   return this._renderMetaData(label, data[key], key)
                 })}
-                {User.can('view accurate location') ?
+                {User.can('view accurate location') || User.owns(this.observation) ?
                   <tr>
                     <th>Coordinates</th>
                     <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>

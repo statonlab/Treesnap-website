@@ -205,8 +205,13 @@ export default class CollectionsScene extends Component {
         <td>{collection.observations_count}</td>
         <td>{collection.users_count - 1} users</td>
         <td className="has-text-right">
+          <a href={`/services/download/collection/${collection.id}`} className="button is-default is-small mr-0">
+            <span className="icon is-small">
+              <i className="fa fa-download"></i>
+            </span>
+          </a>
           {collection.is_owner ?
-            <div>
+            <div style={{display: 'inline-block'}}>
               <button type="button"
                       className="button is-small is-info mr-0"
                       onClick={() => this.showShareModal(collection)}>
@@ -216,9 +221,9 @@ export default class CollectionsScene extends Component {
                   </Tooltip>
                 </span>
               </button>
-              < button type='button'
-                       className='button is-small is-danger'
-                       onClick={() => this.deleteCollection(collection)}>
+              <button type='button'
+                      className='button is-small is-danger'
+                      onClick={() => this.deleteCollection(collection)}>
                 <span className='icon is-small'>
                   <Tooltip label='Delete'>
                     <i className='fa fa-times'></i>

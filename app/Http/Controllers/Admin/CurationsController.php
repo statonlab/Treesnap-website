@@ -33,7 +33,7 @@ class CurationsController extends Controller
             'collections' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             },
-        ])->select($this->observationSelectFields);
+        ])->select($this->observation_select_fields);
 
         $observations = $this->applySQLFilters($observations, $request, $user);
         $observations->orderBy('observations.id', 'desc');

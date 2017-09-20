@@ -117,6 +117,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Unsubscribe
     Route::get('/services/unsubscribe/filter/{filter}', 'SubscriptionsController@unsubscribeFilter');
+
+    // Download
+    Route::get('/services/download/collection/{collection}', 'DownloadsController@collection');
 });
 
 // Admin Route Group
