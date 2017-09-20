@@ -25,7 +25,7 @@ trait Observes
      *
      * @var array
      */
-    protected $observationSelectFields = [
+    protected $observation_select_fields = [
         'observations.id',
         'observations.user_id',
         'observation_category',

@@ -59,7 +59,7 @@ class UsersController extends Controller
                 $query->where('user_id', $admin->id);
             },
         ])
-                                   ->select($this->observationSelectFields)
+                                   ->select($this->observation_select_fields)
                                    ->where('user_id', $id)
                                    ->orderBy('updated_at', 'desc')
                                    ->limit(60)
