@@ -22,7 +22,7 @@ import GroupsScene from './scenes/GroupsScene'
 class App extends Component {
   render() {
     return (
-      <Router history={'browser'}>
+      <Router>
         <Switch>
           <Route exact={true} path={'/'} component={WelcomeScene}/>
           <Route exact={true} path={'/account'} component={AccountScene}/>

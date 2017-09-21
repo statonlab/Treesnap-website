@@ -24,11 +24,23 @@ class GroupsController extends Controller
     {
         $user = $request->user();
 
+        $this->validate($request, [
+            'with_users' => 'nullable|boolean',
+        ]);
+
         $groups = $user->groups()->with([
             'owner' => function ($query) use ($user) {
                 $query->select(['users.id', DB::raw("IF(users.id = {$user->id}, 'You', users.name) AS name")]);
             },
         ])->withCount('users')->get();
+
+        if ($request->with_users) {
+            $groups->load([
+                'users' => function ($query) {
+                    $query->select('users.id');
+                },
+            ]);
+        }
 
         return $this->success($groups);
     }
@@ -76,8 +88,10 @@ class GroupsController extends Controller
 
         $group = Group::with([
             'users' => function ($query) {
-                $query->select(['id', 'name']);
-                $query->orderBy('name', 'asc');
+                $query->select(['users.id', 'users.name']);
+                $query->orderBy('users.name', 'asc');
+                $query->orderBy('users.id', 'asc');
+                $query->withCount('observations');
             },
         ])->findOrFail($id);
 
@@ -121,9 +135,9 @@ class GroupsController extends Controller
         }
 
         $observations = Observation::join('group_user', 'group_user.user_id', '=', 'observations.user_id')
-                                   ->where('group_user.group_id', $id)
-                                   ->orderBy('observations.id', 'desc')
-                                   ->paginate(6);
+            ->where('group_user.group_id', $id)
+            ->orderBy('observations.id', 'desc')
+            ->paginate(6);
 
         $observations->load([
             'confirmations' => function ($query) use ($user) {
@@ -204,6 +218,22 @@ class GroupsController extends Controller
         $group->delete();
 
         return $this->created('Group deleted successfully.');
+    }
+
+    /**
+     * Remove authenticated from user a given group.
+     *
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exitGroup(Group $group, Request $request)
+    {
+        $this->authorize('exit', $group);
+
+        $group->users()->detach($request->user()->id);
+
+        return $this->success('Exited group successfully');
     }
 
     /**

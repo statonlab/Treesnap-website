@@ -1,3 +1,5 @@
+import EventEmitter from './EventEmitter'
+
 class User {
   /**
    * Create the user instance.
@@ -14,6 +16,7 @@ class User {
     this._isAdmin     = app.role === 'admin'
     this._isScientist = app.role === 'scientist'
     this._user        = app.user
+    this._groups      = []
 
     this._abilities = {
       member: [],
@@ -26,6 +29,9 @@ class User {
     }
 
     this.initAbilities()
+    this.loadGroups()
+
+    EventEmitter.listen('user.groups.updated', this.loadGroups.bind(this))
   }
 
   /**
@@ -52,10 +58,30 @@ class User {
   }
 
   /**
+   * Load current user groups.
+   */
+  loadGroups() {
+    if(!this.authenticated()) {
+      return
+    }
+
+    axios.get('/web/groups?with_users=1').then(response => {
+      this._groups = response.data.data.map(group => {
+        return {
+          id: group.id,
+          users: group.users.map(user => user.id)
+        }
+      })
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  /**
    * Determine whether the current user can perform a certain ability.
    *
-   * @param ability
-   * @returns {boolean}
+   * @param {String} ability
+   * @returns {Boolean}
    */
   can(ability) {
     if (!this.authenticated() || this._role === null) {
@@ -97,6 +123,38 @@ class User {
 
     if (typeof object === 'number') {
       return this._user.id === object
+    }
+
+    return false
+  }
+
+  /**
+   * Determines whether the current user shares a group with a given user.
+   *
+   * @param {Number} user_id The other user's id.
+   * @return {boolean}
+   */
+  inGroupWith(user_id) {
+    for(let i in this._groups) {
+      if(this._groups[i].users.indexOf(user_id) > -1) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+   * Determines whether the user is in a given group.
+   *
+   * @param group_id
+   * @return {Boolean}
+   */
+  inGroup(group_id) {
+    for(let i in this._groups) {
+      if(this._groups[i].id === group_id) {
+        return true
+      }
     }
 
     return false
