@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/web/groups/members', 'GroupsController@getGroupUsers');
     Route::get('/web/group/{id}', 'GroupsController@show');
     Route::get('/web/group/{id}/observations', 'GroupsController@groupObservations');
+    Route::delete('/web/group/{group}/exit', 'GroupsController@exitGroup');
     Route::delete('/web/group/detach', 'GroupsController@detach');
     Route::delete('/web/group/{id}', 'GroupsController@delete');
     Route::post('/web/group/attach', 'GroupsController@attach');

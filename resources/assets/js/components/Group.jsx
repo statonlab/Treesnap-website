@@ -9,6 +9,7 @@ import Utils from '../helpers/Utils'
 import ObservationCard from '../components/ObservationCard'
 import Path from '../helpers/Path'
 import User from '../helpers/User'
+import EventEmitter from '../helpers/EventEmitter'
 
 export default class Group extends Component {
   constructor(props) {
@@ -57,8 +58,8 @@ export default class Group extends Component {
     let id = this.props.match.params.id
     axios.get(`/web/group/${id}`).then(response => {
       let data = response.data.data
-
       this.setState({
+        id     : data.id,
         name   : data.name,
         users  : data.users,
         isOwner: data.is_owner,
@@ -207,6 +208,7 @@ export default class Group extends Component {
       }
     }).then(response => {
       this.loadGroup()
+      EventEmitter.emit('user.groups.updated')
     }).catch(error => {
       const response = error.response
       if (response && response.status === 422) {
@@ -218,6 +220,25 @@ export default class Group extends Component {
           alert(data)
         }
       }
+    })
+  }
+
+  /**
+   * Exit current group.
+   * This method is available to members who don't own the group.
+   *
+   * @private
+   */
+  _exitGroup() {
+    if (!confirm('Are you sure you want to exit this group? This action is permanent!')) {
+      return
+    }
+
+    axios.delete(`/web/group/${this.state.id}/exit`).then(response => {
+      this.props.history.push('/account/groups')
+    }).catch(error => {
+      alert('Unable to perform action. Please try again later.')
+      console.log(error)
     })
   }
 
@@ -240,7 +261,12 @@ export default class Group extends Component {
         <thead>
         <tr>
           <th>Name</th>
-          {this.state.isOwner ? <th className="has-text-right">Remove from Group</th> : null}
+          <th>Observations Count</th>
+          {this.state.isOwner ?
+            <th className="has-text-right">Remove from Group</th>
+            :
+            <th className="has-text-right">Exit Group</th>
+          }
         </tr>
         </thead>
         <tbody>
@@ -252,6 +278,9 @@ export default class Group extends Component {
                   <Link to={`/user/${user.id}`}>{user.name}</Link>
                   : user.name}
               </td>
+              <td>
+                {user.observations_count}
+              </td>
               {this.state.isOwner ?
                 <td className="has-text-right">
                   {this.state.leader.id !== user.id ?
@@ -259,9 +288,17 @@ export default class Group extends Component {
                             onClick={() => this._handleDetach.call(this, user)}>
                       <i className="fa fa-times"></i></button>
                     : 'Leader'}
-
                 </td>
-                : null}
+                :
+                <td className="has-text-right">
+                  {User.owns(user.id) ?
+                    <button className="button is-danger is-outlined is-small"
+                            onClick={this._exitGroup.bind(this)}>
+                      Exit Group
+                    </button>
+                    : null}
+                </td>
+              }
             </tr>
           )
         })}
@@ -357,6 +394,7 @@ export default class Group extends Component {
     }
     let id = this.props.match.params.id
     axios.delete(`/web/group/${id}`).then(response => {
+      EventEmitter.emit('user.groups.updated')
       if (this.props.admin) {
         this.props.history.push('/groups')
       } else {

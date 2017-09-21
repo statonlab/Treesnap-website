@@ -4,6 +4,7 @@ import Spinner from './Spinner'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import Notify from './Notify'
+import EventEmitter from '../helpers/EventEmitter'
 
 export default class Groups extends Component {
   constructor(props) {
@@ -131,6 +132,7 @@ export default class Groups extends Component {
       groups.push(data)
       this.setState({name: '', groups})
       Notify.push('Group created successfully.')
+      EventEmitter.emit('user.groups.updated')
     }).catch(error => {
       if (error.response && error.response.status === 422) {
         this.setState({errors: error.response.data.name})

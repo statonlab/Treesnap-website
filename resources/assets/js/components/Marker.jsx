@@ -49,13 +49,22 @@ export default class Marker extends Component {
     this.marker.addListener('click', this.openCallout.bind(this))
 
     let icon
-    if (User.can('view accurate location') || User.owns(this.props.owner_id)) {
+    if (this.canSeeLocation()) {
       icon = this.colors[this.marker.title] || 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png'
     } else {
       icon = '/images/map/q-dot.png'
     }
     this.marker.setIcon(icon)
     this.props.onCreate(this.marker)
+  }
+
+  /**
+   * Checks if the user is authorized to see the accurate location.
+   *
+   * @return {Boolean|boolean}
+   */
+  canSeeLocation() {
+    return User.can('view accurate location') || User.owns(this.props.owner_id) || User.inGroupWith(this.props.owner_id)
   }
 
   /**
