@@ -31,7 +31,7 @@ class DownloadsController extends Controller
         }
 
         if (! $this->allowedExtension($extension)) {
-            return abort(400, 'Invalid extension');
+            return abort(422, 'Invalid extension');
         }
 
         $label = $this->fileNameEscape($collection->label);

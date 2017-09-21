@@ -38,12 +38,14 @@ class User {
    * Initialize abilities.
    */
   initAbilities() {
+    // Users, Scientists and Admins
     this._abilities.user = [
       'create notes',
       'create collections',
       'flag observations'
     ]
 
+    // Scientists and Admins Only
     this._abilities.scientist = [
       'contact users',
       'confirm species',
@@ -51,6 +53,7 @@ class User {
       'view accurate location'
     ].concat(this._abilities.user)
 
+    // Admins Only
     this._abilities.admin = [
       'manage users',
       'delete observations'

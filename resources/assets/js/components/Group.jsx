@@ -235,6 +235,7 @@ export default class Group extends Component {
     }
 
     axios.delete(`/web/group/${this.state.id}/exit`).then(response => {
+      EventEmitter.emit('user.groups.updated')
       this.props.history.push('/account/groups')
     }).catch(error => {
       alert('Unable to perform action. Please try again later.')
