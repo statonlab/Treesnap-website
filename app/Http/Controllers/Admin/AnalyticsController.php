@@ -111,6 +111,6 @@ class AnalyticsController extends Controller
 
         arsort($states);
 
-        return $this->success(array_slice($states, 0, 5));
+        return $this->success($states);
     }
 }
