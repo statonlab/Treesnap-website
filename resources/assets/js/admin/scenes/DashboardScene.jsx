@@ -49,7 +49,7 @@ export default class DashboardScene extends Component {
 
         <div className="columns">
           <div className="column">
-            <div className="box is-full-height">
+            <div className="box">
               <h4 className="title is-5">Observations by Season</h4>
               <BarChart/>
             </div>
