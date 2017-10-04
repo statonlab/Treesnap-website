@@ -175,6 +175,7 @@ class UsersController extends Controller
             'per_page' => $request->per_page,
             'count' => $observations->count(),
             'has_more_pages' => $observations->hasMorePages(),
+            'collection_id' => $request->collection_id,
         ]));
     }
 

@@ -202,7 +202,10 @@ export default class CollectionsScene extends Component {
   _renderRow(collection) {
     return (
       <tr key={collection.id}>
-        <td>{collection.label}</td>
+        <td>{this.props.admin ?
+          <Link to={`/observations?collection=${collection.id}`}>{collection.label}</Link>
+          : <Link to={`/account/observations?collection=${collection.id}`}>{collection.label}</Link>
+        }</td>
         <td>{collection.observations_count}</td>
         <td>{collection.users_count - 1} users</td>
         <td className="has-text-right">
