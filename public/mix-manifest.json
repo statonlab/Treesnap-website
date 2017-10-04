@@ -1,5 +1,7 @@
 {
-  "/js/app.js": "/js/app.5cae9d3936bb07537bbd.js",
-  "/css/app.css": "/css/app.665370aca35f3b5413b8.css",
-  "/js/admin.js": "/js/admin.bf9fc3f1b8605f41c69d.js"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/js/admin.js": "/js/admin.js",
+    "/js/vendor.js": "/js/vendor.js",
+    "/js/manifest.js": "/js/manifest.js"
 }
