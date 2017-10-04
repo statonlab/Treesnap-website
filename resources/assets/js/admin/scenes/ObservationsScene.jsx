@@ -55,14 +55,15 @@ export default class ObservationsScene extends Component {
       this.filter          = new ObservationsFilter(this.allObservations)
 
       this.paginate(response.data.data, true)
-      this.loadCollections()
-      this.loadUser()
-      this.loadCategories()
-      this.loadFilters()
     }).catch(error => {
       this.setState({loading: false})
       console.log(error)
     })
+
+    this.loadCollections()
+    this.loadUser()
+    this.loadCategories()
+    this.loadFilters()
 
     this.history = this.props.history
   }
@@ -137,16 +138,18 @@ export default class ObservationsScene extends Component {
    * @param preLoad
    */
   paginate(observations_full, preLoad) {
-    this.allObservations = observations_full
-    let total            = observations_full.length
-    let page             = 0
-    let perPage          = 6
-    let pages            = []
+    this.allObservations   = observations_full
+    let total              = observations_full.length
+    let page               = 0
+    let perPage            = 6
+    let pages              = []
+    let selectedCollection = -1
     if (typeof preLoad !== 'undefined' && preLoad !== false) {
-      let r   = this.preLoadPage(total)
-      page    = r.page
-      perPage = r.perPage
-      pages   = r.pages
+      let r              = this.preLoadPage(total)
+      page               = r.page
+      perPage            = r.perPage
+      pages              = r.pages
+      selectedCollection = r.selectedCollection
     } else {
       page    = 0
       perPage = this.state.perPage
@@ -159,10 +162,14 @@ export default class ObservationsScene extends Component {
       total,
       page,
       perPage,
-      pages
+      pages,
+      selectedCollection
     })
 
     this.goToPage(page)
+    if (parseInt(selectedCollection) !== -1) {
+      this.collectionFilter(selectedCollection)
+    }
   }
 
   /**
@@ -172,9 +179,10 @@ export default class ObservationsScene extends Component {
    * @returns {{page: number, perPage: number, pages: *}}
    */
   preLoadPage(total) {
-    let params  = Path.parseUrl(this.history.location.search)
-    let page    = 0
-    let perPage = this.state.perPage
+    let params     = Path.parseUrl(this.history.location.search)
+    let page       = 0
+    let perPage    = this.state.perPage
+    let collection = this.state.selectedCollection
 
     if (typeof params.view !== 'undefined') {
       params.view = parseInt(params.view)
@@ -206,14 +214,23 @@ export default class ObservationsScene extends Component {
       }
     }
 
-    this.history.replace(`/observations?page=${page + 1}&view=${perPage}`)
+    if (typeof params.collection !== 'undefined') {
+      collection = parseInt(params.page)
+
+      if (isNaN(collection)) {
+        collection = -1
+      }
+    }
+
+    this.history.replace(`/observations?page=${page + 1}&view=${perPage}&collection=${collection}`)
 
     let pages = this.generatePages(total, perPage, page + 1)
 
     return {
       page,
       perPage,
-      pages
+      pages,
+      selectedCollection: collection
     }
   }
 
@@ -316,7 +333,9 @@ export default class ObservationsScene extends Component {
       page
     })
 
-    this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}`)
+    let collection = this.state.selectedCollection
+
+    this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}&collection=${collection}`)
 
     window.scroll(0, 0)
   }
@@ -392,6 +411,7 @@ export default class ObservationsScene extends Component {
     if (this.filter) {
       this.setState({selectedCollection})
       this.paginate(this.filter.collection(selectedCollection))
+      this.history.push(`/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`)
     }
   }
 
@@ -560,7 +580,10 @@ export default class ObservationsScene extends Component {
       page        : 0,
       pages       : this.generatePages(this.allObservations.length, perPage, 1)
     })
-    this.history.replace(`/observations?page=1&view=${perPage}`)
+
+    let collection = this.state.selectedCollection
+
+    this.history.replace(`/observations?page=1&view=${perPage}&collection=${collection}`)
   }
 
   /**

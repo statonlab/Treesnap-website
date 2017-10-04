@@ -35,9 +35,10 @@ export default class MyObservationsScene extends Component {
    * Get the user record from the server.
    */
   componentDidMount() {
-    let page   = this.getBrowserPage()
-    let state  = this.state
-    state.page = page
+    let pageState            = this.getBrowserState()
+    let state                = this.state
+    state.page               = pageState.page
+    state.selectedCollection = pageState.collection
     this.loadObservations(state)
     this.loadCollections()
     this.loadCategories()
@@ -61,7 +62,8 @@ export default class MyObservationsScene extends Component {
         collection_id: parseInt(state.selectedCollection) || ''
       }
     }).then(response => {
-      const data  = response.data.data
+      const data = response.data.data
+      console.log(response.data.data)
       const state = {
         observations: data.data,
         page        : data.current_page,
@@ -75,6 +77,11 @@ export default class MyObservationsScene extends Component {
         pages       : this.generatePages(data.total, data.per_page),
         loading     : false
       }
+
+      if (data.collection_id) {
+        state.selectedCollection = data.collection_id
+      }
+
       this.setState(state)
       this.setBrowserHistory(state)
     }).catch(error => {
@@ -139,23 +146,49 @@ export default class MyObservationsScene extends Component {
    * @param state
    */
   setBrowserHistory(state) {
-    this.props.history.replace(`/account/observations/?page=${state.page}`)
+    let query = [];
+
+    if(state.page) {
+      query.push(`page=${state.page}`);
+    }
+
+    if(state.selectedCollection) {
+      query.push(`collection=${state.selectedCollection}`)
+    }
+
+    const params = query.join('&')
+
+    this.props.history.replace(`/account/observations/?${params}`)
   }
 
   /**
    * Get page number from the browser url.
    * @returns {*}
    */
-  getBrowserPage() {
+  getBrowserState() {
     let params = Path.parseUrl(this.props.history.location.search)
+
+    let page       = 1
+    let collection = ''
+
     if (typeof params.page !== 'undefined') {
       let p = parseInt(params.page)
       if (!isNaN(p)) {
-        return p
+        page = p
       }
     }
 
-    return 1
+    if (typeof params.collection !== 'undefined') {
+      let c = parseInt(params.collection)
+      if (!isNaN(c)) {
+        collection = c
+      }
+    }
+
+    return {
+      page,
+      collection
+    }
   }
 
   /**
