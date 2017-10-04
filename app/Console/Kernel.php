@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('notify:filters')->dailyAt('08:00');
         $schedule->command('files:flush-old')->hourly();
+        $schedule->command('address:get')->dailyAt('01:00');
     }
 
     /**
