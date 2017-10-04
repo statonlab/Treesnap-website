@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\CreateObservationThumbnails;
 use App\Console\Commands\DeleteOldDownloadableFiles;
+use App\Console\Commands\PopulateAddresses;
 use App\Console\Commands\SendFilterNotifications;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         CreateObservationThumbnails::class,
         SendFilterNotifications::class,
         DeleteOldDownloadableFiles::class,
+        PopulateAddresses::class
     ];
 
     /**
