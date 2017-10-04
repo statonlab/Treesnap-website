@@ -42,6 +42,37 @@ trait Observes
     ];
 
     /**
+     * Map form elements to human readable labels.
+     *
+     * @var array
+     */
+    protected $labels_map = [
+        'ashSpecies' => 'Species',
+        'seedsBinary' => 'Seeds',
+        'flowersBinary' => 'Flowers',
+        'emeraldAshBorer' => 'Ash borer',
+        'woollyAdesCoverage' => 'Woolly adelgids',
+        'chestnutBlightSigns' => 'Chestnut blight',
+        'acorns' => 'Acorns',
+        'cones' => 'Cones',
+        'heightFirstBranch' => 'Height of first branch',
+        'oakHealthProblems' => 'Health problems',
+        'diameterNumeric' => 'Tree diameter',
+        'crownHealth' => 'Crown health',
+        'crownClassification' => 'Crown classification',
+        'otherLabel' => 'Tree type',
+        'locationCharacteristics' => 'Habitat',
+        'nearbyTrees' => 'Trees nearby',
+        'nearByHemlock' => 'Nearby hemlocks',
+        'treated' => 'Treated',
+        'partOfStudy' => 'Study',
+        'heightNumeric' => 'Tree height',
+        'burrs' => 'Nuts/burrs',
+        'catkins' => 'Catkins',
+        'comment' => 'Comment',
+    ];
+
+    /**
      * Formats the observation record into the expected response.
      *
      * @param  $observation
@@ -215,5 +246,20 @@ trait Observes
         }
 
         return $all;
+    }
+
+    /**
+     * Get the human readable label by key.
+     *
+     * @param $key
+     * @return mixed
+     */
+    protected function getLabel($key)
+    {
+        if (isset($this->labels_map[$key])) {
+            return $this->labels_map[$key];
+        }
+
+        return $key;
     }
 }

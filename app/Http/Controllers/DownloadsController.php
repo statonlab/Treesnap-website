@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Collection;
 use App\File;
+use App\Http\Controllers\Traits\Observes;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Storage;
 
 class DownloadsController extends Controller
 {
+    use Observes;
+
     protected $extensions = [
         'csv',
         'tsv',
@@ -40,25 +43,40 @@ class DownloadsController extends Controller
         $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
 
         $header = [
+            'Unique ID',
             'Observation Category',
             'Coordinates',
             'Comments',
             'Address',
             'Collection Date',
+            'Additional Data',
         ];
 
-        Storage::disk('local')->put($path, $this->line($header, $extension));
+        Storage::put($path, $this->line($header, $extension));
 
         $collection->observations()->chunk(200, function ($observations) use ($path, $extension) {
             foreach ($observations as $observation) {
+                $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
+                $data = [];
+                foreach ($observation->data as $key => $datum) {
+                    if ($key === 'comment') {
+                        continue;
+                    }
+                    $data[] = $this->getLabel($key).': '.$datum;
+                }
+
+                $data = implode(', ', $data);
+
                 $line = [
+                    $observation->mobile_id,
                     $observation->observation_category,
                     "{$observation->latitude}, {$observation->longitude}",
-                    isset($observation->data['comment']) ? $observation->data['comment'] : 'NULL',
+                    $comment,
                     $observation->address['formatted'],
                     $observation->collection_date->toDateString(),
+                    $data,
                 ];
-                Storage::disk('local')->append($path, $this->line($line, $extension));
+                Storage::append($path, $this->line($line, $extension));
             }
         });
 

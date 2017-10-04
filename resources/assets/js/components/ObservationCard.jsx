@@ -496,7 +496,7 @@ export default class ObservationCard extends Component {
                     <small style={{marginLeft: '35px'}}>{addressLine2}</small>
                   </div>
                   :
-                  <div style={{height: 48}}>Address is marked as private</div>}
+                  <div style={{height: 48}}>Address is unavailable</div>}
               </div>
             </div>
             <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
