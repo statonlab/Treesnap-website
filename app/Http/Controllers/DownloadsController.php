@@ -49,15 +49,17 @@ class DownloadsController extends Controller
 
         Storage::disk('local')->put($path, $this->line($header, $extension));
 
-        $collection->observations()->chunk(200, function ($observation) use ($path, $extension) {
-            $line = [
-                $observation->observation_category,
-                "{$observation->latitude}, {$observation->longitude}",
-                isset($observation->data['comment']) ? $observation->data['comment'] : 'NULL',
-                $observation->address['formatted'],
-                $observation->collection_date->toDateString(),
-            ];
-            Storage::disk('local')->append($path, $this->line($line, $extension));
+        $collection->observations()->chunk(200, function ($observations) use ($path, $extension) {
+            foreach ($observations as $observation) {
+                $line = [
+                    $observation->observation_category,
+                    "{$observation->latitude}, {$observation->longitude}",
+                    isset($observation->data['comment']) ? $observation->data['comment'] : 'NULL',
+                    $observation->address['formatted'],
+                    $observation->collection_date->toDateString(),
+                ];
+                Storage::disk('local')->append($path, $this->line($line, $extension));
+            }
         });
 
         $this->createAutoRemovableFile($path, $user->id);
