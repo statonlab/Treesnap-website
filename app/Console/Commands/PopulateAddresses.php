@@ -13,7 +13,7 @@ class PopulateAddresses extends Command
      *
      * @var string
      */
-    protected $signature = 'address:get {-o|--observation=}';
+    protected $signature = 'address:get {-o|--observation=-1}';
 
     /**
      * The console command description.
@@ -39,7 +39,24 @@ class PopulateAddresses extends Command
      */
     public function handle()
     {
-        $observation = Observation::findOrFail($this->option('observation'));
+        if ($this->option('observation') != -1) {
+            $observations = [Observation::findOrFail($this->option('observation'))];
+        } else {
+            $observations = Observation::whereNull('address')->get();
+        }
+
+        foreach ($observations as $observation) {
+            $this->getAddress($observation);
+        }
+    }
+
+    /**
+     * Populate address field.
+     *
+     * @param $observation
+     */
+    protected function getAddress($observation)
+    {
         $address = Geocoder::address($observation->latitude, $observation->longitude);
         if (! $address) {
             return;
