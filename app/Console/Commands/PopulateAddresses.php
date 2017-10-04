@@ -39,13 +39,14 @@ class PopulateAddresses extends Command
      */
     public function handle()
     {
-        if ($this->option('observation') != -1) {
+        if (intval($this->option('observation')) !== -1) {
             $observations = [Observation::findOrFail($this->option('observation'))];
         } else {
             $observations = Observation::whereNull('address')->get();
         }
 
         foreach ($observations as $observation) {
+            $this->line($observation->id . ' ' . $observation->observation_category);
             $this->getAddress($observation);
         }
     }
