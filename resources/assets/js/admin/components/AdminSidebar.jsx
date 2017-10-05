@@ -13,13 +13,13 @@ export default class Sidebar extends Component {
               <i className="fa fa-dashboard"></i> Dashboard
             </NavLink>
           </li>
-          {User.can('manage users') ? null :
+          {User.can('manage users') ?
             <li>
               <NavLink to="/users" activeClassName="is-active">
                 <i className="fa fa-user"></i> Users
               </NavLink>
             </li>
-          }
+          : null}
           <li>
             <NavLink to="/groups" activeClassName="is-active">
               <i className="fa fa-users"></i> User Groups

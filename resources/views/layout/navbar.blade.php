@@ -2,7 +2,7 @@
     <div class="container">
         <div class="navbar-brand">
             <a href="/" class="navbar-item">
-                <img src="/logo/ts-logo-96.png" alt="Logo" class="logo-img"/>
+                <img src="/logo/ts-logo-48.png" alt="Logo" class="logo-img"/>
                 <span class="logo-text"><b>Tree</b><span style="font-weight: 300">Snap</span></span>
             </a>
             <div class="navbar-burger">
