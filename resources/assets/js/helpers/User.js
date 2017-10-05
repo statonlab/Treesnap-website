@@ -11,10 +11,10 @@ class User {
       app = JSON.parse(JSON.stringify(window.TreeSnap))
     }
 
-    this._role        = app.role
+    this._role        = app.role !== null ? app.role.toLowerCase() : null
     this._isLoggedIn  = app.loggedIn
-    this._isAdmin     = app.role === 'admin'
-    this._isScientist = app.role === 'scientist'
+    this._isAdmin     = this._role === 'admin'
+    this._isScientist = this._role === 'scientist'
     this._user        = app.user
     this._groups      = []
 
@@ -64,14 +64,14 @@ class User {
    * Load current user groups.
    */
   loadGroups() {
-    if(!this.authenticated()) {
+    if (!this.authenticated()) {
       return
     }
 
     axios.get('/web/groups?with_users=1').then(response => {
       this._groups = response.data.data.map(group => {
         return {
-          id: group.id,
+          id   : group.id,
           users: group.users.map(user => user.id)
         }
       })
@@ -138,8 +138,8 @@ class User {
    * @return {boolean}
    */
   inGroupWith(user_id) {
-    for(let i in this._groups) {
-      if(this._groups[i].users.indexOf(user_id) > -1) {
+    for (let i in this._groups) {
+      if (this._groups[i].users.indexOf(user_id) > -1) {
         return true
       }
     }
@@ -154,8 +154,8 @@ class User {
    * @return {Boolean}
    */
   inGroup(group_id) {
-    for(let i in this._groups) {
-      if(this._groups[i].id === group_id) {
+    for (let i in this._groups) {
+      if (this._groups[i].id === group_id) {
         return true
       }
     }

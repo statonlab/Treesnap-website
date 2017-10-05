@@ -22,7 +22,7 @@
   "dependencies": {
     "amdefine": "^1.0.1",
     "array-flatten": "^2.1.1",
-    "bulma": "^0.4.4",
+    "bulma": "^0.5.3",
     "camelizer": "^0.1.0",
     "chart.js": "^2.7.0",
     "content-disposition": "^0.5.2",
@@ -41,19 +41,19 @@
     "merge-descriptors": "^1.0.1",
     "methods": "^1.1.2",
     "path-to-regexp": "^1.7.0",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.0",
     "proxy-addr": "^1.1.5",
-    "react": "^15.6.1",
-    "react-addons-update": "^15.6.0",
+    "react": "^15.6.2",
+    "react-addons-update": "^15.6.2",
     "react-async-script": "^0.9.1",
-    "react-dom": "^15.6.1",
+    "react-dom": "^15.6.2",
     "react-google-recaptcha": "^0.9.7",
     "react-icons": "^2.2.5",
     "react-image-gallery": "^0.7.16",
     "react-router-dom": "^4.2.2",
     "react-rte": "^0.11.0",
     "react-select": "^1.0.0-rc.10",
-    "slick-carousel": "^1.7.1",
+    "slick-carousel": "^1.8.1",
     "type-is": "^1.6.15"
   }
 }
