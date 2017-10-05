@@ -63,7 +63,6 @@ export default class MyObservationsScene extends Component {
       }
     }).then(response => {
       const data = response.data.data
-      console.log(response.data.data)
       const state = {
         observations: data.data,
         page        : data.current_page,
