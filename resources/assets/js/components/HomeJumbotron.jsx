@@ -19,7 +19,7 @@ export default class HomeJumbotron extends Component {
               <GetAppRow/>
             </div>
             <div className="column is-3 has-text-right mock-container is-hidden-mobile">
-              <img src="/images/mock.png" alt="Mock Device" className="mockup-img"/>
+              <img src="/images/mock-min.png" alt="Mock Device" className="mockup-img"/>
             </div>
           </div>
         </div>

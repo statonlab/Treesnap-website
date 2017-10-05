@@ -13,6 +13,9 @@ window.axios.defaults.headers.common = {
   'Accept'          : 'application/json'
 }
 
+/**
+ * Renew CSRF Token.
+ */
 window.renewLaravelToken = () => {
   axios.get('/web/_token').then(response => {
     let data = response.data.data

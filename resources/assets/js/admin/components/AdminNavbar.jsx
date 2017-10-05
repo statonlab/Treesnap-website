@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Path from '../helpers/Path'
-import User from '../helpers/User'
+import Path from '../../helpers/Path'
+import User from '../../helpers/User'
 
 export default class AdminNavbar extends Component {
   constructor(props) {
