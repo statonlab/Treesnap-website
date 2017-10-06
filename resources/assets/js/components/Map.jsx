@@ -28,7 +28,7 @@ export default class Map extends Component {
         lng: this.props.center.lng
       },
       zoom                 : this.props.zoom,
-      minZoom              : 3,
+      minZoom              : 4,
       mapTypeControlOptions: {
         style   : google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
         position: google.maps.ControlPosition.TOP_CENTER
@@ -52,6 +52,8 @@ export default class Map extends Component {
       imagePath: '/images/map/m',
       maxZoom  : 7
     })
+
+    google.maps.event.addListenerOnce(this.maps, 'idle', this.props.onLoad);
   }
 
   /**
@@ -144,7 +146,8 @@ export default class Map extends Component {
 Map.PropTypes = {
   center        : PropTypes.object,
   zoom          : PropTypes.number,
-  onBoundsChange: PropTypes.func
+  onBoundsChange: PropTypes.func,
+  onLoad: PropTypes.func,
 }
 
 Map.defaultProps = {
@@ -154,5 +157,6 @@ Map.defaultProps = {
   },
   zoom          : 4,
   onBoundsChange: (bounds) => {
-  }
+  },
+  onLoad() {}
 }

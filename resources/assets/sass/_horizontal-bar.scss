@@ -1,5 +1,6 @@
+$horizontal-bar-bg: #323b44;
 .horizontal-bar {
-  background: #333;
+  background-color: $horizontal-bar-bg;
   height: $bottom-bar-height;
   position: fixed;
   bottom: 0;
@@ -19,7 +20,7 @@
     height: $bottom-bar-height;
     display: block;
     text-align: center;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.2);
     width: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .7);
 
@@ -36,8 +37,7 @@
 
     > .fa {
       position: relative;
-      top: $bottom-bar-height / 2;
-      margin-top: -5px;
+      top: ($bottom-bar-height / 2) - 10;
     }
   }
 
@@ -71,7 +71,7 @@
   @include flex(0 0 auto);
   height: $bottom-bar-height - 15px;
   width: 190px;
-  background-color: darken(#333, 5%);
+  background-color: darken($horizontal-bar-bg, 5%);
   border-radius: $radius;
   margin-right: .5rem;
   background: no-repeat center center;

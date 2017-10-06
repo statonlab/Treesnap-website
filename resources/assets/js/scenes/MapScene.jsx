@@ -31,6 +31,8 @@ export default class App extends Component {
       zoom  : 5
     }
 
+    this.initialLoad = true
+
     this.state = {
       markers             : [],
       categories          : [],
@@ -62,11 +64,15 @@ export default class App extends Component {
    * Set the maps and load observations into the state.
    */
   componentWillMount() {
-    this.loadObservations()
     this.loadCategories()
     this.loadCollections()
     this.loadFilters()
     document.body.className = 'map-page'
+  }
+
+  componentDidMount() {
+    this.setState({loading: true})
+    this.initSidebar()
   }
 
   componentWillUnmount() {
@@ -113,9 +119,23 @@ export default class App extends Component {
    * Gets observations from the API and parses them into markers.
    */
   loadObservations() {
-    this.setState({loading: true})
+    let bounds = this.refs.maps.getBounds()
 
-    axios.get('/web/map').then(response => {
+   let g = {
+      southWest: bounds.getSouthWest().toJSON(),
+      northEast: bounds.getNorthEast().toJSON()
+    }
+
+    axios.get('/web/map', {
+      params: {
+        bounds: {
+          southWest: bounds.getSouthWest().toJSON(),
+          northEast: bounds.getNorthEast().toJSON()
+        }
+      }
+    }).then(response => {
+      this.initialLoad = false
+
       // Setup the observations to be rendered into markers
       let markers = response.data.data
 
@@ -132,7 +152,6 @@ export default class App extends Component {
 
       let filtered = this.filter.bounds(this.refs.maps.getBounds())
       this.setState({markers: filtered, total: markers.length})
-      this.initSidebar()
     }).catch(error => {
       console.log(error)
     }).then(() => {
@@ -408,6 +427,10 @@ export default class App extends Component {
    * @param newBounds
    */
   boundsChanged(newBounds) {
+    if (!this.initialLoad) {
+      return this.loadObservations()
+    }
+
     if (this.filter) {
       let markers = this.filter.bounds(newBounds)
       this.setState({markers})
@@ -427,6 +450,7 @@ export default class App extends Component {
            center={this.state.center}
            zoom={this.state.zoom}
            onBoundsChange={this.boundsChanged.bind(this)}
+           onLoad={this.loadObservations.bind(this)}
       >
         {this.state.markers.map(marker => {
           return (

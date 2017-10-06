@@ -14,32 +14,20 @@ class MapController extends Controller
 
     public function index(Request $request)
     {
+
+        $this->validate($request, [
+            'bounds' => 'nullable|json',
+        ]);
+
         $user = $request->user();
         $isAdmin = false;
         if ($user) {
             $isAdmin = $user->isScientist() || $user->isAdmin();
         }
 
-        $observations = $this->getCachedObservations($isAdmin, $user);
+        $observations = $this->getObservationsFromDB($user, $isAdmin, $request->bounds);
 
         return $this->success($observations);
-    }
-
-    /**
-     * If observations exist in cache, retrieve them. Otherwise, rerun the DB query.
-     *
-     * @param $isAdmin
-     * @param $user
-     * @return mixed
-     */
-    public function getCachedObservations($isAdmin, $user)
-    {
-        $cache_key = "map_ready_observations_";
-        $cache_key .= $user ? $user->id : 'guest';
-
-        //return Cache::tags('observations')->remember($cache_key, 60 * 24, function () use ($user, $isAdmin) {
-            return $this->getObservationsFromDB($user, $isAdmin);
-        //});
     }
 
     /**
@@ -49,13 +37,20 @@ class MapController extends Controller
      * @param $isAdmin
      * @return $this|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|static|static[]
      */
-    public function getObservationsFromDB($user, $isAdmin)
+    public function getObservationsFromDB($user, $isAdmin, $bounds)
     {
+
         $observations = Observation::with('user')->withCount([
             'confirmations' => function ($query) {
                 $query->where('correct', true);
             },
         ]);
+
+        if ($bounds) {
+            $bounds = json_decode($bounds);
+
+            $observations->bounds($bounds);
+        }
 
         if (! $isAdmin) {
             $observations = $observations->where('is_private', false);
