@@ -101,4 +101,30 @@ class Observation extends Model
     {
         return $this->hasMany('App\Note');
     }
+
+    /**
+     * @param $bounds
+     */
+    public function scopeBounds($query, $bounds)
+    {
+        if ($bounds->southWest->lat < $bounds->northEast->lat) {
+            $query->whereBetween('latitude', [$bounds->southWest->lat, $bounds->northEast->lat]);
+        } else {
+            $query->whereBetween('latitude', [$bounds->northEast->lat, $bounds->southWest->lat]);
+        }
+
+        $left_edge =$bounds->southWest->lng;
+        $right_edge = $bounds->northEast->lng;
+
+        if($right_edge < $left_edge) {
+            $query->where(function ($query) use ($left_edge, $right_edge) {
+                $query->whereBetween('longitude', [$left_edge, 180]);
+                $query->orWhere(function ($query) use ($right_edge) {
+                    $query->whereBetween('longitude', [-180, $right_edge]);
+                });
+            });
+        } else {
+            $query->whereBetween('longitude', [$left_edge, $right_edge]);
+        }
+    }
 }
