@@ -16,7 +16,4 @@ mix.react('resources/assets/js/app.jsx', 'public/js')
   .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
   .sass('resources/assets/sass/app.scss', 'public/css')
   .extract(['react', 'react-dom', 'jquery', 'react-router-dom', 'lodash', 'axios'])
-
-if (mix.config.inProduction) {
-  mix.version()
-}
+  .version()
