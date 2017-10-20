@@ -16,6 +16,9 @@ We do not publicly display precise locations to protect the trees and individual
 
  Rest assured, your data and the original accurate locations are stored and available for research groups so that you can help save these tree species!
 
+### Is my data safe?
+TreeSnap uses OpenSSL encryption to secure all of your data.  The exact locations of your trees are stored in an encrypted databases.  Only our partner organizations will be granted access to the exact location of trees you report in TreeSnap. 
+
 ### Are there training documents for using TreeSnap?
 
 We are currently creating training material for using the TreeSnap app.  
