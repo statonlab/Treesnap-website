@@ -53,7 +53,7 @@ export default class Map extends Component {
       maxZoom  : 7
     })
 
-    google.maps.event.addListenerOnce(this.maps, 'idle', this.props.onLoad);
+    google.maps.event.addListenerOnce(this.maps, 'idle', this.props.onLoad)
   }
 
   /**
@@ -147,7 +147,7 @@ Map.PropTypes = {
   center        : PropTypes.object,
   zoom          : PropTypes.number,
   onBoundsChange: PropTypes.func,
-  onLoad: PropTypes.func,
+  onLoad        : PropTypes.func
 }
 
 Map.defaultProps = {
@@ -158,5 +158,6 @@ Map.defaultProps = {
   zoom          : 4,
   onBoundsChange: (bounds) => {
   },
-  onLoad() {}
+  onLoad() {
+  }
 }
