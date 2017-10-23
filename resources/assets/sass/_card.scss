@@ -10,6 +10,10 @@ a.card-header-title {
   }
 }
 
+.card-header-icon {
+  position: relative;
+}
+
 .card-header-icon.is-clear {
   color: #aaa;
   padding-right: 0.25rem;
@@ -46,7 +50,7 @@ a.card-header-title {
   left: 0;
   right: 0;
   background-color: #f7f7f7;
-  z-index: 20;
+  //z-index: 20;
   overflow-y: auto !important;
   -webkit-transform: translate(0, 130%);
   -moz-transform: translate(0, 130%);
@@ -98,6 +102,10 @@ a.card-header-title {
 .card-footer-item {
   background-color: #fff;
   z-index: 10;
+}
+
+.card-footer-item {
+  position: relative;
 }
 
 .marks-section {
