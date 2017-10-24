@@ -105,6 +105,10 @@
     @endif
 </div>
 
+@if(isset($fields))
+    {!! $fields !!}
+@endif
+
 <div class="field">
     <div class="control">
         <label class="checkbox">

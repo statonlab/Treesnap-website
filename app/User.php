@@ -92,7 +92,7 @@ class User extends Authenticatable
      */
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class)->withPivot(['share']);
     }
 
     /**
@@ -214,7 +214,7 @@ class User extends Authenticatable
      */
     protected function generateFriends()
     {
-        $groups = $this->groups()->with('users')->get();
+        $groups = $this->groups()->wherePivot('share', true)->with('users')->get();
 
         foreach ($groups as $group) {
             foreach ($group->users as $user) {

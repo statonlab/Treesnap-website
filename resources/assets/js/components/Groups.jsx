@@ -11,9 +11,13 @@ export default class Groups extends Component {
     super(props)
 
     this.state = {
-      groups : [],
       name   : '',
-      errors : [],
+      share  : false,
+      errors : {
+        share: [],
+        name : []
+      },
+      groups : [],
       success: false,
       loading: false
     }
@@ -28,7 +32,10 @@ export default class Groups extends Component {
     this.setState({loading: true})
     axios.get('/web/groups').then(response => {
       let data = response.data.data
-      this.setState({groups: data, loading: false})
+      this.setState({
+        groups : data,
+        loading: false
+      })
     }).catch(error => {
       console.log(error)
       this.setState({loading: false})
@@ -87,21 +94,16 @@ export default class Groups extends Component {
    */
   _renderForm() {
     return (
-      <form action="#" onSubmit={this.submit.bind(this)}>
-        <div className="field has-addons limit-width">
+      <form action="#" onSubmit={this.submit.bind(this)} className="limit-width">
+        <div className="field">
           <div className="control is-expanded">
             <input type="text"
-                   className={`input ${this.state.errors.length > 0 && 'is-danger'}`}
+                   className={`input${this.state.errors.name.length > 0 ? ' is-danger' : ''}`}
                    value={this.state.name}
                    placeholder="Group Name"
-                   onChange={e => {
-                     this.setState({
-                       errors: [],
-                       name  : e.target.value
-                     })
-                   }}
+                   onChange={({target}) => this.setState({errors: {name: [], share: []}, name: target.value})}
             />
-            {this.state.errors.map((error, index) => {
+            {this.state.errors.name.map((error, index) => {
               return (
                 <p className="help is-danger" key={index}>
                   {error}
@@ -109,6 +111,28 @@ export default class Groups extends Component {
               )
             })}
           </div>
+        </div>
+
+        <div className="field">
+          <div className="control">
+            <label className="checkbox">
+              <input type="checkbox"
+                     className={'mr-0'}
+                     onChange={({target}) => this.setState({share: target.checked})}
+                     checked={this.state.share}/>
+              Share all of my observations with members of this group including accurate location coordinates
+            </label>
+          </div>
+          {this.state.errors.share.map((error, index) => {
+            return (
+              <p className="help is-danger" key={index}>
+                {error}
+              </p>
+            )
+          })}
+        </div>
+
+        <div className="field">
           <div className="control">
             <button type="submit" className="button is-primary">Create Group</button>
           </div>
@@ -125,17 +149,31 @@ export default class Groups extends Component {
   submit(e) {
     e.preventDefault()
     axios.post('/web/groups', {
-      name: this.state.name
+      name : this.state.name,
+      share: this.state.share
     }).then(response => {
       let data   = response.data.data
       let groups = this.state.groups
       groups.push(data)
-      this.setState({name: '', groups})
+      this.setState({
+        name  : '',
+        groups,
+        errors: {
+          name : [],
+          share: []
+        }
+      })
       Notify.push('Group created successfully.')
       EventEmitter.emit('user.groups.updated')
     }).catch(error => {
       if (error.response && error.response.status === 422) {
-        this.setState({errors: error.response.data.name})
+        let errors = error.response.data
+        this.setState({
+          errors: {
+            name : errors.name || [],
+            share: errors.share || []
+          }
+        })
       }
     })
   }
@@ -150,6 +188,7 @@ export default class Groups extends Component {
         </div>
 
         <div className="box">
+          <h2 className="title is-4">Create New Group</h2>
           {this._renderForm()}
         </div>
         <Spinner visible={this.state.loading}/>

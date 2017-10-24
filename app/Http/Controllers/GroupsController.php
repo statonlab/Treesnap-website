@@ -55,6 +55,7 @@ class GroupsController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|min:3|max:255',
+            'share' => 'required|boolean',
         ]);
 
         $user = $request->user();
@@ -64,7 +65,9 @@ class GroupsController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
-        $group->users()->attach($user->id);
+        $group->users()->attach($user->id, [
+            'share' => $request->share ? true : false,
+        ]);
 
         $group->owner = [
             'id' => $user->id,
@@ -102,12 +105,16 @@ class GroupsController extends Controller
             }
         }
 
+        // Determine if user is sharing observations
+        $is_sharing = $user->groups()->where('groups.id', $id)->first()->pivot->share ? true : false;
+
         return $this->success([
             'id' => $group->id,
             'name' => $group->name,
             'users' => $group->users,
             'owner' => $group->users->where('id', $group->user_id)->first(),
             'is_owner' => $user->id === $group->user_id,
+            'is_sharing' => $is_sharing,
         ]);
     }
 
@@ -136,6 +143,7 @@ class GroupsController extends Controller
 
         $observations = Observation::join('group_user', 'group_user.user_id', '=', 'observations.user_id')
             ->where('group_user.group_id', $id)
+            ->where('group_user.share', true)
             ->orderBy('observations.id', 'desc')
             ->paginate(6);
 
@@ -317,5 +325,34 @@ class GroupsController extends Controller
         }
 
         return $this->success($users);
+    }
+
+    /**
+     * Patch sharing settings.
+     *
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeSharing(Group $group, Request $request)
+    {
+        $this->validate($request, [
+            'share' => 'required|boolean',
+        ]);
+
+        $user = $request->user();
+
+        $belongsToGroup = $user->groups()->where('groups.id', $group->id)->first();
+        if (! $belongsToGroup) {
+            return $this->unauthorized();
+        }
+
+        // Update group settings
+        $share = $request->share ? true : false;
+        DB::table('group_user')->where('group_id', $group->id)->where('user_id', $user->id)->update([
+            'share' => $share,
+        ]);
+
+        return $this->success($share);
     }
 }
