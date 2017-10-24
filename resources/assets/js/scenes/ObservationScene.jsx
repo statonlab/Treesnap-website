@@ -177,14 +177,14 @@ export default class ObservationScene extends Component {
             <form action="#" onSubmit={this.saveNote.bind(this)}>
               <div className="field">
                 <div className="control">
-                                        <textarea className={`textarea${this.state.errors.note.length > 0 ? ' is-danger' : ''}`}
-                                                  placeholder="Private Notes"
-                                                  value={this.state.note}
-                                                  onChange={({target}) => this.setState({
-                                                    note  : target.value,
-                                                    errors: {note: []}
-                                                  })}>
-                                        </textarea>
+                    <textarea className={`textarea${this.state.errors.note.length > 0 ? ' is-danger' : ''}`}
+                              placeholder="Private Notes"
+                              value={this.state.note}
+                              onChange={({target}) => this.setState({
+                                note  : target.value,
+                                errors: {note: []}
+                              })}>
+                    </textarea>
                 </div>
                 {this.state.errors.note.map((error, index) => {
                   return (

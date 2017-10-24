@@ -31,6 +31,31 @@ class MapController extends Controller
     }
 
     /**
+     * Get total observations count.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function countObservations(Request $request)
+    {
+        $user = $request->user();
+        $isAdmin = false;
+        if ($user) {
+            $isAdmin = $user->isScientist() || $user->isAdmin();
+        }
+
+        if ($isAdmin) {
+            return $this->success([
+                'count' => Observation::count(),
+            ]);
+        }
+
+        return $this->success([
+            'count' => Observation::where('is_private', false)->count(),
+        ]);
+    }
+
+    /**
      * Query the database for observations.
      *
      * @param $user

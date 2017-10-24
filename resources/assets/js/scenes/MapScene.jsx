@@ -34,27 +34,28 @@ export default class App extends Component {
     this.initialLoad = true
 
     this.state = {
-      markers             : [],
-      categories          : [],
-      selectedCategories  : [],
-      selectedConfirmation: 0,
-      center              : this.defaultMapPosition.center,
-      zoom                : this.defaultMapPosition.zoom,
-      selectedMarker      : null,
-      galleryImages       : [],
-      showSidebar         : false,
-      loading             : false,
-      showFilters         : false,
-      searchTerm          : '',
-      collections         : [],
-      selectedCollection  : 0,
-      filters             : [],
-      selectedFilter      : 0,
-      showFiltersModal    : false,
-      total               : 0,
-      showCollectionsForm : false,
-      showFlagForm        : false,
-      ownedCollections    : []
+      markers              : [],
+      categories           : [],
+      selectedCategories   : [],
+      selectedConfirmation : 0,
+      center               : this.defaultMapPosition.center,
+      zoom                 : this.defaultMapPosition.zoom,
+      selectedMarker       : null,
+      galleryImages        : [],
+      showSidebar          : false,
+      loading              : false,
+      showFilters          : false,
+      searchTerm           : '',
+      collections          : [],
+      selectedCollection   : 0,
+      filters              : [],
+      selectedFilter       : 0,
+      showFiltersModal     : false,
+      total                : 0,
+      showCollectionsForm  : false,
+      showFlagForm         : false,
+      ownedCollections     : [],
+      appliedAdvancedFilter: false
     }
 
     document.title = 'Map - TreeSnap'
@@ -67,16 +68,36 @@ export default class App extends Component {
     this.loadCategories()
     this.loadCollections()
     this.loadFilters()
+    this.loadCount()
     document.body.className = 'map-page'
   }
 
+  /**
+   * Set loading state and inititate the sidebar
+   */
   componentDidMount() {
     this.setState({loading: true})
     this.initSidebar()
   }
 
+  /**
+   * Revert body classes
+   */
   componentWillUnmount() {
     document.body.className = ''
+  }
+
+  /**
+   *
+   */
+  loadCount() {
+    axios.get('/web/map/count').then(response => {
+      this.setState({
+        total: response.data.data.count
+      })
+    }).catch(error => {
+      console.log(error.response)
+    })
   }
 
   /**
@@ -121,7 +142,7 @@ export default class App extends Component {
   loadObservations() {
     let bounds = this.refs.maps.getBounds()
 
-   let g = {
+    let g = {
       southWest: bounds.getSouthWest().toJSON(),
       northEast: bounds.getNorthEast().toJSON()
     }
@@ -144,14 +165,15 @@ export default class App extends Component {
         this.disclaimer.show()
       }
 
+      let filtered
       if (!this.filter) {
         this.filter = new MarkersFilter(markers, this.state.selectedCategories)
+        filtered    = this.filter._filter()
       } else {
-        this.filter.replace(markers)
+        filtered = this.filter.replace(markers)
       }
 
-      let filtered = this.filter.bounds(this.refs.maps.getBounds())
-      this.setState({markers: filtered, total: markers.length})
+      this.setState({markers: filtered})
     }).catch(error => {
       console.log(error)
     }).then(() => {
@@ -408,7 +430,7 @@ export default class App extends Component {
     }
 
     let markers = this.filter.replace(data.observations)
-    this.setState({markers, showFiltersModal: false, total: data.observations.length})
+    this.setState({markers, showFiltersModal: false, appliedAdvancedFilter: true})
   }
 
   /**
@@ -427,8 +449,14 @@ export default class App extends Component {
    * @param newBounds
    */
   boundsChanged(newBounds) {
+    // Determine if the initial loader completed then respond to bounds change
+    // If the initial loader is done, this.initialLoad is set to FALSE
     if (!this.initialLoad) {
-      return this.loadObservations()
+      // Determine if there is an applied advanced filter
+      if (this.state.selectedFilter === 0 && !this.state.appliedAdvancedFilter) {
+        // No filters applied, so load bounds
+        return this.loadObservations()
+      }
     }
 
     if (this.filter) {

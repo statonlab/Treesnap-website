@@ -44,6 +44,7 @@ Route::get('/web/observation/{id}', 'ObservationsController@show');
 
 // Map
 Route::get('/web/map', 'MapController@index');
+Route::get('/web/map/count', 'MapController@countObservations');
 
 // Users
 Route::get('/web/user/status', 'UsersController@status');

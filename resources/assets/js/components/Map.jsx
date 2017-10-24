@@ -136,7 +136,7 @@ export default class Map extends Component {
 
   render() {
     return (
-      <div ref="mapContainer" {..._.omit(this.props, ['center', 'zoom', 'onBoundsChange'])}>
+      <div ref="mapContainer" {..._.omit(this.props, ['center', 'zoom', 'onBoundsChange', 'onLoad'])}>
         {this.renderChildren()}
       </div>
     )
