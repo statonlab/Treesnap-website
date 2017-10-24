@@ -250,7 +250,7 @@ export default class AccountScene extends Component {
           </form>
         </div>
         <div className="box">
-          <h1 className="title is-4">Password</h1>
+          <h1 className="title is-4">Change Password</h1>
           <form action="#" method="post" onSubmit={this.submitPassword.bind(this)}>
             {this.renderPasswordErrors()}
 

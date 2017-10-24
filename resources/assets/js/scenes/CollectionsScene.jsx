@@ -23,7 +23,6 @@ export default class CollectionsScene extends Component {
       sharingErrors     : []
     }
 
-
     this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
 
     document.title = 'Saved Collections - TreeSnap'

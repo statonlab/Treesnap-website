@@ -116,7 +116,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user collections that are shared with them
+     * Get user owned collections and those that are shared with them.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
