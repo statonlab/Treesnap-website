@@ -56,6 +56,8 @@ export default class ObservationScene extends Component {
       document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
+      console.log(error)
+      console.log(error.response)
       if (error.response && error.response.status === 404) {
         console.log('Not Found')
         window.location.replace('/no-match')
@@ -72,7 +74,7 @@ export default class ObservationScene extends Component {
       let note = response.data.data
 
       if (note.not_found) {
-        // The use did not create a note yet
+        // The user did not create a note yet
         // Ignore the error
         return
       }
