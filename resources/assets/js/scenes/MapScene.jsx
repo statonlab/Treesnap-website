@@ -642,9 +642,9 @@ export default class App extends Component {
                        this.changeCategory(category)
                      }}>
                     <span className="icon mr-0">
-                      <i className="fa fa-check"></i>
+                      {this.state.selectedCategories.indexOf(category) !== -1 ? <i className="fa fa-check"></i> : <i className="fa fa-times"></i> }
                     </span>
-                    <span>{category}</span>
+                    <span>{category} {this.state.selectedCategories.indexOf(category) === -1 ? <small>(removed)</small> : null}</span>
                   </a>
                 )
               })}
