@@ -61,6 +61,7 @@ export default class ObservationScene extends Component {
         if(window.console.dir) {
           window.console.dir('the observation should be out putted')
           window.console.dir(this.state.observation)
+          this.forceUpdate()
         }
       }, 500)
 
@@ -69,7 +70,7 @@ export default class ObservationScene extends Component {
         loading    : false
       })
 
-      //document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
+      document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
       if(window.console.dir) {
