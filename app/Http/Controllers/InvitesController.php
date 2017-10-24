@@ -123,6 +123,7 @@ class InvitesController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:6',
+            'share' => 'nullable|boolean',
             '_t' => 'required',
         ]);
 
@@ -148,7 +149,10 @@ class InvitesController extends Controller
         // Make sure the group exists
         Group::findOrFail($invite->group_id);
 
-        $user->groups()->syncWithoutDetaching([$invite->group_id]);
+        $user->groups()->detach($invite->group_id);
+        $user->groups()->attach($invite->group_id, [
+            'share' => $request->share ? true : false,
+        ]);
 
         return redirect()->to("/account/group/{$invite->group_id}");
     }
@@ -173,7 +177,10 @@ class InvitesController extends Controller
         // Make sure the group exists
         Group::findOrFail($invite->group_id);
 
-        $user->groups()->syncWithoutDetaching([$invite->group_id]);
+        $user->groups()->detach($invite->group_id);
+        $user->groups()->attach($invite->group_id, [
+            'share' => $request->share ? true : false,
+        ]);
 
         return redirect()->to("/account/group/{$invite->group_id}");
     }

@@ -17,6 +17,7 @@ export default class Group extends Component {
 
     this.state = {
       name              : '',
+      isSharing         : false,
       users             : [],
       loading           : true,
       pageLoading       : true,
@@ -25,6 +26,7 @@ export default class Group extends Component {
       isOwner           : false,
       leader            : {},
       showInviteModal   : false,
+      showPrivacyModal  : false,
       inviteEmail       : '',
       sendingInvite     : false,
       pendingInvitations: [],
@@ -59,11 +61,12 @@ export default class Group extends Component {
     axios.get(`/web/group/${id}`).then(response => {
       let data = response.data.data
       this.setState({
-        id     : data.id,
-        name   : data.name,
-        users  : data.users,
-        isOwner: data.is_owner,
-        leader : data.owner
+        id       : data.id,
+        name     : data.name,
+        users    : data.users,
+        isOwner  : data.is_owner,
+        leader   : data.owner,
+        isSharing: data.is_sharing
       })
 
       document.title = `${data.name} - TreeSnap`
@@ -465,6 +468,10 @@ export default class Group extends Component {
     let count = this.state.count
     let total = this.state.total
 
+    if (total === 0) {
+      return null
+    }
+
     return (
       <div className="mb-2">
         <div className="columns">
@@ -559,6 +566,10 @@ export default class Group extends Component {
    * @private
    */
   _renderPageLinks() {
+    if (this.state.total === 0) {
+      return null
+    }
+
     return (
       <nav className="pagination is-centered">
         <a href="javascript:;"
@@ -590,12 +601,81 @@ export default class Group extends Component {
     )
   }
 
+  _renderPrivacyModal() {
+    if (this.state.isSharing) {
+      return (
+        <div>
+          <p className="mb-1">
+            You are currently sharing your observations including accurate location coordinates with members
+            of this group.
+          </p>
+
+          <div className="field">
+            <div className="control">
+              <button className="button is-danger" type="button" onClick={() => this.changeSharingStatus(false)}>
+                Stop Sharing Observations
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        <p className="mb-1">
+          You are currently <strong>not</strong> sharing your observations with members of this group.
+        </p>
+
+        <div className="field">
+          <div className="control">
+            <button className="button is-primary" type="button" onClick={() => this.changeSharingStatus(true)}>
+              Share Observations
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  changeSharingStatus(share) {
+    let id = this.props.match.params.id
+    this.setState({loading: true})
+    axios.patch(`/web/group/${id}/sharing`, {share}).then(response => {
+      this.setState({
+        isSharing: response.data.data,
+        loading  : false
+      })
+
+      this.loadObservations(this.state)
+    }).catch(error => {
+      console.log(error)
+      this.setState({
+        loading: false
+      })
+    })
+  }
+
   render() {
     return (
       <div>
-        <h1 className="title is-3">{this.state.name}</h1>
+        <div className="columns">
+          <div className="column">
+            <h1 className="title is-3">{this.state.name}</h1>
+          </div>
+          <div className="column has-text-right">
+            <a href="javascript:;"
+               className="button is-default"
+               onClick={() => this.setState({showPrivacyModal: true})}>
+              <span className="icon is-small">
+                <i className="fa fa-lock"></i>
+              </span>
+              <span>Privacy Settings</span>
+            </a>
+          </div>
+        </div>
 
-        <div className="box">
+        <div className="box mt-2">
           <div className="columns is-mobile flex-v-center">
             <div className="column">
               <h4 className="title is-4">Users</h4>
@@ -622,6 +702,8 @@ export default class Group extends Component {
         </div>
 
         {this._renderPendingBox()}
+        {this._renderObservations()}
+        {this._renderPageLinks()}
 
         <BoxModal visible={this.state.showInviteModal}
                   onCloseRequest={() => this.setState({showInviteModal: false})}>
@@ -638,8 +720,19 @@ export default class Group extends Component {
           {this._renderFormErrors()}
         </BoxModal>
 
-        {this._renderObservations()}
-        {this._renderPageLinks()}
+        <BoxModal visible={this.state.showPrivacyModal}
+                  onCloseRequest={() => this.setState({showPrivacyModal: false})}>
+          <h4 className="title is-4">
+            Group Privacy Settings
+
+            <button className="delete is-pulled-right"
+                    onClick={() => this.setState({showPrivacyModal: false})}
+                    type="button">
+            </button>
+          </h4>
+
+          {this._renderPrivacyModal()}
+        </BoxModal>
 
         <Spinner visible={this.state.pageLoading}/>
       </div>

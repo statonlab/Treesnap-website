@@ -26,7 +26,18 @@
                         <h2 class="title is-4">Login</h2>
 
                         <form action="{{ url("/invitations/accept/login/{$invite->id}") }}" method="post">
-                            @include('partials.login-form', ['email' => $invite->email, 'validate' => session()->has('login_attempt') ? session('login_attempt') : false])
+                            @include('partials.login-form', [
+                                'email' => $invite->email,
+                                'validate' => session()->has('login_attempt') ? session('login_attempt') : false,
+                                'fields' => '<div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="1" checked="checked"/>
+                                        Share my observations with this group including accurate location coordinates.
+                                    </label>
+                                </div>
+                            </div>'
+                            ])
 
                             <input type="hidden" name="_t" value="{{ $invite->token }}">
                         </form>
@@ -36,8 +47,18 @@
                     <div class="box">
                         <h2 class="title is-4">Register</h2>
                         <form action="{{ url("/invitations/accept/register/{$invite->id}") }}" method="post">
-                            @include('partials.registration-form', ['email' => $invite->email, 'validate' => session()->has('login_attempt') ? !session('login_attempt') : false])
-
+                            @include('partials.registration-form', [
+                                'email' => $invite->email,
+                                'validate' => session()->has('login_attempt') ? !session('login_attempt') : false,
+                                'fields' => '<div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="1" checked="checked"/>
+                                        Share my observations with this group including accurate location coordinates.
+                                    </label>
+                                </div>
+                            </div>'
+                             ])
                             <input type="hidden" name="_t" value="{{ $invite->token }}">
                         </form>
                     </div>

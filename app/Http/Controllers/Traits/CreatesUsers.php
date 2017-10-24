@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Almsaeed
- * Date: 7/17/17
- * Time: 10:52 AM
- */
 
 namespace App\Http\Controllers\Traits;
 
@@ -31,6 +25,7 @@ trait CreatesUsers
             'agreement' => 'required|boolean|in:1',
             'birth_year' => 'required|integer',
             'is_anonymous' => 'boolean',
+            'share' => 'nullable|boolean',
             'zipcode' => [
                 'nullable',
                 'min:5',

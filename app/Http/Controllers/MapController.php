@@ -60,7 +60,7 @@ class MapController extends Controller
      *
      * @param $user
      * @param $isAdmin
-     * @return $this|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|static|static[]
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection
      */
     public function getObservationsFromDB($user, $isAdmin, $bounds)
     {
