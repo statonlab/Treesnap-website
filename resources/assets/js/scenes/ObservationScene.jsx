@@ -48,6 +48,7 @@ export default class ObservationScene extends Component {
 
     axios.get(`/web/observation/${id}`).then(response => {
       let data = response.data.data
+      console.log(data)
       this.setState({
         observation: data,
         loading    : false
