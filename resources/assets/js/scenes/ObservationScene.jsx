@@ -53,11 +53,6 @@ export default class ObservationScene extends Component {
     axios.get(`/web/observation/${id}`).then(response => {
       let data = response.data.data
 
-      this.setState({
-        observation: data,
-        loading    : false
-      })
-
       if(window.console.dir) {
         window.console.dir('the observation coming in 500 ms')
       }
@@ -69,6 +64,11 @@ export default class ObservationScene extends Component {
         }
       }, 500)
 
+      this.setState({
+        observation: data,
+        loading    : false
+      })
+      
       document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
