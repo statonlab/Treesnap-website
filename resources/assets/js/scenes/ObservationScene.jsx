@@ -46,24 +46,8 @@ export default class ObservationScene extends Component {
   loadObservation(id) {
     this.setState({loading: true})
 
-    if(window.console.dir) {
-      window.console.dir('Loading')
-    }
-
     axios.get(`/web/observation/${id}`).then(response => {
       let data = response.data.data
-
-      if(window.console.dir) {
-        window.console.dir('the observation coming in 500 ms')
-      }
-
-      setTimeout(() => {
-        if(window.console.dir) {
-          window.console.dir('the observation should be out putted')
-          window.console.dir(this.state.observation)
-          this.forceUpdate()
-        }
-      }, 500)
 
       this.setState({
         observation: data,
@@ -73,10 +57,7 @@ export default class ObservationScene extends Component {
       document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
-      if(window.console.dir) {
-        window.console.dir('Error', error)
-        window.console.dir('Error', error.response)
-      }
+
       if (error.response && error.response.status === 404) {
         console.log('Not Found')
         window.location.replace('/no-match')
