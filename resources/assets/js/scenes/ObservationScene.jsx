@@ -46,11 +46,15 @@ export default class ObservationScene extends Component {
   loadObservation(id) {
     this.setState({loading: true})
 
-    console.log('Loading')
+    if(window.console.dir) {
+      window.console.dir('Loading')
+    }
 
     axios.get(`/web/observation/${id}`).then(response => {
       let data = response.data.data
-      console.log(data)
+      if(window.console.dir) {
+        window.console.dir('Data', data)
+      }
       this.setState({
         observation: data,
         loading    : false
@@ -59,8 +63,10 @@ export default class ObservationScene extends Component {
       document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
-      console.log(error)
-      console.log(error.response)
+      if(window.console.dir) {
+        window.console.dir('Error', error)
+        window.console.dir('Error', error.response)
+      }
       if (error.response && error.response.status === 404) {
         console.log('Not Found')
         window.location.replace('/no-match')
