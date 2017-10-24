@@ -68,8 +68,8 @@ export default class ObservationScene extends Component {
         observation: data,
         loading    : false
       })
-      
-      document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
+
+      //document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
       if(window.console.dir) {
