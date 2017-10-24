@@ -1,130 +1,142 @@
 import React, {Component} from 'react'
 
 export default class PartnerList extends Component {
-  render() {
-    return (
-      <div className="home-section" style={{padding: '4rem 0'}}>
-        <div className="container">
-          <h2 className="title is-3 featured-title">Our Partners</h2>
-          <div className="tile is-ancestor">
-            <div className="tile is-parent">
-              <div className="tile is-child box feature-tile">
-                <div className="media">
-                  <div className="media-left">
-                    <img src="/images/flat-icons/earth-globe.png"
-                         alt="Man Icon"
-                         className="feature-icon"/>
-                  </div>
-                  <div className="media-content">
-                    <p className="title">Availability</p>
-                    <p className="feature-text">
-                      TreeSnap is available for iOS and Android smart phones, and is
-                      <b> completely free</b>. The app will be available on the Apple AppStore
-                      and Google Play.
-                    </p>
-                  </div>
+    render() {
+        return (
+            <div className="home-section" style={{padding: '4rem 0'}}>
+                <div className="box">
+                    <div className="media">
+                        <div className="media-left">
+                            <a href="https://www.nrs.fs.fed.us/units/invasivescontrol/">
+                                <img src="/images/FS_green.png" alt="US forest service" className="feature-icon"/>
+                            </a>
+                        </div>
+                        <div className="media-content">
+                            <p className="title">USDA Forest Service Northern Research Station</p>
+                            <p className="feature-text">
+                                The UDSA Forest Service Northern Research Station's mission is to
+                                provide
+                                basic and applied knowledge about, and develop methods for, protecting
+                                and
+                                sustaining landscapes disturbed by invasive species and other agents.
+                                As a TreeSnap partner, they will use data on ash and elm to find trees
+                                that
+                                are resistant to the emerald ash borer and Dutch elm disease. They plan
+                                to
+                                use data from areas where these threats have been established for some
+                                time
+                                to identify “lingering” trees that survive long past others have died to
+                                be
+                                used in research and breeding programs.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div className="tile is-parent">
-              <div className="tile is-child box feature-tile">
-                <div className="media">
-                  <div className="media-left">
-                    <img src="/images/flat-icons/folder.png"
-                         alt="Man Icon"
-                         className="feature-icon"/>
-                  </div>
-                  <div className="media-content">
-                    <p className="title">It's a Snap</p>
-                    <p className="feature-text">
-                      Come across an ash, hemlock, chestnut, or white oak in the woods?
-                      Record it with TreeSnap and its geolocation will be shared with scientists to study it.
-                    </p>
-                  </div>
+                <div className="box">
+                    <div className="media">
+                        <div className="media-left">
+                            <img src="/images/flat-icons/folder.png"
+                                 alt="Man Icon"
+                                 className="feature-icon"/>
+                        </div>
+                        <div className="media-content">
+                            <p className="title">Forest Restoration Alliance</p>
+                            <p className="feature-text">
+                                The Forest Restoration Alliance works to restore healthy forests and
+                                landscapes in eastern America by researching and addressing invasive pest
+                                threats to hemlock, firs, and other native trees. They will use data on
+                                hemlock to find trees that are resistant to hemlock woolly adelgid.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="tile is-ancestor">
-            <div className="tile is-parent">
-              <div className="tile is-child box feature-tile">
-                <div className="media">
-                  <div className="media-left">
-                    <img src="/images/flat-icons/archives.png"
-                         alt="Man Icon"
-                         className="feature-icon"/>
-                  </div>
-                  <div className="media-content">
-                    <p className="title">Data Collection</p>
-                    <p className="feature-text">
-                      TreeSnap is easy to use. Snap a photo, answer a few questions and be done in a couple of taps.
-
-                    </p>
-                  </div>
+                <div className="box">
+                    <div className="media">
+                        <div className="media-left">
+                            <img src="/images/flat-icons/archives.png"
+                                 alt="Man Icon"
+                                 className="feature-icon"/>
+                        </div>
+                        <div className="media-content">
+                            <p className="title">Hemlock Restoration Initiative</p>
+                            <p className="feature-text">
+                                The Hemlock Restoration Initiatve aims to restore eastern and Carolina
+                                hemlocks to their native habitats throughout North Carolina and to mitigate
+                                damage to hemlocks caused by infestation of the hemlock woolly adelgid. They
+                                will use data on hemlock to find trees that are resistant to hemlock woolly
+                                adelgid.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div className="tile is-parent">
-              <div className="tile is-child box feature-tile">
-                <div className="media">
-                  <div className="media-left">
-                    <img src="/images/flat-icons/transfer.png"
-                         alt="Man Icon"
-                         className="feature-icon"/>
-                  </div>
-                  <div className="media-content">
-                    <p className="title">Sync</p>
-                    <p className="feature-text">
-                      Create an account and sync your observations with the TreeSnap server wirelessly.
-                    </p>
-                  </div>
+                <div className="box">
+                    <div className="media">
+                        <div className="media-left">
+                            <img src="/images/ACF_logo.png" alt="American Chestnut Foundation"
+                                 className="feature-icon"
+                            />
+                        </div>
+                        <div className="media-content">
+                            <p className="title">American Chestnut Foundation
+                            </p>
+                            <p className="feature-text">
+                                The American Chestnut Foundation seeks to return the American chestnut to
+                                its native range.
+
+                                The American Chestnut Foundation will use data on chestnuts to find trees
+                                that are resistant to chestnut blight to be added to breeding and research
+                                programs. In addition to sampling with the TreeSnap app, please submit a
+                                physical sample of the tree to the American Chestnut Foundation since other
+                                species can easily be confused with American chestnut. You can find full
+                                instructions, as well as addresses to ship samples to, here.
+
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
+                <div className="box">
 
-          <div className="tile is-ancestor">
-            <div className="tile is-parent">
-              <div className="tile is-child box feature-tile">
-                <div className="media">
-                  <div className="media-left">
-                    <img src="/images/flat-icons/padlock.png"
-                         alt="Man Icon"
-                         className="feature-icon"/>
-                  </div>
-                  <div className="media-content">
-                    <p className="title">Privacy</p>
-                    <p className="feature-text">
+                    <div className="media">
+                        <div className="media-left">
+                            <img src="/images/flat-icons/padlock.png"
+                                 alt="Man Icon"
+                                 className="feature-icon"/>
+                        </div>
+                        <div className="media-content">
+                            <p className="title">Forest Health Research and Education Center
+                            </p>
+                            <p className="feature-text">
+                                The Forest Health Research and Education Center's mission is to advance the
+                                conservation of forested ecosystems by integrating genetics-based biological
+                                research with social science research and education and outreach on factors
+                                affecting tree health and forest restoration.
+                                The Forest Health Research and Education Center will use data on white oak
+                                to build a breeding program. Their goal is to be better prepared in the
+                                event that any invasive pests that target white oak are introduced in the
+                                future.
 
-                      The GPS location of your trees is protected, and not revealed to outside parties. Our map will only display the approximate location of each tree, or you can opt out of adding your data to the map entirely. Only TreeSnap related research programs will have access to this information.
-                    </p>
-                  </div>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div className="tile is-parent">
-              <div className="tile is-child box feature-tile">
-                <div className="media">
-                  <div className="media-left">
-                    <img src="/images/flat-icons/teamwork-3.png"
-                         alt="Man Icon"
-                         className="feature-icon"/>
-                  </div>
-                  <div className="media-content">
-                    <p className="title">Contribute</p>
-                    <p className="feature-text">
-                      Information reported in TreeSnap is used by real scientists. That ash you've found might be the start of a completely new breeding program.
-                    </p>
-                  </div>
+                <div className="box">
+
+                    <div className="media">
+                        <div className="media-left">
+                            <img src="/images/flat-icons/teamwork-3.png"
+                                 alt="Man Icon"
+                                 className="feature-icon"/>
+                        </div>
+                        <div className="media-content">
+                            <p className="title">Your Organization?</p>
+                            <p className="feature-text">
+                                Have a project or tree breeding program you want involved? Let us know! You
+                                can visit our contact page, or find us on Facebook or Twitter.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-
-
-        </div>
-      </div>
-    )
-  }
+        )
+    }
 }

@@ -25039,7 +25039,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__scenes_ContactUsScene__ = __webpack_require__("./resources/assets/js/scenes/ContactUsScene.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__scenes_NotFoundScene__ = __webpack_require__("./resources/assets/js/scenes/NotFoundScene.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__scenes_KnowledgeScene__ = __webpack_require__("./resources/assets/js/scenes/KnowledgeScene.jsx");
-throw new Error("Cannot find module \"./scenes/KnowledgeViewScene\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__scenes_KnowledgeViewScene__ = __webpack_require__("./resources/assets/js/scenes/KnowledgeViewScene.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__scenes_MyObservationsScene__ = __webpack_require__("./resources/assets/js/scenes/MyObservationsScene.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__scenes_AccountCollectionsScene__ = __webpack_require__("./resources/assets/js/scenes/AccountCollectionsScene.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__scenes_AccountFiltersScene__ = __webpack_require__("./resources/assets/js/scenes/AccountFiltersScene.jsx");
@@ -25125,7 +25125,7 @@ var App = function (_Component) {
             } }),
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["Route"], { path: '/partners',
             component: function component() {
-              return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__scenes_KnowledgeViewScene___default.a, { title: 'Partners' });
+              return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__scenes_KnowledgeViewScene__["a" /* default */], { title: 'Partners' });
             } }),
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["Route"], { component: __WEBPACK_IMPORTED_MODULE_9__scenes_NotFoundScene__["a" /* default */] })
         )
@@ -31114,6 +31114,224 @@ ObservationDetailsModal.PropTypes = {
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/PartnerList.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var PartnerList = function (_Component) {
+    _inherits(PartnerList, _Component);
+
+    function PartnerList() {
+        _classCallCheck(this, PartnerList);
+
+        return _possibleConstructorReturn(this, (PartnerList.__proto__ || Object.getPrototypeOf(PartnerList)).apply(this, arguments));
+    }
+
+    _createClass(PartnerList, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'home-section', style: { padding: '4rem 0' } },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'media' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: 'https://www.nrs.fs.fed.us/units/invasivescontrol/' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FS_green.png', alt: 'US forest service', className: 'feature-icon' })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'title' },
+                                'USDA Forest Service Northern Research Station'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'feature-text' },
+                                'The UDSA Forest Service Northern Research Station\'s mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents. As a TreeSnap partner, they will use data on ash and elm to find trees that are resistant to the emerald ash borer and Dutch elm disease. They plan to use data from areas where these threats have been established for some time to identify \u201Clingering\u201D trees that survive long past others have died to be used in research and breeding programs.'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'media' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/folder.png',
+                                alt: 'Man Icon',
+                                className: 'feature-icon' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'title' },
+                                'Forest Restoration Alliance'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'feature-text' },
+                                'The Forest Restoration Alliance works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'media' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/archives.png',
+                                alt: 'Man Icon',
+                                className: 'feature-icon' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'title' },
+                                'Hemlock Restoration Initiative'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'feature-text' },
+                                'The Hemlock Restoration Initiatve aims to restore eastern and Carolina hemlocks to their native habitats throughout North Carolina and to mitigate damage to hemlocks caused by infestation of the hemlock woolly adelgid. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'media' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/ACF_logo.png', alt: 'American Chestnut Foundation',
+                                className: 'feature-icon'
+                            })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'title' },
+                                'American Chestnut Foundation'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'feature-text' },
+                                'The American Chestnut Foundation seeks to return the American chestnut to its native range. The American Chestnut Foundation will use data on chestnuts to find trees that are resistant to chestnut blight to be added to breeding and research programs. In addition to sampling with the TreeSnap app, please submit a physical sample of the tree to the American Chestnut Foundation since other species can easily be confused with American chestnut. You can find full instructions, as well as addresses to ship samples to, here.'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'media' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/padlock.png',
+                                alt: 'Man Icon',
+                                className: 'feature-icon' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'title' },
+                                'Forest Health Research and Education Center'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'feature-text' },
+                                'The Forest Health Research and Education Center\'s mission is to advance the conservation of forested ecosystems by integrating genetics-based biological research with social science research and education and outreach on factors affecting tree health and forest restoration. The Forest Health Research and Education Center will use data on white oak to build a breeding program. Their goal is to be better prepared in the event that any invasive pests that target white oak are introduced in the future.'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'media' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-left' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
+                                alt: 'Man Icon',
+                                className: 'feature-icon' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'media-content' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'title' },
+                                'Your Organization?'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                { className: 'feature-text' },
+                                'Have a project or tree breeding program you want involved? Let us know! You can visit our contact page, or find us on Facebook or Twitter.'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return PartnerList;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (PartnerList);
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/Sidebar.jsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -35165,6 +35383,117 @@ KnowledgeScene.PropTypes = {
 };
 
 __WEBPACK_IMPORTED_MODULE_7__helpers_KnowledgeSidebarLinks__["a" /* default */].defaultProps = {
+  title: false
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/scenes/KnowledgeViewScene.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Navbar__ = __webpack_require__("./resources/assets/js/components/Navbar.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_HomeFooter__ = __webpack_require__("./resources/assets/js/components/HomeFooter.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_LinksSidebar__ = __webpack_require__("./resources/assets/js/components/LinksSidebar.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Spinner__ = __webpack_require__("./resources/assets/js/components/Spinner.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__ = __webpack_require__("./resources/assets/js/helpers/KnowledgeSidebarLinks.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_PartnerList__ = __webpack_require__("./resources/assets/js/components/PartnerList.jsx");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+
+
+var KnowledgeViewScene = function (_Component) {
+  _inherits(KnowledgeViewScene, _Component);
+
+  function KnowledgeViewScene(props) {
+    _classCallCheck(this, KnowledgeViewScene);
+
+    var _this = _possibleConstructorReturn(this, (KnowledgeViewScene.__proto__ || Object.getPrototypeOf(KnowledgeViewScene)).call(this, props));
+
+    _this.state = {
+      content: '',
+      loading: false
+    };
+    return _this;
+  }
+
+  _createClass(KnowledgeViewScene, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      window.fixHeight();
+
+      var title = this.props.title || 'About Us';
+      document.title = title + ' - TreeSnap';
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'document' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__components_Navbar__["a" /* default */], null),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'home-section short-content' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'container' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'columns' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'column is-3' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_LinksSidebar__["a" /* default */], { links: __WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__["a" /* default */], title: 'Knowledge Base' })
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'column' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'div',
+                  { className: 'box body' },
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null),
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
+                )
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_HomeFooter__["a" /* default */], null)
+      );
+    }
+  }]);
+
+  return KnowledgeViewScene;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (KnowledgeViewScene);
+
+
+KnowledgeViewScene.PropTypes = {
+  docPath: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string.isRequired,
+  title: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string
+};
+
+__WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__["a" /* default */].defaultProps = {
   title: false
 };
 
