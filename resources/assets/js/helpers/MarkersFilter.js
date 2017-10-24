@@ -107,6 +107,13 @@ export default class MarkersFilter extends Filters {
     }
   }
 
+  /**
+   * Reset bounds filter.
+   */
+  resetBounds() {
+    this._mapBounds = null
+  }
+
   // ===============
   // PRIVATE METHODS
   // ===============
@@ -167,7 +174,8 @@ export default class MarkersFilter extends Filters {
 
   _filter() {
     return this._markers.filter(marker => {
-      return this._search(marker)
+      return this._bounds(marker)
+        && this._search(marker)
         && this._category(marker)
         && this._collection(marker)
         && this._confirmedOnly(marker)

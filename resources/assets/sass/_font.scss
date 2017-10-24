@@ -9,3 +9,8 @@
 .text-success {
   color: $primary;
 }
+
+.help.is-warning {
+  color: darken($warning, 10%);
+  font-weight: bold;
+}
