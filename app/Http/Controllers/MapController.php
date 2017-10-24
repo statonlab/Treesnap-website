@@ -84,12 +84,16 @@ class MapController extends Controller
         $observations = $observations->orderBy('observations.id', 'desc')->get();
 
         if ($user) {
+            $collections = $user->collections->map(function ($collection) {
+                return $collection->id;
+            });
+
             $observations->load([
                 'flags' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 },
-                'collections' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
+                'collections' => function ($query) use ($collections) {
+                    $query->whereIn('collections.id', $collections);
                 },
             ]);
         }

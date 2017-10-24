@@ -32,6 +32,7 @@ trait CreatesUsers
             'birth_year' => 'required|integer',
             'is_anonymous' => 'boolean',
             'zipcode' => [
+                'nullable',
                 'min:5',
                 'max:10',
                 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
@@ -65,7 +66,7 @@ trait CreatesUsers
             'password' => bcrypt($data['password']),
             'birth_year' => $data['birth_year'],
             'api_token' => $this->generateAPIToken(),
-            'zipcode' => $data['zipcode'],
+            'zipcode' => isset($data['zipcode']) ? $data['zipcode'] : '',
             'is_private' => false,
             'role_id' => $role->id,
         ]);
