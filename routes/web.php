@@ -82,6 +82,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/account/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
 
     // Collections
+    Route::get('/web/collection/{id}/users', 'CollectionsController@users');
+    Route::get('/web/collections/customizable/{paired?}', 'CollectionsController@customizableCollections');
     Route::get('/web/collections/owned/{paired?}', 'CollectionsController@ownedCollections');
     Route::get('/web/collections/{paired?}', 'CollectionsController@index');
     Route::post('/web/collections', 'CollectionsController@create');
@@ -89,8 +91,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/web/collection/attach', 'CollectionsController@attach');
     Route::delete('/web/collection/detach', 'CollectionsController@detach');
     Route::delete('/web/collection/{id}', 'CollectionsController@delete');
+    Route::delete('/web/collection/{id}/unshare', 'CollectionsController@unshare');
     Route::post('/web/collection/{id}/share', 'CollectionsController@share');
-    Route::delete('/web/collection/unshare', 'CollectionsController@unshare');
+    Route::patch('/web/collection/{id}/permissions', 'CollectionsController@changePermissions');
 
     // Groups
     Route::get('/web/groups', 'GroupsController@index');

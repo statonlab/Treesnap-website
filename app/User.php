@@ -122,7 +122,7 @@ class User extends Authenticatable
      */
     public function collections()
     {
-        return $this->belongsToMany(Collection::class);
+        return $this->belongsToMany(Collection::class)->withPivot(['can_customize']);
     }
 
     /**
@@ -133,6 +133,16 @@ class User extends Authenticatable
     public function ownedCollections()
     {
         return $this->hasMany(Collection::class);
+    }
+
+    /**
+     * Get collections that the user is allowed to customize.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function customizableCollections()
+    {
+        return $this->belongsToMany(Collection::class)->withPivot(['can_customize'])->wherePivot('can_customize', true);
     }
 
     /**

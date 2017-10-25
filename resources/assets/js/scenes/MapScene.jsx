@@ -215,7 +215,7 @@ export default class App extends Component {
       console.log(error.response)
     })
 
-    axios.get('/web/collections/owned/1').then(response => {
+    axios.get('/web/collections/customizable/1').then(response => {
       this.setState({ownedCollections: response.data.data})
     }).catch(error => {
       if (error.response && error.response.status === 401) {
