@@ -75,11 +75,14 @@ class Filter extends Model
      * Apply a certain filter.
      *
      * @param array $filters Filter::rules
+     * @param \Doctrine\DBAL\Query\QueryBuilder $observations
      * @return \App\Observation collection of observations.
      */
-    public static function apply($filters)
+    public static function apply($filters, $observations = null)
     {
-        $observations = Observation::with('user');
+        if($observations === null) {
+            $observations = Observation::with('user');
+        }
 
         // Apply address
         if (isset($filters['address'])) {
@@ -156,8 +159,6 @@ class Filter extends Model
                 }
             }
         });
-
-        $observations->orderBy('collection_date', 'DESC');
 
         return $observations;
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\Filter;
+use App\Group;
 use App\User;
 use App\Email;
 use App\Http\Controllers\Traits\Observes;
@@ -152,11 +154,12 @@ class UsersController extends Controller
     public function observations(Request $request)
     {
         $this->validate($request, [
-            'per_page' => 'nullable|in:6,12,24,48',
+            'per_page' => 'nullable|in:6,12,24,48,96',
             'search' => 'nullable',
             'collection_id' => 'nullable|exists:collections,id',
             'category' => ['nullable', Rule::in($this->observation_categories)],
             'group_id' => 'nullable|exists:groups,id',
+            'advanced_filter' => 'nullable|json',
         ]);
 
         $user = $request->user();
@@ -166,8 +169,7 @@ class UsersController extends Controller
 
         $data = [];
         foreach ($observations as $observation) {
-            $json = $this->getObservationJson($observation, $admin, $user);
-            $data[] = $json;
+            $data[] = $this->getObservationJson($observation, $admin, $user);
         }
 
         return $this->success(array_merge($observations->toArray(), [
@@ -176,16 +178,17 @@ class UsersController extends Controller
             'count' => $observations->count(),
             'has_more_pages' => $observations->hasMorePages(),
             'collection_id' => $request->collection_id,
+            'group_id' => $request->group_id,
         ]));
     }
 
     /**
      * Apply observation filters.
      *
-     * @param $request
+     * @param Request $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    protected function getFilteredObservations($request)
+    protected function getFilteredObservations(Request $request)
     {
         $user = $request->user();
 
@@ -208,8 +211,15 @@ class UsersController extends Controller
 
         if (! empty($request->collection_id)) {
             $observations = $user->collections()->findOrFail($request->collection_id)->observations()->with($with);
+        } elseif (! empty($request->group_id)) {
+            $observations = $user->groups()->findOrFail($request->group_id)->observations()->with($with);
         } else {
             $observations = Observation::with($with)->where('user_id', $user->id);
+        }
+
+        if (! empty($request->advanced_filters)) {
+            $rules = json_decode($request->advanced_filters);
+            $observations = Filter::apply((array)$rules, $observations);
         }
 
         if (! empty($request->category)) {
@@ -225,7 +235,26 @@ class UsersController extends Controller
             });
         }
 
+        if (! empty($request->advanced_filter)) {
+            $observations = $this->applyAdvancedFilter($request, $observations);
+        }
+
         return $observations->orderBy('id', 'desc')->paginate($request->per_page);
+    }
+
+    /**
+     * Apply advanced filters.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Observation $observations
+     * @return \App\Observation
+     */
+    protected function applyAdvancedFilter(Request $request, $observations)
+    {
+        $filter = Filter::find($request->advanced_filter);
+        $this->authorize('view', $filter);
+
+        return Filter::apply($filter->rules, $observations);
     }
 
     /**

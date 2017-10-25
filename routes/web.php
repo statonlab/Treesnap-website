@@ -52,7 +52,7 @@ Route::post('/web/user/subscribe', 'UsersController@subscribe');
 
 // Filters
 Route::post('/web/filter/count', 'FiltersController@count');
-Route::post('/web/filters', 'FiltersController@create');
+Route::post('/web/filters/{with_observations?}', 'FiltersController@create');
 Route::get('/web/filters', 'FiltersController@index');
 
 // CSRF

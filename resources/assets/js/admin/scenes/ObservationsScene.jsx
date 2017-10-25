@@ -614,7 +614,7 @@ export default class ObservationsScene extends Component {
         <AdvancedFiltersModal
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
-          onCreate={(data) => {
+          onCreate={({data}) => {
             let advancedFilters = this.state.advancedFilters
 
             if (data.filter) {

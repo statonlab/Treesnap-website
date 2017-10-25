@@ -12,6 +12,12 @@ class MapController extends Controller
 {
     use Responds, Observes;
 
+    /**
+     * Load observations for the map.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
 
