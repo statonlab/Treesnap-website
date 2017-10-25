@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Collection;
 use App\Group;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
@@ -69,10 +70,11 @@ class GroupsController extends Controller
             'share' => $request->share ? true : false,
         ]);
 
-        $group->owner = [
+        $group->setAttribute('owner', [
             'id' => $user->id,
             'name' => $user->name,
-        ];
+        ]);
+        //$group->owner = $owner;
 
         $group->users_count = 0;
 
@@ -292,6 +294,7 @@ class GroupsController extends Controller
     {
         $this->validate($request, [
             'term' => 'nullable|max:100',
+            'collection_id' => 'nullable|exists:collections,id',
         ]);
 
         $user = $request->user();
@@ -304,6 +307,18 @@ class GroupsController extends Controller
                         $query->where('users.name', 'like', "%{$request->term}%");
                         $query->orWhere('users.email', 'like', "%{$request->term}%");
                     });
+                }
+
+                if ($request->collection_id) {
+                    $collection = Collection::find($request->collection_id);
+                    if ($collection) {
+                        $user_ids = $collection->users->map(function ($user) {
+                            return $user->id;
+                        });
+                        if (! empty($user_ids)) {
+                            $query->whereNotIn('users.id', $user_ids);
+                        }
+                    }
                 }
             },
         ])->get();

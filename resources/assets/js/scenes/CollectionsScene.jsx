@@ -7,6 +7,8 @@ import Select from 'react-select'
 import Notify from '../components/Notify'
 import {Link} from 'react-router-dom'
 import Dropdown from '../components/Dropdown'
+import User from '../helpers/User'
+import UnshareCollectionModal from '../components/UnshareCollectionModal'
 
 export default class CollectionsScene extends Component {
   constructor(props) {
@@ -20,7 +22,9 @@ export default class CollectionsScene extends Component {
       term              : '',
       selectedUser      : null,
       sharing           : false,
-      sharingErrors     : []
+      canCustomize      : false,
+      sharingErrors     : [],
+      showUnshareModal  : false
     }
 
     this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
@@ -29,6 +33,10 @@ export default class CollectionsScene extends Component {
   }
 
   componentWillMount() {
+    this.loadCollections()
+  }
+
+  loadCollections() {
     axios.get('/web/collections').then(response => {
       this.setState({
         collections: response.data.data,
@@ -41,18 +49,37 @@ export default class CollectionsScene extends Component {
   }
 
   deleteCollection(collection) {
-    if (!confirm(`Are you sure you want to delete ${collection.label}?`)) {
-      return
-    }
+    if (collection.is_owner) {
+      if (!confirm(`Are you sure you want to delete ${collection.label}?`)) {
+        return
+      }
 
-    axios.delete(`/web/collection/${collection.id}`).then(response => {
-      const id = parseInt(response.data.data.id)
-      this.setState({
-        collections: this.state.collections.filter(collection => collection.id !== id)
+      axios.delete(`/web/collection/${collection.id}`).then(response => {
+        const id = parseInt(response.data.data.id)
+        this.setState({
+          collections: this.state.collections.filter(collection => collection.id !== id)
+        })
+      }).catch(error => {
+        console.log(error)
       })
-    }).catch(error => {
-      console.log(error)
-    })
+    } else {
+      if (!confirm(`Are you sure you want to remove your access privileges to ${collection.label}? This action will not delete the collection.`)) {
+        return
+      }
+
+      axios.delete(`/web/collection/${collection.id}/unshare`, {
+        params: {
+          user_id: User.user().id
+        }
+      }).then(response => {
+        const id = parseInt(response.data.data.id)
+        this.setState({
+          collections: this.state.collections.filter(collection => collection.id !== id)
+        })
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 
   showShareModal(collection) {
@@ -75,7 +102,8 @@ export default class CollectionsScene extends Component {
     const id = parseInt(this.state.selectedCollection.id)
 
     axios.post(`/web/collection/${id}/share`, {
-      user_id: this.state.selectedUser.value
+      user_id      : this.state.selectedUser.value,
+      can_customize: this.state.canCustomize
     }).then(() => {
       Notify.push(`You successfully shared ${this.state.selectedCollection.label} with ${this.state.selectedUser.label}`)
 
@@ -119,7 +147,8 @@ export default class CollectionsScene extends Component {
   searchUsers(term) {
     return axios.get('/web/groups/members', {
       params: {
-        term
+        term,
+        collection_id: this.state.selectedCollection.id
       }
     }).then(response => {
       return {options: response.data.data}
@@ -167,6 +196,7 @@ export default class CollectionsScene extends Component {
             </div>
 
             <div className="field">
+              <label className="label">User to Share With</label>
               <div className="control">
                 <Select.Async
                   value={this.state.selectedUser}
@@ -183,6 +213,21 @@ export default class CollectionsScene extends Component {
                 )
               })}
             </div>
+
+            <div className="field">
+              <label className="label">Permissions</label>
+              <div className="control">
+                <span className="select">
+                  <select
+                    value={this.state.canCustomize}
+                    onChange={({target}) => this.setState({canCustomize: target.value === '0' ? 0 : 1})}>
+                    <option value="0">View only</option>
+                    <option value="1">Edit and view</option>
+                  </select>
+                </span>
+              </div>
+            </div>
+
             <div className="is-flex flex-space-between mt-2">
               <button
                 type="submit"
@@ -190,7 +235,11 @@ export default class CollectionsScene extends Component {
                 disabled={this.state.sharing}>
                 Share
               </button>
-              <button className="button" type="button">Cancel</button>
+              <button className="button"
+                      type="button"
+                      onClick={() => this.setState({showShareModal: false})}>
+                Cancel
+              </button>
             </div>
           </div>
         </form>
@@ -198,15 +247,49 @@ export default class CollectionsScene extends Component {
     )
   }
 
+  _renderUnshareModal() {
+    if (!this.state.showUnshareModal) {
+      return null
+    }
+
+    return (
+      <UnshareCollectionModal
+        onCloseRequest={() => {
+          this.setState({
+            showUnshareModal  : false,
+            selectedCollection: {}
+          })
+          this.loadCollections()
+        }}
+        collection={this.state.selectedCollection}
+      />
+    )
+  }
+
   _renderRow(collection) {
     return (
       <tr key={collection.id}>
-        <td>{this.props.admin ?
-          <Link to={`/observations?collection=${collection.id}`}>{collection.label}</Link>
-          : <Link to={`/account/observations?collection=${collection.id}`}>{collection.label}</Link>
-        }</td>
+        <td>
+          {this.props.admin ?
+            <Link to={`/observations?collection=${collection.id}`}>{collection.label}</Link>
+            :
+            <Link to={`/account/observations?collection=${collection.id}`}>{collection.label}</Link>
+          }
+        </td>
         <td>{collection.observations_count}</td>
-        <td>{collection.users_count - 1} users</td>
+        <td>
+          {collection.users_count > 1 && collection.is_owner ?
+            <a href="javascript:;" onClick={() => this.setState({
+              showUnshareModal  : true,
+              selectedCollection: collection
+            })}>
+              {collection.users_count - 1} users
+            </a>
+            :
+            <span>{collection.users_count - 1} users</span>
+          }
+
+        </td>
         <td className="has-text-right">
           <Dropdown right={true} trigger={(
             <button className="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -226,27 +309,25 @@ export default class CollectionsScene extends Component {
             </a>
           </Dropdown>
           {collection.is_owner ?
-            <div style={{display: 'inline-block'}}>
-              <button type="button"
-                      className="button is-small is-info ml-0"
-                      onClick={() => this.showShareModal(collection)}>
-                <span className="icon is-small">
-                  <Tooltip label="Share">
-                    <i className="fa fa-share"></i>
-                  </Tooltip>
-                </span>
-              </button>
-              <button type='button'
-                      className='button is-small is-danger ml-0'
-                      onClick={() => this.deleteCollection(collection)}>
-                <span className='icon is-small'>
-                  <Tooltip label='Delete'>
-                    <i className='fa fa-times'></i>
-                  </Tooltip>
-                </span>
-              </button>
-            </div>
+            <button type="button"
+                    className="button is-small is-info ml-0"
+                    onClick={() => this.showShareModal(collection)}>
+              <span className="icon is-small">
+                <Tooltip label="Share">
+                  <i className="fa fa-share"></i>
+                </Tooltip>
+              </span>
+            </button>
             : null}
+          <button type='button'
+                  className='button is-small is-danger ml-0'
+                  onClick={() => this.deleteCollection(collection)}>
+            <span className='icon is-small'>
+              <Tooltip label='Delete'>
+                <i className='fa fa-times'></i>
+              </Tooltip>
+            </span>
+          </button>
         </td>
       </tr>
     )
@@ -282,6 +363,7 @@ export default class CollectionsScene extends Component {
         </div>
         <Spinner visible={this.state.loading}/>
         {this._renderShareModal()}
+        {this._renderUnshareModal()}
       </div>
     )
   }

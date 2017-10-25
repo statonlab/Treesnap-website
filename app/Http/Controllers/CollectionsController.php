@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
-use App\Observation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\Responds;
+use DB;
 
 class CollectionsController extends Controller
 {
@@ -24,7 +24,7 @@ class CollectionsController extends Controller
 
         $collections = $user->collections()->select([
             'collections.*',
-            \DB::raw("IF(collections.user_id = {$user->id}, true, false) as is_owner"),
+            DB::raw("IF(collections.user_id = {$user->id}, true, false) as is_owner"),
         ])->with([
             'owner' => function ($query) {
                 $query->select('name', 'id');
@@ -32,6 +32,14 @@ class CollectionsController extends Controller
         ])->withCount(['observations', 'users'])->get();
 
         if (! $paired) {
+            $collections = $collections->map(function ($collection) use ($user) {
+                if ($collection->user_id !== $user->id) {
+                    $collection->label .= ' by '.$collection->owner->name;
+                }
+
+                return $collection;
+            });
+
             return $this->success($collections);
         }
 
@@ -88,6 +96,54 @@ class CollectionsController extends Controller
     }
 
     /**
+     * Get the collections that the current authenticated user owns.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param bool $paired
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function customizableCollections(Request $request, $paired = false)
+    {
+        $user = $request->user();
+
+        $collections = $user->customizableCollections()->select([
+            'collections.id',
+            'collections.label',
+            'collections.description',
+            'collections.created_at',
+            'collections.updated_at',
+            'collections.user_id',
+            DB::raw('1 AS can_customize'),
+        ])->withCount(['observations', 'users'])->get();
+
+        if (! $paired) {
+            $collections = $collections->map(function ($collection) use ($user) {
+                if ($collection->user_id !== $user->id) {
+                    $collection->label .= ' by '.$collection->owner->name;
+                }
+
+                return $collection;
+            });
+
+            return $this->success($collections);
+        }
+
+        $mapped = [];
+        foreach ($collections as $collection) {
+            if ($collection->user_id !== $user->id) {
+                $collection->label .= ' by '.$collection->owner->name;
+            }
+
+            $mapped[] = [
+                'label' => $collection->label,
+                'value' => $collection->id,
+            ];
+        }
+
+        return $this->success($mapped);
+    }
+
+    /**
      * Create a new collection.
      *
      * @param \Illuminate\Http\Request $request
@@ -109,7 +165,9 @@ class CollectionsController extends Controller
         ]);
 
         // Attach the creator to the collection
-        $collection->users()->attach($user->id);
+        $collection->users()->attach($user->id, [
+            'can_customize' => true,
+        ]);
 
         return $this->created($collection);
     }
@@ -170,16 +228,18 @@ class CollectionsController extends Controller
                 'label' => $request->label,
                 'user_id' => $user->id,
             ]);
-            $collection->users()->syncWithoutDetaching($user->id);
+            $collection->users()->attach($user->id, [
+                'can_customize' => true,
+            ]);
         } else {
             if (empty($request->collection_id)) {
                 return $this->validationError(['label' => ['At least on item is required. Please select an existing collection or create a new one.']]);
             }
 
-            $collection = Collection::findOrFail($request->collection_id);
+            $collection = $user->collections()->findOrFail($request->collection_id);
 
             // Prevent non owners from adding to the collection
-            if ($collection->user_id !== $user->id) {
+            if (! $collection->pivot->can_customize) {
                 return $this->unauthorized();
             }
         }
@@ -205,6 +265,7 @@ class CollectionsController extends Controller
 
         $this->validate($request, [
             'user_id' => 'required|exists:users,id',
+            'can_customize' => 'required|boolean',
         ]);
 
         $collection = Collection::findOrFail($id);
@@ -223,7 +284,10 @@ class CollectionsController extends Controller
             return $this->validationError(['user_id' => ['User already exists']]);
         }
 
-        $collection->users()->syncWithoutDetaching($request->user_id);
+        $collection->users()->detach($request->user_id);
+        $collection->users()->attach($request->user_id, [
+            'can_customize' => $request->can_customize,
+        ]);
 
         return $this->created([
             'id' => $collection->id,
@@ -247,10 +311,10 @@ class CollectionsController extends Controller
 
         $user = $request->user();
 
-        $collection = Collection::findOrFail($request->collection_id);
+        $collection = $user->collections()->findOrFail($request->collection_id);
 
         // Allow only owners to remove from the collection
-        if ($collection->user_id !== $user->id) {
+        if (! $collection->pivot->can_customize) {
             return $this->unauthorized();
         }
 
@@ -262,28 +326,28 @@ class CollectionsController extends Controller
     /**
      * Detach users from collection (unshare)
      *
+     * @param int $collection_id
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unshare(Request $request)
+    public function unshare($collection_id, Request $request)
     {
         $user = $request->user();
 
         $this->validate($request, [
-            'collection_id' => 'required|exists:collections,id',
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $collection = Collection::findOrFail($request->collection_id);
+        $collection = Collection::findOrFail($collection_id);
 
         // Allow non-owners to detach themselves only
-        if ($request->user_id === $user->id && $request->user_id !== $collection->user_id) {
+        if (intval($request->user_id) === $user->id && $user->id !== $collection->user_id) {
             $collection->users()->detach($request->user_id);
 
-            return $this->success([
+            return $this->created([
                 'id' => $collection->id,
                 'label' => $collection->label,
-                'Owner' => $collection->user_id,
+                'owner' => $collection->user_id,
             ]);
         }
 
@@ -296,11 +360,10 @@ class CollectionsController extends Controller
             $collection->users()->detach($request->user_id);
         }
 
-        return $this->success([
+        return $this->created([
             'id' => $collection->id,
             'label' => $collection->label,
-            'Owner' => $collection->user_id,
-
+            'owner' => $collection->user_id,
         ]);
     }
 
@@ -327,5 +390,53 @@ class CollectionsController extends Controller
         return $this->created([
             'id' => $id,
         ]);
+    }
+
+    public function users($id, Request $request)
+    {
+        $collection = Collection::findOrFail($id);
+
+        if ($request->user()->id !== $collection->user_id) {
+            return $this->unauthorized();
+        }
+
+        $users = $collection->users()->select([
+            'users.name',
+            'users.email',
+            'users.id',
+        ]);
+
+        if (! $request->self_included) {
+            $users->where('users.id', '!=', $collection->user_id);
+        }
+
+        $users = $users->get();
+
+        return $this->success($users);
+    }
+
+    public function changePermissions($id, Request $request)
+    {
+        $user = $request->user();
+        $collection = Collection::findOrFail($id);
+
+        if ($collection->user_id !== $user->id) {
+            return $this->unauthorized();
+        }
+
+        $this->validate($request, [
+            'user_id' => 'required|exists:users,id',
+            'can_customize' => 'required|boolean',
+        ]);
+
+        if ($request->user_id === $collection->user_id) {
+            return $this->validationError([
+                'user_id' => ['Illegal operation. Users are not allowed to modify the owner\'s permissions'],
+            ]);
+        }
+
+        $collection->updatePermissions($request->user_id, $request->can_customize);
+
+        return $this->success('Permissions Updated successfully');
     }
 }
