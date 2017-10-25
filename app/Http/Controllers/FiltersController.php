@@ -14,8 +14,6 @@ class FiltersController extends Controller
 {
     use Responds, Observes;
 
-
-
     /**
      * Get all available filters.
      *
@@ -53,7 +51,7 @@ class FiltersController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function create(Request $request)
+    public function create(Request $request, $with_observations = false)
     {
         $this->validate($request, [
             'categories' => 'required',
@@ -62,6 +60,8 @@ class FiltersController extends Controller
                 Rule::in($this->observation_categories),
             ],
             'name' => 'nullable|max:255',
+        ], [
+            'categories.required' => 'The species field is required'
         ]);
 
         $filter = null;
@@ -77,10 +77,15 @@ class FiltersController extends Controller
             ]);
         }
 
-        return $this->success([
+        $data = [
             'filter' => $filter,
-            'observations' => $this->getCachedFilteredObservations($request, $filter),
-        ]);
+        ];
+
+        if ($with_observations) {
+            $data['observations'] = $this->getCachedFilteredObservations($request, $filter);
+        }
+
+        return $this->success($data);
     }
 
     /**
@@ -103,8 +108,7 @@ class FiltersController extends Controller
             $filters = $request->all();
         }
 
-        $filtered = Filter::apply($filters);
-
+        $filtered = Filter::apply($filters)->orderBy('collection_date', 'DESC');
         if (! empty($request->map) && $request->map) {
             if ($user) {
                 $filtered = $filtered->get()->load([
@@ -182,7 +186,7 @@ class FiltersController extends Controller
             return $this->success(0);
         }
 
-        $filtered = Filter::apply($request->all());
+        $filtered = Filter::apply($request->all())->orderBy('collection_date', 'DESC');
 
         return $this->success([
             'count' => $filtered->count(),

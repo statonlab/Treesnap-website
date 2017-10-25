@@ -3,32 +3,43 @@ import ObservationCard from '../components/ObservationCard'
 import Spinner from '../components/Spinner'
 import Path from '../helpers/Path'
 import AccountView from '../components/AccountView'
+import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 
 export default class MyObservationsScene extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      observations      : [],
-      collections       : [],
-      selectedCollection: 0,
-      page              : 1,
-      lastPage          : 59,
-      nextPageUrl       : '',
-      prevPageUrl       : '',
-      perPage           : 6,
-      total             : 0,
-      pageLoading       : true,
-      pages             : [],
-      loading           : false,
-      count             : 0,
-      search            : [],
-      categories        : [],
-      selectedCategory  : '',
-      hasMorePages      : false,
-      ownedCollections  : []
+      observations            : [],
+      collections             : [],
+      filters                 : [],
+      groups                  : [],
+      selectedGroup           : 0,
+      selectedCollection      : 0,
+      selectedFilter          : 0,
+      page                    : 1,
+      lastPage                : 59,
+      nextPageUrl             : '',
+      prevPageUrl             : '',
+      perPage                 : 6,
+      total                   : 0,
+      pageLoading             : true,
+      pages                   : [],
+      loading                 : false,
+      count                   : 0,
+      search                  : [],
+      categories              : [],
+      selectedCategory        : '',
+      hasMorePages            : false,
+      ownedCollections        : [],
+      disableCollections      : false,
+      disableGroups           : false,
+      showAdvancedFiltersModal: false,
+      advancedFiltersRules    : {}
     }
 
-    document.title = 'My Observations - TreeSnap'
+    this._advancedFilterState = null
+
+    document.title = 'Observations - TreeSnap'
   }
 
   /**
@@ -39,9 +50,14 @@ export default class MyObservationsScene extends Component {
     let state                = this.state
     state.page               = pageState.page
     state.selectedCollection = pageState.collection
+    state.selectedGroup      = pageState.group
+    state.disableCollections = pageState.disableCollections
+    state.disableGroups      = pageState.disableGroups
     this.loadObservations(state)
     this.loadCollections()
     this.loadCategories()
+    this.loadGroups()
+    this.loadFilters()
     window.fixHeight()
   }
 
@@ -53,17 +69,31 @@ export default class MyObservationsScene extends Component {
   loadObservations(state) {
     this.setState({loading: true})
 
+    let advancedFilters = null
+    let filterID        = parseInt(state.selectedFilter)
+
+    if (filterID !== 0) {
+      let advancedFiltersArray = state.filters.filter(filter => filter.id === filterID)
+      if (advancedFiltersArray[0]) {
+        advancedFilters = advancedFiltersArray[0].rules
+      }
+    } else if (state.advancedFiltersRules) {
+      advancedFilters = Object.keys(state.advancedFiltersRules).length > 0 ? state.advancedFiltersRules : null
+    }
+
     axios.get('/web/user/observations', {
       params: {
-        page         : state.page,
-        per_page     : state.perPage,
-        search       : state.search || '',
-        category     : state.selectedCategory || '',
-        collection_id: parseInt(state.selectedCollection) || ''
+        page            : state.page,
+        per_page        : state.perPage,
+        search          : state.search || '',
+        category        : state.selectedCategory || '',
+        group_id        : parseInt(state.selectedGroup) || '',
+        collection_id   : parseInt(state.selectedCollection) || '',
+        advanced_filters: advancedFilters
       }
     }).then(response => {
       const data = response.data.data
-      const state = {
+      let state  = {
         observations: data.data,
         page        : data.current_page,
         nextPageUrl : data.next_page_url,
@@ -81,11 +111,19 @@ export default class MyObservationsScene extends Component {
         state.selectedCollection = data.collection_id
       }
 
+      if (data.group_id) {
+        state.selectedGroup = data.group_id
+      }
+
       this.setState(state)
       this.setBrowserHistory(state)
     }).catch(error => {
-      this.setState({pageLoading: false})
-      alert('Network Error. Please contact us to resolve this issue.')
+      this.setState({pageLoading: false, loading: false})
+      console.log(error)
+      let response = error.response
+      if (response && response.status === 500) {
+        alert('Network Error. Please contact us to resolve this issue.')
+      }
     })
   }
 
@@ -124,6 +162,30 @@ export default class MyObservationsScene extends Component {
   }
 
   /**
+   * Get groups the user belongs to.
+   */
+  loadGroups() {
+    axios.get('/web/groups').then(response => {
+      this.setState({
+        groups: response.data.data
+      })
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  /**
+   * Get filters the belong to this user.
+   */
+  loadFilters() {
+    axios.get('/web/filters').then(response => {
+      this.setState({filters: response.data.data})
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  /**
    * Generate pages array.
    *
    * @param total
@@ -145,14 +207,18 @@ export default class MyObservationsScene extends Component {
    * @param state
    */
   setBrowserHistory(state) {
-    let query = [];
+    let query = []
 
-    if(state.page) {
-      query.push(`page=${state.page}`);
+    if (state.page) {
+      query.push(`page=${state.page}`)
     }
 
-    if(state.selectedCollection) {
+    if (state.selectedCollection) {
       query.push(`collection=${state.selectedCollection}`)
+    }
+
+    if (state.selectedGroup && !state.selectedCollection) {
+      query.push(`group=${state.selectedGroup}`)
     }
 
     const params = query.join('&')
@@ -167,8 +233,11 @@ export default class MyObservationsScene extends Component {
   getBrowserState() {
     let params = Path.parseUrl(this.props.history.location.search)
 
-    let page       = 1
-    let collection = ''
+    let page               = 1
+    let collection         = 0
+    let group              = 0
+    let disableGroups      = false
+    let disableCollections = false
 
     if (typeof params.page !== 'undefined') {
       let p = parseInt(params.page)
@@ -180,13 +249,25 @@ export default class MyObservationsScene extends Component {
     if (typeof params.collection !== 'undefined') {
       let c = parseInt(params.collection)
       if (!isNaN(c)) {
-        collection = c
+        collection    = c
+        disableGroups = true
+      }
+    }
+
+    if (typeof params.group !== 'undefined' && !collection) {
+      let g = parseInt(params.group)
+      if (!isNaN(g)) {
+        group              = g
+        disableCollections = true
       }
     }
 
     return {
       page,
-      collection
+      collection,
+      group,
+      disableGroups,
+      disableCollections
     }
   }
 
@@ -225,7 +306,9 @@ export default class MyObservationsScene extends Component {
     this.loadObservations(state)
     this.setBrowserHistory(state)
 
-    document.body.scrollTop = 0
+    if (window.scrollTo) {
+      window.scrollTo(0, 0)
+    }
   }
 
   /**
@@ -310,9 +393,11 @@ export default class MyObservationsScene extends Component {
         <div className="content">
           <p>You have not submitted any observations yet.</p>
           <p>
-            {/* Unfortunately the links have to be structured this way or otherwise the spacing
-                         ** will be wrong and words wouldn't get separated by a space
-                         **/}
+            {
+              /* Unfortunately the links have to be structured this way or otherwise the spacing
+              ** will be wrong and words wouldn't get separated by a space
+              **/
+            }
             To submit new observations, please download the TreeSnap mobile app
             from <a href="https://play.google.com/store/apps/details?id=com.treesource">
             Google Play for Android
@@ -324,6 +409,11 @@ export default class MyObservationsScene extends Component {
     )
   }
 
+  /**
+   * Apply search filter.
+   *
+   * @param search
+   */
   searchFilter(search) {
     let state    = this.state
     state.search = search
@@ -332,14 +422,27 @@ export default class MyObservationsScene extends Component {
     this.loadObservations(state)
   }
 
+  /**
+   * Apply collection filter.
+   *
+   * @param selectedCollection
+   */
   collectionFilter(selectedCollection) {
     let state                = this.state
-    state.selectedCollection = selectedCollection
+    state.selectedCollection = parseInt(selectedCollection)
     state.page               = 1
-    this.setState({selectedCollection})
+
+    let disableGroups = state.selectedCollection !== 0
+
+    this.setState({selectedCollection, disableGroups})
     this.loadObservations(state)
   }
 
+  /**
+   * Apply categories filter.
+   *
+   * @param selectedCategory
+   */
   categoriesFilter(selectedCategory) {
     let state              = this.state
     state.selectedCategory = selectedCategory
@@ -348,6 +451,72 @@ export default class MyObservationsScene extends Component {
     this.loadObservations(state)
   }
 
+  /**
+   * Apply groups filter.
+   *
+   * @param selectedGroup
+   */
+  groupsFilter(selectedGroup) {
+    let state           = this.state
+    state.selectedGroup = parseInt(selectedGroup)
+    state.page          = 1
+
+    let disableCollections = state.selectedGroup !== 0
+
+    this.setState({selectedGroup, disableCollections})
+    this.loadObservations(state)
+  }
+
+  /**
+   * Apply advanced filters.
+   *
+   * @param selectedFilter
+   */
+  advancedFilter(selectedFilter) {
+    let state            = this.state
+    state.selectedFilter = parseInt(selectedFilter)
+    state.page           = 1
+
+    this.setState({selectedFilter})
+    this.loadObservations(state)
+  }
+
+  /**
+   * Apply newly created advanced filters.
+   *
+   * @param response
+   */
+  applyAdvancedFilters(response) {
+    this.setState({
+      showAdvancedFiltersModal: false
+    })
+
+    let data = response.data
+    if (data.filter) {
+      let filters = this.state.filters
+      filters.push(data.filter)
+      this.setState({
+        filters
+      })
+
+      this.advancedFilter(data.filter.id)
+      return
+    }
+
+    let state = this.state
+
+    state.advancedFiltersRules = response.params
+    state.page                 = 1
+    this.setState({page: 1, advancedFiltersRules: state.advancedFiltersRules})
+
+    this.loadObservations(state)
+  }
+
+  /**
+   * Change the view per page value.
+   *
+   * @param perPage
+   */
   changePerPage(perPage) {
     let state     = this.state
     state.perPage = perPage
@@ -363,26 +532,11 @@ export default class MyObservationsScene extends Component {
    */
   _renderFilters() {
     return (
-      <div className="columns is-multiline flex-v-center">
+      <div className="columns is-multiline">
         <div className="column is-4">
-          <p><b>Filters</b></p>
-        </div>
-        <div className="column is-8 has-text-right">
-          <span className="select is-small">
-            <select value={this.state.perPage}
-                    onChange={({target}) => this.changePerPage(target.value)}>
-              <option value="6">6</option>
-              <option value="12">12</option>
-              <option value="24">24</option>
-              <option value="48">48</option>
-              <option value="96">96</option>
-            </select>
-          </span>
-          <span className="ml-0">per page</span>
-        </div>
-        <div className="column is-4">
-          <div className="field has-addons">
-            <div className="control is-expanded">
+          <div className="field">
+            <label className="label">Search</label>
+            <div className="control">
               <input type="search"
                      className="input"
                      placeholder="Search"
@@ -392,31 +546,11 @@ export default class MyObservationsScene extends Component {
             </div>
           </div>
         </div>
-        {this.state.collections.length > 0 ?
-          <div className="column is-4">
-            <div className="field">
-              <div className="control">
-                <span className="select is-full-width">
-                  <select
-                    value={this.state.selectedCollection}
-                    onChange={({target}) => this.collectionFilter(target.value)}>
-                    <option value={0}>All Collections</option>
-                    {this.state.collections.map(collection => {
-                      return (
-                        <option key={collection.value}
-                                value={collection.value}>
-                          {collection.label}
-                        </option>
-                      )
-                    })}
-                  </select>
-                </span>
-              </div>
-            </div>
-          </div>
-          : null}
+
         <div className="column is-4">
           <div className="field">
+            <label className="label">Species</label>
+
             <div className="control">
               <span className="select is-full-width">
                 <select value={this.state.selectedCategory}
@@ -435,8 +569,113 @@ export default class MyObservationsScene extends Component {
             </div>
           </div>
         </div>
+
+        <div className="column is-4">
+          <div className="field">
+            <label className="label">Collections</label>
+            <div className="control is-positioned-relatively">
+              <span className="select is-full-width">
+                <select
+                  value={this.state.selectedCollection}
+                  onChange={({target}) => this.collectionFilter(target.value)}
+                  disabled={this.state.disableCollections}>
+                  <option value={0}>None</option>
+                  {this.state.collections.map(collection => {
+                    return (
+                      <option key={collection.value}
+                              value={collection.value}>
+                        {collection.label}
+                      </option>
+                    )
+                  })}
+                </select>
+              </span>
+              {this.state.disableCollections ?
+                <p className="help is-warning is-pulled-up">Collections filter can only be applied when the groups filter is not applied.</p>
+                : null}
+            </div>
+            {this.state.collections.length === 0 && !this.state.loading ?
+              <p className="help is-warning">You currently have no collections.</p>
+              : null}
+          </div>
+        </div>
+
+        <div className="column is-4">
+          <div className="field">
+            <label className="label">Group</label>
+
+            <div className="control is-positioned-relatively">
+              <span className="select is-full-width">
+                <select value={this.state.selectedGroup}
+                        onChange={({target}) => this.groupsFilter(target.value)}
+                        disabled={this.state.disableGroups}>
+                  <option value={0}>My observations only</option>
+                  {this.state.groups.map(group => {
+                    return (
+                      <option key={group.id}
+                              value={group.id}>
+                        {group.name}
+                      </option>
+                    )
+                  })}
+                </select>
+              </span>
+              {this.state.disableGroups ?
+                <p className="help is-warning is-pulled-up">Group filter can only be applied when the collections filter is not applied.</p>
+                : null}
+            </div>
+          </div>
+        </div>
+
+        <div className="column is-4">
+          <div className="field">
+            <label className="label">Saved Advanced Filters</label>
+
+            <div className="control">
+              <span className="select is-full-width">
+                <select value={this.state.selectedFilter}
+                        onChange={({target}) => this.advancedFilter(target.value)}>
+                  <option value={0}>None</option>
+                  {this.state.filters.map(filter => {
+                    return (
+                      <option key={filter.id}
+                              value={filter.id}>
+                        {filter.name}
+                      </option>
+                    )
+                  })}
+                </select>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="column is-4">
+          <div className="mt-2">
+            <a href="javascript:;" onClick={() => {
+              this.setState({showAdvancedFiltersModal: true})
+              if (this._advancedFilterState) {
+                setTimeout(() => {
+                  this.advancedFilterModal.reapplyState(this._advancedFilterState)
+                }, 200)
+              }
+            }}>
+              Advanced Filters
+            </a>
+          </div>
+        </div>
       </div>
     )
+  }
+
+  /**
+   * Save advanced filters state to reapply later when reopening the modal.
+   * This is used to regenerate any applied advanced filters.
+   *
+   * @param {object} state
+   */
+  saveFilterState(state) {
+    this._advancedFilterState = state
   }
 
   /**
@@ -445,18 +684,26 @@ export default class MyObservationsScene extends Component {
    * @returns {XML}
    */
   render() {
-    const showing = this.state.count
-    const total   = this.state.total
+    const total = this.state.total
 
     return (
       <AccountView>
         <div className="columns">
           <div className="column">
-            <h3 className="title is-3">My Observations</h3>
+            <h3 className="title is-3">Observations</h3>
           </div>
-          <div className="column has-text-right">
+          <div className="column has-text-right-desktop-only">
             <p>
-              Showing {showing} out of {total} observations
+              Show <span className="select is-small">
+              <select value={this.state.perPage}
+                      onChange={({target}) => this.changePerPage(target.value)}>
+                <option value="6">6</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="48">48</option>
+                <option value="96">96</option>
+              </select>
+            </span> per page. Total of {total} observations found
             </p>
           </div>
         </div>
@@ -469,6 +716,17 @@ export default class MyObservationsScene extends Component {
         </div>
 
         {this._renderPageLinks()}
+
+        <AdvancedFiltersModal
+          ref={ref => this.advancedFilterModal = ref}
+          visible={this.state.showAdvancedFiltersModal}
+          onCloseRequest={() => this.setState({showAdvancedFiltersModal: false})}
+          onCreate={this.applyAdvancedFilters.bind(this)}
+          onStateChange={this.saveFilterState.bind(this)}
+          withObservations={false}
+          resetForm={false}
+          showCount={false}
+        />
 
         <Spinner visible={this.state.pageLoading}/>
       </AccountView>

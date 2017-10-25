@@ -403,9 +403,10 @@ export default class App extends Component {
   /**
    * Deal with newly created advanced filters.
    *
-   * @param data
+   * @param response
    */
-  filterCreated(data) {
+  filterCreated(response) {
+    let data = response.data
     if (data.filter) {
       let filters        = this.state.filters.concat({
         label: data.filter.name,
@@ -446,7 +447,6 @@ export default class App extends Component {
   boundsChanged(newBounds) {
     // Determine if the initial loader completed then respond to bounds change
     // If the initial loader is done, this.initialLoad is set to FALSE
-    console.log('should be 0: ', this.state.selectedFilter, 'should be false: ', this.state.appliedAdvancedFilter, 'Should be false: ', this.initialLoad)
     if (!this.initialLoad) {
       // Determine if there is an applied advanced filter
       if (parseInt(this.state.selectedFilter) === 0 && !this.state.appliedAdvancedFilter) {
@@ -642,9 +642,11 @@ export default class App extends Component {
                        this.changeCategory(category)
                      }}>
                     <span className="icon mr-0">
-                      {this.state.selectedCategories.indexOf(category) !== -1 ? <i className="fa fa-check"></i> : <i className="fa fa-times"></i> }
+                      {this.state.selectedCategories.indexOf(category) !== -1 ? <i className="fa fa-check"></i> :
+                        <i className="fa fa-times"></i>}
                     </span>
-                    <span>{category} {this.state.selectedCategories.indexOf(category) === -1 ? <small>(removed)</small> : null}</span>
+                    <span>{category} {this.state.selectedCategories.indexOf(category) === -1 ?
+                      <small>(removed)</small> : null}</span>
                   </a>
                 )
               })}
