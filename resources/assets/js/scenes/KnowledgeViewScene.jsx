@@ -6,6 +6,7 @@ import Spinner from '../components/Spinner'
 import PropTypes from 'prop-types'
 import KnowledgeSidebarLinks from '../helpers/KnowledgeSidebarLinks'
 import PartnerList from '../components/PartnerList'
+import AboutUsView from '../components/AboutUsView'
 
 export default class KnowledgeViewScene extends Component {
     constructor(props) {

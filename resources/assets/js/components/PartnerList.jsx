@@ -14,7 +14,7 @@ export default class PartnerList extends Component {
                         <div className="media-content">
                             <p className="title">USDA Forest Service Northern Research Station</p>
                             <p className="feature-text">
-                                The UDSA Forest Service Northern Research Station's mission is to
+                                The USDA Forest Service Northern Research Station's mission is to
                                 provide basic and applied knowledge about, and develop methods for, protecting
                                 and sustaining landscapes disturbed by invasive species and other agents.
                                 As a TreeSnap partner, they will use data on ash and elm to find trees
@@ -53,7 +53,7 @@ export default class PartnerList extends Component {
                         <div className="media-content">
                             <p className="title">Hemlock Restoration Initiative</p>
                             <p className="feature-text">
-                                The Hemlock Restoration Initiatve aims to restore eastern and Carolina
+                                The Hemlock Restoration Initiative aims to restore eastern and Carolina
                                 hemlocks to their native habitats throughout North Carolina and to mitigate
                                 damage to hemlocks caused by infestation of the hemlock woolly adelgid. They
                                 will use data on hemlock to find trees that are resistant to hemlock woolly

@@ -37,7 +37,7 @@ class App extends Component {
           <Route path={'/contact'} component={ContactUsScene}/>
           <Route path={'/about'}
                  component={() =>
-                   <KnowledgeScene docPath='/web/docs/about' title="About Us"/>
+                   <KnowledgeViewScene title="About Us"/>
                  }/>
           <Route path={'/privacy-policy'}
                  component={() =>

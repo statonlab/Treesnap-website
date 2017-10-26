@@ -25105,7 +25105,7 @@ var App = function (_Component) {
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["Route"], { path: '/contact', component: __WEBPACK_IMPORTED_MODULE_8__scenes_ContactUsScene__["a" /* default */] }),
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["Route"], { path: '/about',
             component: function component() {
-              return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__scenes_KnowledgeScene__["a" /* default */], { docPath: '/web/docs/about', title: 'About Us' });
+              return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__scenes_KnowledgeViewScene__["a" /* default */], { title: 'About Us' });
             } }),
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["Route"], { path: '/privacy-policy',
             component: function component() {
@@ -25190,6 +25190,62 @@ window.axios.defaults.headers.common = {
 
 // Renew the CSRF token every 30 minutes
 setInterval(window.renewLaravelToken, 1000 * 60 * 30);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AboutUsView.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var AboutUsView = function (_Component) {
+    _inherits(AboutUsView, _Component);
+
+    function AboutUsView() {
+        _classCallCheck(this, AboutUsView);
+
+        return _possibleConstructorReturn(this, (AboutUsView.__proto__ || Object.getPrototypeOf(AboutUsView)).apply(this, arguments));
+    }
+
+    _createClass(AboutUsView, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'home-section', style: { padding: '4rem 0' } },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h3',
+                        null,
+                        ' The TreeSnap Project'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'p',
+                        null,
+                        'Help our nation\u2019s trees! Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying genetic diversity of tree species and building better tree breeding programs.'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return AboutUsView;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (AboutUsView);
 
 /***/ }),
 
@@ -31171,7 +31227,7 @@ var PartnerList = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'p',
                                 { className: 'feature-text' },
-                                'The UDSA Forest Service Northern Research Station\'s mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents. As a TreeSnap partner, they will use data on ash and elm to find trees that are resistant to the emerald ash borer and Dutch elm disease. They plan to use data from areas where these threats have been established for some time to identify \u201Clingering\u201D trees that survive long past others have died to be used in research and breeding programs.'
+                                'The USDA Forest Service Northern Research Station\'s mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents. As a TreeSnap partner, they will use data on ash and elm to find trees that are resistant to the emerald ash borer and Dutch elm disease. They plan to use data from areas where these threats have been established for some time to identify \u201Clingering\u201D trees that survive long past others have died to be used in research and breeding programs.'
                             )
                         )
                     )
@@ -31229,7 +31285,7 @@ var PartnerList = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'p',
                                 { className: 'feature-text' },
-                                'The Hemlock Restoration Initiatve aims to restore eastern and Carolina hemlocks to their native habitats throughout North Carolina and to mitigate damage to hemlocks caused by infestation of the hemlock woolly adelgid. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
+                                'The Hemlock Restoration Initiative aims to restore eastern and Carolina hemlocks to their native habitats throughout North Carolina and to mitigate damage to hemlocks caused by infestation of the hemlock woolly adelgid. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
                             )
                         )
                     )
@@ -35402,6 +35458,7 @@ __WEBPACK_IMPORTED_MODULE_7__helpers_KnowledgeSidebarLinks__["a" /* default */].
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__ = __webpack_require__("./resources/assets/js/helpers/KnowledgeSidebarLinks.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_PartnerList__ = __webpack_require__("./resources/assets/js/components/PartnerList.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_AboutUsView__ = __webpack_require__("./resources/assets/js/components/AboutUsView.jsx");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35409,6 +35466,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -35466,7 +35524,7 @@ var KnowledgeViewScene = function (_Component) {
                                 'div',
                                 { className: 'column' },
                                 this.props.title == 'Partners' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null) : null,
-                                this.props.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AboutUsView, null) : null,
+                                this.props.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_AboutUsView__["a" /* default */], null) : null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
                             )
                         )
