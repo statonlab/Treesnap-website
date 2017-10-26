@@ -14,10 +14,10 @@ Some of the trees TreeSnap records are very valuable or are on private land. To 
 
 We do not publicly display precise locations to protect the trees and individual landowner privacy.  Only administrators, or the logged in user who reported a tree, can see the precise location of a tree. You can also see the exact location you reported on your own mobile device.
 
- Rest assured, your data and the original accurate locations are stored and available for research groups so that you can help save these tree species!
+Rest assured, your data and the original accurate locations are stored and available for research groups so that you can help save these tree species!
 
 ### Is my data safe?
-TreeSnap uses OpenSSL encryption to secure all of your data.  The exact locations of your trees are stored in an encrypted databases.  Only our partner organizations will be granted access to the exact location of trees you report in TreeSnap. 
+TreeSnap uses an encrypted connection (TLSv1.3) to secure all communication between the server and your mobile device or browser.  The exact locations of your trees are stored in a secured databases behind a firewall.  Only our partner organizations will be granted access to the exact location of trees you report in TreeSnap.
 
 ### Are there training documents for using TreeSnap?
 
