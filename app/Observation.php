@@ -15,7 +15,7 @@ class Observation extends Model
         'user_id',
         'observation_category',
         'images',
-        'thumbnails',
+        'thumbnail',
         'longitude',
         'latitude',
         'data',
