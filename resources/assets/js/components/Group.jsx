@@ -670,7 +670,7 @@ export default class Group extends Component {
               <span className="icon is-small">
                 <i className="fa fa-lock"></i>
               </span>
-              <span>Privacy Settings</span>
+              <span>Group Privacy</span>
             </a>
           </div>
         </div>

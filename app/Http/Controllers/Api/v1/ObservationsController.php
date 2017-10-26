@@ -123,10 +123,11 @@ class ObservationsController extends Controller
         $fuzzy_coords = $this->fuzifyCoorinates($request->latitude, $request->longitude);
 
         // Create the record
+        $data = json_decode($request->meta_data);
         $observation = Observation::create([
             'user_id' => $user->id,
             'observation_category' => $request->observation_category,
-            'data' => json_decode($request->meta_data),
+            'data' => !empty($data) ? $data : [],
             'longitude' => $request->longitude,
             'latitude' => $request->latitude,
             'location_accuracy' => $request->location_accuracy,
@@ -135,6 +136,7 @@ class ObservationsController extends Controller
             'fuzzy_coords' => $fuzzy_coords,
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
+            'thumbnail' => '/images/placeholder-min.png'
         ]);
 
         if (! $observation) {
