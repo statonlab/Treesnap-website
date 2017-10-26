@@ -31200,7 +31200,7 @@ var PartnerList = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'p',
                                 { className: 'feature-text' },
-                                'The Forest Restoration Alliance works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
+                                'The Forest Restoration Alliance works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees.'
                             )
                         )
                     )
@@ -35465,13 +35465,9 @@ var KnowledgeViewScene = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'column' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'box body' },
-                                    this.props.title == 'Partners' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null) : null,
-                                    this.props.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AboutUsView, null) : null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
-                                )
+                                this.props.title == 'Partners' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null) : null,
+                                this.props.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AboutUsView, null) : null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
                             )
                         )
                     )

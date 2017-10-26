@@ -15,19 +15,13 @@ export default class PartnerList extends Component {
                             <p className="title">USDA Forest Service Northern Research Station</p>
                             <p className="feature-text">
                                 The UDSA Forest Service Northern Research Station's mission is to
-                                provide
-                                basic and applied knowledge about, and develop methods for, protecting
-                                and
-                                sustaining landscapes disturbed by invasive species and other agents.
+                                provide basic and applied knowledge about, and develop methods for, protecting
+                                and sustaining landscapes disturbed by invasive species and other agents.
                                 As a TreeSnap partner, they will use data on ash and elm to find trees
-                                that
-                                are resistant to the emerald ash borer and Dutch elm disease. They plan
-                                to
-                                use data from areas where these threats have been established for some
-                                time
-                                to identify “lingering” trees that survive long past others have died to
-                                be
-                                used in research and breeding programs.
+                                that are resistant to the emerald ash borer and Dutch elm disease. They plan
+                                to use data from areas where these threats have been established for some
+                                time to identify “lingering” trees that survive long past others have died to
+                                be used in research and breeding programs.
                             </p>
                         </div>
                     </div>
@@ -44,8 +38,7 @@ export default class PartnerList extends Component {
                             <p className="feature-text">
                                 The Forest Restoration Alliance works to restore healthy forests and
                                 landscapes in eastern America by researching and addressing invasive pest
-                                threats to hemlock, firs, and other native trees. They will use data on
-                                hemlock to find trees that are resistant to hemlock woolly adelgid.
+                                threats to hemlock, firs, and other native trees.
                             </p>
                         </div>
                     </div>
@@ -82,7 +75,6 @@ export default class PartnerList extends Component {
                             <p className="feature-text">
                                 The American Chestnut Foundation seeks to return the American chestnut to
                                 its native range.
-
                                 The American Chestnut Foundation will use data on chestnuts to find trees
                                 that are resistant to chestnut blight to be added to breeding and research
                                 programs. In addition to sampling with the TreeSnap app, please submit a
@@ -114,7 +106,6 @@ export default class PartnerList extends Component {
                                 to build a breeding program. Their goal is to be better prepared in the
                                 event that any invasive pests that target white oak are introduced in the
                                 future.
-
                             </p>
                         </div>
                     </div>

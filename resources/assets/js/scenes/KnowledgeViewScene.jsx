@@ -34,15 +34,13 @@ export default class KnowledgeViewScene extends Component {
                                 <LinksSidebar links={KnowledgeSidebarLinks} title="Knowledge Base"/>
                             </div>
                             <div className="column">
-                                <div className="box body">
-                                    {this.props.title == 'Partners' ?
-                                        (<PartnerList/>)
-                                        : null}
-                                    {this.props.title == 'About Us' ?
-                                        <AboutUsView/>
-                                        : null}
-                                    <Spinner visible={this.state.loading} inline={true}/>
-                                </div>
+                                {this.props.title == 'Partners' ?
+                                    (<PartnerList/>)
+                                    : null}
+                                {this.props.title == 'About Us' ?
+                                    <AboutUsView/>
+                                    : null}
+                                <Spinner visible={this.state.loading} inline={true}/>
                             </div>
                         </div>
                     </div>
