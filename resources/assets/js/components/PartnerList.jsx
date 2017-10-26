@@ -98,7 +98,7 @@ export default class PartnerList extends Component {
 
                     <div className="media">
                         <div className="media-left">
-                            <img src="/images/flat-icons/padlock.png"
+                            <img src="/images/FHC_small.png"
                                  alt="Man Icon"
                                  className="feature-icon"/>
                         </div>

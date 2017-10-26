@@ -31272,7 +31272,7 @@ var PartnerList = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/padlock.png',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FHC_small.png',
                                 alt: 'Man Icon',
                                 className: 'feature-icon' })
                         ),
@@ -35441,6 +35441,7 @@ var KnowledgeViewScene = function (_Component) {
 
       var title = this.props.title || 'About Us';
       document.title = title + ' - TreeSnap';
+      console.log(title);
     }
   }, {
     key: 'render',
@@ -35470,7 +35471,8 @@ var KnowledgeViewScene = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
                   { className: 'box body' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null),
+                  this.title == 'Partners' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null) : null,
+                  this.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AboutUsView, null) : null,
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
                 )
               )
