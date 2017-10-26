@@ -31185,7 +31185,7 @@ var PartnerList = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/folder.png',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
                                 alt: 'Man Icon',
                                 className: 'feature-icon' })
                         ),
@@ -31214,7 +31214,7 @@ var PartnerList = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/archives.png',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
                                 alt: 'Man Icon',
                                 className: 'feature-icon' })
                         ),
@@ -35420,83 +35420,80 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var KnowledgeViewScene = function (_Component) {
-  _inherits(KnowledgeViewScene, _Component);
+    _inherits(KnowledgeViewScene, _Component);
 
-  function KnowledgeViewScene(props) {
-    _classCallCheck(this, KnowledgeViewScene);
+    function KnowledgeViewScene(props) {
+        _classCallCheck(this, KnowledgeViewScene);
 
-    var _this = _possibleConstructorReturn(this, (KnowledgeViewScene.__proto__ || Object.getPrototypeOf(KnowledgeViewScene)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (KnowledgeViewScene.__proto__ || Object.getPrototypeOf(KnowledgeViewScene)).call(this, props));
 
-    _this.state = {
-      content: '',
-      loading: false
-    };
-    return _this;
-  }
-
-  _createClass(KnowledgeViewScene, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      window.fixHeight();
-
-      var title = this.props.title || 'About Us';
-      document.title = title + ' - TreeSnap';
-      console.log(title);
+        _this.state = {
+            content: '',
+            loading: false
+        };
+        return _this;
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'document' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__components_Navbar__["a" /* default */], null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'home-section short-content' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'container' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'div',
-              { className: 'columns' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+
+    _createClass(KnowledgeViewScene, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            window.fixHeight();
+            document.title = title + ' - TreeSnap';
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'column is-3' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_LinksSidebar__["a" /* default */], { links: __WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__["a" /* default */], title: 'Knowledge Base' })
-              ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'column' },
+                { className: 'document' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__components_Navbar__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'div',
-                  { className: 'box body' },
-                  this.title == 'Partners' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null) : null,
-                  this.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AboutUsView, null) : null,
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
-                )
-              )
-            )
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_HomeFooter__["a" /* default */], null)
-      );
-    }
-  }]);
+                    'div',
+                    { className: 'home-section short-content' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'container' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'columns' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'column is-3' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_LinksSidebar__["a" /* default */], { links: __WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__["a" /* default */], title: 'Knowledge Base' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'column' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'box body' },
+                                    this.props.title == 'Partners' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_PartnerList__["a" /* default */], null) : null,
+                                    this.props.title == 'About Us' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(AboutUsView, null) : null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner__["a" /* default */], { visible: this.state.loading, inline: true })
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_HomeFooter__["a" /* default */], null)
+            );
+        }
+    }]);
 
-  return KnowledgeViewScene;
+    return KnowledgeViewScene;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (KnowledgeViewScene);
 
 
 KnowledgeViewScene.PropTypes = {
-  docPath: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string.isRequired,
-  title: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string
+    docPath: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string.isRequired,
+    title: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string
 };
 
 __WEBPACK_IMPORTED_MODULE_6__helpers_KnowledgeSidebarLinks__["a" /* default */].defaultProps = {
-  title: false
+    title: false
 };
 
 /***/ }),

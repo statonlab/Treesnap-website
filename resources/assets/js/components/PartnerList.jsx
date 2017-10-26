@@ -35,7 +35,7 @@ export default class PartnerList extends Component {
                 <div className="box">
                     <div className="media">
                         <div className="media-left">
-                            <img src="/images/flat-icons/folder.png"
+                            <img src="/images/HRI.png"
                                  alt="Man Icon"
                                  className="feature-icon"/>
                         </div>
@@ -53,7 +53,7 @@ export default class PartnerList extends Component {
                 <div className="box">
                     <div className="media">
                         <div className="media-left">
-                            <img src="/images/flat-icons/archives.png"
+                            <img src="/images/HRI.png"
                                  alt="Man Icon"
                                  className="feature-icon"/>
                         </div>

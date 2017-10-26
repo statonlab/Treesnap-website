@@ -19,10 +19,7 @@ export default class KnowledgeViewScene extends Component {
 
     componentDidMount() {
         window.fixHeight()
-
-        let title = this.props.title || 'About Us'
         document.title = `${title} - TreeSnap`
-        console.log(title)
     }
 
     render() {
@@ -38,10 +35,10 @@ export default class KnowledgeViewScene extends Component {
                             </div>
                             <div className="column">
                                 <div className="box body">
-                                    {this.title == 'Partners' ?
-                                        <PartnerList/>
+                                    {this.props.title == 'Partners' ?
+                                        (<PartnerList/>)
                                         : null}
-                                    {this.title == 'About Us' ?
+                                    {this.props.title == 'About Us' ?
                                         <AboutUsView/>
                                         : null}
                                     <Spinner visible={this.state.loading} inline={true}/>
