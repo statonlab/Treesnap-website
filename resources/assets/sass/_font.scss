@@ -9,3 +9,19 @@
 .text-success {
   color: $primary;
 }
+
+.help {
+  &.is-warning {
+    color: darken($warning, 10%);
+    font-weight: bold;
+  }
+
+  &.is-pulled-up {
+    background-color: $select-input-bg-disabled;
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    padding: .25rem;
+    box-shadow: 0 0 1px rgba(0,0,0,0.24);
+  }
+}

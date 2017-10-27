@@ -40,7 +40,7 @@ class Collection extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')->withPivot(['can_customize']);
     }
 
     /**
@@ -51,5 +51,25 @@ class Collection extends Model
     public function observations()
     {
         return $this->belongsToMany('App\Observation');
+    }
+
+    /**
+     * Update this collection's permissions for a specific user.
+     *
+     * @param $user_id
+     * @param $can_customize
+     */
+    public function updatePermissions($user_id, $can_customize)
+    {
+        $collection_id = $this->id;
+
+        \DB::table('collection_user')->where([
+            'collection_id' => $collection_id,
+            'user_id' => $user_id,
+        ])->update([
+            'can_customize' => $can_customize ? 1 : 0,
+        ]);
+
+        return $this;
     }
 }

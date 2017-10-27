@@ -12,6 +12,12 @@ class MapController extends Controller
 {
     use Responds, Observes;
 
+    /**
+     * Load observations for the map.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
 
@@ -31,11 +37,36 @@ class MapController extends Controller
     }
 
     /**
+     * Get total observations count.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function countObservations(Request $request)
+    {
+        $user = $request->user();
+        $isAdmin = false;
+        if ($user) {
+            $isAdmin = $user->isScientist() || $user->isAdmin();
+        }
+
+        if ($isAdmin) {
+            return $this->success([
+                'count' => Observation::count(),
+            ]);
+        }
+
+        return $this->success([
+            'count' => Observation::where('is_private', false)->count(),
+        ]);
+    }
+
+    /**
      * Query the database for observations.
      *
      * @param $user
      * @param $isAdmin
-     * @return $this|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|static|static[]
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection
      */
     public function getObservationsFromDB($user, $isAdmin, $bounds)
     {
@@ -59,12 +90,16 @@ class MapController extends Controller
         $observations = $observations->orderBy('observations.id', 'desc')->get();
 
         if ($user) {
+            $collections = $user->collections->map(function ($collection) {
+                return $collection->id;
+            });
+
             $observations->load([
                 'flags' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 },
-                'collections' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
+                'collections' => function ($query) use ($collections) {
+                    $query->whereIn('collections.id', $collections);
                 },
             ]);
         }

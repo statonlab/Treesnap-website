@@ -38,6 +38,7 @@
 }
 
 .tooltip {
+  position: static;
   &.top {
     .tooltip-text {
       bottom: 110%;
@@ -92,6 +93,6 @@
 .card-footer-z-index {
   &,
   > a {
-    z-index: 1000;
+    //z-index: 1000;
   }
 }

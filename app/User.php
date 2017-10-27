@@ -92,7 +92,7 @@ class User extends Authenticatable
      */
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class)->withPivot(['share']);
     }
 
     /**
@@ -116,13 +116,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user collections that are shared with them
+     * Get user owned collections and those that are shared with them.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function collections()
     {
-        return $this->belongsToMany(Collection::class);
+        return $this->belongsToMany(Collection::class)->withPivot(['can_customize']);
     }
 
     /**
@@ -133,6 +133,16 @@ class User extends Authenticatable
     public function ownedCollections()
     {
         return $this->hasMany(Collection::class);
+    }
+
+    /**
+     * Get collections that the user is allowed to customize.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function customizableCollections()
+    {
+        return $this->belongsToMany(Collection::class)->withPivot(['can_customize'])->wherePivot('can_customize', true);
     }
 
     /**
@@ -214,7 +224,7 @@ class User extends Authenticatable
      */
     protected function generateFriends()
     {
-        $groups = $this->groups()->with('users')->get();
+        $groups = $this->groups()->wherePivot('share', true)->with('users')->get();
 
         foreach ($groups as $group) {
             foreach ($group->users as $user) {

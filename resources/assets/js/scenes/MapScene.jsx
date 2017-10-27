@@ -34,27 +34,28 @@ export default class App extends Component {
     this.initialLoad = true
 
     this.state = {
-      markers             : [],
-      categories          : [],
-      selectedCategories  : [],
-      selectedConfirmation: 0,
-      center              : this.defaultMapPosition.center,
-      zoom                : this.defaultMapPosition.zoom,
-      selectedMarker      : null,
-      galleryImages       : [],
-      showSidebar         : false,
-      loading             : false,
-      showFilters         : false,
-      searchTerm          : '',
-      collections         : [],
-      selectedCollection  : 0,
-      filters             : [],
-      selectedFilter      : 0,
-      showFiltersModal    : false,
-      total               : 0,
-      showCollectionsForm : false,
-      showFlagForm        : false,
-      ownedCollections    : []
+      markers              : [],
+      categories           : [],
+      selectedCategories   : [],
+      selectedConfirmation : 0,
+      center               : this.defaultMapPosition.center,
+      zoom                 : this.defaultMapPosition.zoom,
+      selectedMarker       : null,
+      galleryImages        : [],
+      showSidebar          : false,
+      loading              : false,
+      showFilters          : false,
+      searchTerm           : '',
+      collections          : [],
+      selectedCollection   : 0,
+      filters              : [],
+      selectedFilter       : 0,
+      showFiltersModal     : false,
+      total                : 0,
+      showCollectionsForm  : false,
+      showFlagForm         : false,
+      ownedCollections     : [],
+      appliedAdvancedFilter: false
     }
 
     document.title = 'Map - TreeSnap'
@@ -67,16 +68,36 @@ export default class App extends Component {
     this.loadCategories()
     this.loadCollections()
     this.loadFilters()
+    this.loadCount()
     document.body.className = 'map-page'
   }
 
+  /**
+   * Set loading state and inititate the sidebar
+   */
   componentDidMount() {
     this.setState({loading: true})
     this.initSidebar()
   }
 
+  /**
+   * Revert body classes
+   */
   componentWillUnmount() {
     document.body.className = ''
+  }
+
+  /**
+   *
+   */
+  loadCount() {
+    axios.get('/web/map/count').then(response => {
+      this.setState({
+        total: response.data.data.count
+      })
+    }).catch(error => {
+      console.log(error.response)
+    })
   }
 
   /**
@@ -121,11 +142,6 @@ export default class App extends Component {
   loadObservations() {
     let bounds = this.refs.maps.getBounds()
 
-   let g = {
-      southWest: bounds.getSouthWest().toJSON(),
-      northEast: bounds.getNorthEast().toJSON()
-    }
-
     axios.get('/web/map', {
       params: {
         bounds: {
@@ -144,18 +160,19 @@ export default class App extends Component {
         this.disclaimer.show()
       }
 
+      let filtered
       if (!this.filter) {
         this.filter = new MarkersFilter(markers, this.state.selectedCategories)
+        filtered    = this.filter._filter()
       } else {
-        this.filter.replace(markers)
+        this.filter.resetBounds()
+        filtered = this.filter.replace(markers)
       }
 
-      let filtered = this.filter.bounds(this.refs.maps.getBounds())
-      this.setState({markers: filtered, total: markers.length})
+      this.setState({markers: filtered, loading: false})
     }).catch(error => {
-      console.log(error)
-    }).then(() => {
       this.setState({loading: false})
+      console.log(error)
     })
   }
 
@@ -198,7 +215,7 @@ export default class App extends Component {
       console.log(error.response)
     })
 
-    axios.get('/web/collections/owned/1').then(response => {
+    axios.get('/web/collections/customizable/1').then(response => {
       this.setState({ownedCollections: response.data.data})
     }).catch(error => {
       if (error.response && error.response.status === 401) {
@@ -386,9 +403,10 @@ export default class App extends Component {
   /**
    * Deal with newly created advanced filters.
    *
-   * @param data
+   * @param response
    */
-  filterCreated(data) {
+  filterCreated(response) {
+    let data = response.data
     if (data.filter) {
       let filters        = this.state.filters.concat({
         label: data.filter.name,
@@ -408,7 +426,7 @@ export default class App extends Component {
     }
 
     let markers = this.filter.replace(data.observations)
-    this.setState({markers, showFiltersModal: false, total: data.observations.length})
+    this.setState({markers, showFiltersModal: false, appliedAdvancedFilter: true})
   }
 
   /**
@@ -427,8 +445,15 @@ export default class App extends Component {
    * @param newBounds
    */
   boundsChanged(newBounds) {
+    // Determine if the initial loader completed then respond to bounds change
+    // If the initial loader is done, this.initialLoad is set to FALSE
     if (!this.initialLoad) {
-      return this.loadObservations()
+      // Determine if there is an applied advanced filter
+      if (parseInt(this.state.selectedFilter) === 0 && !this.state.appliedAdvancedFilter) {
+        // No filters applied, so load observations with new bounds
+        this.loadObservations()
+        return
+      }
     }
 
     if (this.filter) {
@@ -592,16 +617,20 @@ export default class App extends Component {
           <p className="control has-icon has-icon-right">
             <input className="input"
                    type="search"
-                   placeholder="Search"
+                   placeholder="Search visible area on map"
                    value={this.state.searchTerm}
                    onChange={({target}) => this.search(target.value)}/>
             <span className="icon is-small">
               <i className="fa fa-search"></i>
             </span>
           </p>
+          <p className="help">
+            Search by user name or observation title.
+          </p>
         </div>
 
         <div className="field">
+          <label className="label">Observation Category</label>
           <div className="control">
             <div className="checkbox-container">
               {this.state.categories.map((category, index) => {
@@ -613,13 +642,68 @@ export default class App extends Component {
                        this.changeCategory(category)
                      }}>
                     <span className="icon mr-0">
-                      <i className="fa fa-check"></i>
+                      {this.state.selectedCategories.indexOf(category) !== -1 ? <i className="fa fa-check"></i> :
+                        <i className="fa fa-times"></i>}
                     </span>
-                    <span>{category}</span>
+                    <span>{category} {this.state.selectedCategories.indexOf(category) === -1 ?
+                      <small>(removed)</small> : null}</span>
                   </a>
                 )
               })}
             </div>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Collections</label>
+          <div className="control">
+            <span className="select is-full-width">
+              <select value={this.state.selectedCollection}
+                      onChange={({target}) => this.changeCollection(target.value)}>
+                <option value={0}>Select Collection</option>
+                {this.state.collections.map(collection => {
+                  return (
+                    <option value={parseInt(collection.value)}
+                            key={collection.value}>
+                      {collection.label}
+                    </option>
+                  )
+                })}
+              </select>
+            </span>
+            {this.state.filters.length === 0 ?
+              <p className='help is-warning'>You currently have no saved collections</p>
+              : null}
+            <p className="help">
+              You can create or add observations to a collection using the
+              <span className="ml-0 mr-0 icon is-small"><i className="fa fa-star"></i></span> icon.
+            </p>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Saved Advanced Filters</label>
+          <div className="control">
+            <span className="select is-full-width">
+              <select value={this.state.selectedFilter}
+                      onChange={({target}) => this.changeFilter(target.value)}>
+                <option value={0}>Select Saved Filter</option>
+                {this.state.filters.map(filter => {
+                  return (
+                    <option value={parseInt(filter.value)}
+                            key={filter.value}>
+                      {filter.label}
+                    </option>
+                  )
+                })}
+              </select>
+            </span>
+            {this.state.filters.length === 0 ?
+              <p className='help is-warning'>You currently have no saved filters</p>
+              : null}
+            <p className="help">
+              You can save advanced filters by providing a label before applying the filters.
+            </p>
           </div>
         </div>
 
@@ -639,61 +723,23 @@ export default class App extends Component {
           </div>
         </div>
 
-        {this.state.collections.length > 0 ?
-          <div className="field">
-            <label className="label">Collections</label>
-            <div className="control">
-              <span className="select is-full-width">
-                <select value={this.state.selectedCollection}
-                        onChange={({target}) => this.changeCollection(target.value)}>
-                  <option value={0}>Select Collection</option>
-                  {this.state.collections.map(collection => {
-                    return (
-                      <option value={parseInt(collection.value)}
-                              key={collection.value}>
-                        {collection.label}
-                      </option>
-                    )
-                  })}
-                </select>
-              </span>
-              <p className="help">
-                You can create or add observations to a collection using the
-                <span className="ml-0 mr-0 icon is-small"><i className="fa fa-star"></i></span> icon.
-              </p>
-            </div>
-          </div>
-          : null}
-
-        {this.state.filters.length > 0 ?
-          <div className="field">
-            <label className="label">Saved Advanced Filters</label>
-            <div className="control">
-              <span className="select is-full-width">
-                <select value={this.state.selectedFilter}
-                        onChange={({target}) => this.changeFilter(target.value)}>
-                  <option value={0}>Select Saved Filter</option>
-                  {this.state.filters.map(filter => {
-                    return (
-                      <option value={parseInt(filter.value)}
-                              key={filter.value}>
-                        {filter.label}
-                      </option>
-                    )
-                  })}
-                </select>
-              </span>
-              <p className="help">
-                You can save advanced filters by providing a label before applying the filters.
-              </p>
-            </div>
-          </div>
-          : null}
-
         <p className="mt-1 has-text-centered">
-          <a href="javascript:;" onClick={() => this.setState({showFiltersModal: true})}>
-            Advanced Filters
-          </a>
+          {this.state.appliedAdvancedFilter || this.state.selectedFilter !== 0 ?
+            <a href="javascript:;"
+               className="button is-danger"
+               onClick={() => {
+                 this.setState({appliedAdvancedFilter: false, loading: true, selectedFilter: 0})
+                 this.loadObservations()
+               }}>
+              Clear Advanced Filters
+            </a>
+            :
+            <a href="javascript:;"
+               className="button is-primary"
+               onClick={() => this.setState({showFiltersModal: true})}>
+              More Advanced Filters
+            </a>
+          }
         </p>
       </div>
     )

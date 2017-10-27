@@ -24,9 +24,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Observation::class, function (Faker\Generator $faker) {
-    $Addresses = include base_path('database/factories/Addresses.php');
+    $addresses = include base_path('database/factories/Addresses.php');
 
-    $images = include base_path('database/factories/ImagePaths.php');
+    $images = glob(storage_path('app/public/images/').'*.jpeg');
+    $thumbnails = glob(storage_path('app/public/thumbnails/').'*.jpeg');
 
     $categories = [
         'American Chestnut',
@@ -58,19 +59,27 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         $data['otherLabel'] = $otherTrees[rand() % count($otherTrees)];
     }
 
+    $thumbnail = $thumbnails[rand() % count($thumbnails)];
+    $thumbnail = explode('/', $thumbnail);
+    $thumbnail = $thumbnail[count($thumbnail) - 1];
+
+    $image = $images[rand() % count($images)];
+    $image = explode('/', $image);
+    $image = $image[count($image) - 1];
+
     return [
         'user_id' => $users[rand() % count($users)],
         'observation_category' => $c,
         'images' => [
-            'images' => ['/storage/images/'.$images[rand() % count($images)]],
+            'images' => ['/storage/images/'.$image],
         ],
         'latitude' => $faker->latitude(),
         'longitude' => $faker->longitude(),
         'location_accuracy' => 60.09932,
         'data' => $data,
-        'address' => $Addresses[rand() % count($Addresses)],
+        'address' => $addresses[rand() % count($addresses)],
         'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
-        'thumbnail' => '',
+        'thumbnail' => '/storage/thumbnails/'.$thumbnail,
     ];
 });

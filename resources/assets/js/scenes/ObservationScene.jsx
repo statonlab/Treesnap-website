@@ -48,6 +48,7 @@ export default class ObservationScene extends Component {
 
     axios.get(`/web/observation/${id}`).then(response => {
       let data = response.data.data
+
       this.setState({
         observation: data,
         loading    : false
@@ -56,6 +57,7 @@ export default class ObservationScene extends Component {
       document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
+
       if (error.response && error.response.status === 404) {
         console.log('Not Found')
         window.location.replace('/no-match')
@@ -72,7 +74,7 @@ export default class ObservationScene extends Component {
       let note = response.data.data
 
       if (note.not_found) {
-        // The use did not create a note yet
+        // The user did not create a note yet
         // Ignore the error
         return
       }
@@ -177,14 +179,14 @@ export default class ObservationScene extends Component {
             <form action="#" onSubmit={this.saveNote.bind(this)}>
               <div className="field">
                 <div className="control">
-                                        <textarea className={`textarea${this.state.errors.note.length > 0 ? ' is-danger' : ''}`}
-                                                  placeholder="Private Notes"
-                                                  value={this.state.note}
-                                                  onChange={({target}) => this.setState({
-                                                    note  : target.value,
-                                                    errors: {note: []}
-                                                  })}>
-                                        </textarea>
+                    <textarea className={`textarea${this.state.errors.note.length > 0 ? ' is-danger' : ''}`}
+                              placeholder="Private Notes"
+                              value={this.state.note}
+                              onChange={({target}) => this.setState({
+                                note  : target.value,
+                                errors: {note: []}
+                              })}>
+                    </textarea>
                 </div>
                 {this.state.errors.note.map((error, index) => {
                   return (

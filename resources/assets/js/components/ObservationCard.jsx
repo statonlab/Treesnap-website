@@ -483,7 +483,7 @@ export default class ObservationCard extends Component {
                   Quick View
                 </a><br/>
                 {this.props.owner || User.can('view accurate location') ?
-                <small>
+                <small className="no-wrap">
                   {observation.location.latitude}, {observation.location.longitude}<br/>
                 </small>
                   : null}

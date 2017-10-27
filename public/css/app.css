@@ -13294,6 +13294,10 @@ select[multiple].multi-select:focus {
   border-style: solid;
 }
 
+.tooltip {
+  position: static;
+}
+
 .tooltip.top .tooltip-text {
   bottom: 110%;
   margin-left: -60px;
@@ -13341,11 +13345,6 @@ select[multiple].multi-select:focus {
   border-color: #222 transparent transparent transparent;
 }
 
-.card-footer-z-index,
-.card-footer-z-index > a {
-  z-index: 1000;
-}
-
 .relative-block {
   position: relative;
   overflow: hidden;
@@ -13354,6 +13353,10 @@ select[multiple].multi-select:focus {
 
 a.card-header-title:hover {
   color: #2A9D8F;
+}
+
+.card-header-icon {
+  position: relative;
 }
 
 .card-header-icon.is-clear {
@@ -13393,7 +13396,6 @@ a.card-header-title:hover {
   left: 0;
   right: 0;
   background-color: #f7f7f7;
-  z-index: 20;
   overflow-y: auto !important;
   -webkit-transform: translate(0, 130%);
   transform: translate(0, 130%);
@@ -13442,6 +13444,11 @@ a.card-header-title:hover {
 .sidebar-icons-container .card-footer > a {
   background-color: #fff;
   z-index: 10;
+}
+
+.card-footer-item,
+.sidebar-icons-container .card-footer > a {
+  position: relative;
 }
 
 .marks-section {
@@ -13857,6 +13864,21 @@ table.dataTable thead .sorting_desc_disabled:after {
   color: #2A9D8F;
 }
 
+.help.is-warning {
+  color: #c87f0a;
+  font-weight: bold;
+}
+
+.help.is-pulled-up {
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  padding: .25rem;
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.24);
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.24);
+}
+
 .button.is-gray {
   background-color: #aaa;
   color: #fff;
@@ -13866,6 +13888,18 @@ table.dataTable thead .sorting_desc_disabled:after {
 .button.is-gray:hover {
   background-color: #bf5329;
   border-color: #bf5329;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.is-positioned-relatively {
+  position: relative;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #ddd;
 }
 
 /*!

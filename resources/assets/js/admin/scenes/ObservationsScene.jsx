@@ -136,14 +136,15 @@ export default class ObservationsScene extends Component {
    *
    * @param observations_full
    * @param preLoad
+   * @param collection
    */
-  paginate(observations_full, preLoad) {
+  paginate(observations_full, preLoad, collection) {
     this.allObservations   = observations_full
     let total              = observations_full.length
     let page               = 0
     let perPage            = 6
     let pages              = []
-    let selectedCollection = -1
+    let selectedCollection = typeof collection !== 'undefined' ? collection : this.state.selectedCollection
     if (typeof preLoad !== 'undefined' && preLoad !== false) {
       let r              = this.preLoadPage(total)
       page               = r.page
@@ -167,7 +168,7 @@ export default class ObservationsScene extends Component {
     })
 
     this.goToPage(page)
-    if (parseInt(selectedCollection) !== -1) {
+    if (typeof collection === 'undefined' && parseInt(selectedCollection) !== -1) {
       this.collectionFilter(selectedCollection)
     }
   }
@@ -215,7 +216,7 @@ export default class ObservationsScene extends Component {
     }
 
     if (typeof params.collection !== 'undefined') {
-      collection = parseInt(params.page)
+      collection = parseInt(params.collection)
 
       if (isNaN(collection)) {
         collection = -1
@@ -408,9 +409,10 @@ export default class ObservationsScene extends Component {
    * @param selectedCollection
    */
   collectionFilter(selectedCollection) {
+    console.log(selectedCollection)
     if (this.filter) {
       this.setState({selectedCollection})
-      this.paginate(this.filter.collection(selectedCollection))
+      this.paginate(this.filter.collection(selectedCollection), false, selectedCollection)
       this.history.push(`/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`)
     }
   }
@@ -612,7 +614,7 @@ export default class ObservationsScene extends Component {
         <AdvancedFiltersModal
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
-          onCreate={(data) => {
+          onCreate={({data}) => {
             let advancedFilters = this.state.advancedFilters
 
             if (data.filter) {

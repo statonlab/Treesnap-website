@@ -55,6 +55,7 @@ export default class AdvancedFiltersModal extends Component {
 
   close() {
     this._resetForm()
+
     this.props.onCloseRequest()
   }
 
@@ -62,7 +63,7 @@ export default class AdvancedFiltersModal extends Component {
     e.preventDefault()
 
     this.setState({loading: true})
-    axios.post('/web/filters', {
+    let params = {
       name            : this.state.filterName,
       categories      : this.state.selectedCategories,
       ash             : this.state.ash,
@@ -76,13 +77,26 @@ export default class AdvancedFiltersModal extends Component {
         state : this.state.state
       },
       map             : this.props.map
-    }).then(response => {
+    }
+
+    let url = '/web/filters'
+    if (this.props.withObservations) {
+      url += '/observations'
+    }
+
+    axios.post(url, params).then(({data}) => {
       this.setState({
         loading: false,
         errors : {}
       })
 
-      this.props.onCreate(response.data.data)
+      this.props.onCreate({
+        params,
+        data: data.data
+      })
+
+      this.props.onStateChange(_.clone(this.state))
+
       this._resetForm()
     }).catch(error => {
       let response = error.response
@@ -328,9 +342,11 @@ export default class AdvancedFiltersModal extends Component {
                     onClick={this.submit.bind(this)}>
               Apply
             </button>
-            <p>
-              Found <b>{this.state.resultsCount || 0}</b> observations that fit your criteria
-            </p>
+            {this.props.showCount ?
+              <p>
+                Found <b>{this.state.resultsCount || 0}</b> observations that fit your criteria
+              </p>
+            : null}
             <button type="button"
                     className="button"
                     onClick={this.close.bind(this)}>
@@ -341,15 +357,31 @@ export default class AdvancedFiltersModal extends Component {
       </div>
     )
   }
+
+  reapplyState(state) {
+    console.log('reapplying:', state)
+    this.setState(state)
+    if (state.selectedCategories) {
+      console.log(this.refs.speciesButtonList, state.selectedCategories)
+      this.refs.speciesButtonList.setSelected(state.selectedCategories)
+    }
+  }
 }
 
 AdvancedFiltersModal.PropTypes = {
-  visible       : PropTypes.bool.isRequired,
-  onCloseRequest: PropTypes.func.isRequired,
-  onCreate      : PropTypes.func.isRequired,
-  map           : PropTypes.bool
+  visible         : PropTypes.bool.isRequired,
+  onCloseRequest  : PropTypes.func.isRequired,
+  onCreate        : PropTypes.func.isRequired,
+  map             : PropTypes.bool,
+  withObservations: PropTypes.bool,
+  onStateChange   : PropTypes.func,
+  showCount       : PropTypes.bool
 }
 
 AdvancedFiltersModal.defaultProps = {
-  map: false
+  map             : false,
+  withObservations: true,
+  showCount       : false,
+  onStateChange() {
+  }
 }

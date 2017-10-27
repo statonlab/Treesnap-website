@@ -72587,17 +72587,18 @@ var ObservationsScene = function (_Component) {
      *
      * @param observations_full
      * @param preLoad
+     * @param collection
      */
 
   }, {
     key: 'paginate',
-    value: function paginate(observations_full, preLoad) {
+    value: function paginate(observations_full, preLoad, collection) {
       this.allObservations = observations_full;
       var total = observations_full.length;
       var page = 0;
       var perPage = 6;
       var pages = [];
-      var selectedCollection = -1;
+      var selectedCollection = typeof collection !== 'undefined' ? collection : this.state.selectedCollection;
       if (typeof preLoad !== 'undefined' && preLoad !== false) {
         var r = this.preLoadPage(total);
         page = r.page;
@@ -72621,7 +72622,7 @@ var ObservationsScene = function (_Component) {
       });
 
       this.goToPage(page);
-      if (parseInt(selectedCollection) !== -1) {
+      if (typeof collection === 'undefined' && parseInt(selectedCollection) !== -1) {
         this.collectionFilter(selectedCollection);
       }
     }
@@ -72672,7 +72673,7 @@ var ObservationsScene = function (_Component) {
       }
 
       if (typeof params.collection !== 'undefined') {
-        collection = parseInt(params.page);
+        collection = parseInt(params.collection);
 
         if (isNaN(collection)) {
           collection = -1;
@@ -72894,9 +72895,10 @@ var ObservationsScene = function (_Component) {
   }, {
     key: 'collectionFilter',
     value: function collectionFilter(selectedCollection) {
+      console.log(selectedCollection);
       if (this.filter) {
         this.setState({ selectedCollection: selectedCollection });
-        this.paginate(this.filter.collection(selectedCollection));
+        this.paginate(this.filter.collection(selectedCollection), false, selectedCollection);
         this.history.push('/observations?page=1&view=' + this.state.perPage + '&collection=' + selectedCollection);
       }
     }
@@ -73274,7 +73276,9 @@ var ObservationsScene = function (_Component) {
           onCloseRequest: function onCloseRequest() {
             return _this9.setState({ showFiltersModal: false });
           },
-          onCreate: function onCreate(data) {
+          onCreate: function onCreate(_ref7) {
+            var data = _ref7.data;
+
             var advancedFilters = _this9.state.advancedFilters;
 
             if (data.filter) {
@@ -74737,6 +74741,7 @@ var AdvancedFiltersModal = function (_Component) {
     key: 'close',
     value: function close() {
       this._resetForm();
+
       this.props.onCloseRequest();
     }
   }, {
@@ -74747,7 +74752,7 @@ var AdvancedFiltersModal = function (_Component) {
       e.preventDefault();
 
       this.setState({ loading: true });
-      axios.post('/web/filters', {
+      var params = {
         name: this.state.filterName,
         categories: this.state.selectedCategories,
         ash: this.state.ash,
@@ -74761,13 +74766,28 @@ var AdvancedFiltersModal = function (_Component) {
           state: this.state.state
         },
         map: this.props.map
-      }).then(function (response) {
+      };
+
+      var url = '/web/filters';
+      if (this.props.withObservations) {
+        url += '/observations';
+      }
+
+      axios.post(url, params).then(function (_ref) {
+        var data = _ref.data;
+
         _this3.setState({
           loading: false,
           errors: {}
         });
 
-        _this3.props.onCreate(response.data.data);
+        _this3.props.onCreate({
+          params: params,
+          data: data.data
+        });
+
+        _this3.props.onStateChange(_.clone(_this3.state));
+
         _this3._resetForm();
       }).catch(function (error) {
         var response = error.response;
@@ -74950,8 +74970,8 @@ var AdvancedFiltersModal = function (_Component) {
                 className: 'input',
                 placeholder: 'Optional: label your filter',
                 value: this.state.filterName,
-                onChange: function onChange(_ref) {
-                  var target = _ref.target;
+                onChange: function onChange(_ref2) {
+                  var target = _ref2.target;
                   return _this10.setState({ filterName: target.value });
                 } })
             ),
@@ -75010,8 +75030,8 @@ var AdvancedFiltersModal = function (_Component) {
                     className: 'input',
                     placeholder: 'E.g, Knoxville',
                     value: this.state.city,
-                    onChange: function onChange(_ref2) {
-                      var target = _ref2.target;
+                    onChange: function onChange(_ref3) {
+                      var target = _ref3.target;
                       return _this10.count({ city: target.value });
                     } })
                 )
@@ -75035,8 +75055,8 @@ var AdvancedFiltersModal = function (_Component) {
                     className: 'input',
                     placeholder: 'E.g, Knox County',
                     value: this.state.county,
-                    onChange: function onChange(_ref3) {
-                      var target = _ref3.target;
+                    onChange: function onChange(_ref4) {
+                      var target = _ref4.target;
                       return _this10.count({ county: target.value });
                     } })
                 )
@@ -75058,8 +75078,8 @@ var AdvancedFiltersModal = function (_Component) {
                 className: 'input',
                 placeholder: 'E.g, Tennessee',
                 value: this.state.state,
-                onChange: function onChange(_ref4) {
-                  var target = _ref4.target;
+                onChange: function onChange(_ref5) {
+                  var target = _ref5.target;
                   return _this10.count({ state: target.value });
                 } })
             )
@@ -75161,7 +75181,7 @@ var AdvancedFiltersModal = function (_Component) {
                 onClick: this.submit.bind(this) },
               'Apply'
             ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            this.props.showCount ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'p',
               null,
               'Found ',
@@ -75171,7 +75191,7 @@ var AdvancedFiltersModal = function (_Component) {
                 this.state.resultsCount || 0
               ),
               ' observations that fit your criteria'
-            ),
+            ) : null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'button',
               { type: 'button',
@@ -75182,6 +75202,16 @@ var AdvancedFiltersModal = function (_Component) {
           )
         )
       );
+    }
+  }, {
+    key: 'reapplyState',
+    value: function reapplyState(state) {
+      console.log('reapplying:', state);
+      this.setState(state);
+      if (state.selectedCategories) {
+        console.log(this.refs.speciesButtonList, state.selectedCategories);
+        this.refs.speciesButtonList.setSelected(state.selectedCategories);
+      }
     }
   }]);
 
@@ -75195,11 +75225,17 @@ AdvancedFiltersModal.PropTypes = {
   visible: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool.isRequired,
   onCloseRequest: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func.isRequired,
   onCreate: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func.isRequired,
-  map: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool
+  map: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
+  withObservations: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
+  onStateChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  showCount: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool
 };
 
 AdvancedFiltersModal.defaultProps = {
-  map: false
+  map: false,
+  withObservations: true,
+  showCount: false,
+  onStateChange: function onStateChange() {}
 };
 
 /***/ }),
@@ -75381,6 +75417,11 @@ var ButtonList = function (_Component) {
           );
         })
       );
+    }
+  }, {
+    key: 'setSelected',
+    value: function setSelected(options) {
+      this.setState({ selected: options });
     }
   }]);
 
@@ -76134,6 +76175,7 @@ var Group = function (_Component) {
 
     _this.state = {
       name: '',
+      isSharing: false,
       users: [],
       loading: true,
       pageLoading: true,
@@ -76142,6 +76184,7 @@ var Group = function (_Component) {
       isOwner: false,
       leader: {},
       showInviteModal: false,
+      showPrivacyModal: false,
       inviteEmail: '',
       sendingInvite: false,
       pendingInvitations: [],
@@ -76190,7 +76233,8 @@ var Group = function (_Component) {
           name: data.name,
           users: data.users,
           isOwner: data.is_owner,
-          leader: data.owner
+          leader: data.owner,
+          isSharing: data.is_sharing
         });
 
         document.title = data.name + ' - TreeSnap';
@@ -76700,6 +76744,10 @@ var Group = function (_Component) {
       var count = this.state.count;
       var total = this.state.total;
 
+      if (total === 0) {
+        return null;
+      }
+
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'mb-2' },
@@ -76851,6 +76899,10 @@ var Group = function (_Component) {
     value: function _renderPageLinks() {
       var _this13 = this;
 
+      if (this.state.total === 0) {
+        return null;
+      }
+
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'nav',
         { className: 'pagination is-centered' },
@@ -76903,21 +76955,135 @@ var Group = function (_Component) {
       );
     }
   }, {
-    key: 'render',
-    value: function render() {
+    key: '_renderPrivacyModal',
+    value: function _renderPrivacyModal() {
       var _this14 = this;
+
+      if (this.state.isSharing) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            { className: 'mb-1' },
+            'You are currently sharing your observations including accurate location coordinates with members of this group.'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'field' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'control' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'button',
+                { className: 'button is-danger', type: 'button', onClick: function onClick() {
+                    return _this14.changeSharingStatus(false);
+                  } },
+                'Stop Sharing Observations'
+              )
+            )
+          )
+        );
+      }
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'h1',
-          { className: 'title is-3' },
-          this.state.name
+          'p',
+          { className: 'mb-1' },
+          'You are currently ',
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            'not'
+          ),
+          ' sharing your observations with members of this group.'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'box' },
+          { className: 'field' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'control' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'button',
+              { className: 'button is-primary', type: 'button', onClick: function onClick() {
+                  return _this14.changeSharingStatus(true);
+                } },
+              'Share Observations'
+            )
+          )
+        )
+      );
+    }
+  }, {
+    key: 'changeSharingStatus',
+    value: function changeSharingStatus(share) {
+      var _this15 = this;
+
+      var id = this.props.match.params.id;
+      this.setState({ loading: true });
+      axios.patch('/web/group/' + id + '/sharing', { share: share }).then(function (response) {
+        _this15.setState({
+          isSharing: response.data.data,
+          loading: false
+        });
+
+        _this15.loadObservations(_this15.state);
+      }).catch(function (error) {
+        console.log(error);
+        _this15.setState({
+          loading: false
+        });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this16 = this;
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'columns' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'column' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'h1',
+              { className: 'title is-3' },
+              this.state.name
+            )
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'column has-text-right' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'a',
+              { href: 'javascript:;',
+                className: 'button is-default',
+                onClick: function onClick() {
+                  return _this16.setState({ showPrivacyModal: true });
+                } },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'span',
+                { className: 'icon is-small' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-lock' })
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'span',
+                null,
+                'Privacy Settings'
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box mt-2' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'columns is-mobile flex-v-center' },
@@ -76938,7 +77104,7 @@ var Group = function (_Component) {
                 { type: 'button',
                   className: 'button is-primary mr-0',
                   onClick: function onClick() {
-                    return _this14.setState({ showInviteModal: true });
+                    return _this16.setState({ showInviteModal: true });
                   } },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'span',
@@ -76962,11 +77128,13 @@ var Group = function (_Component) {
           this._renderUsersTable()
         ),
         this._renderPendingBox(),
+        this._renderObservations(),
+        this._renderPageLinks(),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4__BoxModal__["a" /* default */],
           { visible: this.state.showInviteModal,
             onCloseRequest: function onCloseRequest() {
-              return _this14.setState({ showInviteModal: false });
+              return _this16.setState({ showInviteModal: false });
             } },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h4',
@@ -76974,15 +77142,31 @@ var Group = function (_Component) {
             'Invite Users',
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('button', { className: 'delete is-pulled-right',
               onClick: function onClick() {
-                return _this14.setState({ showInviteModal: false });
+                return _this16.setState({ showInviteModal: false });
               },
               type: 'button' })
           ),
           this._renderForm(),
           this._renderFormErrors()
         ),
-        this._renderObservations(),
-        this._renderPageLinks(),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_4__BoxModal__["a" /* default */],
+          { visible: this.state.showPrivacyModal,
+            onCloseRequest: function onCloseRequest() {
+              return _this16.setState({ showPrivacyModal: false });
+            } },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h4',
+            { className: 'title is-4' },
+            'Group Privacy Settings',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('button', { className: 'delete is-pulled-right',
+              onClick: function onClick() {
+                return _this16.setState({ showPrivacyModal: false });
+              },
+              type: 'button' })
+          ),
+          this._renderPrivacyModal()
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Spinner__["a" /* default */], { visible: this.state.pageLoading })
       );
     }
@@ -77043,9 +77227,13 @@ var Groups = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Groups.__proto__ || Object.getPrototypeOf(Groups)).call(this, props));
 
     _this.state = {
-      groups: [],
       name: '',
-      errors: [],
+      share: false,
+      errors: {
+        share: [],
+        name: []
+      },
+      groups: [],
       success: false,
       loading: false
     };
@@ -77067,7 +77255,10 @@ var Groups = function (_Component) {
       this.setState({ loading: true });
       axios.get('/web/groups').then(function (response) {
         var data = response.data.data;
-        _this2.setState({ groups: data, loading: false });
+        _this2.setState({
+          groups: data,
+          loading: false
+        });
       }).catch(function (error) {
         console.log(error);
         _this2.setState({ loading: false });
@@ -77185,32 +77376,61 @@ var Groups = function (_Component) {
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'form',
-        { action: '#', onSubmit: this.submit.bind(this) },
+        { action: '#', onSubmit: this.submit.bind(this), className: 'limit-width' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'field has-addons limit-width' },
+          { className: 'field' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'control is-expanded' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text',
-              className: 'input ' + (this.state.errors.length > 0 && 'is-danger'),
+              className: 'input' + (this.state.errors.name.length > 0 ? ' is-danger' : ''),
               value: this.state.name,
               placeholder: 'Group Name',
-              onChange: function onChange(e) {
-                _this3.setState({
-                  errors: [],
-                  name: e.target.value
-                });
+              onChange: function onChange(_ref) {
+                var target = _ref.target;
+                return _this3.setState({ errors: { name: [], share: [] }, name: target.value });
               }
             }),
-            this.state.errors.map(function (error, index) {
+            this.state.errors.name.map(function (error, index) {
               return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'p',
                 { className: 'help is-danger', key: index },
                 error
               );
             })
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'field' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'control' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'label',
+              { className: 'checkbox' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox',
+                className: 'mr-0',
+                onChange: function onChange(_ref2) {
+                  var target = _ref2.target;
+                  return _this3.setState({ share: target.checked });
+                },
+                checked: this.state.share }),
+              'Share all of my observations with members of this group including accurate location coordinates'
+            )
           ),
+          this.state.errors.share.map(function (error, index) {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'p',
+              { className: 'help is-danger', key: index },
+              error
+            );
+          })
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'field' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'control' },
@@ -77237,17 +77457,31 @@ var Groups = function (_Component) {
 
       e.preventDefault();
       axios.post('/web/groups', {
-        name: this.state.name
+        name: this.state.name,
+        share: this.state.share
       }).then(function (response) {
         var data = response.data.data;
         var groups = _this4.state.groups;
         groups.push(data);
-        _this4.setState({ name: '', groups: groups });
+        _this4.setState({
+          name: '',
+          groups: groups,
+          errors: {
+            name: [],
+            share: []
+          }
+        });
         __WEBPACK_IMPORTED_MODULE_5__Notify__["a" /* default */].push('Group created successfully.');
         __WEBPACK_IMPORTED_MODULE_6__helpers_EventEmitter__["a" /* default */].emit('user.groups.updated');
       }).catch(function (error) {
         if (error.response && error.response.status === 422) {
-          _this4.setState({ errors: error.response.data.name });
+          var errors = error.response.data;
+          _this4.setState({
+            errors: {
+              name: errors.name || [],
+              share: errors.share || []
+            }
+          });
         }
       });
     }
@@ -77275,6 +77509,11 @@ var Groups = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h2',
+            { className: 'title is-4' },
+            'Create New Group'
+          ),
           this._renderForm()
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Spinner__["a" /* default */], { visible: this.state.loading })
@@ -77605,7 +77844,7 @@ var Map = function (_Component) {
     value: function render() {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        _extends({ ref: 'mapContainer' }, _.omit(this.props, ['center', 'zoom', 'onBoundsChange'])),
+        _extends({ ref: 'mapContainer' }, _.omit(this.props, ['center', 'zoom', 'onBoundsChange', 'onLoad'])),
         this.renderChildren()
       );
     }
@@ -78909,7 +79148,7 @@ var ObservationCard = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
                 this.props.owner || __WEBPACK_IMPORTED_MODULE_12__helpers_User__["a" /* default */].can('view accurate location') ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'small',
-                  null,
+                  { className: 'no-wrap' },
                   observation.location.latitude,
                   ', ',
                   observation.location.longitude,
@@ -80040,6 +80279,279 @@ Tooltip.PropTypes = {
 Tooltip.defaultProps = {
   position: 'top',
   hideOnClick: true
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/UnshareCollectionModal.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Modal__ = __webpack_require__("./resources/assets/js/components/Modal.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Notify__ = __webpack_require__("./resources/assets/js/components/Notify.jsx");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+var UnshareCollectionModal = function (_Component) {
+  _inherits(UnshareCollectionModal, _Component);
+
+  function UnshareCollectionModal(props) {
+    _classCallCheck(this, UnshareCollectionModal);
+
+    var _this = _possibleConstructorReturn(this, (UnshareCollectionModal.__proto__ || Object.getPrototypeOf(UnshareCollectionModal)).call(this, props));
+
+    _this.state = {
+      users: [],
+      loading: true,
+      messages: []
+    };
+    return _this;
+  }
+
+  _createClass(UnshareCollectionModal, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      var id = this.props.collection.id;
+
+      axios.get('/web/collection/' + id + '/users').then(function (response) {
+        var data = response.data.data;
+        _this2.setState({
+          users: data,
+          loading: false
+        });
+      }).catch(function (error) {
+        console.log(error);
+        _this2.setState({
+          loading: false
+        });
+      });
+    }
+  }, {
+    key: 'unshareCollection',
+    value: function unshareCollection(user) {
+      var _this3 = this;
+
+      var id = this.props.collection.id;
+
+      axios.delete('/web/collection/' + id + '/unshare', {
+        params: {
+          user_id: user.id
+        }
+      }).then(function (response) {
+        _this3.setState({
+          loading: false,
+          users: _this3.state.users.filter(function (u) {
+            return u.id !== user.id;
+          })
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'changePermissions',
+    value: function changePermissions(user, canCustomize) {
+      var _this4 = this;
+
+      var id = this.props.collection.id;
+      this.setState({ loading: true });
+      axios.patch('/web/collection/' + id + '/permissions', {
+        user_id: user.id,
+        can_customize: canCustomize
+      }).then(function (response) {
+        __WEBPACK_IMPORTED_MODULE_3__components_Notify__["a" /* default */].push(response.data.data);
+
+        _this4.setState({
+          loading: false,
+          users: _this4.state.users.map(function (u) {
+            if (u.id === user.id) {
+              u.pivot.can_customize = canCustomize;
+            }
+
+            return u;
+          })
+        });
+      }).catch(function (error) {
+        _this4.setState({ loading: false });
+
+        if (error.response && error.response.status === 422) {
+          var errors = error.response.data;
+          var messages = Object.keys(errors).map(function (key) {
+            return {
+              type: 'is-danger',
+              text: errors[key][0]
+            };
+          });
+          _this4.setState({ messages: messages });
+        }
+        console.log(error);
+      });
+    }
+  }, {
+    key: '_renderMessages',
+    value: function _renderMessages() {
+      if (this.state.messages.length === 0) {
+        return null;
+      }
+
+      return this.state.messages.map(function (message, index) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'notification ' + message.type, key: index },
+          message.text
+        );
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this5 = this;
+
+      var collection = this.props.collection;
+      var usersCount = this.state.users.length;
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2__components_Modal__["a" /* default */],
+        { showClose: false,
+          onCloseRequest: function onCloseRequest() {
+            return _this5.props.onCloseRequest();
+          } },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'modal-card' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'modal-card-head' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'p',
+              { className: 'modal-card-title' },
+              '"',
+              collection.label,
+              '" Users',
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('button', { className: 'delete is-pulled-right',
+                type: 'button',
+                onClick: function onClick() {
+                  return _this5.props.onCloseRequest();
+                } })
+            )
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'modal-card-body' },
+            this.state.loading ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'p',
+              null,
+              'Please wait...'
+            ) : null,
+            this.state.users.length === 0 && !this.state.loading ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'p',
+              null,
+              'This collection is not shared with any users.'
+            ) : null,
+            this._renderMessages(),
+            this.state.users.map(function (user, index) {
+              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'columns flex-v-center' + (index !== usersCount - 1 ? ' border-bottom' : ''),
+                  key: user.id },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'div',
+                  { className: 'column' },
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'strong',
+                      null,
+                      user.name
+                    )
+                  ),
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'help is-muted' },
+                    user.email
+                  )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'div',
+                  { className: 'column has-text-right' },
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'select is-small mr-0' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'select',
+                      { value: user.pivot.can_customize,
+                        onChange: function onChange(_ref) {
+                          var target = _ref.target;
+                          return _this5.changePermissions(user, target.value);
+                        } },
+                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'option',
+                        { value: 0 },
+                        'View Only'
+                      ),
+                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'option',
+                        { value: 1 },
+                        'View and Edit'
+                      )
+                    )
+                  ),
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'button',
+                    { type: 'button',
+                      onClick: function onClick() {
+                        return _this5.unshareCollection(user);
+                      },
+                      className: 'button is-danger is-outlined is-small' },
+                    'Remove'
+                  )
+                )
+              );
+            })
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'modal-card-foot flex-space-between' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'button',
+              {
+                onClick: this.props.onCloseRequest,
+                type: 'submit',
+                className: 'button is-primary' + (this.state.loading ? ' is-loading' : ''),
+                disabled: this.state.loading },
+              'Done'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return UnshareCollectionModal;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (UnshareCollectionModal);
+
+
+UnshareCollectionModal.PropTypes = {
+  collection: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object.isRequired
 };
 
 /***/ }),
@@ -82121,6 +82633,8 @@ var Utils = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Notify__ = __webpack_require__("./resources/assets/js/components/Notify.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_router_dom__ = __webpack_require__("./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Dropdown__ = __webpack_require__("./resources/assets/js/components/Dropdown.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helpers_User__ = __webpack_require__("./resources/assets/js/helpers/User.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UnshareCollectionModal__ = __webpack_require__("./resources/assets/js/components/UnshareCollectionModal.jsx");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -82128,6 +82642,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
 
 
 
@@ -82155,7 +82671,9 @@ var CollectionsScene = function (_Component) {
       term: '',
       selectedUser: null,
       sharing: false,
-      sharingErrors: []
+      canCustomize: false,
+      sharingErrors: [],
+      showUnshareModal: false
     };
 
     _this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1;
@@ -82167,6 +82685,11 @@ var CollectionsScene = function (_Component) {
   _createClass(CollectionsScene, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
+      this.loadCollections();
+    }
+  }, {
+    key: 'loadCollections',
+    value: function loadCollections() {
       var _this2 = this;
 
       axios.get('/web/collections').then(function (response) {
@@ -82184,20 +82707,41 @@ var CollectionsScene = function (_Component) {
     value: function deleteCollection(collection) {
       var _this3 = this;
 
-      if (!confirm('Are you sure you want to delete ' + collection.label + '?')) {
-        return;
-      }
+      if (collection.is_owner) {
+        if (!confirm('Are you sure you want to delete ' + collection.label + '?')) {
+          return;
+        }
 
-      axios.delete('/web/collection/' + collection.id).then(function (response) {
-        var id = parseInt(response.data.data.id);
-        _this3.setState({
-          collections: _this3.state.collections.filter(function (collection) {
-            return collection.id !== id;
-          })
+        axios.delete('/web/collection/' + collection.id).then(function (response) {
+          var id = parseInt(response.data.data.id);
+          _this3.setState({
+            collections: _this3.state.collections.filter(function (collection) {
+              return collection.id !== id;
+            })
+          });
+        }).catch(function (error) {
+          console.log(error);
         });
-      }).catch(function (error) {
-        console.log(error);
-      });
+      } else {
+        if (!confirm('Are you sure you want to remove your access privileges to ' + collection.label + '? This action will not delete the collection.')) {
+          return;
+        }
+
+        axios.delete('/web/collection/' + collection.id + '/unshare', {
+          params: {
+            user_id: __WEBPACK_IMPORTED_MODULE_9__helpers_User__["a" /* default */].user().id
+          }
+        }).then(function (response) {
+          var id = parseInt(response.data.data.id);
+          _this3.setState({
+            collections: _this3.state.collections.filter(function (collection) {
+              return collection.id !== id;
+            })
+          });
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
     }
   }, {
     key: 'showShareModal',
@@ -82224,7 +82768,8 @@ var CollectionsScene = function (_Component) {
       var id = parseInt(this.state.selectedCollection.id);
 
       axios.post('/web/collection/' + id + '/share', {
-        user_id: this.state.selectedUser.value
+        user_id: this.state.selectedUser.value,
+        can_customize: this.state.canCustomize
       }).then(function () {
         __WEBPACK_IMPORTED_MODULE_6__components_Notify__["a" /* default */].push('You successfully shared ' + _this4.state.selectedCollection.label + ' with ' + _this4.state.selectedUser.label);
 
@@ -82269,7 +82814,8 @@ var CollectionsScene = function (_Component) {
     value: function searchUsers(term) {
       return axios.get('/web/groups/members', {
         params: {
-          term: term
+          term: term,
+          collection_id: this.state.selectedCollection.id
         }
       }).then(function (response) {
         return { options: response.data.data };
@@ -82353,6 +82899,11 @@ var CollectionsScene = function (_Component) {
               'div',
               { className: 'field' },
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'label',
+                { className: 'label' },
+                'User to Share With'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'control' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_select___default.a.Async, {
@@ -82374,6 +82925,42 @@ var CollectionsScene = function (_Component) {
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
+              { className: 'field' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'label',
+                { className: 'label' },
+                'Permissions'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'control' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'span',
+                  { className: 'select' },
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'select',
+                    {
+                      value: this.state.canCustomize,
+                      onChange: function onChange(_ref) {
+                        var target = _ref.target;
+                        return _this5.setState({ canCustomize: target.value === '0' ? 0 : 1 });
+                      } },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'option',
+                      { value: '0' },
+                      'View only'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'option',
+                      { value: '1' },
+                      'Edit and view'
+                    )
+                  )
+                )
+              )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
               { className: 'is-flex flex-space-between mt-2' },
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
@@ -82385,7 +82972,11 @@ var CollectionsScene = function (_Component) {
               ),
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
-                { className: 'button', type: 'button' },
+                { className: 'button',
+                  type: 'button',
+                  onClick: function onClick() {
+                    return _this5.setState({ showShareModal: false });
+                  } },
                 'Cancel'
               )
             )
@@ -82394,9 +82985,29 @@ var CollectionsScene = function (_Component) {
       );
     }
   }, {
+    key: '_renderUnshareModal',
+    value: function _renderUnshareModal() {
+      var _this6 = this;
+
+      if (!this.state.showUnshareModal) {
+        return null;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__components_UnshareCollectionModal__["a" /* default */], {
+        onCloseRequest: function onCloseRequest() {
+          _this6.setState({
+            showUnshareModal: false,
+            selectedCollection: {}
+          });
+          _this6.loadCollections();
+        },
+        collection: this.state.selectedCollection
+      });
+    }
+  }, {
     key: '_renderRow',
     value: function _renderRow(collection) {
-      var _this6 = this;
+      var _this7 = this;
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'tr',
@@ -82422,8 +83033,22 @@ var CollectionsScene = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'td',
           null,
-          collection.users_count - 1,
-          ' users'
+          collection.users_count > 1 && collection.is_owner ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'a',
+            { href: 'javascript:;', onClick: function onClick() {
+                return _this7.setState({
+                  showUnshareModal: true,
+                  selectedCollection: collection
+                });
+              } },
+            collection.users_count - 1,
+            ' users'
+          ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'span',
+            null,
+            collection.users_count - 1,
+            ' users'
+          )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'td',
@@ -82456,43 +83081,39 @@ var CollectionsScene = function (_Component) {
             )
           ),
           collection.is_owner ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { style: { display: 'inline-block' } },
+            'button',
+            { type: 'button',
+              className: 'button is-small is-info ml-0',
+              onClick: function onClick() {
+                return _this7.showShareModal(collection);
+              } },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'button',
-              { type: 'button',
-                className: 'button is-small is-info ml-0',
-                onClick: function onClick() {
-                  return _this6.showShareModal(collection);
-                } },
+              'span',
+              { className: 'icon is-small' },
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'span',
-                { className: 'icon is-small' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_3__components_Tooltip__["a" /* default */],
-                  { label: 'Share' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-share' })
-                )
-              )
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'button',
-              { type: 'button',
-                className: 'button is-small is-danger ml-0',
-                onClick: function onClick() {
-                  return _this6.deleteCollection(collection);
-                } },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'span',
-                { className: 'icon is-small' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_3__components_Tooltip__["a" /* default */],
-                  { label: 'Delete' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-times' })
-                )
+                __WEBPACK_IMPORTED_MODULE_3__components_Tooltip__["a" /* default */],
+                { label: 'Share' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-share' })
               )
             )
-          ) : null
+          ) : null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { type: 'button',
+              className: 'button is-small is-danger ml-0',
+              onClick: function onClick() {
+                return _this7.deleteCollection(collection);
+              } },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'span',
+              { className: 'icon is-small' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_3__components_Tooltip__["a" /* default */],
+                { label: 'Delete' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-times' })
+              )
+            )
+          )
         )
       );
     }
@@ -82563,7 +83184,8 @@ var CollectionsScene = function (_Component) {
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Spinner__["a" /* default */], { visible: this.state.loading }),
-        this._renderShareModal()
+        this._renderShareModal(),
+        this._renderUnshareModal()
       );
     }
   }]);
@@ -82850,6 +83472,7 @@ var ObservationScene = function (_Component) {
 
       axios.get('/web/observation/' + id).then(function (response) {
         var data = response.data.data;
+
         _this2.setState({
           observation: data,
           loading: false
@@ -82858,6 +83481,7 @@ var ObservationScene = function (_Component) {
         document.title = data.observation_category + ' (' + data.observation_id + ') | TreeSnap';
       }).catch(function (error) {
         _this2.setState({ loading: false });
+
         if (error.response && error.response.status === 404) {
           console.log('Not Found');
           window.location.replace('/no-match');
@@ -82877,7 +83501,7 @@ var ObservationScene = function (_Component) {
         var note = response.data.data;
 
         if (note.not_found) {
-          // The use did not create a note yet
+          // The user did not create a note yet
           // Ignore the error
           return;
         }

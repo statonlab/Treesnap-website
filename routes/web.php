@@ -44,6 +44,7 @@ Route::get('/web/observation/{id}', 'ObservationsController@show');
 
 // Map
 Route::get('/web/map', 'MapController@index');
+Route::get('/web/map/count', 'MapController@countObservations');
 
 // Users
 Route::get('/web/user/status', 'UsersController@status');
@@ -51,7 +52,7 @@ Route::post('/web/user/subscribe', 'UsersController@subscribe');
 
 // Filters
 Route::post('/web/filter/count', 'FiltersController@count');
-Route::post('/web/filters', 'FiltersController@create');
+Route::post('/web/filters/{with_observations?}', 'FiltersController@create');
 Route::get('/web/filters', 'FiltersController@index');
 
 // CSRF
@@ -81,6 +82,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/account/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
 
     // Collections
+    Route::get('/web/collection/{id}/users', 'CollectionsController@users');
+    Route::get('/web/collections/customizable/{paired?}', 'CollectionsController@customizableCollections');
     Route::get('/web/collections/owned/{paired?}', 'CollectionsController@ownedCollections');
     Route::get('/web/collections/{paired?}', 'CollectionsController@index');
     Route::post('/web/collections', 'CollectionsController@create');
@@ -88,8 +91,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/web/collection/attach', 'CollectionsController@attach');
     Route::delete('/web/collection/detach', 'CollectionsController@detach');
     Route::delete('/web/collection/{id}', 'CollectionsController@delete');
+    Route::delete('/web/collection/{id}/unshare', 'CollectionsController@unshare');
     Route::post('/web/collection/{id}/share', 'CollectionsController@share');
-    Route::delete('/web/collection/unshare', 'CollectionsController@unshare');
+    Route::patch('/web/collection/{id}/permissions', 'CollectionsController@changePermissions');
 
     // Groups
     Route::get('/web/groups', 'GroupsController@index');
@@ -101,6 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/web/group/detach', 'GroupsController@detach');
     Route::delete('/web/group/{id}', 'GroupsController@delete');
     Route::post('/web/group/attach', 'GroupsController@attach');
+    Route::patch('/web/group/{group}/sharing', 'GroupsController@changeSharing');
 
     // Flags
     Route::post('/web/flag', 'FlagsController@create');

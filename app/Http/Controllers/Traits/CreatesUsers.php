@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Almsaeed
- * Date: 7/17/17
- * Time: 10:52 AM
- */
 
 namespace App\Http\Controllers\Traits;
 
@@ -31,7 +25,9 @@ trait CreatesUsers
             'agreement' => 'required|boolean|in:1',
             'birth_year' => 'required|integer',
             'is_anonymous' => 'boolean',
+            'share' => 'nullable|boolean',
             'zipcode' => [
+                'nullable',
                 'min:5',
                 'max:10',
                 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
@@ -65,7 +61,7 @@ trait CreatesUsers
             'password' => bcrypt($data['password']),
             'birth_year' => $data['birth_year'],
             'api_token' => $this->generateAPIToken(),
-            'zipcode' => $data['zipcode'],
+            'zipcode' => isset($data['zipcode']) ? $data['zipcode'] : '',
             'is_private' => false,
             'role_id' => $role->id,
         ]);

@@ -76,6 +76,7 @@ class SendFilterNotifications extends Command
         $observations = Filter::apply($filter->rules)
             ->where('observations.created_at', '>', $filter->notifications_sent_at)
             ->where('observations.user_id', '!=', $user->id)
+            ->orderBy('collection_date', 'desc')
             ->paginate(4);
         $total = $observations->total();
         if ($total === 0) {

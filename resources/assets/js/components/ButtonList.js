@@ -65,6 +65,10 @@ export default class ButtonList extends Component {
       </div>
     )
   }
+
+  setSelected(options) {
+    this.setState({selected: options})
+  }
 }
 
 ButtonList.PropTypes = {
