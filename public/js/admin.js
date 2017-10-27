@@ -77076,7 +77076,7 @@ var Group = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'span',
                 null,
-                'Privacy Settings'
+                'Group Privacy'
               )
             )
           )
