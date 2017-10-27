@@ -138,7 +138,7 @@ export default class MyObservationsScene extends Component {
       console.log(error)
     })
 
-    axios.get('/web/collections/owned/1').then(response => {
+    axios.get('/web/collections/customizable/1').then(response => {
       this.setState({ownedCollections: response.data.data})
     }).catch(error => {
       console.log(error)
@@ -692,7 +692,7 @@ export default class MyObservationsScene extends Component {
           <div className="column">
             <h3 className="title is-3">Observations</h3>
           </div>
-          <div className="column has-text-right-desktop-only">
+          <div className="column has-text-right-desktop">
             <p>
               Show <span className="select is-small">
               <select value={this.state.perPage}

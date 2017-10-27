@@ -298,7 +298,7 @@ export default class CurateScene extends Component {
   }
 
   loadCollections() {
-    axios.get('/web/collections/owned/1').then(response => {
+    axios.get('/web/collections/customizable/1').then(response => {
       this.setState({collections: response.data.data})
     }).catch(error => {
       console.log(error)
