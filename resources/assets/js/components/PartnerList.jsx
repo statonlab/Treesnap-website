@@ -3,7 +3,8 @@ import React, {Component} from 'react'
 export default class PartnerList extends Component {
     render() {
         return (
-            <div className="home-section" style={{padding: '4rem 0'}}>
+            <div className="home-section">
+                <h1 className="title is-3">Our Partners</h1>
                 <div className="box">
                     <div className="media">
                         <div className="media-left">
