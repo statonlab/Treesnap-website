@@ -13,6 +13,7 @@ import MapScene from './scenes/MapScene'
 import ContactUsScene from './scenes/ContactUsScene'
 import NotFoundScene from './scenes/NotFoundScene'
 import KnowledgeScene from './scenes/KnowledgeScene'
+import KnowledgeViewScene from './scenes/KnowledgeViewScene'
 import MyObservationsScene from './scenes/MyObservationsScene'
 import AccountCollectionsScene from './scenes/AccountCollectionsScene'
 import AccountFiltersScene from './scenes/AccountFiltersScene'
@@ -36,7 +37,7 @@ class App extends Component {
           <Route path={'/contact'} component={ContactUsScene}/>
           <Route path={'/about'}
                  component={() =>
-                   <KnowledgeScene docPath='/web/docs/about' title="About Us"/>
+                   <KnowledgeViewScene title="About Us"/>
                  }/>
           <Route path={'/privacy-policy'}
                  component={() =>
@@ -56,7 +57,7 @@ class App extends Component {
                  }/>
           <Route path={'/partners'}
                  component={() =>
-                   <KnowledgeScene docPath='/web/docs/partners' title="Partners"/>
+                   <KnowledgeViewScene title="Partners"/>
                  }/>
           <Route component={NotFoundScene}/>
         </Switch>
