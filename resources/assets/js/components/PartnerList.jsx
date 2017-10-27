@@ -1,6 +1,12 @@
 import React, {Component} from 'react'
 
 export default class PartnerList extends Component {
+  constructor(props) {
+    super(props)
+
+    document.title = 'Our Partners | TreeSnap'
+  }
+
   render() {
     return (
       <div className="home-section">
