@@ -29,7 +29,7 @@ export default class PartnerList extends Component {
                 <div className="box">
                     <div className="media">
                         <div className="media-left">
-                            <img src="/images/HRI.png"
+                            <img src="/images/flat-icons/teamwork-3.png"
                                  alt="Man Icon"
                                  className="feature-icon"/>
                         </div>
@@ -77,11 +77,7 @@ export default class PartnerList extends Component {
                                 its native range.
                                 The American Chestnut Foundation will use data on chestnuts to find trees
                                 that are resistant to chestnut blight to be added to breeding and research
-                                programs. In addition to sampling with the TreeSnap app, please submit a
-                                physical sample of the tree to the American Chestnut Foundation since other
-                                species can easily be confused with American chestnut. You can find full
-                                instructions, as well as addresses to ship samples to, here.
-
+                                programs.
                             </p>
                         </div>
                     </div>

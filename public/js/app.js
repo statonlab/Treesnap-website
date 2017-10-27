@@ -31241,7 +31241,7 @@ var PartnerList = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
                                 alt: 'Man Icon',
                                 className: 'feature-icon' })
                         ),
@@ -31314,7 +31314,7 @@ var PartnerList = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'p',
                                 { className: 'feature-text' },
-                                'The American Chestnut Foundation seeks to return the American chestnut to its native range. The American Chestnut Foundation will use data on chestnuts to find trees that are resistant to chestnut blight to be added to breeding and research programs. In addition to sampling with the TreeSnap app, please submit a physical sample of the tree to the American Chestnut Foundation since other species can easily be confused with American chestnut. You can find full instructions, as well as addresses to ship samples to, here.'
+                                'The American Chestnut Foundation seeks to return the American chestnut to its native range. The American Chestnut Foundation will use data on chestnuts to find trees that are resistant to chestnut blight to be added to breeding and research programs.'
                             )
                         )
                     )
