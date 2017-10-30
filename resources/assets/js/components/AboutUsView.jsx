@@ -17,13 +17,12 @@ export default class AboutUsView extends Component {
                     </p>
                 </div>
 
-                <div className="box">
-                    <img src="/images/us/FHREC_photo.jpg"/>
-                    <p>Forest Health Research and Education Center 2017 retreat</p>
-                </div>
+                <img src="/images/us/FHREC_photo.jpg"/>
+                <p>Forest Health Research and Education Center 2017 retreat</p>
 
-                <h3> The TreeSnap Team</h3>
                 <div className="box">
+                    <h3> The TreeSnap Team</h3>
+
                     <p>
                         TreeSnap was developed as a collaboration between Scientists at the University of Kentucky and
                         the University of Tennessee. The project is funded in part by the <a
@@ -32,56 +31,101 @@ export default class AboutUsView extends Component {
                         <a href="http://www.hardwoodgenomics.org/"> Hardwoods Genomics Database</a>.
                     </p>
                 </div>
-                <div className="tile is-ancestor is-vertical">
+                <div className="tile container is-ancestor is-vertical">
                     <div className="tile is-parent">
-                        <article className="tile card is-child us-tile">
+                        <div className="tile is-child card us-tile">
                             <div className="card-image">
-                                <figure className="image is-1by1">
+                                <figure className="image face">
                                     <img src="/images/us/mstaton.jpg"/>
                                 </figure>
                             </div>
                             <div className="card-content">
-                                <p className="title">Margaret Staton</p>
-                                <p className="subtitle">Principle Investigator</p>
+                                <div className="media">
+                                    <div classname="media-content">
+                                        <p className="title is-4">Margaret Staton</p>
+                                        <p className="subtitle is-6">Principle Investigator</p>
+                                    </div>
+                                </div>
                             </div>
-                        </article>
-                        <article className="tile is-child us-tile">
-                            <p className="title">Bradford Condon</p>
-                            <p className="subtitle">Web and Mobile Developer</p>
-                            <figure className="image">
-                                <img src="/images/us/condon.jpg"/>
-                            </figure>
-                        </article>
-                        <article className="tile is-child us-tile">
-                            <p className="title">Abdullah Almsaeed</p>
-                            <p className="subtitle">Web and Mobile Developer</p>
-                            <figure className="image">
-                                <img src="/images/us/almsaeed.jpg"/>
-                            </figure>
-                        </article>
+                        </div>
+                        <div className="tile is-child card us-tile">
+                            <div className="card-image">
+                                <figure className="image">
+                                    <img src="/images/us/condon.jpg"/>
+                                </figure>
+                            </div>
+                            <div className="card-content">
+                                <div className="media">
+                                    <div classname="media-content">
+                                        <p className="title is-4">Bradford Condon</p>
+                                        <p className="subtitle is-6">Mobile & Web Developer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="tile is-child card us-tile">
+                            <div className="card-image">
+                                <figure className="image">
+                                    <img src="/images/us/almsaeed.jpg"/>
+                                </figure>
+                            </div>
+                            <div className="card-content">
+                                <div className="media">
+                                    <div classname="media-content">
+                                        <p className="title is-4">Abdullah Almsaeed</p>
+                                        <p className="subtitle is-6">Mobile & Web Developer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div className="tile is-parent">
-                        <article className="tile is-child us-tile">
-                            <p className="title">Dana Nelson</p>
-                            <p className="subtitle">Principle Investigator</p>
-                            <figure className="image">
-                                <img src="/images/us/Nelson.jpg"/>
-                            </figure>
-                        </article>
-                        <article className="tile is-child us-tile">
-                            <p className="title">Bert Abbot</p>
-                            <p className="subtitle">Principle Investigator</p>
-                            <figure className="image">
-                                <img src="/images/us/abbot.jpg"/>
-                            </figure>
-                        </article>
-                        <article className="tile is-child us-tile">
-                            <p className="title">Ellen Crocker</p>
-                            <p className="subtitle">Extension and Outreach Specalist</p>
-                            <figure className="image">
-                                <img src="/images/us/crocker.jpg"/>
-                            </figure>
-                        </article>
+                        <div className="tile is-child card us-tile">
+                            <div className="card-image">
+                                <figure className="image">
+                                    <img src="/images/us/Nelson.jpg"/>
+                                </figure>
+                            </div>
+                            <div className="card-content">
+                                <div className="media">
+                                    <div classname="media-content">
+                                        <p className="title is-4">Dana Nelson</p>
+                                        <p className="subtitle is-6">Principal Investigator</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="tile is-child card us-tile">
+                            <div className="card-image">
+                                <figure className="image">
+                                    <img src="/images/us/abbot.jpg"/>
+                                </figure>
+                            </div>
+                            <div className="card-content">
+                                <div className="media">
+                                    <div classname="media-content">
+                                        <p className="title is-4">Bert Abbot</p>
+                                        <p className="subtitle is-6">Principal Investigator</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="tile is-child card us-tile">
+                            <div className="card-image">
+                                <figure className="image">
+                                    <img src="/images/us/crocker.jpg"/>
+                                </figure>
+                            </div>
+                            <div className="card-content">
+                                <div className="media">
+                                    <div classname="media-content">
+                                        <p className="title is-4">Ellen Crocker</p>
+                                        <p className="subtitle is-6">Extension and Outreach Specialist</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
