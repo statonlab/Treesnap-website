@@ -11801,15 +11801,18 @@ a.box {
   }
 }
 
+.us-row {
+  padding: 10px;
+}
+
 .us-tile {
   -webkit-box-shadow: 1px 1px 0 2px rgba(0, 0, 0, 0.1);
           box-shadow: 1px 1px 0 2px rgba(0, 0, 0, 0.1);
-  padding-right: 10px;
-  padding-left: 10px;
+  max-width: 300px;
 }
 
 .us-tile .face {
-  max-width: 300px;
+  max-width: 250px;
 }
 
 @media screen and (max-width: 1023px) {

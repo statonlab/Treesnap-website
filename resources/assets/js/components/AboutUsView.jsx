@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 export default class AboutUsView extends Component {
     render() {
         return (
-            <div>
+            <div className="container">
                 <div className="box">
                     <h3> The TreeSnap Project</h3>
                     <p>
@@ -33,7 +33,7 @@ export default class AboutUsView extends Component {
                 </div>
                 <div className="tile container is-ancestor is-vertical">
                     <div className="tile is-parent">
-                        <div className="tile is-child card us-tile">
+                        <div className="tile is-child card us-tile us-row">
                             <div className="card-image">
                                 <figure className="image face">
                                     <img src="/images/us/mstaton.jpg"/>

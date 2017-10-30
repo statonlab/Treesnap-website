@@ -286,13 +286,15 @@ a.box {
 
 // Tile for the about us page
 
+.us-row {
+  padding: 10px;
+}
 .us-tile {
   box-shadow: 1px 1px 0 2px rgba(0, 0, 0, .1);
-  padding-right: 10px;
-  padding-left : 10px;
+  max-width : 300px;
 
   .face {
-max-width : 300px;
+max-width : 250px;
   }
 
   @include until($desktop) {

@@ -25223,7 +25223,7 @@ var AboutUsView = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                null,
+                { className: "container" },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
                     { className: "box" },
@@ -25279,7 +25279,7 @@ var AboutUsView = function (_Component) {
                         { className: "tile is-parent" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
-                            { className: "tile is-child card us-tile" },
+                            { className: "tile is-child card us-tile us-row" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "div",
                                 { className: "card-image" },
