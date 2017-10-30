@@ -36,9 +36,11 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
+              <a href="https://threatenedforests.com/">
               <img src="/images/flat-icons/teamwork-3.png"
                    alt="Man Icon"
                    className="feature-icon"/>
+              </a>
             </div>
             <div className="media-content">
               <p className="title">Forest Restoration Alliance</p>
@@ -53,9 +55,11 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
+              <a href ="http://savehemlocksnc.org/">
               <img src="/images/HRI.png"
                    alt="Man Icon"
                    className="feature-icon"/>
+              </a>
             </div>
             <div className="media-content">
               <p className="title">Hemlock Restoration Initiative</p>
@@ -72,9 +76,11 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
+              <a href ="https://www.acf.org/">
               <img src="/images/ACF_logo.png" alt="American Chestnut Foundation"
                    className="feature-icon"
               />
+              </a>
             </div>
             <div className="media-content">
               <p className="title">American Chestnut Foundation
@@ -93,9 +99,11 @@ export default class PartnerList extends Component {
 
           <div className="media">
             <div className="media-left">
+            <a href ="http://www.foresthealthcenter.org">
               <img src="/images/FHC_small.png"
                    alt="Man Icon"
                    className="feature-icon"/>
+            </a>
             </div>
             <div className="media-content">
               <p className="title">Forest Health Research and Education Center

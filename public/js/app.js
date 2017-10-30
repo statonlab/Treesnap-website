@@ -31851,9 +31851,13 @@ var PartnerList = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
               { className: 'media-left' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
-                alt: 'Man Icon',
-                className: 'feature-icon' })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: 'https://threatenedforests.com/' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
+                  alt: 'Man Icon',
+                  className: 'feature-icon' })
+              )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
@@ -31880,9 +31884,13 @@ var PartnerList = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
               { className: 'media-left' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
-                alt: 'Man Icon',
-                className: 'feature-icon' })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: 'http://savehemlocksnc.org/' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
+                  alt: 'Man Icon',
+                  className: 'feature-icon' })
+              )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
@@ -31909,9 +31917,13 @@ var PartnerList = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
               { className: 'media-left' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/ACF_logo.png', alt: 'American Chestnut Foundation',
-                className: 'feature-icon'
-              })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: 'https://www.acf.org/' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/ACF_logo.png', alt: 'American Chestnut Foundation',
+                  className: 'feature-icon'
+                })
+              )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
@@ -31938,9 +31950,13 @@ var PartnerList = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
               { className: 'media-left' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FHC_small.png',
-                alt: 'Man Icon',
-                className: 'feature-icon' })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: 'http://www.foresthealthcenter.org' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FHC_small.png',
+                  alt: 'Man Icon',
+                  className: 'feature-icon' })
+              )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
