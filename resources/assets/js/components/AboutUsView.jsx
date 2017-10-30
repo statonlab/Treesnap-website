@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 export default class AboutUsView extends Component {
     render() {
         return (
-            <div className="container">
+            <div>
                 <div className="box">
                     <h3> The TreeSnap Project</h3>
                     <p>
@@ -17,9 +17,6 @@ export default class AboutUsView extends Component {
                     </p>
                 </div>
 
-                <img src="/images/us/FHREC_photo.jpg"/>
-                <p>Forest Health Research and Education Center 2017 retreat</p>
-
                 <div className="box">
                     <h3> The TreeSnap Team</h3>
 
@@ -31,9 +28,13 @@ export default class AboutUsView extends Component {
                         <a href="http://www.hardwoodgenomics.org/"> Hardwoods Genomics Database</a>.
                     </p>
                 </div>
-                <div className="tile container is-ancestor is-vertical">
+                <p className="title is-4">Development Team</p>
+
+                <div className="tile is-ancestor">
+
                     <div className="tile is-parent">
-                        <div className="tile is-child card us-tile us-row">
+
+                        <div className="tile is-child card us-tile">
                             <div className="card-image">
                                 <figure className="image face">
                                     <img src="/images/us/mstaton.jpg"/>
@@ -48,6 +49,9 @@ export default class AboutUsView extends Component {
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="tile is-parent">
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
                                 <figure className="image">
@@ -58,11 +62,16 @@ export default class AboutUsView extends Component {
                                 <div className="media">
                                     <div classname="media-content">
                                         <p className="title is-4">Bradford Condon</p>
-                                        <p className="subtitle is-6">Mobile & Web Developer</p>
+                                        <p className="subtitle is-6">Mobile and Web Developer</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+
+                    <div className="tile is-parent">
+
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
                                 <figure className="image">
@@ -73,18 +82,22 @@ export default class AboutUsView extends Component {
                                 <div className="media">
                                     <div classname="media-content">
                                         <p className="title is-4">Abdullah Almsaeed</p>
-                                        <p className="subtitle is-6">Mobile & Web Developer</p>
+                                        <p className="subtitle is-6">Mobile and Web Developer</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <p className="title is-4">Extension and Genetics Team</p>
+
+                <div className="tile is-ancestor">
                     <div className="tile is-parent">
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
-                                <figure className="image">
-                                    <img src="/images/us/Nelson.jpg"/>
+                                <figure className="image is-square">
+                                    <img src="/images/us/Nelson.png"/>
                                 </figure>
                             </div>
                             <div className="card-content">
@@ -96,10 +109,13 @@ export default class AboutUsView extends Component {
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="tile is-parent">
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
-                                <figure className="image">
-                                    <img src="/images/us/abbot.jpg"/>
+                                <figure className="image is-square">
+                                    <img src="/images/us/abbot.png"/>
                                 </figure>
                             </div>
                             <div className="card-content">
@@ -111,9 +127,11 @@ export default class AboutUsView extends Component {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="tile is-parent">
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
-                                <figure className="image">
+                                <figure className="image is-square">
                                     <img src="/images/us/crocker.jpg"/>
                                 </figure>
                             </div>
@@ -128,6 +146,21 @@ export default class AboutUsView extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="card">
+                    <div className="card-image">
+                        <figure ClassName="image">
+                <img src="/images/us/FHREC_photo.jpg"/>
+                        </figure>
+                    </div>
+                    <div className="card-content">
+                        <div className="media">
+                            <div classname="media-content">
+                                <p className="subtitle is-6">The Forest Health Research and Education Center retreat 2017</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         )
     }

@@ -25223,7 +25223,7 @@ var AboutUsView = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                { className: "container" },
+                null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
                     { className: "box" },
@@ -25237,12 +25237,6 @@ var AboutUsView = function (_Component) {
                         null,
                         "Help our nation\u2019s trees! Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying genetic diversity of tree species and building better tree breeding programs."
                     )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/FHREC_photo.jpg" }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    "p",
-                    null,
-                    "Forest Health Research and Education Center 2017 retreat"
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
@@ -25272,14 +25266,19 @@ var AboutUsView = function (_Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "p",
+                    { className: "title is-4" },
+                    "Development Team"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
-                    { className: "tile container is-ancestor is-vertical" },
+                    { className: "tile is-ancestor" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "div",
                         { className: "tile is-parent" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
-                            { className: "tile is-child card us-tile us-row" },
+                            { className: "tile is-child card us-tile" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "div",
                                 { className: "card-image" },
@@ -25311,7 +25310,11 @@ var AboutUsView = function (_Component) {
                                     )
                                 )
                             )
-                        ),
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "tile is-child card us-tile" },
@@ -25341,12 +25344,16 @@ var AboutUsView = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "p",
                                             { className: "subtitle is-6" },
-                                            "Mobile & Web Developer"
+                                            "Mobile and Web Developer"
                                         )
                                     )
                                 )
                             )
-                        ),
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "tile is-child card us-tile" },
@@ -25376,13 +25383,22 @@ var AboutUsView = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "p",
                                             { className: "subtitle is-6" },
-                                            "Mobile & Web Developer"
+                                            "Mobile and Web Developer"
                                         )
                                     )
                                 )
                             )
                         )
-                    ),
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "p",
+                    { className: "title is-4" },
+                    "Extension and Genetics Team"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "tile is-ancestor" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "div",
                         { className: "tile is-parent" },
@@ -25394,8 +25410,8 @@ var AboutUsView = function (_Component) {
                                 { className: "card-image" },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "figure",
-                                    { className: "image" },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/Nelson.jpg" })
+                                    { className: "image is-square" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/Nelson.png" })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -25420,7 +25436,11 @@ var AboutUsView = function (_Component) {
                                     )
                                 )
                             )
-                        ),
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "tile is-child card us-tile" },
@@ -25429,8 +25449,8 @@ var AboutUsView = function (_Component) {
                                 { className: "card-image" },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "figure",
-                                    { className: "image" },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/abbot.jpg" })
+                                    { className: "image is-square" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/abbot.png" })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -25455,7 +25475,11 @@ var AboutUsView = function (_Component) {
                                     )
                                 )
                             )
-                        ),
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "tile is-child card us-tile" },
@@ -25464,7 +25488,7 @@ var AboutUsView = function (_Component) {
                                 { className: "card-image" },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "figure",
-                                    { className: "image" },
+                                    { className: "image is-square" },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/crocker.jpg" })
                                 )
                             ),
@@ -25488,6 +25512,36 @@ var AboutUsView = function (_Component) {
                                             "Extension and Outreach Specialist"
                                         )
                                     )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "card" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "card-image" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "figure",
+                            { ClassName: "image" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/FHREC_photo.jpg" })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "card-content" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "media" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { classname: "media-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    { className: "subtitle is-6" },
+                                    "The Forest Health Research and Education Center retreat 2017"
                                 )
                             )
                         )

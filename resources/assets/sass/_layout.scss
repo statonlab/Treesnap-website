@@ -286,16 +286,8 @@ a.box {
 
 // Tile for the about us page
 
-.us-row {
-  padding: 10px;
-}
 .us-tile {
   box-shadow: 1px 1px 0 2px rgba(0, 0, 0, .1);
-  max-width : 300px;
-
-  .face {
-max-width : 250px;
-  }
 
   @include until($desktop) {
     .title {
