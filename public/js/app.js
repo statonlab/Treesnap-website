@@ -25219,23 +25219,194 @@ var AboutUsView = function (_Component) {
     }
 
     _createClass(AboutUsView, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'home-section', style: { padding: '4rem 0' } },
+                "div",
+                null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
+                    "div",
+                    { className: "box" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'h3',
+                        "h3",
                         null,
-                        ' The TreeSnap Project'
+                        " The TreeSnap Project"
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Help our nation\u2019s trees! Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying genetic diversity of tree species and building better tree breeding programs.'
+                        "Help our nation\u2019s trees! Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying genetic diversity of tree species and building better tree breeding programs."
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "box" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/FHREC_photo.jpg" }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
+                        null,
+                        "Forest Health Research and Education Center 2017 retreat"
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "h3",
+                    null,
+                    " The TreeSnap Team"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "box" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
+                        null,
+                        "TreeSnap was developed as a collaboration between Scientists at the University of Kentucky and the University of Tennessee. The project is funded in part by the ",
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            {
+                                href: "https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338" },
+                            "NSF Plant Genome Research Program"
+                        ),
+                        ". To learn more about the Staton laboratory and the genomic resources we provide, please visit the",
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "http://www.hardwoodgenomics.org/" },
+                            " Hardwoods Genomics Database"
+                        ),
+                        "."
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "tile is-ancestor is-vertical" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "article",
+                            { className: "tile card is-child us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image is-1by1" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/mstaton.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    { className: "title" },
+                                    "Margaret Staton"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    { className: "subtitle" },
+                                    "Principle Investigator"
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "article",
+                            { className: "tile is-child us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "title" },
+                                "Bradford Condon"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "subtitle" },
+                                "Web and Mobile Developer"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "figure",
+                                { className: "image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/condon.jpg" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "article",
+                            { className: "tile is-child us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "title" },
+                                "Abdullah Almsaeed"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "subtitle" },
+                                "Web and Mobile Developer"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "figure",
+                                { className: "image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/almsaeed.jpg" })
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "article",
+                            { className: "tile is-child us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "title" },
+                                "Dana Nelson"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "subtitle" },
+                                "Principle Investigator"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "figure",
+                                { className: "image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/Nelson.jpg" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "article",
+                            { className: "tile is-child us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "title" },
+                                "Bert Abbot"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "subtitle" },
+                                "Principle Investigator"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "figure",
+                                { className: "image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/abbot.jpg" })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "article",
+                            { className: "tile is-child us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "title" },
+                                "Ellen Crocker"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "p",
+                                { className: "subtitle" },
+                                "Extension and Outreach Specalist"
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "figure",
+                                { className: "image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/crocker.jpg" })
+                            )
+                        )
                     )
                 )
             );
