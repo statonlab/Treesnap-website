@@ -11801,6 +11801,27 @@ a.box {
   }
 }
 
+.us-tile {
+  -webkit-box-shadow: 1px 1px 0 2px rgba(0, 0, 0, 0.1);
+          box-shadow: 1px 1px 0 2px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 1023px) {
+  .us-tile .title,
+  .us-tile .document h1,
+  .document .us-tile h1,
+  .us-tile .document h2,
+  .document .us-tile h2,
+  .us-tile .document h3,
+  .document .us-tile h3,
+  .us-tile .document h4,
+  .document .us-tile h4,
+  .us-tile .document h5,
+  .document .us-tile h5 {
+    font-size: 1.6rem;
+  }
+}
+
 .map-page .navbar,
 .map-page .navbar > .container {
   position: absolute;

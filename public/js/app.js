@@ -25219,23 +25219,332 @@ var AboutUsView = function (_Component) {
     }
 
     _createClass(AboutUsView, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'home-section', style: { padding: '4rem 0' } },
+                "div",
+                null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
+                    "div",
+                    { className: "box" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'h3',
+                        "h3",
                         null,
-                        ' The TreeSnap Project'
+                        " The TreeSnap Project"
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Help our nation\u2019s trees! Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying genetic diversity of tree species and building better tree breeding programs.'
+                        "Help our nation\u2019s trees! Invasive diseases and pests threaten the health of America\u2019s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That\u2019s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying genetic diversity of tree species and building better tree breeding programs."
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "box" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "h3",
+                        null,
+                        " The TreeSnap Team"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
+                        null,
+                        "TreeSnap was developed as a collaboration between Scientists at the University of Kentucky and the University of Tennessee. The project is funded in part by the ",
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            {
+                                href: "https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338" },
+                            "NSF Plant Genome Research Program"
+                        ),
+                        ". To learn more about the Staton laboratory and the genomic resources we provide, please visit the",
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "a",
+                            { href: "http://www.hardwoodgenomics.org/" },
+                            " Hardwoods Genomics Database"
+                        ),
+                        "."
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "p",
+                    { className: "title is-4" },
+                    "Development Team"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "tile is-ancestor" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "tile is-child card us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image face" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/mstaton.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "media" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { classname: "media-content" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "title is-4" },
+                                            "Margaret Staton"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "subtitle is-6" },
+                                            "Principle Investigator"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "tile is-child card us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/condon.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "media" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { classname: "media-content" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "title is-4" },
+                                            "Bradford Condon"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "subtitle is-6" },
+                                            "Mobile and Web Developer"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "tile is-child card us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/almsaeed.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "media" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { classname: "media-content" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "title is-4" },
+                                            "Abdullah Almsaeed"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "subtitle is-6" },
+                                            "Mobile and Web Developer"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "p",
+                    { className: "title is-4" },
+                    "Extension and Genetics Team"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "tile is-ancestor" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "tile is-child card us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image is-square" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/nelson.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "media" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { classname: "media-content" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "title is-4" },
+                                            "Dana Nelson"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "subtitle is-6" },
+                                            "Principal Investigator"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "tile is-child card us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image is-square" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/abbott.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "media" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { classname: "media-content" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "title is-4" },
+                                            "Bert Abbott"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "subtitle is-6" },
+                                            "Principal Investigator"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "tile is-parent" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "tile is-child card us-tile" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-image" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "figure",
+                                    { className: "image is-square" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/crocker.jpg" })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "card-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "div",
+                                    { className: "media" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "div",
+                                        { classname: "media-content" },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "title is-4" },
+                                            "Ellen Crocker"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "p",
+                                            { className: "subtitle is-6" },
+                                            "Extension and Outreach Specialist"
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "card" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "card-image" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "figure",
+                            { ClassName: "image" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/FHREC_photo.jpg" })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "card-content" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "media" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { classname: "media-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    { className: "subtitle is-6" },
+                                    "The Forest Health Research and Education Center retreat 2017"
+                                )
+                            )
+                        )
                     )
                 )
             );

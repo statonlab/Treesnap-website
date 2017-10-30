@@ -282,3 +282,16 @@ a.box {
     text-align: center;
   }
 }
+
+
+// Tile for the about us page
+
+.us-tile {
+  box-shadow: 1px 1px 0 2px rgba(0, 0, 0, .1);
+
+  @include until($desktop) {
+    .title {
+      font-size: 1.6rem;
+    }
+  }
+}
