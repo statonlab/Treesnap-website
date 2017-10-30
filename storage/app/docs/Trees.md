@@ -51,7 +51,7 @@ White oak (_Quercus alba_) is an extremely important tree species. It provides w
 
 ### Partners
 
-* [The Forest Health Research and Education Center](www.foresthealthcenter.org) 
+* [The Forest Health Research and Education Center](http://www.foresthealthcenter.org) 
 
 
 ## Hemlock
