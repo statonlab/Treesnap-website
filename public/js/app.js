@@ -25411,7 +25411,7 @@ var AboutUsView = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "figure",
                                     { className: "image is-square" },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/Nelson.png" })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/nelson.jpg" })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -25450,7 +25450,7 @@ var AboutUsView = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "figure",
                                     { className: "image is-square" },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/abbot.png" })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "/images/us/abbott.jpg" })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -25465,7 +25465,7 @@ var AboutUsView = function (_Component) {
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "p",
                                             { className: "title is-4" },
-                                            "Bert Abbot"
+                                            "Bert Abbott"
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             "p",

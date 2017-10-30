@@ -97,7 +97,7 @@ export default class AboutUsView extends Component {
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
                                 <figure className="image is-square">
-                                    <img src="/images/us/Nelson.png"/>
+                                    <img src="/images/us/nelson.jpg"/>
                                 </figure>
                             </div>
                             <div className="card-content">
@@ -115,13 +115,13 @@ export default class AboutUsView extends Component {
                         <div className="tile is-child card us-tile">
                             <div className="card-image">
                                 <figure className="image is-square">
-                                    <img src="/images/us/abbot.png"/>
+                                    <img src="/images/us/abbott.jpg"/>
                                 </figure>
                             </div>
                             <div className="card-content">
                                 <div className="media">
                                     <div classname="media-content">
-                                        <p className="title is-4">Bert Abbot</p>
+                                        <p className="title is-4">Bert Abbott</p>
                                         <p className="subtitle is-6">Principal Investigator</p>
                                     </div>
                                 </div>
