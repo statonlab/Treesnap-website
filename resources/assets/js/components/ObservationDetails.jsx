@@ -65,7 +65,7 @@ export default class ObservationDetails extends Component {
       return
     }
 
-    axios.get('/web/collections/owned/1').then(response => {
+    axios.get('/web/collections/customizable/1').then(response => {
       let collections = response.data.data
       this.setState({collections})
     }).catch(error => {

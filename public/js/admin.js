@@ -72028,7 +72028,7 @@ var CurateScene = function (_Component) {
     value: function loadCollections() {
       var _this6 = this;
 
-      axios.get('/web/collections/owned/1').then(function (response) {
+      axios.get('/web/collections/customizable/1').then(function (response) {
         _this6.setState({ collections: response.data.data });
       }).catch(function (error) {
         console.log(error);
@@ -72514,7 +72514,7 @@ var ObservationsScene = function (_Component) {
         console.log(error);
       });
 
-      axios.get('/web/collections/owned/mapped').then(function (response) {
+      axios.get('/web/collections/customizable/mapped').then(function (response) {
         _this3.setState({ ownedCollections: response.data.data });
       }).catch(function (error) {
         console.log(error);
@@ -78978,7 +78978,7 @@ var ObservationCard = function (_Component) {
         { className: 'card-footer marks-section' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'card-footer-item' },
+          { className: 'card-footer-item', style: { zIndex: 0 } },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'span',
             null,
@@ -78997,7 +78997,7 @@ var ObservationCard = function (_Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'card-footer-item' },
+          { className: 'card-footer-item', style: { zIndex: 0 } },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'span',
             null,
@@ -79462,7 +79462,7 @@ var ObservationDetails = function (_Component) {
         return;
       }
 
-      axios.get('/web/collections/owned/1').then(function (response) {
+      axios.get('/web/collections/customizable/1').then(function (response) {
         var collections = response.data.data;
         _this2.setState({ collections: collections });
       }).catch(function (error) {
@@ -81839,7 +81839,9 @@ var Labels = {
   heightNumeric: 'Tree height',
   burrs: 'Nuts/burrs',
   catkins: 'Catkins',
-  comment: 'Comment'
+  comment: 'Comment',
+  diameterNumeric_confidence: 'Diameter Confidence',
+  heightFirstBranch_confidence: 'Height Confidence'
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Labels);

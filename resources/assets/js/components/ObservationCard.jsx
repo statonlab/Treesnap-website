@@ -372,14 +372,14 @@ export default class ObservationCard extends Component {
 
     return (
       <div className="card-footer marks-section">
-        <div className="card-footer-item">
+        <div className="card-footer-item" style={{zIndex: 0}}>
           <span>{this.state.incorrectMarks}</span>
           <span className="icon ml-0 mr-0">
             <b className="fa fa-times text-danger"></b>
           </span>
           <span>Marks</span>
         </div>
-        <div className="card-footer-item">
+        <div className="card-footer-item" style={{zIndex: 0}}>
           <span>{this.state.correctMarks}</span>
           <span className="icon ml-0 mr-0">
             <b className="fa fa-check text-success"></b>

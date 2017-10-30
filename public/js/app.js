@@ -25229,8 +25229,8 @@ var AboutUsView = function (_Component) {
                     { className: "box" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "h3",
-                        null,
-                        " The TreeSnap Project"
+                        { className: "title is-4" },
+                        "The TreeSnap Project"
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "p",
@@ -30666,7 +30666,7 @@ var ObservationCard = function (_Component) {
         { className: 'card-footer marks-section' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'card-footer-item' },
+          { className: 'card-footer-item', style: { zIndex: 0 } },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'span',
             null,
@@ -30685,7 +30685,7 @@ var ObservationCard = function (_Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'card-footer-item' },
+          { className: 'card-footer-item', style: { zIndex: 0 } },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'span',
             null,
@@ -31150,7 +31150,7 @@ var ObservationDetails = function (_Component) {
         return;
       }
 
-      axios.get('/web/collections/owned/1').then(function (response) {
+      axios.get('/web/collections/customizable/1').then(function (response) {
         var collections = response.data.data;
         _this2.setState({ collections: collections });
       }).catch(function (error) {
@@ -31789,201 +31789,209 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var PartnerList = function (_Component) {
-    _inherits(PartnerList, _Component);
+  _inherits(PartnerList, _Component);
 
-    function PartnerList() {
-        _classCallCheck(this, PartnerList);
+  function PartnerList(props) {
+    _classCallCheck(this, PartnerList);
 
-        return _possibleConstructorReturn(this, (PartnerList.__proto__ || Object.getPrototypeOf(PartnerList)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (PartnerList.__proto__ || Object.getPrototypeOf(PartnerList)).call(this, props));
+
+    document.title = 'Our Partners | TreeSnap';
+    return _this;
+  }
+
+  _createClass(PartnerList, [{
+    key: 'render',
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'home-section' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h1',
+          { className: 'title is-3' },
+          'Our Partners'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'media' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: 'https://www.nrs.fs.fed.us/units/invasivescontrol/' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FS_green.png', alt: 'US forest service', className: 'feature-icon' })
+              )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-content' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'title' },
+                'USDA Forest Service Northern Research Station'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'feature-text' },
+                'The USDA Forest Service Northern Research Station\'s mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents. As a TreeSnap partner, they will use data on ash and elm to find trees that are resistant to the emerald ash borer and Dutch elm disease. They plan to use data from areas where these threats have been established for some time to identify \u201Clingering\u201D trees that survive long past others have died to be used in research and breeding programs.'
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'media' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
+                alt: 'Man Icon',
+                className: 'feature-icon' })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-content' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'title' },
+                'Forest Restoration Alliance'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'feature-text' },
+                'The Forest Restoration Alliance works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees.'
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'media' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
+                alt: 'Man Icon',
+                className: 'feature-icon' })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-content' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'title' },
+                'Hemlock Restoration Initiative'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'feature-text' },
+                'The Hemlock Restoration Initiative aims to restore eastern and Carolina hemlocks to their native habitats throughout North Carolina and to mitigate damage to hemlocks caused by infestation of the hemlock woolly adelgid. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'media' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/ACF_logo.png', alt: 'American Chestnut Foundation',
+                className: 'feature-icon'
+              })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-content' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'title' },
+                'American Chestnut Foundation'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'feature-text' },
+                'The American Chestnut Foundation seeks to return the American chestnut to its native range. The American Chestnut Foundation will use data on chestnuts to find trees that are resistant to chestnut blight to be added to breeding and research programs.'
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'media' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FHC_small.png',
+                alt: 'Man Icon',
+                className: 'feature-icon' })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-content' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'title' },
+                'Forest Health Research and Education Center'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'feature-text' },
+                'The Forest Health Research and Education Center\'s mission is to advance the conservation of forested ecosystems by integrating genetics-based biological research with social science research and education and outreach on factors affecting tree health and forest restoration. The Forest Health Research and Education Center will use data on white oak to build a breeding program. Their goal is to be better prepared in the event that any invasive pests that target white oak are introduced in the future.'
+              )
+            )
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'box' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'media' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-left' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
+                alt: 'Man Icon',
+                className: 'feature-icon' })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'media-content' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'title' },
+                'Your Organization?'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                { className: 'feature-text' },
+                'Have a project or tree breeding program you want involved? Let us know! You can visit our contact page, or find us on Facebook or Twitter.'
+              )
+            )
+          )
+        )
+      );
     }
+  }]);
 
-    _createClass(PartnerList, [{
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'home-section', style: { padding: '4rem 0' } },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'media' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'a',
-                                { href: 'https://www.nrs.fs.fed.us/units/invasivescontrol/' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FS_green.png', alt: 'US forest service', className: 'feature-icon' })
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-content' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'title' },
-                                'USDA Forest Service Northern Research Station'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'feature-text' },
-                                'The USDA Forest Service Northern Research Station\'s mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents. As a TreeSnap partner, they will use data on ash and elm to find trees that are resistant to the emerald ash borer and Dutch elm disease. They plan to use data from areas where these threats have been established for some time to identify \u201Clingering\u201D trees that survive long past others have died to be used in research and breeding programs.'
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'media' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
-                                alt: 'Man Icon',
-                                className: 'feature-icon' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-content' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'title' },
-                                'Forest Restoration Alliance'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'feature-text' },
-                                'The Forest Restoration Alliance works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees.'
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'media' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/HRI.png',
-                                alt: 'Man Icon',
-                                className: 'feature-icon' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-content' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'title' },
-                                'Hemlock Restoration Initiative'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'feature-text' },
-                                'The Hemlock Restoration Initiative aims to restore eastern and Carolina hemlocks to their native habitats throughout North Carolina and to mitigate damage to hemlocks caused by infestation of the hemlock woolly adelgid. They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.'
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'media' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/ACF_logo.png', alt: 'American Chestnut Foundation',
-                                className: 'feature-icon'
-                            })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-content' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'title' },
-                                'American Chestnut Foundation'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'feature-text' },
-                                'The American Chestnut Foundation seeks to return the American chestnut to its native range. The American Chestnut Foundation will use data on chestnuts to find trees that are resistant to chestnut blight to be added to breeding and research programs.'
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'media' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/FHC_small.png',
-                                alt: 'Man Icon',
-                                className: 'feature-icon' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-content' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'title' },
-                                'Forest Health Research and Education Center'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'feature-text' },
-                                'The Forest Health Research and Education Center\'s mission is to advance the conservation of forested ecosystems by integrating genetics-based biological research with social science research and education and outreach on factors affecting tree health and forest restoration. The Forest Health Research and Education Center will use data on white oak to build a breeding program. Their goal is to be better prepared in the event that any invasive pests that target white oak are introduced in the future.'
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'box' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'media' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-left' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/flat-icons/teamwork-3.png',
-                                alt: 'Man Icon',
-                                className: 'feature-icon' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'media-content' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'title' },
-                                'Your Organization?'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'p',
-                                { className: 'feature-text' },
-                                'Have a project or tree breeding program you want involved? Let us know! You can visit our contact page, or find us on Facebook or Twitter.'
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return PartnerList;
+  return PartnerList;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (PartnerList);
@@ -33875,7 +33883,9 @@ var Labels = {
   heightNumeric: 'Tree height',
   burrs: 'Nuts/burrs',
   catkins: 'Catkins',
-  comment: 'Comment'
+  comment: 'Comment',
+  diameterNumeric_confidence: 'Diameter Confidence',
+  heightFirstBranch_confidence: 'Height Confidence'
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Labels);
@@ -38422,7 +38432,7 @@ var MyObservationsScene = function (_Component) {
         console.log(error);
       });
 
-      axios.get('/web/collections/owned/1').then(function (response) {
+      axios.get('/web/collections/customizable/1').then(function (response) {
         _this3.setState({ ownedCollections: response.data.data });
       }).catch(function (error) {
         console.log(error);
@@ -39203,7 +39213,7 @@ var MyObservationsScene = function (_Component) {
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
-            { className: 'column has-text-right-desktop-only' },
+            { className: 'column has-text-right-desktop' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'p',
               null,

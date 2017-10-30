@@ -78,7 +78,7 @@ export default class ObservationsScene extends Component {
       console.log(error)
     })
 
-    axios.get('/web/collections/owned/mapped').then(response => {
+    axios.get('/web/collections/customizable/mapped').then(response => {
       this.setState({ownedCollections: response.data.data})
     }).catch(error => {
       console.log(error)

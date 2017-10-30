@@ -5,7 +5,7 @@ export default class AboutUsView extends Component {
         return (
             <div>
                 <div className="box">
-                    <h3> The TreeSnap Project</h3>
+                    <h3 className="title is-4">The TreeSnap Project</h3>
                     <p>
                         Help our nation’s trees! Invasive diseases and pests threaten the health of America’s forests.
                         Scientists are working to understand what allows some individual trees to survive, but they need
