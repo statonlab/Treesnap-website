@@ -80,7 +80,7 @@ class Filter extends Model
      */
     public static function apply($filters, $observations = null)
     {
-        if($observations === null) {
+        if ($observations === null) {
             $observations = Observation::with('user');
         }
 
@@ -132,7 +132,7 @@ class Filter extends Model
                                 // Extract the filter name
                                 $filterName = substr($filter, 0, strlen($filter) - 3);
                                 $filterMax = "{$filterName}Max";
-                                $allFilters = $filters[static::$filterMapper[$category]];
+                                $allFilters = (array) $filters[static::$filterMapper[$category]];
 
                                 // If the filter is not complete, ignore it
                                 if (! isset($allFilters[$filterMax])) {
