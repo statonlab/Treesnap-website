@@ -45,8 +45,7 @@
         </p>
 
         <p>
-            <a href="/privacy-policy">Privacy Policy and Terms of Use</a> | Icons by
-            <a href="http://www.flaticon.com/authors/vectors-market"> Vectors Market</a>
+            <a href="/privacy-policy">Privacy Policy and Terms of Use</a>
         </p>
         <div class="columns logos">
             <div class="column has-text-centered">
