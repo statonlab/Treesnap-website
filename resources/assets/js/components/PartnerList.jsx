@@ -37,8 +37,8 @@ export default class PartnerList extends Component {
           <div className="media">
             <div className="media-left">
               <a href="https://threatenedforests.com/">
-              <img src="/images/flat-icons/teamwork-3.png"
-                   alt="Man Icon"
+              <img src="/images/fra.png"
+                   alt="Forest Restoration Alliance logo"
                    className="feature-icon"/>
               </a>
             </div>
@@ -57,7 +57,7 @@ export default class PartnerList extends Component {
             <div className="media-left">
               <a href ="http://savehemlocksnc.org/">
               <img src="/images/HRI.png"
-                   alt="Man Icon"
+                   alt="Hemlock restoration initiative logo"
                    className="feature-icon"/>
               </a>
             </div>
@@ -101,7 +101,7 @@ export default class PartnerList extends Component {
             <div className="media-left">
             <a href ="http://www.foresthealthcenter.org">
               <img src="/images/FHC_small.png"
-                   alt="Man Icon"
+                   alt="Forest Health Center icon"
                    className="feature-icon"/>
             </a>
             </div>
