@@ -25,6 +25,7 @@ class Observation extends Model
         'address',
         'fuzzy_coords',
         'mobile_id',
+        'latin_name_id'
     ];
 
     /**
@@ -59,6 +60,10 @@ class Observation extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function latinName() {
+        return $this->belongsTo('App\LatinName', 'latin_name_id', 'id');
     }
 
     /**
