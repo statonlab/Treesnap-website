@@ -13,16 +13,13 @@ class CreateLatinNamesTable extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'latin_names',
-            function (Blueprint $table) {
-                $table->increments('id');
-                $table->string('genus');
-                $table->string('species');
-                $table->string('common')->index();
-                $table->timestamps();
-            }
-        );
+        Schema::create('latin_names', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('genus');
+            $table->string('species');
+            $table->string('common')->index();
+            $table->timestamps();
+        });
 
         // Add the first set of latin names manually
         // We can create an admin interface to handle
@@ -40,6 +37,9 @@ class CreateLatinNamesTable extends Migration
         Schema::dropIfExists('latin_names');
     }
 
+    /**
+     * Seed the table with latin names.
+     */
     protected function seedTable()
     {
         $latinNames = [
@@ -151,13 +151,11 @@ class CreateLatinNamesTable extends Migration
             $species = $latinArray[1];
 
             // Insert to the newly created table
-            \App\LatinName::create(
-                [
-                    'genus' => $genus,
-                    'species' => $species,
-                    'common' => $common,
-                ]
-            );
+            \App\LatinName::create([
+                'genus' => trim($genus),
+                'species' => trim($species),
+                'common' => trim($common),
+            ]);
         }
     }
 }
