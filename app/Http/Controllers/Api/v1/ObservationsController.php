@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Events\ObservationCreated;
 use App\Events\ObservationDeleted;
 use App\Http\Controllers\Traits\Observes;
+use App\LatinName;
 use App\Observation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -124,10 +125,11 @@ class ObservationsController extends Controller
 
         // Create the record
         $data = json_decode($request->meta_data);
+
         $observation = Observation::create([
             'user_id' => $user->id,
             'observation_category' => $request->observation_category,
-            'data' => !empty($data) ? $data : [],
+            'data' => ! empty($data) ? $data : [],
             'longitude' => $request->longitude,
             'latitude' => $request->latitude,
             'location_accuracy' => $request->location_accuracy,
@@ -136,7 +138,8 @@ class ObservationsController extends Controller
             'fuzzy_coords' => $fuzzy_coords,
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
-            'thumbnail' => '/images/placeholder-min.png'
+            'thumbnail' => '/images/placeholder-min.png',
+            'latin_name_id' => LatinName::getID($request->observation_category, $data),
         ]);
 
         if (! $observation) {
