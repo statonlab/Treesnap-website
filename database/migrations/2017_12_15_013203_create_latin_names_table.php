@@ -43,6 +43,9 @@ class CreateLatinNamesTable extends Migration
     protected function seedTable()
     {
         $latinNames = [
+            // Default value
+            'Unknown Unknown' => 'Unknown',
+            // Genus Species => Common Name
             'Abies balsamea' => 'Balsam fir',
             'Acer nigrum' => 'Black maple',
             'Acer pensylvanicum' => 'Striped maple',
