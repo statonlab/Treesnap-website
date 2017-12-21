@@ -37,7 +37,8 @@ export default class Group extends Component {
       hasMorePages      : false,
       lastPage          : 1,
       pages             : [],
-      collections       : []
+      collections       : [],
+      countByUsers      : []
     }
   }
 
@@ -160,7 +161,10 @@ export default class Group extends Component {
 
       let pages = this.createPages(data.last_page)
 
+      let countByUsers = this.countObservationsByUser(data.data)
+
       this.setState({
+        countByUsers: countByUsers,
         observations: data.data,
         total       : data.total,
         count       : data.count,
@@ -173,8 +177,30 @@ export default class Group extends Component {
     }).catch(error => {
       this.setState({loading: false})
 
-      consoe.log(error)
+      console.log(error)
     })
+  }
+
+  /**Loops through all the observations in the grup and returns an array organized by user_id => # observations in group
+   *
+   * @param observations
+   * @returns {Array}
+   */
+
+  countObservationsByUser(observations) {
+
+    let observations_by_user = []
+
+    observations.map((observation, index) => {
+      let id = observation.user_id
+      if (observations_by_user[id]) {
+        observations_by_user[id]++
+      }
+      else {
+        observations_by_user[id] = 1
+      }
+    })
+    return observations_by_user
   }
 
   /**
@@ -265,7 +291,7 @@ export default class Group extends Component {
         <thead>
         <tr>
           <th>Name</th>
-          <th>Observations Count</th>
+          <th>Observations Shared</th>
           {this.state.isOwner ?
             <th className="has-text-right">Remove from Group</th>
             :
@@ -283,7 +309,7 @@ export default class Group extends Component {
                   : user.name}
               </td>
               <td>
-                {user.observations_count}
+                {this.state.countByUsers[user.id] ? this.state.countByUsers[user.id] : 0}
               </td>
               {this.state.isOwner ?
                 <td className="has-text-right">
