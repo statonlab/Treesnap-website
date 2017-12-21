@@ -10,14 +10,13 @@
   "devDependencies": {
     "axios": "^0.15.3",
     "babel-preset-react": "^6.24.0",
-    "browser-sync": "^2.18.13",
+    "browser-sync": "^2.19.0",
     "browser-sync-webpack-plugin": "^1.2.0",
     "cookie-signature": "^1.0.6",
     "cross-env": "^3.2.3",
     "jquery": "^3.2.1",
-    "laravel-mix": "^1.5.1",
-    "lodash": "^4.17.4",
-    "vue": "^2.5.2"
+    "laravel-mix": "^1.7.2",
+    "lodash": "^4.17.4"
   },
   "dependencies": {
     "amdefine": "^1.0.1",
@@ -37,10 +36,10 @@
     "lodash._baseclone": "^4.5.7",
     "lodash._bindcallback": "^3.0.1",
     "lodash._createassigner": "^3.1.1",
-    "marked": "^0.3.6",
+    "marked": "^0.3.7",
     "merge-descriptors": "^1.0.1",
     "methods": "^1.1.2",
-    "moment": "^2.19.1",
+    "moment": "^2.20.1",
     "path-to-regexp": "^1.7.0",
     "prop-types": "^15.6.0",
     "proxy-addr": "^1.1.5",
@@ -48,12 +47,12 @@
     "react-addons-update": "^15.6.2",
     "react-async-script": "^0.9.1",
     "react-dom": "^15.6.2",
-    "react-google-recaptcha": "^0.9.7",
+    "react-google-recaptcha": "^0.9.9",
     "react-icons": "^2.2.7",
     "react-image-gallery": "^0.7.16",
     "react-router-dom": "^4.2.2",
     "react-rte": "^0.11.0",
-    "react-select": "^1.0.0-rc.10",
+    "react-select": "^1.1.0",
     "slick-carousel": "^1.8.1",
     "type-is": "^1.6.15"
   }

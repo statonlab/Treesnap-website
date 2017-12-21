@@ -24,7 +24,10 @@ export default class CollectionsScene extends Component {
       sharing           : false,
       canCustomize      : false,
       sharingErrors     : [],
-      showUnshareModal  : false
+      showUnshareModal  : false,
+      shareWith         : 'user',
+      groups            : [],
+      selectedGroup     : -1
     }
 
     this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
@@ -34,6 +37,7 @@ export default class CollectionsScene extends Component {
 
   componentWillMount() {
     this.loadCollections()
+    this.loadGroups()
   }
 
   loadCollections() {
@@ -45,6 +49,21 @@ export default class CollectionsScene extends Component {
     }).catch(error => {
       console.log(error)
       this.setState({loading: false})
+    })
+  }
+
+  loadGroups() {
+    axios.get('/web/groups').then(response => {
+      const groups = response.data.data.map(group => {
+        return {
+          id  : group.id,
+          name: group.name
+        }
+      })
+
+      this.setState({groups})
+    }).catch(error => {
+      console.log(error)
     })
   }
 
@@ -92,24 +111,28 @@ export default class CollectionsScene extends Component {
   shareCollection(event) {
     event.preventDefault()
 
-    if (this.state.selectedUser === null) {
-      this.setState({sharingErrors: ['Please select a user to share with first']})
-      return
-    }
-
     this.setState({sharing: true, sharingErrors: []})
 
     const id = parseInt(this.state.selectedCollection.id)
 
     axios.post(`/web/collection/${id}/share`, {
-      user_id      : this.state.selectedUser.value,
-      can_customize: this.state.canCustomize
-    }).then(() => {
-      Notify.push(`You successfully shared ${this.state.selectedCollection.label} with ${this.state.selectedUser.label}`)
+      user_id       : this.state.selectedUser === null ? null : this.state.selectedUser.value,
+      can_customize : this.state.canCustomize,
+      share_category: this.state.shareWith === 'user' ? 'user' : 'group',
+      group_id      : this.state.selectedGroup
+    }).then(response => {
+      let sharedWith = ''
+      if (this.state.shareWith === 'user') {
+        sharedWith = this.state.selectedUser.label
+      } else {
+        let group  = this.state.groups.filter(group => group.id !== this.state.selectedGroup)
+        sharedWith = group[0].name
+      }
+      Notify.push(`You successfully shared ${this.state.selectedCollection.label} with ${sharedWith}`)
 
       let collections = this.state.collections.map(collection => {
         if (this.state.selectedCollection.id === collection.id) {
-          collection.users_count += 1
+          collection.users_count = this.state.shareWith === 'user' ? collection.user_count + response.data.data.count : response.data.data.count
         }
         return collection
       })
@@ -196,24 +219,34 @@ export default class CollectionsScene extends Component {
             </div>
 
             <div className="field">
-              <label className="label">User to Share With</label>
-              <div className="control">
-                <Select.Async
-                  value={this.state.selectedUser}
-                  loadOptions={this.searchUsers.bind(this)}
-                  onChange={selectedUser => this.setState({selectedUser})}
-                  optionRenderer={this._renderOption.bind(this)}
-                  disabled={this.state.sharing}/>
-              </div>
-              {this.state.sharingErrors.map((error, i) => {
-                return (
-                  <p key={i} className="help is-danger">
-                    {error}
-                  </p>
-                )
-              })}
+              <label className="label">Share With</label>
             </div>
-
+            <div className="field is-horizontal">
+              <div className="field-body">
+                <div className="field" style={{maxWidth: 125}}>
+                  <div className="control">
+                    <span className="select" style={{width: '100%'}}>
+                      <select value={this.state.shareWith}
+                              onChange={({target}) => this.setState({shareWith: target.value})}
+                              style={{width: '100%'}}>
+                        <option value="user">User</option>
+                        <option value="group">Group</option>
+                      </select>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  {this.state.shareWith === 'user' ? this._renderShareWithUserSelect() : this._renderShareWithGroupSelect()}
+                  {this.state.sharingErrors.map((error, i) => {
+                    return (
+                      <p key={i} className="help is-danger">
+                        {error}
+                      </p>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
             <div className="field">
               <label className="label">Permissions</label>
               <div className="control">
@@ -244,6 +277,35 @@ export default class CollectionsScene extends Component {
           </div>
         </form>
       </Modal>
+    )
+  }
+
+  _renderShareWithUserSelect() {
+    return (
+      <div className="control">
+        <Select.Async
+          value={this.state.selectedUser}
+          loadOptions={this.searchUsers.bind(this)}
+          onChange={selectedUser => this.setState({selectedUser})}
+          optionRenderer={this._renderOption.bind(this)}
+          disabled={this.state.sharing}/>
+      </div>
+    )
+  }
+
+  _renderShareWithGroupSelect() {
+    return (
+      <div className="control">
+        <span className="select">
+          <select value={this.state.selectedGroup}
+                  onChange={({target}) => this.setState({selectedGroup: parseInt(target.value)})}>
+            <option value={-1}>Choose a Group</option>
+            {this.state.groups.map(group => {
+              return (<option value={group.id} key={group.id}>{group.name}</option>)
+            })}
+          </select>
+        </span>
+      </div>
     )
   }
 
@@ -369,10 +431,12 @@ export default class CollectionsScene extends Component {
   }
 }
 
-CollectionsScene.PropTypes = {
+CollectionsScene
+  .PropTypes = {
   admin: PropTypes.bool
 }
 
-CollectionsScene.defaultProps = {
+CollectionsScene
+  .defaultProps = {
   admin: false
 }
