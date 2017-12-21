@@ -161,10 +161,7 @@ export default class Group extends Component {
 
       let pages = this.createPages(data.last_page)
 
-      let countByUsers = this.countObservationsByUser(data.data)
-
       this.setState({
-        countByUsers: countByUsers,
         observations: data.data,
         total       : data.total,
         count       : data.count,
@@ -179,28 +176,6 @@ export default class Group extends Component {
 
       console.log(error)
     })
-  }
-
-  /**Loops through all the observations in the grup and returns an array organized by user_id => # observations in group
-   *
-   * @param observations
-   * @returns {Array}
-   */
-
-  countObservationsByUser(observations) {
-
-    let observations_by_user = []
-
-    observations.map((observation, index) => {
-      let id = observation.user_id
-      if (observations_by_user[id]) {
-        observations_by_user[id]++
-      }
-      else {
-        observations_by_user[id] = 1
-      }
-    })
-    return observations_by_user
   }
 
   /**
@@ -309,7 +284,7 @@ export default class Group extends Component {
                   : user.name}
               </td>
               <td>
-                {this.state.countByUsers[user.id] ? this.state.countByUsers[user.id] : 0}
+                {user.observations_count}
               </td>
               {this.state.isOwner ?
                 <td className="has-text-right">
