@@ -108,13 +108,21 @@ class GroupsController extends Controller
             }
         }
 
+        $users = $group->users->map(function ($user) {
+            if (! $user->pivot->share) {
+                $user->observations_count = 0;
+            }
+
+            return $user;
+        });
+
         // Determine if user is sharing observations
         $is_sharing = $user->groups()->where('groups.id', $id)->first()->pivot->share ? true : false;
 
         return $this->success([
             'id' => $group->id,
             'name' => $group->name,
-            'users' => $group->users,
+            'users' => $users,
             'owner' => $group->users->where('id', $group->user_id)->first(),
             'is_owner' => $user->id === $group->user_id,
             'is_sharing' => $is_sharing,
@@ -204,8 +212,8 @@ class GroupsController extends Controller
             ]);
         }
 
-        $group->collections->map(function($collection) use ($request) {
-            if($collection->user_id !== $request->user_id) {
+        $group->collections->map(function ($collection) use ($request) {
+            if ($collection->user_id !== $request->user_id) {
                 $collection->users()->detach($request->user_id);
             }
         });
