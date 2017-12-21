@@ -64,4 +64,13 @@ class Group extends Model
 
         return Observation::whereIn('user_id', $users)->where('is_private', false);
     }
+
+    /**
+     * Get collections.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function collections() {
+        return $this->belongsToMany('App\Collection')->withPivot(['can_customize']);
+    }
 }

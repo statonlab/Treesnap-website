@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\Group;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\Responds;
 use DB;
@@ -175,7 +177,7 @@ class CollectionsController extends Controller
     /**
      * Get a specific collection.
      *
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id, Request $request)
@@ -264,7 +266,9 @@ class CollectionsController extends Controller
         $user = $request->user();
 
         $this->validate($request, [
-            'user_id' => 'required|exists:users,id',
+            'share_category' => 'required|in:user,group',
+            'user_id' => 'required_if:share_category,user',
+            'group_id' => 'required_if:share_category,group',
             'can_customize' => 'required|boolean',
         ]);
 
@@ -273,6 +277,30 @@ class CollectionsController extends Controller
         // Allow only owners to share
         if ($collection->user_id !== $user->id) {
             return $this->unauthorized();
+        }
+
+        if ($request->share_category === 'user') {
+            return $this->shareWithUser($collection, $request);
+        }
+
+        return $this->shareWithGroup($collection, $request);
+    }
+
+    /**
+     * Share collection with a single user.
+     *
+     * @param Collection $collection
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function shareWithUser($collection, $request)
+    {
+        $user = $request->user();
+        if (! User::find($request->user_id)) {
+            // User does not exist
+            return $this->validationError([
+                'user_id' => ['Invalid user selected'],
+            ]);
         }
 
         // Allow sharing only with users who have a group in common
@@ -293,6 +321,54 @@ class CollectionsController extends Controller
             'id' => $collection->id,
             'label' => $collection->label,
             'added' => $request->user_id,
+            'count' => 1,
+        ]);
+    }
+
+    /**
+     * Share observation with a certain group.
+     *
+     * @param Collection $collection
+     * @param Request $request
+     */
+    protected function shareWithGroup($collection, $request)
+    {
+        $user = $request->user();
+        $group = Group::find($request->group_id);
+
+        if (! $group) {
+            // Group does not exist
+            return $this->validationError([
+                'user_id' => ['Invalid group selected'],
+            ]);
+        }
+
+        // Allow user to share with a group they belong to by checking
+        // if this user belongs to the current group
+        if (! $group->users()->find($user->id)) {
+            return $this->unauthorized();
+        }
+
+        // Get all users in the group and sync their ids to the collection.
+        // Detach the given ids first to avoid duplication.
+        $users = $group->users()->select('users.id')->get()->map(function ($user) {
+            return $user->id;
+        });
+        $collection->users()->detach($users);
+        $collection->users()->attach($users, [
+            'can_customize' => $request->can_customize,
+            'is_shared_with_group' => true,
+        ]);
+
+        // Attach collection to group to allow new users in the
+        // group to obtain access to the collection
+        $collection->groups()->syncWithoutDetaching($group->id);
+
+        return $this->created([
+            'id' => $collection->id,
+            'label' => $collection->label,
+            'added' => $request->user_id ?: 0,
+            'count' => $collection->users()->count(),
         ]);
     }
 
@@ -385,6 +461,7 @@ class CollectionsController extends Controller
 
         $collection->observations()->detach();
         $collection->users()->detach();
+        $collection->groups()->detach();
         $collection->delete();
 
         return $this->created([

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\Events\UserJoinedGroup;
 use App\Group;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
@@ -203,6 +204,12 @@ class GroupsController extends Controller
             ]);
         }
 
+        $group->collections->map(function($collection) use ($request) {
+            if($collection->user_id !== $request->user_id) {
+                $collection->users()->detach($request->user_id);
+            }
+        });
+
         $group->users()->detach($request->user_id);
 
         return $this->created('User has been removed from group');
@@ -224,6 +231,17 @@ class GroupsController extends Controller
             return $this->unauthorized();
         }
 
+        // Get all collections and detach all users
+        // in this group from that collection
+        // Remove user from collections
+        $users = $group->users;
+        $group->collections()->get()->map(function ($collection) use ($users) {
+            // Remove everyone except the owner of the group
+            $collection->users()->detach($users->filter(function ($user) use ($collection) {
+                return $user->id !== $collection->user_id;
+            }));
+        });
+
         $group->users()->detach();
         $group->delete();
 
@@ -240,6 +258,15 @@ class GroupsController extends Controller
     public function exitGroup(Group $group, Request $request)
     {
         $this->authorize('exit', $group);
+
+        $user = $request->user();
+
+        // Remove user from collections
+        $group->collections->map(function ($collection) use ($user) {
+            if ($collection->user_id !== $user->id && $collection->users()->where('users.id', $user->id)->count() > 0) {
+                $collection->users()->detach($user->id);
+            }
+        });
 
         $group->users()->detach($request->user()->id);
 
@@ -260,14 +287,18 @@ class GroupsController extends Controller
         ]);
 
         $users = json_decode($request->users);
+        $group = Group::find($request->group_id);
 
         foreach ($users as $id) {
-            $user = User::whereDoesntHave('groups', function ($query) use ($request) {
+            $user = User::whereDoesntHave('groups', function ($query) use ($request, $group) {
                 $query->where('group_id', $request->group_id);
             })->find($id);
 
             if ($user) {
                 $user->groups()->attach($request->group_id);
+
+                // Dispatch event of joining the group
+                event(new UserJoinedGroup($user, $group));
             }
         }
 

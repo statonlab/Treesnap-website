@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\InvitationCreated;
+use App\Events\UserJoinedGroup;
 use App\Group;
 use App\Http\Controllers\Traits\CreatesUsers;
 use App\Http\Controllers\Traits\InvitesToGroups;
@@ -12,7 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\In;
 
 class InvitesController extends Controller
 {
@@ -45,7 +45,12 @@ class InvitesController extends Controller
         }
 
         if ($this->exceededThrottleLimit($user)) {
-            return $this->error('You have reached the limit of invitations you may send per day. Please allow 24 hours before attempting again.', 300, 400);
+            return $this->error('You have reached the limit of invitations you may send per day. Please allow 24 hours before attempting again.',
+                300, 400);
+        }
+
+        if ($group->users()->where('users.email', $request->email)->first()) {
+            return $this->error('User already belongs to this group.');
         }
 
         // User may create an invitation.
@@ -104,6 +109,11 @@ class InvitesController extends Controller
         ]);
     }
 
+    /**
+     * Tell Laravel what the username column is in the users table.
+     *
+     * @return string
+     */
     protected function username()
     {
         return 'email';
@@ -147,12 +157,14 @@ class InvitesController extends Controller
         $invite->save();
 
         // Make sure the group exists
-        Group::findOrFail($invite->group_id);
+        $group = Group::findOrFail($invite->group_id);
 
         $user->groups()->detach($invite->group_id);
         $user->groups()->attach($invite->group_id, [
             'share' => $request->share ? true : false,
         ]);
+
+        event(new UserJoinedGroup($user, $group));
 
         return redirect()->to("/account/group/{$invite->group_id}");
     }
@@ -160,7 +172,7 @@ class InvitesController extends Controller
     /**
      * Create a user then accept invitation.
      *
-     * @param $id
+     * @param int $id
      * @param \Illuminate\Http\Request $request
      */
     public function acceptRegister($id, Request $request)
@@ -175,12 +187,14 @@ class InvitesController extends Controller
         $invite->save();
 
         // Make sure the group exists
-        Group::findOrFail($invite->group_id);
+        $group = Group::findOrFail($invite->group_id);
 
         $user->groups()->detach($invite->group_id);
         $user->groups()->attach($invite->group_id, [
             'share' => $request->share ? true : false,
         ]);
+
+        event(new UserJoinedGroup($user, $group));
 
         return redirect()->to("/account/group/{$invite->group_id}");
     }
