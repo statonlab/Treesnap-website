@@ -76529,8 +76529,6 @@ var Group = function (_Component) {
           'tbody',
           null,
           this.state.users.map(function (user, index) {
-
-            console.log(user);
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'tr',
               { key: index },
@@ -76546,7 +76544,7 @@ var Group = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'td',
                 null,
-                _this8.state.countByUsers[user.id]
+                _this8.state.countByUsers[user.id] ? _this8.state.countByUsers[user.id] : 0
               ),
               _this8.state.isOwner ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'td',

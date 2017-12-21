@@ -301,8 +301,6 @@ export default class Group extends Component {
         </thead>
         <tbody>
         {this.state.users.map((user, index) => {
-
-          console.log(user)
           return (
             <tr key={index}>
               <td>
@@ -311,7 +309,7 @@ export default class Group extends Component {
                   : user.name}
               </td>
               <td>
-                {this.state.countByUsers[user.id]}
+                {this.state.countByUsers[user.id] ? this.state.countByUsers[user.id] : 0}
               </td>
               {this.state.isOwner ?
                 <td className="has-text-right">
