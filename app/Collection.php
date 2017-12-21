@@ -40,7 +40,16 @@ class Collection extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot(['can_customize']);
+        return $this->belongsToMany('App\User')->withPivot(['can_customize', 'is_shared_with_group']);
+    }
+
+    /**
+     * Get groups that this collection was shared with.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function groups() {
+        return $this->belongsToMany('App\Group')->withPivot(['can_customize']);
     }
 
     /**

@@ -10,7 +10,7 @@ const mix = require('laravel-mix')
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.browserSync('treesnap.app')
+mix.browserSync('treesnap.test')
 
 mix.react('resources/assets/js/app.jsx', 'public/js')
   .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
