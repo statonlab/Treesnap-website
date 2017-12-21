@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://treesnap.app'),
+    'url' => env('APP_URL', 'http://treesnap.test'),
 
     /*
     |--------------------------------------------------------------------------
