@@ -19,6 +19,8 @@ class LatinName extends Model
 
     public static function getID($category, $data)
     {
+        $data = (array) $data;
+        
         // Find the appropriate latin name
         switch ($category) {
             case 'Ash':
