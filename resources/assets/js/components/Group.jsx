@@ -213,6 +213,7 @@ export default class Group extends Component {
     }).then(response => {
       this.loadGroup()
       EventEmitter.emit('user.groups.updated')
+      Notify.push(response.data.data)
     }).catch(error => {
       const response = error.response
       if (response && response.status === 422) {

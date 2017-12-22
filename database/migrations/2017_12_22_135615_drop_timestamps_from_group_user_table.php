@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class IndexLatitudeLongitudeOnObservationsTable extends Migration
+class DropTimestampsFromGroupUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class IndexLatitudeLongitudeOnObservationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('observations', function (Blueprint $table) {
-            $table->index('latitude');
-            $table->index('longitude');
+        Schema::table('group_user', function (Blueprint $table) {
+            $table->dropTimestamps();
         });
     }
 
@@ -26,9 +25,8 @@ class IndexLatitudeLongitudeOnObservationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('observations', function (Blueprint $table) {
-            $table->dropIndex(['latitude']);
-            $table->dropIndex(['longitude']);
+        Schema::table('group_user', function (Blueprint $table) {
+            $table->timestamps();
         });
     }
 }

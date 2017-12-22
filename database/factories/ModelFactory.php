@@ -20,9 +20,13 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'api_token' => str_random(60),
+        'role_id' => \App\Role::inRandomOrder()->first()->id,
+        'birth_year' => $faker->year(1997),
     ];
 });
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     $addresses = include base_path('database/factories/Addresses.php');
 
@@ -49,7 +53,9 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
     $c = $categories[rand() % count($categories)];
 
-    $users = [1, 2];
+    $users = \App\User::all()->map(function ($user) {
+        return $user->id;
+    })->toArray();
 
     $data = [
         'comment' => 'Comment on record '.rand() % 3000,
@@ -81,5 +87,22 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
         'thumbnail' => '/storage/thumbnails/'.$thumbnail,
+    ];
+});
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Group::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->company,
+        'user_id' => \App\User::inRandomOrder()->first()->id,
+    ];
+});
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Collection::class, function (Faker\Generator $faker) {
+    return [
+        'label' => $faker->city,
+        'user_id' => \App\User::inRandomOrder()->first()->id,
+        'description' => $faker->realText(),
     ];
 });

@@ -351,9 +351,15 @@ class CollectionsController extends Controller
 
         // Get all users in the group and sync their ids to the collection.
         // Detach the given ids first to avoid duplication.
-        $users = $group->users()->select('users.id')->get()->map(function ($user) {
+        $existing_users = $collection->users;
+        $users = $group->users()->select(['users.id'])->get()->filter(function ($user) use ($existing_users) {
+            // Make sure the user does not already exist. By doing this we guarantee that
+            // the existing user doesn't get detached when the group is disbanded
+            return ! $existing_users->contains('id', $user->id);
+        })->map(function ($user) {
             return $user->id;
         });
+
         $collection->users()->detach($users);
         $collection->users()->attach($users, [
             'can_customize' => $request->can_customize,
@@ -469,6 +475,13 @@ class CollectionsController extends Controller
         ]);
     }
 
+    /**
+     * Get the list of users that own a collection.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function users($id, Request $request)
     {
         $collection = Collection::findOrFail($id);
@@ -492,6 +505,13 @@ class CollectionsController extends Controller
         return $this->success($users);
     }
 
+    /**
+     * Allow users to change access permissions of an observation.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function changePermissions($id, Request $request)
     {
         $user = $request->user();
