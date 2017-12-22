@@ -5,21 +5,24 @@ import moment from 'moment'
 import {Link} from 'react-router-dom'
 import Notify from './Notify'
 import EventEmitter from '../helpers/EventEmitter'
+import GroupSearchForm from './GroupSearchForm'
 
 export default class Groups extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      name   : '',
-      share  : false,
-      errors : {
-        share: [],
-        name : []
+      name     : '',
+      share    : false,
+      isPrivate: 0,
+      errors   : {
+        share    : [],
+        name     : [],
+        isPrivate: []
       },
-      groups : [],
-      success: false,
-      loading: false
+      groups   : [],
+      success  : false,
+      loading  : false
     }
 
     document.title = 'Groups - TreeSnap'
@@ -94,16 +97,37 @@ export default class Groups extends Component {
    */
   _renderForm() {
     return (
-      <form action="#" onSubmit={this.submit.bind(this)} className="limit-width">
+      <form action="#" onSubmit={this.submit.bind(this)}>
         <div className="field">
+          <label className="label">Group Name</label>
           <div className="control is-expanded">
             <input type="text"
-                   className={`input${this.state.errors.name.length > 0 ? ' is-danger' : ''}`}
+                   className={`limit-width input${this.state.errors.name.length > 0 ? ' is-danger' : ''}`}
                    value={this.state.name}
                    placeholder="Group Name"
                    onChange={({target}) => this.setState({errors: {name: [], share: []}, name: target.value})}
             />
             {this.state.errors.name.map((error, index) => {
+              return (
+                <p className="help is-danger" key={index}>
+                  {error}
+                </p>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Privacy</label>
+          <div className="control is-expanded">
+            <span className="select">
+              <select value={this.state.isPrivate}
+                      onChange={({target}) => this.setState({isPrivate: parseInt(target.value)})}>
+                <option value={0}>Users must be invited to join</option>
+                <option value={1}>Allow anyone to find this group and apply to join</option>
+              </select>
+            </span>
+            {this.state.errors.isPrivate.map((error, index) => {
               return (
                 <p className="help is-danger" key={index}>
                   {error}
@@ -120,7 +144,9 @@ export default class Groups extends Component {
                      className={'mr-0'}
                      onChange={({target}) => this.setState({share: target.checked})}
                      checked={this.state.share}/>
-              Share all of my observations with members of this group including accurate location coordinates
+              <span>
+                Share all of my observations with members of this group including accurate location coordinates
+              </span>
             </label>
           </div>
           {this.state.errors.share.map((error, index) => {
@@ -149,8 +175,9 @@ export default class Groups extends Component {
   submit(e) {
     e.preventDefault()
     axios.post('/web/groups', {
-      name : this.state.name,
-      share: this.state.share
+      name      : this.state.name,
+      share     : this.state.share,
+      is_private: this.state.isPrivate === 1
     }).then(response => {
       let data   = response.data.data
       let groups = this.state.groups
@@ -159,8 +186,9 @@ export default class Groups extends Component {
         name  : '',
         groups,
         errors: {
-          name : [],
-          share: []
+          name     : [],
+          share    : [],
+          isPrivate: []
         }
       })
       Notify.push('Group created successfully.')
@@ -170,8 +198,9 @@ export default class Groups extends Component {
         let errors = error.response.data
         this.setState({
           errors: {
-            name : errors.name || [],
-            share: errors.share || []
+            name     : errors.name || [],
+            share    : errors.share || [],
+            isPrivate: errors.is_private || []
           }
         })
       }
@@ -187,9 +216,20 @@ export default class Groups extends Component {
           {this._renderGroupsTable()}
         </div>
 
-        <div className="box">
-          <h2 className="title is-4">Create New Group</h2>
-          {this._renderForm()}
+        <div className="columns is-multiline">
+          <div className="column is-12-tablet is-6-desktop is-6-fullhd">
+            <div className="box">
+              <h2 className="title is-4">Create New Group</h2>
+              {this._renderForm()}
+            </div>
+          </div>
+          <div className="column is-12-tablet is-6-desktop is-6-fullhd">
+            <div className="box">
+              <h2 className="title is-4">Join a Group</h2>
+              <p className="mb-1">Search and apply to join public groups</p>
+              <GroupSearchForm></GroupSearchForm>
+            </div>
+          </div>
         </div>
         <Spinner visible={this.state.loading}/>
       </div>

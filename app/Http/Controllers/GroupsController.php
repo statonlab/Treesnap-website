@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Collection;
 use App\Events\UserJoinedGroup;
 use App\Group;
+use App\GroupRequest;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
+use App\Notifications\GroupRequestNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,6 +60,7 @@ class GroupsController extends Controller
         $this->validate($request, [
             'name' => 'required|min:3|max:255',
             'share' => 'required|boolean',
+            'is_private' => 'required|boolean',
         ]);
 
         $user = $request->user();
@@ -65,6 +68,7 @@ class GroupsController extends Controller
         $group = Group::create([
             'name' => $request->name,
             'user_id' => $request->user()->id,
+            'is_private' => $request->is_private,
         ]);
 
         $group->users()->attach($user->id, [
@@ -75,7 +79,6 @@ class GroupsController extends Controller
             'id' => $user->id,
             'name' => $user->name,
         ]);
-        //$group->owner = $owner;
 
         $group->users_count = 0;
 
@@ -381,6 +384,99 @@ class GroupsController extends Controller
         }
 
         return $this->success($users);
+    }
+
+    /**
+     * Search groups that are not private.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchPublicGroups(Request $request)
+    {
+        $this->validate($request, [
+            'term' => 'nullable|max:255',
+        ]);
+
+        $user = $request->user();
+
+        $groups = Group::withCount('users')->whereDoesntHave('users', function ($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->where('groups.is_private', false);
+
+        if (! empty($request->term)) {
+            $groups = $groups->where('groups.name', 'like', "%{$request->term}%");
+        }
+
+        $groups = $groups->orderBy('users_count', 'desc')->orderBy('groups.name', 'desc')->limit(4)->get();
+
+        return $this->success($groups->map(function ($group) {
+            return [
+                'name' => $group->name,
+                'id' => $group->id,
+                'users_count' => $group->users_count,
+            ];
+        }));
+    }
+
+    /**
+     * Send a request to join a group.
+     *
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     */
+    public function joinRequest(Group $group, Request $request)
+    {
+        // Make sure the group is not private
+        if ($group->is_private) {
+            return $this->notFound('Public group not found.');
+        }
+
+        $user = $request->user();
+
+        // Make sure the user doesn't already belong to this group
+        if ($group->users()->find($user->id)) {
+            return $this->error('You already belong to this group.');
+        }
+
+        // Make sure a request hasn't been made already
+        if ($group->groupRequests()->where('user_id', $user->id)->first()) {
+            return $this->error('You already applied to join this group');
+        }
+
+        // Create the join request
+        $group_request = GroupRequest::create([
+            'group_id' => $group->id,
+            'user_id' => $user->id,
+        ]);
+
+        $group->owner->notify(new GroupRequestNotification($group_request));
+
+        return $this->success("Your request to {$group->name} is pending approval from the leader");
+    }
+
+    /**
+     * Get join requests.
+     *
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showJoinRequests(Group $group, Request $request)
+    {
+        $user = $request->user();
+
+        // Make sure only the owner sees this
+        if ($user->id !== $group->owner->id) {
+            return $this->unauthorized();
+        }
+
+        $requests = $group->groupRequests()->with('user', function ($query) {
+            $query->select('users.name');
+            $query->select('users.id');
+        })->get();
+
+        return $this->success($requests);
     }
 
     /**

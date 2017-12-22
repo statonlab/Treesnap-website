@@ -99,6 +99,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/web/groups', 'GroupsController@index');
     Route::post('/web/groups', 'GroupsController@create');
     Route::get('/web/groups/members', 'GroupsController@getGroupUsers');
+    Route::get('/web/groups/search', 'GroupsController@searchPublicGroups');
+    Route::post('/web/groups/join/{group}', 'GroupsController@joinRequest');
     Route::get('/web/group/{id}', 'GroupsController@show');
     Route::get('/web/group/{id}/observations', 'GroupsController@groupObservations');
     Route::delete('/web/group/{group}/exit', 'GroupsController@exitGroup');
