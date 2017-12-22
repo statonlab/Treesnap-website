@@ -213,8 +213,9 @@ class GroupsController extends Controller
         }
 
         $group->collections->map(function ($collection) use ($request) {
+            // Don't detach the owner
             if ($collection->user_id !== $request->user_id) {
-                $collection->users()->detach($request->user_id);
+                $collection->users()->wherePivot('is_shared_with_group', true)->detach($request->user_id);
             }
         });
 
@@ -245,9 +246,10 @@ class GroupsController extends Controller
         $users = $group->users;
         $group->collections()->get()->map(function ($collection) use ($users) {
             // Remove everyone except the owner of the group
-            $collection->users()->detach($users->filter(function ($user) use ($collection) {
+            $detachable_users = $users->filter(function ($user) use ($collection) {
                 return $user->id !== $collection->user_id;
-            }));
+            });
+            $collection->users()->wherePivot('is_shared_with_group', true)->detach($detachable_users);
         });
 
         $group->users()->detach();

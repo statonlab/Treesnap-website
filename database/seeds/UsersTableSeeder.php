@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('testpass'),
             'api_token' => str_random(60),
             'birth_year' => 1974,
+            'role_id' => \App\Role::where('name', 'Admin')->first()->id,
         ]);
 
         \App\User::create([
@@ -25,6 +26,10 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('testpass'),
             'api_token' => str_random(60),
             'birth_year' => 1984,
+            'role_id' => \App\Role::where('name', 'Admin')->first()->id,
         ]);
+
+        // After creating 2 admin users, create 100 random users
+        factory(\App\User::class, 100)->create();
     }
 }
