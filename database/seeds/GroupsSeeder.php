@@ -17,7 +17,7 @@ class GroupsSeeder extends Seeder
         $max = \App\User::count();
         $i = 0;
         foreach (\App\Group::all() as $group) {
-            // get 10 users in randem order
+            // get 10 users
             $users = \App\User::where('id', '!=', $group->user_id)->offset($i)->limit(10)->get();
             $group->users()->sync($users);
             $group->users()->attach($group->user_id);

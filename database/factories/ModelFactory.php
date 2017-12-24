@@ -92,9 +92,12 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Group::class, function (Faker\Generator $faker) {
+    $is_private = [true, false];
+
     return [
         'name' => $faker->company,
         'user_id' => \App\User::inRandomOrder()->first()->id,
+        'is_private' => $is_private[rand() % 2],
     ];
 });
 

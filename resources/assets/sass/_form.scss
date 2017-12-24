@@ -8,7 +8,7 @@
 }
 
 .checkbox-container {
-  box-shadow: none;//0 2px 3px rgba(10, 10, 10, 0.1);
+  box-shadow: none; //0 2px 3px rgba(10, 10, 10, 0.1);
   border: 1px solid #dbdbdb;
   border-bottom: 0;
   border-radius: $radius;
@@ -68,6 +68,12 @@
   .label {
     line-height: 2rem;
   }
+
+  &.has-medium-label {
+    .field-label {
+      max-width: 60px;
+    }
+  }
 }
 
 .button-select {
@@ -100,5 +106,12 @@
   &,
   > select {
     width: 100%;
+  }
+}
+
+.select {
+  &,
+  select {
+    max-width: 100%;
   }
 }

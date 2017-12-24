@@ -7,6 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     /**
+     * Fillable columns.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'user_id',
+        'is_private',
+    ];
+
+    /**
+     * Auto cast columns.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_private' => 'boolean',
+    ];
+
+    /**
      * Override the observations property of group.
      *
      * @param string $key
@@ -20,16 +40,6 @@ class Group extends Model
 
         return parent::__get($key);
     }
-
-    /**
-     * Fillable columns.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'user_id',
-    ];
 
     /**
      * Get users that belong to this group.
@@ -70,7 +80,17 @@ class Group extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function collections() {
+    public function collections()
+    {
         return $this->belongsToMany('App\Collection')->withPivot(['can_customize']);
+    }
+
+    /**
+     * Get join requests.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function groupRequests() {
+        return $this->hasMany('App\GroupRequest');
     }
 }

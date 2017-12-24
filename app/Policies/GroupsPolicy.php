@@ -76,4 +76,15 @@ class GroupsPolicy
 
         return true;
     }
+
+    /**
+     * Determine whether a user can manage a group.
+     *
+     * @param \App\User $user
+     * @param \App\Group $group
+     * @return bool
+     */
+    public function manage(User $user, Group $group) {
+        return $group->user_id === $user->id;
+    }
 }

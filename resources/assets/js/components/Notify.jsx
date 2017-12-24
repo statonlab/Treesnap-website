@@ -7,8 +7,9 @@ export default class Notify extends Component {
     super(props)
 
     this.state = {
-      show  : false,
-      hiding: false
+      show     : false,
+      hiding   : false,
+      marginTop: window.scrollY > 70 ? -40 : 0
     }
   }
 
@@ -22,6 +23,17 @@ export default class Notify extends Component {
     setTimeout(() => {
       this.setState({show: true})
     }, 100)
+
+    window.addEventListener('scroll', this.handleWindowScroll.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleWindowScroll.bind(this))
+  }
+
+  handleWindowScroll() {
+    let marginTop = window.scrollY > 70 ? -40 : 0
+    this.setState({marginTop})
   }
 
   hide() {
@@ -46,8 +58,10 @@ export default class Notify extends Component {
     classes += this.state.show ? ' show' : ''
     classes += this.state.hiding ? ' hiding' : ''
 
+    let marginTop = this.state.marginTop
+
     return (
-      <div className={`notification push-notification ${classes}`}>
+      <div className={`notification push-notification ${classes}`} style={{marginTop: marginTop + 'px'}}>
         <button type="button" className="delete" onClick={this.hide.bind(this)}></button>
         {this.props.message}
       </div>
