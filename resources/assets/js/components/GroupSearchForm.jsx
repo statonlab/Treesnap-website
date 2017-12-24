@@ -68,7 +68,7 @@ export default class GroupSearchForm extends Component {
         loading     : false
       })
 
-      this.search('')
+      this.search(this.state.searchTerm)
     }).catch(error => {
       this.setState({
         joiningGroup: -1,
@@ -153,7 +153,7 @@ export default class GroupSearchForm extends Component {
              onClick={() => this.setState({seeMore: !this.state.seeMore})}>
             {this.state.seeMore ? 'See Less' : 'See More'}
           </a>
-        : null }
+          : null}
       </div>
     )
   }
