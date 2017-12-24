@@ -111,7 +111,7 @@ export default class Groups extends Component {
                    className={`limit-width input${this.state.errors.name.length > 0 ? ' is-danger' : ''}`}
                    value={this.state.name}
                    placeholder="Group Name"
-                   onChange={({target}) => this.setState({errors: {name: [], share: []}, name: target.value})}
+                   onChange={({target}) => this.setState({name: target.value})}
             />
             {this.state.errors.name.map((error, index) => {
               return (
