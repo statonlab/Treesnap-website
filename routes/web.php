@@ -100,7 +100,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/web/groups', 'GroupsController@create');
     Route::get('/web/groups/members', 'GroupsController@getGroupUsers');
     Route::get('/web/groups/search', 'GroupsController@searchPublicGroups');
-    Route::post('/web/groups/join/{group}', 'GroupsController@joinRequest');
+    Route::post('/web/groups/join/{group}', 'GroupsController@toggleJoinRequest');
+    Route::get('/web/group/{group}/requests', 'GroupsController@showJoinRequests');
+    Route::post('/web/group/{group}/request/accept', 'GroupsController@acceptJoinRequest');
+    Route::post('/web/group/{group}/request/reject', 'GroupsController@rejectJoinRequest');
+    Route::post('/web/group/{group}/request/reset', 'GroupsController@resetJoinRequest');
     Route::get('/web/group/{id}', 'GroupsController@show');
     Route::get('/web/group/{id}/observations', 'GroupsController@groupObservations');
     Route::delete('/web/group/{group}/exit', 'GroupsController@exitGroup');

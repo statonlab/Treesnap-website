@@ -24,7 +24,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out, top 1s ease-in-out;
+  transition: opacity 0.5s ease-in-out, top 1s ease-in-out, margin-top .25s linear;
 
   &.show {
     visibility: visible;

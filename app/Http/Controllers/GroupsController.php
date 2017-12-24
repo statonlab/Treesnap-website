@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\Events\GroupJoinRequestCreated;
 use App\Events\UserJoinedGroup;
 use App\Group;
 use App\GroupRequest;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
+use App\Jobs\SendGroupRequestNotification;
 use App\Notifications\GroupRequestNotification;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Observation;
@@ -36,7 +39,12 @@ class GroupsController extends Controller
             'owner' => function ($query) use ($user) {
                 $query->select(['users.id', DB::raw("IF(users.id = {$user->id}, 'You', users.name) AS name")]);
             },
-        ])->withCount('users')->get();
+        ])->withCount([
+            'users',
+            'groupRequests' => function ($query) {
+                $query->where('group_requests.rejected', false);
+            },
+        ])->get();
 
         if ($request->with_users) {
             $groups->load([
@@ -400,7 +408,11 @@ class GroupsController extends Controller
 
         $user = $request->user();
 
-        $groups = Group::withCount('users')->whereDoesntHave('users', function ($query) use ($user) {
+        $groups = Group::withCount('users')->with([
+            'groupRequests' => function ($query) use ($user) {
+                $query->where('group_requests.user_id', $user->id);
+            },
+        ])->whereDoesntHave('users', function ($query) use ($user) {
             $query->where('users.id', $user->id);
         })->where('groups.is_private', false);
 
@@ -408,13 +420,16 @@ class GroupsController extends Controller
             $groups = $groups->where('groups.name', 'like', "%{$request->term}%");
         }
 
-        $groups = $groups->orderBy('users_count', 'desc')->orderBy('groups.name', 'desc')->limit(4)->get();
+        $groups = $groups->orderBy('users_count', 'desc')->orderBy('groups.name', 'desc')->limit(25)->get();
 
         return $this->success($groups->map(function ($group) {
+            $request = $group->groupRequests->first();
+
             return [
                 'name' => $group->name,
                 'id' => $group->id,
                 'users_count' => $group->users_count,
+                'has_request' => $request ? ! $request->withdrawn : false,
             ];
         }));
     }
@@ -425,38 +440,73 @@ class GroupsController extends Controller
      * @param \App\Group $group
      * @param \Illuminate\Http\Request $request
      */
-    public function joinRequest(Group $group, Request $request)
+    public function toggleJoinRequest(Group $group, Request $request)
     {
         // Make sure the group is not private
         if ($group->is_private) {
-            return $this->notFound('Public group not found.');
+            return $this->notFound('Group not found.');
         }
 
         $user = $request->user();
 
         // Make sure the user doesn't already belong to this group
         if ($group->users()->find($user->id)) {
-            return $this->error('You already belong to this group.');
+            return $this->error('You already belong to this group');
         }
 
-        // Make sure a request hasn't been made already
-        if ($group->groupRequests()->where('user_id', $user->id)->first()) {
-            return $this->error('You already applied to join this group');
+        // Make sure a request hasn't already been made
+        /** @var GroupRequest $group_request */
+        $group_request = $group->groupRequests()->where('user_id', $user->id)->first();
+        if ($group_request) {
+            // If the request has been previously made and withdrawn, reactivate it
+            if ($group_request->withdrawn) {
+                $group_request->fill([
+                    'withdrawn' => false,
+                ])->save();
+
+                // Dispatch a job to make sure the request email is sent
+                // The job will verify that a notification is not sent twice
+                $this->sendGroupRequestNotification($group_request);
+
+                return $this->success("Your request to join {$group->name} is pending approval from the group's leader");
+            }
+
+            // The request has been previously withdrawn to mark it as withdrawn
+            $group_request->fill([
+                'withdrawn' => true,
+            ])->save();
+
+            return $this->success("Your request to join {$group->name} has been withdrawn");
         }
 
         // Create the join request
         $group_request = GroupRequest::create([
             'group_id' => $group->id,
             'user_id' => $user->id,
+            'withdrawn' => false,
         ]);
 
-        $group->owner->notify(new GroupRequestNotification($group_request));
+        $this->sendGroupRequestNotification($group_request);
 
-        return $this->success("Your request to {$group->name} is pending approval from the leader");
+        return $this->success("Your request to join {$group->name} is pending approval from the group's leader");
     }
 
     /**
-     * Get join requests.
+     * Dispatch the group request notification job with a 5 minute
+     * delay to allow the user to withdraw from the request.
+     *
+     * @param GroupRequest $group_request
+     * @return mixed
+     */
+    protected function sendGroupRequestNotification($group_request)
+    {
+        $job = (new SendGroupRequestNotification($group_request))->delay(Carbon::now()->addMinutes(5));
+
+        return $this->dispatch($job);
+    }
+
+    /**
+     * Get join requests for a given group.
      *
      * @param \App\Group $group
      * @param \Illuminate\Http\Request $request
@@ -471,12 +521,83 @@ class GroupsController extends Controller
             return $this->unauthorized();
         }
 
-        $requests = $group->groupRequests()->with('user', function ($query) {
-            $query->select('users.name');
-            $query->select('users.id');
-        })->get();
+        $requests = $group->groupRequests()->with([
+            'user' => function ($query) {
+                $query->select(['users.name', 'users.id']);
+            },
+        ])->select([
+            'group_requests.id',
+            'group_requests.group_id',
+            'group_requests.user_id',
+            'group_requests.created_at',
+        ])->where([
+            'withdrawn' => false,
+            'rejected' => false,
+        ])->get();
 
         return $this->success($requests);
+    }
+
+    /**
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function acceptJoinRequest(Group $group, Request $request) {
+        $this->authorize('manage', $group);
+
+        $this->validate($request, [
+            'request_id' => 'required|exists:group_requests,id'
+        ]);
+
+        // Accept request
+        /** @var GroupRequest $group_request */
+        $group_request = $group->groupRequests()->find($request->request_id);
+        $group_request->accept();
+
+        return $this->success('Join request accepted');
+    }
+
+    /**
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function rejectJoinRequest(Group $group, Request $request) {
+        $this->authorize('manage', $group);
+
+        $this->validate($request, [
+            'request_id' => 'required|exists:group_requests,id'
+        ]);
+
+        // Reject request
+        /** @var GroupRequest $group_request */
+        $group_request = $group->groupRequests()->find($request->request_id);
+        $group_request->reject();
+
+        return $this->success('Join request rejected');
+    }
+
+    /**
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function resetJoinRequest(Group $group, Request $request) {
+        $this->authorize('manage', $group);
+
+        $this->validate($request, [
+            'request_id' => 'required|exists:group_requests,id'
+        ]);
+
+        // Undo request
+        /** @var GroupRequest $group_request */
+        $group_request = $group->groupRequests()->find($request->request_id);
+        $group_request->unreject();
+
+        return $this->success('Join request undone');
     }
 
     /**

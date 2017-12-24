@@ -50,8 +50,9 @@ class GroupRequestNotification extends Notification implements ShouldQueue
     {
         $user = $this->group_request->user;
         $group = $this->group_request->group;
+        $sub_name = strlen($group->name) > 15 ? substr($group->name, 0, 15).'...' : $group->name;
 
-        return (new MailMessage)->subject("{$user->name} Wants to Join {$group->name}")
+        return (new MailMessage)->subject("{$user->name} Wants to Join {$sub_name}")
             ->greeting('Hello '.$notifiable->name)
             ->line("{$user->name} would like to join your group \"{$group->name}\". You can choose to accept or reject the request from your group's page.")
             ->action('Show All Requests', url("/account/group/{$group->id}"))

@@ -10,6 +10,7 @@ import ObservationCard from '../components/ObservationCard'
 import Path from '../helpers/Path'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
+import GroupJoinRequests from './GroupJoinRequests'
 
 export default class Group extends Component {
   constructor(props) {
@@ -677,7 +678,13 @@ export default class Group extends Component {
           </div>
         </div>
 
-        <div className="box mt-2">
+        <GroupJoinRequests
+          groupID={this.props.match.params.id}
+          onAccept={this.loadGroup.bind(this)}
+        >
+        </GroupJoinRequests>
+
+        <div className="box">
           <div className="columns is-mobile flex-v-center">
             <div className="column">
               <h4 className="title is-4">Users</h4>

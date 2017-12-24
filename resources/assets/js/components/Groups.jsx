@@ -77,7 +77,13 @@ export default class Groups extends Component {
         {this.state.groups.map((group, index) => {
           return (
             <tr key={index}>
-              <td><Link to={`${!admin ? '/account' : ''}/group/${group.id}`}>{group.name}</Link></td>
+              <td>
+                <Link to={`${!admin ? '/account' : ''}/group/${group.id}`}>
+                  {group.name} {group.owner.name === 'You' && group.group_requests_count > 0 ?
+                  <i className="tag is-success">{group.group_requests_count} pending requests</i>
+                  : null}
+                </Link>
+              </td>
               <td>{group.users_count}</td>
               <td>{group.owner.name}</td>
               <td>{moment(group.created_at).format('MMM Do, YYYY')}</td>
@@ -118,7 +124,7 @@ export default class Groups extends Component {
         </div>
 
         <div className="field">
-          <label className="label">Privacy</label>
+          <label className="label">Discoverability</label>
           <div className="control is-expanded">
             <span className="select">
               <select value={this.state.isPrivate}

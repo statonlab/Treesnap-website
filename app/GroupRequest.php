@@ -6,10 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class GroupRequest extends Model
 {
+    /**
+     * Fillable columns.
+     *
+     * @var array
+     */
     protected $fillable = [
         'group_id',
         'user_id',
-        'status',
+        'rejected',
+        'withdrawn',
+        'notification_sent',
+    ];
+
+    /**
+     * Auto cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'withdrawn' => 'boolean',
+        'notification_sent' => 'boolean',
     ];
 
     /**
@@ -27,7 +44,40 @@ class GroupRequest extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Accept a join request.
+     *
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function accept() {
+        $this->group->users()->syncWithoutDetaching($this->user_id);
+
+        return $this->delete();
+    }
+
+    /**
+     * Reject a join request.
+     *
+     * @return bool
+     */
+    public function reject() {
+        $this->rejected = true;
+        return $this->save();
+    }
+
+    /**
+     * Unreject a join request.
+     *
+     * @return bool
+     */
+    public function unreject() {
+        $this->rejected = false;
+        return $this->save();
     }
 }
