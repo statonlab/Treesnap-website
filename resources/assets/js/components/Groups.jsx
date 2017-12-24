@@ -129,8 +129,8 @@ export default class Groups extends Component {
             <span className="select">
               <select value={this.state.isPrivate}
                       onChange={({target}) => this.setState({isPrivate: parseInt(target.value)})}>
-                <option value={0}>Users must be invited to join</option>
-                <option value={1}>Allow anyone to find this group and apply to join</option>
+                <option value={1}>Users must be invited to join</option>
+                <option value={0}>Allow anyone to find this group and apply to join</option>
               </select>
             </span>
             {this.state.errors.isPrivate.map((error, index) => {
