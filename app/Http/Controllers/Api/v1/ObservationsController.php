@@ -221,10 +221,9 @@ class ObservationsController extends Controller
             'location_accuracy' => 'required|numeric',
             'date' => 'required|date_format:"m-d-Y H:i:s"',
             'images' => 'nullable',
-            'images.*.*' => 'required|image|max:2048',
+            'images.*.*' => 'required|image|max:10240',
             'is_private' => 'required|boolean',
             'mobile_id' => 'required|numeric',
-
         ];
     }
 
