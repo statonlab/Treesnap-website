@@ -30,7 +30,7 @@ class ContactRequest extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('noreply@treesnap.com')
+        return $this->from(config('mail.from.address'))
             ->subject($this->request->subject)
             ->replyTo($this->request->email)
             ->markdown('emails.contact');
