@@ -43,7 +43,7 @@ class InvitationMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('noreply@treesnap.com')
+        return $this->from(config('mail.from.address'))
                     ->to($this->invite->email)
                     ->subject("$this->sender Sent You an Invite on TreeSnap")
                     ->markdown('emails.group-invitation');
