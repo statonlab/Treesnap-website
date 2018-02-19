@@ -54,8 +54,7 @@ export default class ObservationScene extends Component {
         loading    : false
       })
 
-     const name = data.observation_category.toLowerCase() === 'other' ? `Other: ${data.meta_data.otherLabel}` : data.observation_category
-      console.log(data);
+      const name     = data.observation_category.toLowerCase() === 'other' ? `Other: ${data.meta_data.otherLabel}` : data.observation_category
       document.title = `${name} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})

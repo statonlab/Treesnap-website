@@ -362,7 +362,6 @@ export default class AdvancedFiltersModal extends Component {
     console.log('reapplying:', state)
     this.setState(state)
     if (state.selectedCategories) {
-      console.log(this.refs.speciesButtonList, state.selectedCategories)
       this.refs.speciesButtonList.setSelected(state.selectedCategories)
     }
   }

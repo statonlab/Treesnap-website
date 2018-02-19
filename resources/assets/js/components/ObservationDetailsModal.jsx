@@ -12,7 +12,6 @@ export default class ObservationDetailsModal extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.observation)
   }
 
   render() {
