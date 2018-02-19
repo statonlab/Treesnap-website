@@ -47,14 +47,16 @@ export default class ObservationScene extends Component {
     this.setState({loading: true})
 
     axios.get(`/web/observation/${id}`).then(response => {
-      let data = response.data.data
+      const data = response.data.data
 
       this.setState({
         observation: data,
         loading    : false
       })
 
-      document.title = `${data.observation_category} (${data.observation_id}) | TreeSnap`
+     const name = data.observation_category.toLowerCase() === 'other' ? `Other: ${data.meta_data.otherLabel}` : data.observation_category
+      console.log(data);
+      document.title = `${name} (${data.observation_id}) | TreeSnap`
     }).catch(error => {
       this.setState({loading: false})
 
