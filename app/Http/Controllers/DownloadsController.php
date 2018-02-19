@@ -201,7 +201,11 @@ class DownloadsController extends Controller
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {
-                $line[] = $data[$key];
+                if(strstr($data[$key], '["') !== false) {
+                    $line[] = implode(',', json_decode($data[$key]));
+                } else {
+                    $line[] = $data[$key];
+                }
             } else {
                 $line[] = 'NULL';
             }
