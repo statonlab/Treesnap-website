@@ -42,7 +42,6 @@ export default class CollectionsScene extends Component {
 
   loadCollections() {
     axios.get('/web/collections').then(response => {
-      console.log(response.data.data)
       this.setState({
         collections: response.data.data,
         loading    : false

@@ -409,7 +409,6 @@ export default class ObservationsScene extends Component {
    * @param selectedCollection
    */
   collectionFilter(selectedCollection) {
-    console.log(selectedCollection)
     if (this.filter) {
       this.setState({selectedCollection})
       this.paginate(this.filter.collection(selectedCollection), false, selectedCollection)
