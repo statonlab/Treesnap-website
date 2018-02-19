@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Collection;
 use App\File;
 use App\Http\Controllers\Traits\Observes;
+use App\Services\MetaLabels;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Storage;
@@ -17,6 +18,17 @@ class DownloadsController extends Controller
         'csv',
         'tsv',
     ];
+
+    protected $labels;
+
+    /**
+     * DownloadsController constructor.
+     */
+    public function __construct()
+    {
+        $this->labels = (new MetaLabels())->toArray();
+        unset($this->labels['comment']);
+    }
 
     /**
      * Create an collection of observations file.
@@ -49,23 +61,17 @@ class DownloadsController extends Controller
             'Comments',
             'Address',
             'Collection Date',
-            'Additional Data',
         ];
+
+        // Add meta labels to header
+        $header = array_merge($header, $this->getMetaHeader());
 
         Storage::put($path, $this->line($header, $extension));
 
+        // Generate Collection
         $collection->observations()->chunk(200, function ($observations) use ($path, $extension) {
             foreach ($observations as $observation) {
                 $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
-                $data = [];
-                foreach ($observation->data as $key => $datum) {
-                    if ($key === 'comment') {
-                        continue;
-                    }
-                    $data[] = $this->getLabel($key).': '.$datum;
-                }
-
-                $data = implode(', ', $data);
 
                 $line = [
                     $observation->mobile_id,
@@ -74,8 +80,10 @@ class DownloadsController extends Controller
                     $comment,
                     $observation->address['formatted'],
                     $observation->collection_date->toDateString(),
-                    $data,
                 ];
+
+                // Add meta data line
+                $line = array_merge($line, $this->extractMetaData($observation->data));
                 Storage::append($path, $this->line($line, $extension));
             }
         });
@@ -171,5 +179,34 @@ class DownloadsController extends Controller
         $name = str_replace(' ', '_', $name);
 
         return $name;
+    }
+
+    /**
+     * Generate an array of labels for the header.
+     *
+     * @return array
+     */
+    protected function getMetaHeader()
+    {
+        return array_values($this->labels);
+    }
+
+    /**
+     * Extract meta data as a line from observation.
+     *
+     * @param $data
+     */
+    protected function extractMetaData($data)
+    {
+        $line = [];
+        foreach ($this->labels as $key => $label) {
+            if (isset($data[$key])) {
+                $line[] = $data[$key];
+            } else {
+                $line[] = 'NULL';
+            }
+        }
+
+        return $line;
     }
 }

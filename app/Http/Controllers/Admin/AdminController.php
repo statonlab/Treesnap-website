@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\MetaLabels;
 
 class AdminController extends Controller
 {
@@ -21,6 +22,7 @@ class AdminController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
             ],
+            'metaLabels' => (new MetaLabels())->toObject(),
         ];
 
         return view('admin.index')->with(compact('TreeSnap'));

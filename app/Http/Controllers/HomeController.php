@@ -6,6 +6,7 @@ use App\Services\Geocoder;
 use Faker\Generator;
 use Illuminate\Http\Request;
 use App\User;
+use App\Services\MetaLabels;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,7 @@ class HomeController extends Controller
             'loggedIn' => $user ? true : false,
             'role' => $user ? $user->role->name : null,
             'user' => false,
+            'metaLabels' => (new MetaLabels())->toObject(),
         ];
 
         if ($user) {
