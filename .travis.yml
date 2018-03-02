@@ -9,14 +9,13 @@ before_script:
   - composer self-update
   - composer install --no-interaction
   - npm install
-  - php artisan migrate
 
 
 before_install:
-  - mysql -e 'create database travis;'
 
 script:
 #set up db
+  - php artisan migrate
   - php artisan db:seed
 #run tests
   - npm run production
