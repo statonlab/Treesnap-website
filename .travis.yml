@@ -13,9 +13,6 @@ before_script:
   - php artisan key:generate
 
 
-before_install:
-  - mysql -e 'CREATE DATABASE testing;'
-
 script:
 #set up db
   - php artisan migrate
