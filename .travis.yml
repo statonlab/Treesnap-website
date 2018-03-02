@@ -9,6 +9,7 @@ before_install:
 #  - sudo mysql_upgrade
 #  - sudo service mysql restart
    - mysql -e 'create database homestead_test;'
+   - mysql -e 'create user homestead;'
 
 before_script:
   - cp .env.travis .env
