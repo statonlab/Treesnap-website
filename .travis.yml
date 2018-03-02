@@ -2,6 +2,8 @@ language: php
 
 php:
   - 7.1
+services:
+ - mysql
 
 before_script:
   - cp .env.travis .env
@@ -12,6 +14,7 @@ before_script:
 
 
 before_install:
+  - mysql -e 'CREATE DATABASE testing;'
 
 script:
 #set up db
@@ -21,5 +24,3 @@ script:
   - npm run production
   - phpunit
 
-services:
- - mysql
