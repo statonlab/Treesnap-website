@@ -32,7 +32,7 @@ before_script:
 script:
 #set up db
   - php artisan migrate
-  - php artisan db:seed
+#  - php artisan db:seed
 #run tests
   - npm run production
   - phpunit
