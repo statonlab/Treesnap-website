@@ -1,0 +1,39 @@
+language: php
+
+php:
+  - 7.1
+services:
+ - mysql
+
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      - mysql-client
+
+before_install:
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade
+  - sudo service mysql restart
+  - mysql -e 'create database homestead_test;'
+
+
+
+before_script:
+  - cp .env.travis .env
+  - composer self-update
+  - composer install --no-interaction
+  - npm install
+  - php artisan key:generate
+
+
+script:
+#set up db
+  - php artisan migrate
+#  - php artisan db:seed
+#run tests
+  - npm run production
+  - phpunit
+
