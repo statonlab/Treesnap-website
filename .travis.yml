@@ -19,8 +19,6 @@ before_install:
   - sudo service mysql restart
   - mysql -e 'create database homestead_test;'
 
-
-
 before_script:
   - cp .env.travis .env
   - composer self-update
@@ -28,12 +26,11 @@ before_script:
   - npm install
   - php artisan key:generate
 
-
 script:
-#set up db
+  # Set up db
   - php artisan migrate
-#  - php artisan db:seed
-#run tests
+  - php artisan db:seed
+  # Run tests
   - npm run production
   - phpunit
 
