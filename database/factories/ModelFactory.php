@@ -33,6 +33,11 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     $images = glob(storage_path('app/public/images/').'*.jpeg');
     $thumbnails = glob(storage_path('app/public/thumbnails/').'*.jpeg');
 
+    if(count($images) === 0) {
+        $images = glob(public_path('images/').'*.png');
+        $thumbnails = glob(public_path('images/').'*.png');
+    }
+
     $categories = [
         'American Chestnut',
         'Ash',
