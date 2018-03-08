@@ -2,3 +2,6 @@
 !public/
 !.gitignore
 !docs/
+!docs/*
+!faker/
+!faker/*

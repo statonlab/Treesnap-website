@@ -28,18 +28,31 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Observation::class, function (Faker\Generator $faker) {
-    $addresses = include base_path('database/factories/Addresses.php');
+    static $addresses;
+    static $image;
+    static $thumbnail;
 
-    if (! file_exists(storage_path('app/public/images'))) {
-        mkdir(storage_path('app/public/images'));
+    if (! $addresses) {
+        $addresses = include base_path('database/factories/Addresses.php');
     }
 
-    if (! file_exists(storage_path('app/public/thumbnails'))) {
-        mkdir(storage_path('app/public/thumbnails'));
+    if (! $image) {
+        if (! file_exists(storage_path('app/public/images'))) {
+            mkdir(storage_path('app/public/images'));
+        }
+        $image = copy(storage_path('app/faker/flower.jpg'), storage_path('app/public/images/flower.jpg'));
+        $image = explode('/', $image);
+        $image = $image[count($image) - 1];
     }
 
-    $image = $faker->image(storage_path('app/public/images'));
-    $thumbnail = $faker->image(storage_path('app/public/thumbnails'));
+    if (! $thumbnail) {
+        if (! file_exists(storage_path('app/public/thumbnails'))) {
+            mkdir(storage_path('app/public/thumbnails'));
+        }
+        $thumbnail = copy(storage_path('app/faker/autumn.jpg'), storage_path('app/public/thumbnails/autumn.jpg'));
+        $thumbnail = explode('/', $thumbnail);
+        $thumbnail = $thumbnail[count($thumbnail) - 1];
+    }
 
     $categories = [
         'American Chestnut',
@@ -61,8 +74,6 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
     $c = $categories[rand() % count($categories)];
 
-    $user = factory(\App\User::class)->create();
-
     $data = [
         'comment' => 'Comment on record '.rand() % 3000,
     ];
@@ -71,11 +82,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         $data['otherLabel'] = $otherTrees[rand() % count($otherTrees)];
     }
 
-    $thumbnail = explode('/', $thumbnail);
-    $thumbnail = $thumbnail[count($thumbnail) - 1];
-
-    $image = explode('/', $image);
-    $image = $image[count($image) - 1];
+    $user = factory(\App\User::class)->create();
 
     return [
         'user_id' => $user->id,

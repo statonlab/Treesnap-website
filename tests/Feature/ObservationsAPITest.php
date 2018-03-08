@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Observation;
 use App\User;
-use DB;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -21,7 +20,8 @@ class ObservationsAPITest extends TestCase
      */
     public function testGettingRecords()
     {
-        $this->actingAs(User::first());
+        $user = User::has('observations')->first();
+        $this->actingAs($user);
 
         $response = $this->get('/api/v1/observations');
 
@@ -51,7 +51,7 @@ class ObservationsAPITest extends TestCase
      */
     public function testGettingOneRecord()
     {
-        $user = User::first();
+        $user = User::has('observations')->first();
         $this->actingAs($user);
 
         $observation = Observation::where('user_id', $user->id)->first();
@@ -82,7 +82,7 @@ class ObservationsAPITest extends TestCase
      */
     public function testGettingRecordThatDoesNotBelongToTheUser()
     {
-        $user = User::first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $observation = Observation::where('user_id', '!=', $user->id)->first();
@@ -166,7 +166,7 @@ class ObservationsAPITest extends TestCase
      */
     public function testUpdatingARecord()
     {
-        $user = User::first();
+        $user = User::has('observations')->first();
         $this->actingAs($user);
         $observation = $user->observations()->orderby('id', 'desc')->first();
 
@@ -228,9 +228,12 @@ class ObservationsAPITest extends TestCase
      */
     public function testDeletingUnauthorizedRecord()
     {
-        $user = User::has('observations')->first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
-        $observation = Observation::where('user_id', '!=', $user->id)->first();
+
+        // This observation will automatically create its own user
+        // The user it creates is not the same as the acting user
+        $observation = factory(Observation::class)->create();
 
         $response = $this->delete("/api/v1/observation/{$observation->id}");
 
