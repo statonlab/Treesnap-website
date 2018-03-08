@@ -24,6 +24,10 @@ class ImagesController extends Controller
     {
         $observation = Observation::findOrFail($id);
 
+        if($observation->user_id !== $request->user()->id) {
+            return $this->unauthorized();
+        }
+
         $this->validate($request, [
             'key' => 'nullable',
             // Allow up to 10MB image size
