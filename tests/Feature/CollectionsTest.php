@@ -24,20 +24,12 @@ class CollectionsTest extends TestCase
 
     public function testGettingCollectionIndex()
     {
-        $this->actingAs(User::first());
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
 
         $response = $this->get('/collections');
 
-        $response->assertJsonStructure([
-            'data' => [
-                [
-                    'id',
-                    'user_id',
-                    'label',
-                    'description',
-                ],
-            ],
-        ])->assertStatus(200);
+        $response->assertStatus(200);
     }
 
     /**
@@ -48,8 +40,10 @@ class CollectionsTest extends TestCase
 
     public function testGettingSpecificCollection()
     {
-        $this->actingAs(User::first());
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
         $response = $this->get('/collection/{id}');
+        $response->assertStatus(200);
     }
 
     /**
@@ -59,24 +53,20 @@ class CollectionsTest extends TestCase
      */
     public function testDeleteCollection()
     {
-        $user = User::first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $collection = Collection::create([
-            'label' => 'test',
+        $collection = factory(Collection::class)->create([
             'user_id' => $user->id,
         ]);
 
         $collection->users()->attach($user->id);
 
-        $response = $this->delete("/web/collection/delete", [
-            'collection_id' => $collection->id,
-        ]);
+        $response = $this->delete("/web/collection/{$collection->id}");
 
         $response->assertJsonStructure([
             'data' => [
                 'id',
-                'label',
             ],
         ])->assertStatus(201);
     }

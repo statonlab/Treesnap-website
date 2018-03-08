@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Events\ObservationCreated;
 use App\Events\ObservationDeleted;
+use App\Http\Controllers\Api\v1\Traits\UploadsImages;
 use App\Http\Controllers\Traits\Observes;
 use App\LatinName;
 use App\Observation;
@@ -17,7 +18,7 @@ use Storage;
 
 class ObservationsController extends Controller
 {
-    use Responds, Observes;
+    use Responds, Observes, UploadsImages;
 
     /**
      * Get all observations related to a user.
@@ -84,15 +85,7 @@ class ObservationsController extends Controller
         }
 
         // Delete All Images
-        foreach ($observation->images as $images) {
-            foreach ($images as $image) {
-                $image = str_replace('/storage/', 'public/', $image);
-                $image = trim($image, '/');
-                if (Storage::exists($image)) {
-                    Storage::delete($image);
-                }
-            }
-        }
+        $this->deleteImages($observation->images);
 
         // Broadcast that an observation has been deleted
         event(new ObservationDeleted());
@@ -180,6 +173,7 @@ class ObservationsController extends Controller
         }
 
         // Upload images
+        $old_images = $observation->images;
         $images = $this->uploadImages($request->images);
 
         // Create the record
@@ -199,6 +193,9 @@ class ObservationsController extends Controller
         if (! $observation) {
             return $this->error('Request could not be completed', 101);
         }
+
+        // Delete all old images
+        $this->deleteImages($old_images);
 
         return $this->created(['observation_id' => $observation->id]);
     }
@@ -225,31 +222,5 @@ class ObservationsController extends Controller
             'is_private' => 'required|boolean',
             'mobile_id' => 'required|numeric',
         ];
-    }
-
-    /**
-     * Upload images
-     *
-     * @param $images
-     * @return array
-     */
-    protected function uploadImages($images)
-    {
-        if (empty($images)) {
-            return [];
-        }
-
-        $prefix = '/storage/images/';
-        $paths = [];
-
-        foreach ($images as $key => $list) {
-            foreach ($list as $image) {
-                $name = str_random(5).uniqid().'.'.$image->extension();
-                $image->storeAs('images', $name, 'public');
-                $paths[$key][] = $prefix.$name;
-            }
-        }
-
-        return $paths;
     }
 }

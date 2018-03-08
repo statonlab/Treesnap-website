@@ -62,6 +62,11 @@ class Observation extends Model
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * Get the observation's latin name.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function latinName() {
         return $this->belongsTo('App\LatinName', 'latin_name_id', 'id');
     }

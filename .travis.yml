@@ -1,5 +1,8 @@
 language: php
 
+notifications:
+    slack: statonlab:aSinBrPvZwL95EZuAKCakdd4
+
 php:
   - 7.1
 services:
@@ -23,8 +26,10 @@ before_script:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
-  - npm install
+  - npm -g i npm
+  - npm ci
   - php artisan key:generate
+  - php artisan storage:link
 
 script:
   # Set up db
@@ -32,5 +37,4 @@ script:
   - php artisan db:seed
   # Run tests
   - npm run production
-  - phpunit
-
+  - ./vendor/bin/phpunit

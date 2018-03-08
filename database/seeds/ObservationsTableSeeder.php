@@ -11,6 +11,6 @@ class ObservationsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Observation::class, 300)->create();
+        factory(App\Observation::class, 10)->create();
     }
 }
