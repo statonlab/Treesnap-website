@@ -214,7 +214,6 @@ class ObservationsAPITest extends TestCase
     public function testDeletingARecord()
     {
         $observation = factory(Observation::class)->create();
-        $this->assertDatabaseHas('observations', ['id' => $observation->id]);
         $user = $observation->user;
         $this->actingAs($user);
 
