@@ -1,5 +1,8 @@
 language: php
 
+notifications:
+    slack: statonlab:aSinBrPvZwL95EZuAKCakdd4
+
 php:
   - 7.1
 services:
@@ -33,4 +36,3 @@ script:
   # Run tests
   - npm run production
   - phpunit
-

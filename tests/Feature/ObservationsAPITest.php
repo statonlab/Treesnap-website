@@ -113,7 +113,7 @@ class ObservationsAPITest extends TestCase
      */
     public function testCreatingARecord()
     {
-        $user = User::first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $response = $this->post("/api/v1/observations", [
@@ -125,17 +125,40 @@ class ObservationsAPITest extends TestCase
             'latitude' => 34.090,
             'location_accuracy' => 5.00,
             'date' => '03-23-2017 20:00:00',
-            'images' => [
-                'images' => [
-                    UploadedFile::fake()->image('avatar.jpg'),
-                    UploadedFile::fake()->image('guy.jpg'),
-                ],
-            ],
             'is_private' => true,
             'mobile_id' => 1234,
         ]);
 
         $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
+    }
+
+    /**
+     * Test adding observations incrementally.
+     */
+    public function testAddingImagesIncrementallyToAnObservation()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $observation = factory(Observation::class)->create();
+        $images_count = collect($observation->images)->reduce(function ($carry, $item) {
+            return $carry + count($item);
+        });
+
+        $response = $this->post("/api/v1/observation/image/$observation->id", [
+            'key' => 'images',
+            'image' => UploadedFile::fake()->image('avatar.jpg'),
+        ]);
+
+        $response->assertStatus(201);
+
+        // Get the updated observation again from the DB
+        $observation = Observation::find($observation->id);
+        $new_count = collect($observation->images)->reduce(function ($carry, $item) {
+            return $carry + count($item);
+        });
+
+        $this->assertEquals($images_count + 1, $new_count);
     }
 
     /**
@@ -179,7 +202,7 @@ class ObservationsAPITest extends TestCase
         $observation = Observation::where('user_id', '!=', $user->id)->orderby('id', 'desc')->first();
 
         $response = $this->post("/api/v1/observation/{$observation->id}", [
-            'data'
+            'data',
         ]);
 
         $response->assertStatus(401);
@@ -190,9 +213,10 @@ class ObservationsAPITest extends TestCase
      */
     public function testDeletingARecord()
     {
-        $user = User::has('observations')->first();
+        $observation = factory(Observation::class)->create();
+        $this->assertDatabaseHas('observations', ['id' => $observation->id]);
+        $user = $observation->user;
         $this->actingAs($user);
-        $observation = $user->observations()->orderby('id', 'desc')->first();
 
         $response = $this->delete("/api/v1/observation/{$observation->id}");
 
