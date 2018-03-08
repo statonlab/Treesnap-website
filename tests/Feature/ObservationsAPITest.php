@@ -140,7 +140,9 @@ class ObservationsAPITest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $observation = factory(Observation::class)->create();
+        $observation = factory(Observation::class)->create([
+            'user_id' => $user->id,
+        ]);
         $images_count = collect($observation->images)->reduce(function ($carry, $item) {
             return $carry + count($item);
         });
