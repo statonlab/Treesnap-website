@@ -43,7 +43,7 @@ class ImagesController extends Controller
         // Upload and add image to observation
         $key = $request->key ?: 'images';
         $image = $this->uploadSingleImage($request->image);
-        $observation = $this->mergeImageToObservation($observation, $image, $key);
+        $observation = $this->mergeImageToObservation($observation, $key, $image);
 
         // Create a thumbnail if needed
         if ($should_create_thumbnail) {
