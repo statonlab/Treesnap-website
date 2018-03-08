@@ -30,13 +30,16 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     $addresses = include base_path('database/factories/Addresses.php');
 
-    $images = glob(storage_path('app/public/images/').'*.jpeg');
-    $thumbnails = glob(storage_path('app/public/thumbnails/').'*.jpeg');
-
-    if(count($images) === 0) {
-        $images = glob(public_path('images/').'*.png');
-        $thumbnails = glob(public_path('images/').'*.png');
+    if (! file_exists(storage_path('app/public/images'))) {
+        mkdir(storage_path('app/public/images'));
     }
+
+    if (! file_exists(storage_path('app/public/thumbnails'))) {
+        mkdir(storage_path('app/public/thumbnails'));
+    }
+
+    $image = $faker->image(storage_path('app/public/images'));
+    $thumbnail = $faker->image(storage_path('app/public/thumbnails'));
 
     $categories = [
         'American Chestnut',
@@ -58,9 +61,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
     $c = $categories[rand() % count($categories)];
 
-    $users = \App\User::all()->map(function ($user) {
-        return $user->id;
-    })->toArray();
+    $user = factory(\App\User::class)->create();
 
     $data = [
         'comment' => 'Comment on record '.rand() % 3000,
@@ -70,16 +71,14 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         $data['otherLabel'] = $otherTrees[rand() % count($otherTrees)];
     }
 
-    $thumbnail = $thumbnails[rand() % count($thumbnails)];
     $thumbnail = explode('/', $thumbnail);
     $thumbnail = $thumbnail[count($thumbnail) - 1];
 
-    $image = $images[rand() % count($images)];
     $image = explode('/', $image);
     $image = $image[count($image) - 1];
 
     return [
-        'user_id' => $users[rand() % count($users)],
+        'user_id' => $user->id,
         'observation_category' => $c,
         'images' => [
             'images' => ['/storage/images/'.$image],

@@ -26,8 +26,10 @@ before_script:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
-  - npm install
+  - npm -g i npm
+  - npm ci
   - php artisan key:generate
+  - php artisan storage:link
 
 script:
   # Set up db
