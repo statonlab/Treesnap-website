@@ -12827,6 +12827,7 @@ select[multiple].multi-select:focus {
 }
 
 .Select-input > input {
+  width: 100%;
   background: none transparent;
   border: 0 none;
   -webkit-box-shadow: none;
@@ -12975,6 +12976,7 @@ select[multiple].multi-select:focus {
   margin-top: -1px;
   max-height: 200px;
   position: absolute;
+  left: 0;
   top: 100%;
   width: 100%;
   z-index: 1000;

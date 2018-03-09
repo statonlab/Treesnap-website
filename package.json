@@ -10,20 +10,21 @@
   "devDependencies": {
     "axios": "^0.15.3",
     "babel-preset-react": "^6.24.0",
-    "browser-sync": "^2.19.0",
+    "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^1.2.0",
-    "cookie-signature": "^1.0.6",
+    "chromedriver": "^2.36.0",
+    "cookie-signature": "^1.1.0",
     "cross-env": "^3.2.3",
-    "jquery": "^3.2.1",
+    "jquery": "^3.3.1",
     "laravel-mix": "^1.7.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.5"
   },
   "dependencies": {
     "amdefine": "^1.0.1",
     "array-flatten": "^2.1.1",
     "bulma": "^0.5.3",
     "camelizer": "^0.1.0",
-    "chart.js": "^2.7.0",
+    "chart.js": "^2.7.2",
     "content-disposition": "^0.5.2",
     "content-type": "^1.0.4",
     "datatables-bulma": "^1.0.1",
@@ -36,12 +37,12 @@
     "lodash._baseclone": "^4.5.7",
     "lodash._bindcallback": "^3.0.1",
     "lodash._createassigner": "^3.1.1",
-    "marked": "^0.3.7",
+    "marked": "^0.3.17",
     "merge-descriptors": "^1.0.1",
     "methods": "^1.1.2",
-    "moment": "^2.20.1",
+    "moment": "^2.21.0",
     "path-to-regexp": "^1.7.0",
-    "prop-types": "^15.6.0",
+    "prop-types": "^15.6.1",
     "proxy-addr": "^1.1.5",
     "react": "^15.6.2",
     "react-addons-update": "^15.6.2",
@@ -52,8 +53,8 @@
     "react-image-gallery": "^0.7.16",
     "react-router-dom": "^4.2.2",
     "react-rte": "^0.11.0",
-    "react-select": "^1.1.0",
+    "react-select": "^1.2.1",
     "slick-carousel": "^1.8.1",
-    "type-is": "^1.6.15"
+    "type-is": "^1.6.16"
   }
 }

@@ -145,7 +145,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/web/roles', 'RolesController@index');
 
     // Flags
-    Route::get('/web/flags', 'FlagsController@index');
+    // Route::get('/web/flags', 'FlagsController@index');
 
     // Cache
     Route::get('/clear-cache', 'CacheController@clearCache');

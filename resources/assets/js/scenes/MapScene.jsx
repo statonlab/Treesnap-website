@@ -659,6 +659,7 @@ export default class App extends Component {
           <div className="control">
             <span className="select is-full-width">
               <select value={this.state.selectedCollection}
+                      name="collections"
                       onChange={({target}) => this.changeCollection(target.value)}>
                 <option value={0}>Select Collection</option>
                 {this.state.collections.map(collection => {
