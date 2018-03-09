@@ -37,4 +37,4 @@ script:
   - php artisan db:seed
   # Run tests
   - npm run production
-  - ./vendor/bin/phpunit
+  - phpunit
