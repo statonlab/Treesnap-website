@@ -24,7 +24,6 @@ before_install:
 
 before_script:
   - cp .env.travis .env
-  - composer self-update
   - composer install --no-interaction
   - npm -g i npm
   - npm ci

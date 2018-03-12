@@ -1,4 +1,4 @@
-webpackJsonp([1],{
+webpackJsonp([0],{
 
 /***/ "./node_modules/babel-runtime/core-js/get-iterator.js":
 /***/ (function(module, exports, __webpack_require__) {
@@ -3288,7 +3288,8 @@ module.exports = throttle;
  * https://github.com/chjj/marked
  */
 
-;(function() {
+;(function(root) {
+'use strict';
 
 /**
  * Block-Level Grammar
@@ -3298,55 +3299,60 @@ var block = {
   newline: /^\n+/,
   code: /^( {4}[^\n]+\n*)+/,
   fences: noop,
-  hr: /^( *[-*_]){3,} *(?:\n+|$)/,
+  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
   heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,
   nptable: noop,
-  lheading: /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,
-  blockquote: /^( *>[^\n]+(\n(?!def)[^\n]+)*\n*)+/,
+  blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
   list: /^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
   html: /^ *(?:comment *(?:\n|\s*$)|closed *(?:\n{2,}|\s*$)|closing *(?:\n{2,}|\s*$))/,
-  def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,
+  def: /^ {0,3}\[(label)\]: *\n? *<?([^\s>]+)>?(?:(?: +\n? *| *\n *)(title))? *(?:\n+|$)/,
   table: noop,
-  paragraph: /^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,
+  lheading: /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,
+  paragraph: /^([^\n]+(?:\n?(?!hr|heading|lheading| {0,3}>|tag)[^\n]+)+)/,
   text: /^[^\n]+/
 };
 
+block._label = /(?:\\[\[\]]|[^\[\]])+/;
+block._title = /(?:"(?:\\"|[^"]|"[^"\n]*")*"|'\n?(?:[^'\n]+\n?)*'|\([^()]*\))/;
+block.def = edit(block.def)
+  .replace('label', block._label)
+  .replace('title', block._title)
+  .getRegex();
+
 block.bullet = /(?:[*+-]|\d+\.)/;
 block.item = /^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;
-block.item = replace(block.item, 'gm')
-  (/bull/g, block.bullet)
-  ();
+block.item = edit(block.item, 'gm')
+  .replace(/bull/g, block.bullet)
+  .getRegex();
 
-block.list = replace(block.list)
-  (/bull/g, block.bullet)
-  ('hr', '\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))')
-  ('def', '\\n+(?=' + block.def.source + ')')
-  ();
-
-block.blockquote = replace(block.blockquote)
-  ('def', block.def)
-  ();
+block.list = edit(block.list)
+  .replace(/bull/g, block.bullet)
+  .replace('hr', '\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))')
+  .replace('def', '\\n+(?=' + block.def.source + ')')
+  .getRegex();
 
 block._tag = '(?!(?:'
   + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
   + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b';
+  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b';
 
-block.html = replace(block.html)
-  ('comment', /<!--[\s\S]*?-->/)
-  ('closed', /<(tag)[\s\S]+?<\/\1>/)
-  ('closing', /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)
-  (/tag/g, block._tag)
-  ();
+block.html = edit(block.html)
+  .replace('comment', /<!--[\s\S]*?-->/)
+  .replace('closed', /<(tag)[\s\S]+?<\/\1>/)
+  .replace('closing', /<tag(?:"[^"]*"|'[^']*'|\s[^'"\/>\s]*)*?\/?>/)
+  .replace(/tag/g, block._tag)
+  .getRegex();
 
-block.paragraph = replace(block.paragraph)
-  ('hr', block.hr)
-  ('heading', block.heading)
-  ('lheading', block.lheading)
-  ('blockquote', block.blockquote)
-  ('tag', '<' + block._tag)
-  ('def', block.def)
-  ();
+block.paragraph = edit(block.paragraph)
+  .replace('hr', block.hr)
+  .replace('heading', block.heading)
+  .replace('lheading', block.lheading)
+  .replace('tag', '<' + block._tag)
+  .getRegex();
+
+block.blockquote = edit(block.blockquote)
+  .replace('paragraph', block.paragraph)
+  .getRegex();
 
 /**
  * Normal Block Grammar
@@ -3359,16 +3365,16 @@ block.normal = merge({}, block);
  */
 
 block.gfm = merge({}, block.normal, {
-  fences: /^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/,
+  fences: /^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\n? *\1 *(?:\n+|$)/,
   paragraph: /^/,
   heading: /^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/
 });
 
-block.gfm.paragraph = replace(block.paragraph)
-  ('(?!', '(?!'
+block.gfm.paragraph = edit(block.paragraph)
+  .replace('(?!', '(?!'
     + block.gfm.fences.source.replace('\\1', '\\2') + '|'
     + block.list.source.replace('\\1', '\\3') + '|')
-  ();
+  .getRegex();
 
 /**
  * GFM + Tables Block Grammar
@@ -3431,17 +3437,18 @@ Lexer.prototype.lex = function(src) {
  * Lexing
  */
 
-Lexer.prototype.token = function(src, top, bq) {
-  var src = src.replace(/^ +$/gm, '')
-    , next
-    , loose
-    , cap
-    , bull
-    , b
-    , item
-    , space
-    , i
-    , l;
+Lexer.prototype.token = function(src, top) {
+  src = src.replace(/^ +$/gm, '');
+  var next,
+      loose,
+      cap,
+      bull,
+      b,
+      item,
+      space,
+      i,
+      tag,
+      l;
 
   while (src) {
     // newline
@@ -3521,17 +3528,6 @@ Lexer.prototype.token = function(src, top, bq) {
       continue;
     }
 
-    // lheading
-    if (cap = this.rules.lheading.exec(src)) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'heading',
-        depth: cap[2] === '=' ? 1 : 2,
-        text: cap[1]
-      });
-      continue;
-    }
-
     // hr
     if (cap = this.rules.hr.exec(src)) {
       src = src.substring(cap[0].length);
@@ -3554,7 +3550,7 @@ Lexer.prototype.token = function(src, top, bq) {
       // Pass `top` to keep the current
       // "toplevel" state. This is exactly
       // how markdown.pl works.
-      this.token(cap, top, true);
+      this.token(cap, top);
 
       this.tokens.push({
         type: 'blockquote_end'
@@ -3623,7 +3619,7 @@ Lexer.prototype.token = function(src, top, bq) {
         });
 
         // Recurse.
-        this.token(item, false, bq);
+        this.token(item, false);
 
         this.tokens.push({
           type: 'list_item_end'
@@ -3652,12 +3648,16 @@ Lexer.prototype.token = function(src, top, bq) {
     }
 
     // def
-    if ((!bq && top) && (cap = this.rules.def.exec(src))) {
+    if (top && (cap = this.rules.def.exec(src))) {
       src = src.substring(cap[0].length);
-      this.tokens.links[cap[1].toLowerCase()] = {
-        href: cap[2],
-        title: cap[3]
-      };
+      if (cap[3]) cap[3] = cap[3].substring(1, cap[3].length - 1);
+      tag = cap[1].toLowerCase();
+      if (!this.tokens.links[tag]) {
+        this.tokens.links[tag] = {
+          href: cap[2],
+          title: cap[3]
+        };
+      }
       continue;
     }
 
@@ -3695,6 +3695,17 @@ Lexer.prototype.token = function(src, top, bq) {
       continue;
     }
 
+    // lheading
+    if (cap = this.rules.lheading.exec(src)) {
+      src = src.substring(cap[0].length);
+      this.tokens.push({
+        type: 'heading',
+        depth: cap[2] === '=' ? 1 : 2,
+        text: cap[1]
+      });
+      continue;
+    }
+
     // top-level paragraph
     if (top && (cap = this.rules.paragraph.exec(src))) {
       src = src.substring(cap[0].length);
@@ -3719,8 +3730,7 @@ Lexer.prototype.token = function(src, top, bq) {
     }
 
     if (src) {
-      throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
+      throw new Error('Infinite loop on byte: ' + src.charCodeAt(0));
     }
   }
 
@@ -3733,31 +3743,39 @@ Lexer.prototype.token = function(src, top, bq) {
 
 var inline = {
   escape: /^\\([\\`*{}\[\]()#+\-.!_>])/,
-  autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,
+  autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
   url: noop,
-  tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,
+  tag: /^<!--[\s\S]*?-->|^<\/?[a-zA-Z0-9\-]+(?:"[^"]*"|'[^']*'|\s[^<'">\/\s]*)*?\/?>/,
   link: /^!?\[(inside)\]\(href\)/,
   reflink: /^!?\[(inside)\]\s*\[([^\]]*)\]/,
-  nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,
+  nolink: /^!?\[((?:\[[^\[\]]*\]|\\[\[\]]|[^\[\]])*)\]/,
   strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,
-  em: /^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
-  code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
+  em: /^_([^\s_](?:[^_]|__)+?[^\s_])_\b|^\*((?:\*\*|[^*])+?)\*(?!\*)/,
+  code: /^(`+)\s*([\s\S]*?[^`]?)\s*\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
   del: noop,
-  text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
+  text: /^[\s\S]+?(?=[\\<!\[`*]|\b_| {2,}\n|$)/
 };
 
-inline._inside = /(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;
+inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
+inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
+
+inline.autolink = edit(inline.autolink)
+  .replace('scheme', inline._scheme)
+  .replace('email', inline._email)
+  .getRegex()
+
+inline._inside = /(?:\[[^\[\]]*\]|\\[\[\]]|[^\[\]]|\](?=[^\[]*\]))*/;
 inline._href = /\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
 
-inline.link = replace(inline.link)
-  ('inside', inline._inside)
-  ('href', inline._href)
-  ();
+inline.link = edit(inline.link)
+  .replace('inside', inline._inside)
+  .replace('href', inline._href)
+  .getRegex();
 
-inline.reflink = replace(inline.reflink)
-  ('inside', inline._inside)
-  ();
+inline.reflink = edit(inline.reflink)
+  .replace('inside', inline._inside)
+  .getRegex();
 
 /**
  * Normal Inline Grammar
@@ -3779,13 +3797,16 @@ inline.pedantic = merge({}, inline.normal, {
  */
 
 inline.gfm = merge({}, inline.normal, {
-  escape: replace(inline.escape)('])', '~|])')(),
-  url: /^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,
+  escape: edit(inline.escape).replace('])', '~|])').getRegex(),
+  url: edit(/^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/)
+    .replace('email', inline._email)
+    .getRegex(),
+  _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
   del: /^~~(?=\S)([\s\S]*?\S)~~/,
-  text: replace(inline.text)
-    (']|', '~]|')
-    ('|', '|https?://|')
-    ()
+  text: edit(inline.text)
+    .replace(']|', '~]|')
+    .replace('|', '|https?://|ftp://|www\\.|[a-zA-Z0-9.!#$%&\'*+/=?^_`{\\|}~-]+@|')
+    .getRegex()
 });
 
 /**
@@ -3793,8 +3814,8 @@ inline.gfm = merge({}, inline.normal, {
  */
 
 inline.breaks = merge({}, inline.gfm, {
-  br: replace(inline.br)('{2,}', '*')(),
-  text: replace(inline.gfm.text)('{2,}', '*')()
+  br: edit(inline.br).replace('{2,}', '*').getRegex(),
+  text: edit(inline.gfm.text).replace('{2,}', '*').getRegex()
 });
 
 /**
@@ -3805,12 +3826,11 @@ function InlineLexer(links, options) {
   this.options = options || marked.defaults;
   this.links = links;
   this.rules = inline.normal;
-  this.renderer = this.options.renderer || new Renderer;
+  this.renderer = this.options.renderer || new Renderer();
   this.renderer.options = this.options;
 
   if (!this.links) {
-    throw new
-      Error('Tokens array requires a `links` property.');
+    throw new Error('Tokens array requires a `links` property.');
   }
 
   if (this.options.gfm) {
@@ -3844,11 +3864,11 @@ InlineLexer.output = function(src, links, options) {
  */
 
 InlineLexer.prototype.output = function(src) {
-  var out = ''
-    , link
-    , text
-    , href
-    , cap;
+  var out = '',
+      link,
+      text,
+      href,
+      cap;
 
   while (src) {
     // escape
@@ -3862,10 +3882,8 @@ InlineLexer.prototype.output = function(src) {
     if (cap = this.rules.autolink.exec(src)) {
       src = src.substring(cap[0].length);
       if (cap[2] === '@') {
-        text = cap[1].charAt(6) === ':'
-          ? this.mangle(cap[1].substring(7))
-          : this.mangle(cap[1]);
-        href = this.mangle('mailto:') + text;
+        text = escape(this.mangle(cap[1]));
+        href = 'mailto:' + text;
       } else {
         text = escape(cap[1]);
         href = text;
@@ -3876,9 +3894,19 @@ InlineLexer.prototype.output = function(src) {
 
     // url (gfm)
     if (!this.inLink && (cap = this.rules.url.exec(src))) {
+      cap[0] = this.rules._backpedal.exec(cap[0])[0];
       src = src.substring(cap[0].length);
-      text = escape(cap[1]);
-      href = text;
+      if (cap[2] === '@') {
+        text = escape(cap[0]);
+        href = 'mailto:' + text;
+      } else {
+        text = escape(cap[0]);
+        if (cap[1] === 'www.') {
+          href = 'http://' + text;
+        } else {
+          href = text;
+        }
+      }
       out += this.renderer.link(href, null, text);
       continue;
     }
@@ -3945,7 +3973,7 @@ InlineLexer.prototype.output = function(src) {
     // code
     if (cap = this.rules.code.exec(src)) {
       src = src.substring(cap[0].length);
-      out += this.renderer.codespan(escape(cap[2], true));
+      out += this.renderer.codespan(escape(cap[2].trim(), true));
       continue;
     }
 
@@ -3971,8 +3999,7 @@ InlineLexer.prototype.output = function(src) {
     }
 
     if (src) {
-      throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
+      throw new Error('Infinite loop on byte: ' + src.charCodeAt(0));
     }
   }
 
@@ -3984,8 +4011,8 @@ InlineLexer.prototype.output = function(src) {
  */
 
 InlineLexer.prototype.outputLink = function(cap, link) {
-  var href = escape(link.href)
-    , title = link.title ? escape(link.title) : null;
+  var href = escape(link.href),
+      title = link.title ? escape(link.title) : null;
 
   return cap[0].charAt(0) !== '!'
     ? this.renderer.link(href, title, this.output(cap[1]))
@@ -4021,10 +4048,10 @@ InlineLexer.prototype.smartypants = function(text) {
 
 InlineLexer.prototype.mangle = function(text) {
   if (!this.options.mangle) return text;
-  var out = ''
-    , l = text.length
-    , i = 0
-    , ch;
+  var out = '',
+      l = text.length,
+      i = 0,
+      ch;
 
   for (; i < l; i++) {
     ch = text.charCodeAt(i);
@@ -4157,11 +4184,14 @@ Renderer.prototype.link = function(href, title, text) {
         .replace(/[^\w:]/g, '')
         .toLowerCase();
     } catch (e) {
-      return '';
+      return text;
     }
     if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
-      return '';
+      return text;
     }
+  }
+  if (this.options.baseUrl && !originIndependentUrl.test(href)) {
+    href = resolveUrl(this.options.baseUrl, href);
   }
   var out = '<a href="' + href + '"';
   if (title) {
@@ -4172,6 +4202,9 @@ Renderer.prototype.link = function(href, title, text) {
 };
 
 Renderer.prototype.image = function(href, title, text) {
+  if (this.options.baseUrl && !originIndependentUrl.test(href)) {
+    href = resolveUrl(this.options.baseUrl, href);
+  }
   var out = '<img src="' + href + '" alt="' + text + '"';
   if (title) {
     out += ' title="' + title + '"';
@@ -4185,6 +4218,32 @@ Renderer.prototype.text = function(text) {
 };
 
 /**
+ * TextRenderer
+ * returns only the textual part of the token
+ */
+
+function TextRenderer() {}
+
+// no need for block level renderers
+
+TextRenderer.prototype.strong =
+TextRenderer.prototype.em =
+TextRenderer.prototype.codespan =
+TextRenderer.prototype.del =
+TextRenderer.prototype.text = function (text) {
+  return text;
+}
+
+TextRenderer.prototype.link =
+TextRenderer.prototype.image = function(href, title, text) {
+  return '' + text;
+}
+
+TextRenderer.prototype.br = function() {
+  return '';
+}
+
+/**
  * Parsing & Compiling
  */
 
@@ -4192,7 +4251,7 @@ function Parser(options) {
   this.tokens = [];
   this.token = null;
   this.options = options || marked.defaults;
-  this.options.renderer = this.options.renderer || new Renderer;
+  this.options.renderer = this.options.renderer || new Renderer();
   this.renderer = this.options.renderer;
   this.renderer.options = this.options;
 }
@@ -4201,8 +4260,8 @@ function Parser(options) {
  * Static Parse Method
  */
 
-Parser.parse = function(src, options, renderer) {
-  var parser = new Parser(options, renderer);
+Parser.parse = function(src, options) {
+  var parser = new Parser(options);
   return parser.parse(src);
 };
 
@@ -4211,7 +4270,12 @@ Parser.parse = function(src, options, renderer) {
  */
 
 Parser.prototype.parse = function(src) {
-  this.inline = new InlineLexer(src.links, this.options, this.renderer);
+  this.inline = new InlineLexer(src.links, this.options);
+  // use an InlineLexer with a TextRenderer to extract pure text
+  this.inlineText = new InlineLexer(
+    src.links,
+    merge({}, this.options, {renderer: new TextRenderer()})
+  );
   this.tokens = src.reverse();
 
   var out = '';
@@ -4268,7 +4332,7 @@ Parser.prototype.tok = function() {
       return this.renderer.heading(
         this.inline.output(this.token.text),
         this.token.depth,
-        this.token.text);
+        unescape(this.inlineText.output(this.token.text)));
     }
     case 'code': {
       return this.renderer.code(this.token.text,
@@ -4276,18 +4340,16 @@ Parser.prototype.tok = function() {
         this.token.escaped);
     }
     case 'table': {
-      var header = ''
-        , body = ''
-        , i
-        , row
-        , cell
-        , flags
-        , j;
+      var header = '',
+          body = '',
+          i,
+          row,
+          cell,
+          j;
 
       // header
       cell = '';
       for (i = 0; i < this.token.header.length; i++) {
-        flags = { header: true, align: this.token.align[i] };
         cell += this.renderer.tablecell(
           this.inline.output(this.token.header[i]),
           { header: true, align: this.token.align[i] }
@@ -4311,7 +4373,7 @@ Parser.prototype.tok = function() {
       return this.renderer.table(header, body);
     }
     case 'blockquote_start': {
-      var body = '';
+      body = '';
 
       while (this.next().type !== 'blockquote_end') {
         body += this.tok();
@@ -4320,8 +4382,8 @@ Parser.prototype.tok = function() {
       return this.renderer.blockquote(body);
     }
     case 'list_start': {
-      var body = ''
-        , ordered = this.token.ordered;
+      body = '';
+      var ordered = this.token.ordered;
 
       while (this.next().type !== 'list_end') {
         body += this.tok();
@@ -4330,7 +4392,7 @@ Parser.prototype.tok = function() {
       return this.renderer.list(body, ordered);
     }
     case 'list_item_start': {
-      var body = '';
+      body = '';
 
       while (this.next().type !== 'list_item_end') {
         body += this.token.type === 'text'
@@ -4341,7 +4403,7 @@ Parser.prototype.tok = function() {
       return this.renderer.listitem(body);
     }
     case 'loose_item_start': {
-      var body = '';
+      body = '';
 
       while (this.next().type !== 'list_item_end') {
         body += this.tok();
@@ -4378,8 +4440,8 @@ function escape(html, encode) {
 }
 
 function unescape(html) {
-	// explicitly match decimal, hex, and named HTML entities 
-  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
+  // explicitly match decimal, hex, and named HTML entities
+  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function(_, n) {
     n = n.toLowerCase();
     if (n === 'colon') return ':';
     if (n.charAt(0) === '#') {
@@ -4391,25 +4453,53 @@ function unescape(html) {
   });
 }
 
-function replace(regex, opt) {
+function edit(regex, opt) {
   regex = regex.source;
   opt = opt || '';
-  return function self(name, val) {
-    if (!name) return new RegExp(regex, opt);
-    val = val.source || val;
-    val = val.replace(/(^|[^\[])\^/g, '$1');
-    regex = regex.replace(name, val);
-    return self;
+  return {
+    replace: function(name, val) {
+      val = val.source || val;
+      val = val.replace(/(^|[^\[])\^/g, '$1');
+      regex = regex.replace(name, val);
+      return this;
+    },
+    getRegex: function() {
+      return new RegExp(regex, opt);
+    }
   };
 }
+
+function resolveUrl(base, href) {
+  if (!baseUrls[' ' + base]) {
+    // we can ignore everything in base after the last slash of its path component,
+    // but we might need to add _that_
+    // https://tools.ietf.org/html/rfc3986#section-3
+    if (/^[^:]+:\/*[^/]*$/.test(base)) {
+      baseUrls[' ' + base] = base + '/';
+    } else {
+      baseUrls[' ' + base] = base.replace(/[^/]*$/, '');
+    }
+  }
+  base = baseUrls[' ' + base];
+
+  if (href.slice(0, 2) === '//') {
+    return base.replace(/:[\s\S]*/, ':') + href;
+  } else if (href.charAt(0) === '/') {
+    return base.replace(/(:\/*[^/]*)[\s\S]*/, '$1') + href;
+  } else {
+    return base + href;
+  }
+}
+var baseUrls = {};
+var originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
 
 function noop() {}
 noop.exec = noop;
 
 function merge(obj) {
-  var i = 1
-    , target
-    , key;
+  var i = 1,
+      target,
+      key;
 
   for (; i < arguments.length; i++) {
     target = arguments[i];
@@ -4423,12 +4513,20 @@ function merge(obj) {
   return obj;
 }
 
-
 /**
  * Marked
  */
 
 function marked(src, opt, callback) {
+  // throw error in case of non string input
+  if (typeof src === 'undefined' || src === null) {
+    throw new Error('marked(): input parameter is undefined or null');
+  }
+  if (typeof src !== 'string') {
+    throw new Error('marked(): input parameter is of type '
+      + Object.prototype.toString.call(src) + ', string expected');
+  }
+
   if (callback || typeof opt === 'function') {
     if (!callback) {
       callback = opt;
@@ -4437,10 +4535,10 @@ function marked(src, opt, callback) {
 
     opt = merge({}, marked.defaults, opt || {});
 
-    var highlight = opt.highlight
-      , tokens
-      , pending
-      , i = 0;
+    var highlight = opt.highlight,
+        tokens,
+        pending,
+        i = 0;
 
     try {
       tokens = Lexer.lex(src, opt)
@@ -4504,7 +4602,7 @@ function marked(src, opt, callback) {
   } catch (e) {
     e.message += '\nPlease report this to https://github.com/chjj/marked.';
     if ((opt || marked.defaults).silent) {
-      return '<p>An error occured:</p><pre>'
+      return '<p>An error occurred:</p><pre>'
         + escape(e.message + '', true)
         + '</pre>';
     }
@@ -4536,8 +4634,9 @@ marked.defaults = {
   langPrefix: 'lang-',
   smartypants: false,
   headerPrefix: '',
-  renderer: new Renderer,
-  xhtml: false
+  renderer: new Renderer(),
+  xhtml: false,
+  baseUrl: null
 };
 
 /**
@@ -4548,6 +4647,7 @@ marked.Parser = Parser;
 marked.parser = Parser.parse;
 
 marked.Renderer = Renderer;
+marked.TextRenderer = TextRenderer;
 
 marked.Lexer = Lexer;
 marked.lexer = Lexer.lex;
@@ -4562,12 +4662,9 @@ if (true) {
 } else if (typeof define === 'function' && define.amd) {
   define(function() { return marked; });
 } else {
-  this.marked = marked;
+  root.marked = marked;
 }
-
-}).call(function() {
-  return this || (typeof window !== 'undefined' ? window : global);
-}());
+})(this || (typeof window !== 'undefined' ? window : global));
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js")))
 
@@ -4637,6 +4734,8 @@ var map = {
 	"./en-gb.js": "./node_modules/moment/locale/en-gb.js",
 	"./en-ie": "./node_modules/moment/locale/en-ie.js",
 	"./en-ie.js": "./node_modules/moment/locale/en-ie.js",
+	"./en-il": "./node_modules/moment/locale/en-il.js",
+	"./en-il.js": "./node_modules/moment/locale/en-il.js",
 	"./en-nz": "./node_modules/moment/locale/en-nz.js",
 	"./en-nz.js": "./node_modules/moment/locale/en-nz.js",
 	"./eo": "./node_modules/moment/locale/eo.js",
@@ -4781,6 +4880,8 @@ var map = {
 	"./te.js": "./node_modules/moment/locale/te.js",
 	"./tet": "./node_modules/moment/locale/tet.js",
 	"./tet.js": "./node_modules/moment/locale/tet.js",
+	"./tg": "./node_modules/moment/locale/tg.js",
+	"./tg.js": "./node_modules/moment/locale/tg.js",
 	"./th": "./node_modules/moment/locale/th.js",
 	"./th.js": "./node_modules/moment/locale/th.js",
 	"./tl-ph": "./node_modules/moment/locale/tl-ph.js",
@@ -4795,6 +4896,8 @@ var map = {
 	"./tzm-latn": "./node_modules/moment/locale/tzm-latn.js",
 	"./tzm-latn.js": "./node_modules/moment/locale/tzm-latn.js",
 	"./tzm.js": "./node_modules/moment/locale/tzm.js",
+	"./ug-cn": "./node_modules/moment/locale/ug-cn.js",
+	"./ug-cn.js": "./node_modules/moment/locale/ug-cn.js",
 	"./uk": "./node_modules/moment/locale/uk.js",
 	"./uk.js": "./node_modules/moment/locale/uk.js",
 	"./ur": "./node_modules/moment/locale/ur.js",
@@ -4838,8 +4941,6 @@ webpackContext.id = "./node_modules/moment/locale recursive ^\\.\\/.*$";
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Afrikaans [af]
-//! author : Werner Mollentze : https://github.com/wernerm
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -4918,8 +5019,6 @@ return af;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Arabic (Algeria) [ar-dz]
-//! author : Noureddine LOUAHEDJ : https://github.com/noureddineme
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -4984,8 +5083,6 @@ return arDz;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Arabic (Kuwait) [ar-kw]
-//! author : Nusret Parlak: https://github.com/nusretparlak
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5050,8 +5147,6 @@ return arKw;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Arabic (Lybia) [ar-ly]
-//! author : Ali Hmer: https://github.com/kikoanis
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5071,19 +5166,16 @@ var symbolMap = {
     '8': '8',
     '9': '9',
     '0': '0'
-};
-var pluralForm = function (n) {
+}, pluralForm = function (n) {
     return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
-};
-var plurals = {
+}, plurals = {
     s : ['أقل من ثانية', 'ثانية واحدة', ['ثانيتان', 'ثانيتين'], '%d ثوان', '%d ثانية', '%d ثانية'],
     m : ['أقل من دقيقة', 'دقيقة واحدة', ['دقيقتان', 'دقيقتين'], '%d دقائق', '%d دقيقة', '%d دقيقة'],
     h : ['أقل من ساعة', 'ساعة واحدة', ['ساعتان', 'ساعتين'], '%d ساعات', '%d ساعة', '%d ساعة'],
     d : ['أقل من يوم', 'يوم واحد', ['يومان', 'يومين'], '%d أيام', '%d يومًا', '%d يوم'],
     M : ['أقل من شهر', 'شهر واحد', ['شهران', 'شهرين'], '%d أشهر', '%d شهرا', '%d شهر'],
     y : ['أقل من عام', 'عام واحد', ['عامان', 'عامين'], '%d أعوام', '%d عامًا', '%d عام']
-};
-var pluralize = function (u) {
+}, pluralize = function (u) {
     return function (number, withoutSuffix, string, isFuture) {
         var f = pluralForm(number),
             str = plurals[u][pluralForm(number)];
@@ -5092,8 +5184,7 @@ var pluralize = function (u) {
         }
         return str.replace(/%d/i, number);
     };
-};
-var months = [
+}, months = [
     'يناير',
     'فبراير',
     'مارس',
@@ -5183,9 +5274,6 @@ return arLy;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Arabic (Morocco) [ar-ma]
-//! author : ElFadili Yassine : https://github.com/ElFadiliY
-//! author : Abdel Said : https://github.com/abdelsaid
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5250,8 +5338,6 @@ return arMa;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Arabic (Saudi Arabia) [ar-sa]
-//! author : Suhail Alkowaileet : https://github.com/xsoh
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5271,8 +5357,7 @@ var symbolMap = {
     '8': '٨',
     '9': '٩',
     '0': '٠'
-};
-var numberMap = {
+}, numberMap = {
     '١': '1',
     '٢': '2',
     '٣': '3',
@@ -5362,8 +5447,6 @@ return arSa;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale  :  Arabic (Tunisia) [ar-tn]
-//! author : Nader Toukabri : https://github.com/naderio
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5428,10 +5511,6 @@ return arTn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Arabic [ar]
-//! author : Abdel Said: https://github.com/abdelsaid
-//! author : Ahmed Elkhatib
-//! author : forabi https://github.com/forabi
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5451,8 +5530,7 @@ var symbolMap = {
     '8': '٨',
     '9': '٩',
     '0': '٠'
-};
-var numberMap = {
+}, numberMap = {
     '١': '1',
     '٢': '2',
     '٣': '3',
@@ -5463,19 +5541,16 @@ var numberMap = {
     '٨': '8',
     '٩': '9',
     '٠': '0'
-};
-var pluralForm = function (n) {
+}, pluralForm = function (n) {
     return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
-};
-var plurals = {
+}, plurals = {
     s : ['أقل من ثانية', 'ثانية واحدة', ['ثانيتان', 'ثانيتين'], '%d ثوان', '%d ثانية', '%d ثانية'],
     m : ['أقل من دقيقة', 'دقيقة واحدة', ['دقيقتان', 'دقيقتين'], '%d دقائق', '%d دقيقة', '%d دقيقة'],
     h : ['أقل من ساعة', 'ساعة واحدة', ['ساعتان', 'ساعتين'], '%d ساعات', '%d ساعة', '%d ساعة'],
     d : ['أقل من يوم', 'يوم واحد', ['يومان', 'يومين'], '%d أيام', '%d يومًا', '%d يوم'],
     M : ['أقل من شهر', 'شهر واحد', ['شهران', 'شهرين'], '%d أشهر', '%d شهرا', '%d شهر'],
     y : ['أقل من عام', 'عام واحد', ['عامان', 'عامين'], '%d أعوام', '%d عامًا', '%d عام']
-};
-var pluralize = function (u) {
+}, pluralize = function (u) {
     return function (number, withoutSuffix, string, isFuture) {
         var f = pluralForm(number),
             str = plurals[u][pluralForm(number)];
@@ -5484,8 +5559,7 @@ var pluralize = function (u) {
         }
         return str.replace(/%d/i, number);
     };
-};
-var months = [
+}, months = [
     'يناير',
     'فبراير',
     'مارس',
@@ -5577,8 +5651,6 @@ return ar;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Azerbaijani [az]
-//! author : topchiyev : https://github.com/topchiyev
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5689,10 +5761,6 @@ return az;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Belarusian [be]
-//! author : Dmitry Demidov : https://github.com/demidov91
-//! author: Praleska: http://praleska.pro/
-//! Author : Menelion Elensúle : https://github.com/Oire
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5830,8 +5898,6 @@ return be;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Bulgarian [bg]
-//! author : Krasen Borisov : https://github.com/kraz
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5927,8 +5993,6 @@ return bg;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Bambara [bm]
-//! author : Estelle Comment : https://github.com/estellecomment
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -5936,7 +6000,6 @@ return bg;
    factory(global.moment)
 }(this, (function (moment) { 'use strict';
 
-// Language contact person : Abdoufata Kane : https://github.com/abdoufata
 
 var bm = moment.defineLocale('bm', {
     months : 'Zanwuyekalo_Fewuruyekalo_Marisikalo_Awirilikalo_Mɛkalo_Zuwɛnkalo_Zuluyekalo_Utikalo_Sɛtanburukalo_ɔkutɔburukalo_Nowanburukalo_Desanburukalo'.split('_'),
@@ -5993,8 +6056,6 @@ return bm;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Bengali [bn]
-//! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6014,8 +6075,8 @@ var symbolMap = {
     '8': '৮',
     '9': '৯',
     '0': '০'
-};
-var numberMap = {
+},
+numberMap = {
     '১': '1',
     '২': '2',
     '৩': '3',
@@ -6119,8 +6180,6 @@ return bn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Tibetan [bo]
-//! author : Thupten N. Chakrishar : https://github.com/vajradog
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6140,8 +6199,8 @@ var symbolMap = {
     '8': '༨',
     '9': '༩',
     '0': '༠'
-};
-var numberMap = {
+},
+numberMap = {
     '༡': '1',
     '༢': '2',
     '༣': '3',
@@ -6245,8 +6304,6 @@ return bo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Breton [br]
-//! author : Jean-Baptiste Le Duigou : https://github.com/jbleduigou
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6360,9 +6417,6 @@ return br;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Bosnian [bs]
-//! author : Nedim Cholich : https://github.com/frontyard
-//! based on (hr) translation by Bojan Marković
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6519,8 +6573,6 @@ return bs;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Catalan [ca]
-//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6614,8 +6666,6 @@ return ca;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Czech [cs]
-//! author : petrbela : https://github.com/petrbela
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6624,8 +6674,8 @@ return ca;
 }(this, (function (moment) { 'use strict';
 
 
-var months = 'leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec'.split('_');
-var monthsShort = 'led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro'.split('_');
+var months = 'leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec'.split('_'),
+    monthsShort = 'led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro'.split('_');
 function plural(n) {
     return (n > 1) && (n < 5) && (~~(n / 10) !== 1);
 }
@@ -6800,8 +6850,6 @@ return cs;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Chuvash [cv]
-//! author : Anatoly Mironov : https://github.com/mirontoli
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6870,9 +6918,6 @@ return cv;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Welsh [cy]
-//! author : Robert Allen : https://github.com/robgallen
-//! author : https://github.com/ryangreaves
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -6958,8 +7003,6 @@ return cy;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Danish [da]
-//! author : Ulrik Nielsen : https://github.com/mrbase
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7025,11 +7068,6 @@ return da;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : German (Austria) [de-at]
-//! author : lluchs : https://github.com/lluchs
-//! author: Menelion Elensúle: https://github.com/Oire
-//! author : Martin Groller : https://github.com/MadMG
-//! author : Mikolaj Dadela : https://github.com/mik01aj
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7111,8 +7149,6 @@ return deAt;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : German (Switzerland) [de-ch]
-//! author : sschueller : https://github.com/sschueller
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7120,8 +7156,6 @@ return deAt;
    factory(global.moment)
 }(this, (function (moment) { 'use strict';
 
-
-// based on: https://www.bk.admin.ch/dokumentation/sprachen/04915/05016/index.html?lang=de#
 
 function processRelativeTime(number, withoutSuffix, key, isFuture) {
     var format = {
@@ -7196,10 +7230,6 @@ return deCh;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : German [de]
-//! author : lluchs : https://github.com/lluchs
-//! author: Menelion Elensúle: https://github.com/Oire
-//! author : Mikolaj Dadela : https://github.com/mik01aj
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7281,8 +7311,6 @@ return de;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Maldivian [dv]
-//! author : Jawish Hameed : https://github.com/jawish
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7304,8 +7332,7 @@ var months = [
     'އޮކްޓޯބަރު',
     'ނޮވެމްބަރު',
     'ޑިސެމްބަރު'
-];
-var weekdays = [
+], weekdays = [
     'އާދިއްތަ',
     'ހޯމަ',
     'އަންގާރަ',
@@ -7388,8 +7415,6 @@ return dv;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Greek [el]
-//! author : Aggelos Karalias : https://github.com/mehiel
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7495,8 +7520,6 @@ return el;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : English (Australia) [en-au]
-//! author : Jared Morse : https://github.com/jarcoal
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7569,8 +7592,6 @@ return enAu;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : English (Canada) [en-ca]
-//! author : Jonathan Abourbih : https://github.com/jonbca
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7639,8 +7660,6 @@ return enCa;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : English (United Kingdom) [en-gb]
-//! author : Chris Gedrim : https://github.com/chrisgedrim
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7713,8 +7732,6 @@ return enGb;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : English (Ireland) [en-ie]
-//! author : Chris Cartlidge : https://github.com/chriscartlidge
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7783,12 +7800,77 @@ return enIe;
 
 /***/ }),
 
+/***/ "./node_modules/moment/locale/en-il.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
+   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
+   factory(global.moment)
+}(this, (function (moment) { 'use strict';
+
+
+var enIl = moment.defineLocale('en-il', {
+    months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
+    monthsShort : 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
+    weekdays : 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
+    weekdaysShort : 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
+    weekdaysMin : 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
+    longDateFormat : {
+        LT : 'HH:mm',
+        LTS : 'HH:mm:ss',
+        L : 'DD/MM/YYYY',
+        LL : 'D MMMM YYYY',
+        LLL : 'D MMMM YYYY HH:mm',
+        LLLL : 'dddd, D MMMM YYYY HH:mm'
+    },
+    calendar : {
+        sameDay : '[Today at] LT',
+        nextDay : '[Tomorrow at] LT',
+        nextWeek : 'dddd [at] LT',
+        lastDay : '[Yesterday at] LT',
+        lastWeek : '[Last] dddd [at] LT',
+        sameElse : 'L'
+    },
+    relativeTime : {
+        future : 'in %s',
+        past : '%s ago',
+        s : 'a few seconds',
+        m : 'a minute',
+        mm : '%d minutes',
+        h : 'an hour',
+        hh : '%d hours',
+        d : 'a day',
+        dd : '%d days',
+        M : 'a month',
+        MM : '%d months',
+        y : 'a year',
+        yy : '%d years'
+    },
+    dayOfMonthOrdinalParse: /\d{1,2}(st|nd|rd|th)/,
+    ordinal : function (number) {
+        var b = number % 10,
+            output = (~~(number % 100 / 10) === 1) ? 'th' :
+            (b === 1) ? 'st' :
+            (b === 2) ? 'nd' :
+            (b === 3) ? 'rd' : 'th';
+        return number + output;
+    }
+});
+
+return enIl;
+
+})));
+
+
+/***/ }),
+
 /***/ "./node_modules/moment/locale/en-nz.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : English (New Zealand) [en-nz]
-//! author : Luke McGregor : https://github.com/lukemcgregor
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7861,10 +7943,6 @@ return enNz;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Esperanto [eo]
-//! author : Colin Dean : https://github.com/colindean
-//! author : Mia Nordentoft Imperatori : https://github.com/miestasmia
-//! comment : miestasmia corrected the translation by colindean
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7941,7 +8019,6 @@ return eo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Spanish (Dominican Republic) [es-do]
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -7950,8 +8027,8 @@ return eo;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_');
-var monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
+var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_'),
+    monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
 
 var monthsParse = [/^ene/i, /^feb/i, /^mar/i, /^abr/i, /^may/i, /^jun/i, /^jul/i, /^ago/i, /^sep/i, /^oct/i, /^nov/i, /^dic/i];
 var monthsRegex = /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i;
@@ -8039,8 +8116,6 @@ return esDo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Spanish (United States) [es-us]
-//! author : bustta : https://github.com/bustta
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8049,8 +8124,8 @@ return esDo;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_');
-var monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
+var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_'),
+    monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
 
 var esUs = moment.defineLocale('es-us', {
     months : 'enero_febrero_marzo_abril_mayo_junio_julio_agosto_septiembre_octubre_noviembre_diciembre'.split('_'),
@@ -8129,8 +8204,6 @@ return esUs;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Spanish [es]
-//! author : Julio Napurí : https://github.com/julionc
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8139,8 +8212,8 @@ return esUs;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_');
-var monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
+var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_'),
+    monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
 
 var monthsParse = [/^ene/i, /^feb/i, /^mar/i, /^abr/i, /^may/i, /^jun/i, /^jul/i, /^ago/i, /^sep/i, /^oct/i, /^nov/i, /^dic/i];
 var monthsRegex = /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i;
@@ -8228,9 +8301,6 @@ return es;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Estonian [et]
-//! author : Henry Kehlmann : https://github.com/madhenry
-//! improvements : Illimar Tambek : https://github.com/ragulka
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8316,8 +8386,6 @@ return et;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Basque [eu]
-//! author : Eneko Illarramendi : https://github.com/eillarra
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8389,8 +8457,6 @@ return eu;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Persian [fa]
-//! author : Ebrahim Byagowi : https://github.com/ebraminio
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8410,8 +8476,7 @@ var symbolMap = {
     '8': '۸',
     '9': '۹',
     '0': '۰'
-};
-var numberMap = {
+}, numberMap = {
     '۱': '1',
     '۲': '2',
     '۳': '3',
@@ -8503,8 +8568,6 @@ return fa;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Finnish [fi]
-//! author : Tarmo Aidantausta : https://github.com/bleadof
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8513,8 +8576,8 @@ return fa;
 }(this, (function (moment) { 'use strict';
 
 
-var numbersPast = 'nolla yksi kaksi kolme neljä viisi kuusi seitsemän kahdeksan yhdeksän'.split(' ');
-var numbersFuture = [
+var numbersPast = 'nolla yksi kaksi kolme neljä viisi kuusi seitsemän kahdeksan yhdeksän'.split(' '),
+    numbersFuture = [
         'nolla', 'yhden', 'kahden', 'kolmen', 'neljän', 'viiden', 'kuuden',
         numbersPast[7], numbersPast[8], numbersPast[9]
     ];
@@ -8619,8 +8682,6 @@ return fi;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Faroese [fo]
-//! author : Ragnar Johannesen : https://github.com/ragnar123
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8686,8 +8747,6 @@ return fo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : French (Canada) [fr-ca]
-//! author : Jonathan Abourbih : https://github.com/jonbca
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8767,8 +8826,6 @@ return frCa;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : French (Switzerland) [fr-ch]
-//! author : Gaspard Bucher : https://github.com/gaspard
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8852,8 +8909,6 @@ return frCh;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : French [fr]
-//! author : John Fischer : https://github.com/jfroffice
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8942,8 +8997,6 @@ return fr;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Frisian [fy]
-//! author : Robin van der Vliet : https://github.com/robin0van0der0v
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -8952,8 +9005,8 @@ return fr;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsShortWithDots = 'jan._feb._mrt._apr._mai_jun._jul._aug._sep._okt._nov._des.'.split('_');
-var monthsShortWithoutDots = 'jan_feb_mrt_apr_mai_jun_jul_aug_sep_okt_nov_des'.split('_');
+var monthsShortWithDots = 'jan._feb._mrt._apr._mai_jun._jul._aug._sep._okt._nov._des.'.split('_'),
+    monthsShortWithoutDots = 'jan_feb_mrt_apr_mai_jun_jul_aug_sep_okt_nov_des'.split('_');
 
 var fy = moment.defineLocale('fy', {
     months : 'jannewaris_febrewaris_maart_april_maaie_juny_july_augustus_septimber_oktober_novimber_desimber'.split('_'),
@@ -9024,8 +9077,6 @@ return fy;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Scottish Gaelic [gd]
-//! author : Jon Ashdown : https://github.com/jonashdown
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9107,8 +9158,6 @@ return gd;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Galician [gl]
-//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9191,8 +9240,6 @@ return gl;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Konkani Latin script [gom-latn]
-//! author : The Discoverer : https://github.com/WikiDiscoverer
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9321,8 +9368,6 @@ return gomLatn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Gujarati [gu]
-//! author : Kaushik Thanki : https://github.com/Kaushik1987
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9342,8 +9387,8 @@ var symbolMap = {
         '8': '૮',
         '9': '૯',
         '0': '૦'
-    };
-var numberMap = {
+    },
+    numberMap = {
         '૧': '1',
         '૨': '2',
         '૩': '3',
@@ -9452,10 +9497,6 @@ return gu;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Hebrew [he]
-//! author : Tomer Cohen : https://github.com/tomer
-//! author : Moshe Simantov : https://github.com/DevelopmentIL
-//! author : Tal Ater : https://github.com/TalAter
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9558,8 +9599,6 @@ return he;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Hindi [hi]
-//! author : Mayank Singhal : https://github.com/mayanksinghal
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9579,8 +9618,8 @@ var symbolMap = {
     '8': '८',
     '9': '९',
     '0': '०'
-};
-var numberMap = {
+},
+numberMap = {
     '१': '1',
     '२': '2',
     '३': '3',
@@ -9689,8 +9728,6 @@ return hi;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Croatian [hr]
-//! author : Bojan Marković : https://github.com/bmarkovic
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9850,8 +9887,6 @@ return hr;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Hungarian [hu]
-//! author : Adam Brunner : https://github.com/adambrunner
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -9967,8 +10002,6 @@ return hu;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Armenian [hy-am]
-//! author : Armendarabyan : https://github.com/armendarabyan
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10069,9 +10102,6 @@ return hyAm;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Indonesian [id]
-//! author : Mohammad Satrio Utomo : https://github.com/tyok
-//! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10082,7 +10112,7 @@ return hyAm;
 
 var id = moment.defineLocale('id', {
     months : 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
-    monthsShort : 'Jan_Feb_Mar_Apr_Mei_Jun_Jul_Ags_Sep_Okt_Nov_Des'.split('_'),
+    monthsShort : 'Jan_Feb_Mar_Apr_Mei_Jun_Jul_Agt_Sep_Okt_Nov_Des'.split('_'),
     weekdays : 'Minggu_Senin_Selasa_Rabu_Kamis_Jumat_Sabtu'.split('_'),
     weekdaysShort : 'Min_Sen_Sel_Rab_Kam_Jum_Sab'.split('_'),
     weekdaysMin : 'Mg_Sn_Sl_Rb_Km_Jm_Sb'.split('_'),
@@ -10159,8 +10189,6 @@ return id;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Icelandic [is]
-//! author : Hinrik Örn Sigurðsson : https://github.com/hinrik
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10298,9 +10326,6 @@ return is;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Italian [it]
-//! author : Lorenzo : https://github.com/aliem
-//! author: Mattia Larentis: https://github.com/nostalgiaz
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10375,8 +10400,6 @@ return it;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Japanese [ja]
-//! author : LI Long : https://github.com/baryon
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10462,9 +10485,6 @@ return ja;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Javanese [jv]
-//! author : Rony Lantip : https://github.com/lantip
-//! reference: http://jv.wikipedia.org/wiki/Basa_Jawa
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10552,8 +10572,6 @@ return jv;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Georgian [ka]
-//! author : Irakli Janiashvili : https://github.com/irakli-janiashvili
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10648,8 +10666,6 @@ return ka;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Kazakh [kk]
-//! authors : Nurlan Rakhimzhanov : https://github.com/nurlan
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10742,8 +10758,6 @@ return kk;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Cambodian [km]
-//! author : Kruy Vanna : https://github.com/kruyvanna
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10807,8 +10821,6 @@ return km;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Kannada [kn]
-//! author : Rajeev Naik : https://github.com/rajeevnaikte
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10828,8 +10840,8 @@ var symbolMap = {
     '8': '೮',
     '9': '೯',
     '0': '೦'
-};
-var numberMap = {
+},
+numberMap = {
     '೧': '1',
     '೨': '2',
     '೩': '3',
@@ -10844,7 +10856,7 @@ var numberMap = {
 
 var kn = moment.defineLocale('kn', {
     months : 'ಜನವರಿ_ಫೆಬ್ರವರಿ_ಮಾರ್ಚ್_ಏಪ್ರಿಲ್_ಮೇ_ಜೂನ್_ಜುಲೈ_ಆಗಸ್ಟ್_ಸೆಪ್ಟೆಂಬರ್_ಅಕ್ಟೋಬರ್_ನವೆಂಬರ್_ಡಿಸೆಂಬರ್'.split('_'),
-    monthsShort : 'ಜನ_ಫೆಬ್ರ_ಮಾರ್ಚ್_ಏಪ್ರಿಲ್_ಮೇ_ಜೂನ್_ಜುಲೈ_ಆಗಸ್ಟ್_ಸೆಪ್ಟೆಂಬ_ಅಕ್ಟೋಬ_ನವೆಂಬ_ಡಿಸೆಂಬ'.split('_'),
+    monthsShort : 'ಜನ_ಫೆಬ್ರ_ಮಾರ್ಚ್_ಏಪ್ರಿಲ್_ಮೇ_ಜೂನ್_ಜುಲೈ_ಆಗಸ್ಟ್_ಸೆಪ್ಟೆಂ_ಅಕ್ಟೋ_ನವೆಂ_ಡಿಸೆಂ'.split('_'),
     monthsParseExact: true,
     weekdays : 'ಭಾನುವಾರ_ಸೋಮವಾರ_ಮಂಗಳವಾರ_ಬುಧವಾರ_ಗುರುವಾರ_ಶುಕ್ರವಾರ_ಶನಿವಾರ'.split('_'),
     weekdaysShort : 'ಭಾನು_ಸೋಮ_ಮಂಗಳ_ಬುಧ_ಗುರು_ಶುಕ್ರ_ಶನಿ'.split('_'),
@@ -10940,9 +10952,6 @@ return kn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Korean [ko]
-//! author : Kyungwook, Park : https://github.com/kyungw00k
-//! author : Jeeeyul Lee <jeeeyul@gmail.com>
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -10960,11 +10969,11 @@ var ko = moment.defineLocale('ko', {
     longDateFormat : {
         LT : 'A h:mm',
         LTS : 'A h:mm:ss',
-        L : 'YYYY.MM.DD',
+        L : 'YYYY.MM.DD.',
         LL : 'YYYY년 MMMM D일',
         LLL : 'YYYY년 MMMM D일 A h:mm',
         LLLL : 'YYYY년 MMMM D일 dddd A h:mm',
-        l : 'YYYY.MM.DD',
+        l : 'YYYY.MM.DD.',
         ll : 'YYYY년 MMMM D일',
         lll : 'YYYY년 MMMM D일 A h:mm',
         llll : 'YYYY년 MMMM D일 dddd A h:mm'
@@ -11029,15 +11038,12 @@ return ko;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Kyrgyz [ky]
-//! author : Chyngyz Arystan uulu : https://github.com/chyngyz
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
    typeof define === 'function' && define.amd ? define(['../moment'], factory) :
    factory(global.moment)
 }(this, (function (moment) { 'use strict';
-
 
 
 var suffixes = {
@@ -11124,9 +11130,6 @@ return ky;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Luxembourgish [lb]
-//! author : mweimerskirch : https://github.com/mweimerskirch
-//! author : David Raison : https://github.com/kwisatz
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11268,8 +11271,6 @@ return lb;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Lao [lo]
-//! author : Ryan Hart : https://github.com/ryanhart2
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11345,8 +11346,6 @@ return lo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Lithuanian [lt]
-//! author : Mindaugas Mozūras : https://github.com/mmozuras
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11470,9 +11469,6 @@ return lt;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Latvian [lv]
-//! author : Kristaps Karlsons : https://github.com/skakri
-//! author : Jānis Elmeris : https://github.com/JanisE
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11575,8 +11571,6 @@ return lv;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Montenegrin [me]
-//! author : Miodrag Nikač <miodrag@restartit.me> : https://github.com/miodragnikac
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11694,8 +11688,6 @@ return me;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Maori [mi]
-//! author : John Corrigan <robbiecloset@gmail.com> : https://github.com/johnideal
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11765,8 +11757,6 @@ return mi;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Macedonian [mk]
-//! author : Borislav Mickov : https://github.com/B0k0
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11862,8 +11852,6 @@ return mk;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Malayalam [ml]
-//! author : Floyd Pink : https://github.com/floydpink
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11950,9 +11938,6 @@ return ml;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Marathi [mr]
-//! author : Harshad Kale : https://github.com/kalehv
-//! author : Vivek Athalye : https://github.com/vnathalye
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -11972,8 +11957,8 @@ var symbolMap = {
     '8': '८',
     '9': '९',
     '0': '०'
-};
-var numberMap = {
+},
+numberMap = {
     '१': '1',
     '२': '2',
     '३': '3',
@@ -12118,9 +12103,6 @@ return mr;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Malay [ms-my]
-//! note : DEPRECATED, the correct one is [ms]
-//! author : Weldan Jamili : https://github.com/weldan
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12208,8 +12190,6 @@ return msMy;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Malay [ms]
-//! author : Weldan Jamili : https://github.com/weldan
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12297,8 +12277,6 @@ return ms;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Maltese (Malta) [mt]
-//! author : Alessandro Maruccia : https://github.com/alesma
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12364,10 +12342,6 @@ return mt;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Burmese [my]
-//! author : Squar team, mysquar.com
-//! author : David Rossellat : https://github.com/gholadr
-//! author : Tin Aung Lin : https://github.com/thanyawzinmin
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12387,8 +12361,7 @@ var symbolMap = {
     '8': '၈',
     '9': '၉',
     '0': '၀'
-};
-var numberMap = {
+}, numberMap = {
     '၁': '1',
     '၂': '2',
     '၃': '3',
@@ -12467,9 +12440,6 @@ return my;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Norwegian Bokmål [nb]
-//! authors : Espen Hovlandsdal : https://github.com/rexxars
-//!           Sigurd Gartmann : https://github.com/sigurdga
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12537,8 +12507,6 @@ return nb;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Nepalese [ne]
-//! author : suvash : https://github.com/suvash
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12558,8 +12526,8 @@ var symbolMap = {
     '8': '८',
     '9': '९',
     '0': '०'
-};
-var numberMap = {
+},
+numberMap = {
     '१': '1',
     '२': '2',
     '३': '3',
@@ -12667,9 +12635,6 @@ return ne;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Dutch (Belgium) [nl-be]
-//! author : Joris Röling : https://github.com/jorisroling
-//! author : Jacob Middag : https://github.com/middagj
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12678,8 +12643,8 @@ return ne;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_');
-var monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
+var monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_'),
+    monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
 
 var monthsParse = [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i];
 var monthsRegex = /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i;
@@ -12762,9 +12727,6 @@ return nlBe;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Dutch [nl]
-//! author : Joris Röling : https://github.com/jorisroling
-//! author : Jacob Middag : https://github.com/middagj
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12773,8 +12735,8 @@ return nlBe;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_');
-var monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
+var monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_'),
+    monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
 
 var monthsParse = [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i];
 var monthsRegex = /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i;
@@ -12857,8 +12819,6 @@ return nl;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Nynorsk [nn]
-//! author : https://github.com/mechuwind
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12924,8 +12884,6 @@ return nn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Punjabi (India) [pa-in]
-//! author : Harpreet Singh : https://github.com/harpreetkhalsagtbit
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -12945,8 +12903,8 @@ var symbolMap = {
     '8': '੮',
     '9': '੯',
     '0': '੦'
-};
-var numberMap = {
+},
+numberMap = {
     '੧': '1',
     '੨': '2',
     '੩': '3',
@@ -13055,8 +13013,6 @@ return paIn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Polish [pl]
-//! author : Rafal Hirsz : https://github.com/evoL
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13065,8 +13021,8 @@ return paIn;
 }(this, (function (moment) { 'use strict';
 
 
-var monthsNominative = 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_');
-var monthsSubjective = 'stycznia_lutego_marca_kwietnia_maja_czerwca_lipca_sierpnia_września_października_listopada_grudnia'.split('_');
+var monthsNominative = 'styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień'.split('_'),
+    monthsSubjective = 'stycznia_lutego_marca_kwietnia_maja_czerwca_lipca_sierpnia_września_października_listopada_grudnia'.split('_');
 function plural(n) {
     return (n % 10 < 5) && (n % 10 > 1) && ((~~(n / 10) % 10) !== 1);
 }
@@ -13188,8 +13144,6 @@ return pl;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Portuguese (Brazil) [pt-br]
-//! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13227,7 +13181,7 @@ var ptBr = moment.defineLocale('pt-br', {
     },
     relativeTime : {
         future : 'em %s',
-        past : '%s atrás',
+        past : 'há %s',
         s : 'poucos segundos',
         ss : '%d segundos',
         m : 'um minuto',
@@ -13256,8 +13210,6 @@ return ptBr;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Portuguese [pt]
-//! author : Jefferson : https://github.com/jalex79
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13328,9 +13280,6 @@ return pt;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Romanian [ro]
-//! author : Vlad Gurdiga : https://github.com/gurdiga
-//! author : Valentin Agachi : https://github.com/avaly
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13411,10 +13360,6 @@ return ro;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Russian [ru]
-//! author : Viktorminator : https://github.com/Viktorminator
-//! Author : Menelion Elensúle : https://github.com/Oire
-//! author : Коренберг Марк : https://github.com/socketpair
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13602,8 +13547,6 @@ return ru;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Sindhi [sd]
-//! author : Narain Sagar : https://github.com/narainsagar
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13707,15 +13650,12 @@ return sd;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Northern Sami [se]
-//! authors : Bård Rolstad Henriksen : https://github.com/karamell
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
    typeof define === 'function' && define.amd ? define(['../moment'], factory) :
    factory(global.moment)
 }(this, (function (moment) { 'use strict';
-
 
 
 var se = moment.defineLocale('se', {
@@ -13775,8 +13715,6 @@ return se;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Sinhalese [si]
-//! author : Sampath Sitinamaluwa : https://github.com/sampathsris
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13853,9 +13791,6 @@ return si;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Slovak [sk]
-//! author : Martin Minka : https://github.com/k2s
-//! based on work of petrbela : https://github.com/petrbela
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -13864,8 +13799,8 @@ return si;
 }(this, (function (moment) { 'use strict';
 
 
-var months = 'január_február_marec_apríl_máj_jún_júl_august_september_október_november_december'.split('_');
-var monthsShort = 'jan_feb_mar_apr_máj_jún_júl_aug_sep_okt_nov_dec'.split('_');
+var months = 'január_február_marec_apríl_máj_jún_júl_august_september_október_november_december'.split('_'),
+    monthsShort = 'jan_feb_mar_apr_máj_jún_júl_aug_sep_okt_nov_dec'.split('_');
 function plural(n) {
     return (n > 1) && (n < 5);
 }
@@ -14017,8 +13952,6 @@ return sk;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Slovenian [sl]
-//! author : Robert Sedovšek : https://github.com/sedovsek
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14197,10 +14130,6 @@ return sl;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Albanian [sq]
-//! author : Flakërim Ismani : https://github.com/flakerimi
-//! author : Menelion Elensúle : https://github.com/Oire
-//! author : Oerd Cukalla : https://github.com/oerd
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14274,8 +14203,6 @@ return sq;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Serbian Cyrillic [sr-cyrl]
-//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14392,8 +14319,6 @@ return srCyrl;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Serbian [sr]
-//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14510,15 +14435,12 @@ return sr;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : siSwati [ss]
-//! author : Nicolai Davies<mail@nicolai.io> : https://github.com/nicolaidavies
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
    typeof define === 'function' && define.amd ? define(['../moment'], factory) :
    factory(global.moment)
 }(this, (function (moment) { 'use strict';
-
 
 
 var ss = moment.defineLocale('ss', {
@@ -14606,8 +14528,6 @@ return ss;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Swedish [sv]
-//! author : Jens Alm : https://github.com/ulmus
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14682,8 +14602,6 @@ return sv;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Swahili [sw]
-//! author : Fahad Kassim : https://github.com/fadsel
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14748,8 +14666,6 @@ return sw;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Tamil [ta]
-//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14769,8 +14685,7 @@ var symbolMap = {
     '8': '௮',
     '9': '௯',
     '0': '௦'
-};
-var numberMap = {
+}, numberMap = {
     '௧': '1',
     '௨': '2',
     '௩': '3',
@@ -14885,8 +14800,6 @@ return ta;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Telugu [te]
-//! author : Krishna Chaitanya Thota : https://github.com/kcthota
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14981,9 +14894,6 @@ return te;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Tetun Dili (East Timor) [tet]
-//! author : Joshua Brooks : https://github.com/joshbrooks
-//! author : Onorio De J. Afonso : https://github.com/marobo
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -14993,11 +14903,11 @@ return te;
 
 
 var tet = moment.defineLocale('tet', {
-    months : 'Janeiru_Fevereiru_Marsu_Abril_Maiu_Juniu_Juliu_Augustu_Setembru_Outubru_Novembru_Dezembru'.split('_'),
-    monthsShort : 'Jan_Fev_Mar_Abr_Mai_Jun_Jul_Aug_Set_Out_Nov_Dez'.split('_'),
-    weekdays : 'Domingu_Segunda_Tersa_Kuarta_Kinta_Sexta_Sabadu'.split('_'),
-    weekdaysShort : 'Dom_Seg_Ters_Kua_Kint_Sext_Sab'.split('_'),
-    weekdaysMin : 'Do_Seg_Te_Ku_Ki_Sex_Sa'.split('_'),
+    months : 'Janeiru_Fevereiru_Marsu_Abril_Maiu_Juñu_Jullu_Agustu_Setembru_Outubru_Novembru_Dezembru'.split('_'),
+    monthsShort : 'Jan_Fev_Mar_Abr_Mai_Jun_Jul_Ago_Set_Out_Nov_Dez'.split('_'),
+    weekdays : 'Domingu_Segunda_Tersa_Kuarta_Kinta_Sesta_Sabadu'.split('_'),
+    weekdaysShort : 'Dom_Seg_Ters_Kua_Kint_Sest_Sab'.split('_'),
+    weekdaysMin : 'Do_Seg_Te_Ku_Ki_Ses_Sa'.split('_'),
     longDateFormat : {
         LT : 'HH:mm',
         LTS : 'HH:mm:ss',
@@ -15020,9 +14930,9 @@ var tet = moment.defineLocale('tet', {
         s : 'minutu balun',
         ss : 'minutu %d',
         m : 'minutu ida',
-        mm : 'minutus %d',
-        h : 'horas ida',
-        hh : 'horas %d',
+        mm : 'minutu %d',
+        h : 'oras ida',
+        hh : 'oras %d',
         d : 'loron ida',
         dd : 'loron %d',
         M : 'fulan ida',
@@ -15052,12 +14962,131 @@ return tet;
 
 /***/ }),
 
+/***/ "./node_modules/moment/locale/tg.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
+   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
+   factory(global.moment)
+}(this, (function (moment) { 'use strict';
+
+
+var suffixes = {
+    0: '-ум',
+    1: '-ум',
+    2: '-юм',
+    3: '-юм',
+    4: '-ум',
+    5: '-ум',
+    6: '-ум',
+    7: '-ум',
+    8: '-ум',
+    9: '-ум',
+    10: '-ум',
+    12: '-ум',
+    13: '-ум',
+    20: '-ум',
+    30: '-юм',
+    40: '-ум',
+    50: '-ум',
+    60: '-ум',
+    70: '-ум',
+    80: '-ум',
+    90: '-ум',
+    100: '-ум'
+};
+
+var tg = moment.defineLocale('tg', {
+    months : 'январ_феврал_март_апрел_май_июн_июл_август_сентябр_октябр_ноябр_декабр'.split('_'),
+    monthsShort : 'янв_фев_мар_апр_май_июн_июл_авг_сен_окт_ноя_дек'.split('_'),
+    weekdays : 'якшанбе_душанбе_сешанбе_чоршанбе_панҷшанбе_ҷумъа_шанбе'.split('_'),
+    weekdaysShort : 'яшб_дшб_сшб_чшб_пшб_ҷум_шнб'.split('_'),
+    weekdaysMin : 'яш_дш_сш_чш_пш_ҷм_шб'.split('_'),
+    longDateFormat : {
+        LT : 'HH:mm',
+        LTS : 'HH:mm:ss',
+        L : 'DD/MM/YYYY',
+        LL : 'D MMMM YYYY',
+        LLL : 'D MMMM YYYY HH:mm',
+        LLLL : 'dddd, D MMMM YYYY HH:mm'
+    },
+    calendar : {
+        sameDay : '[Имрӯз соати] LT',
+        nextDay : '[Пагоҳ соати] LT',
+        lastDay : '[Дирӯз соати] LT',
+        nextWeek : 'dddd[и] [ҳафтаи оянда соати] LT',
+        lastWeek : 'dddd[и] [ҳафтаи гузашта соати] LT',
+        sameElse : 'L'
+    },
+    relativeTime : {
+        future : 'баъди %s',
+        past : '%s пеш',
+        s : 'якчанд сония',
+        m : 'як дақиқа',
+        mm : '%d дақиқа',
+        h : 'як соат',
+        hh : '%d соат',
+        d : 'як рӯз',
+        dd : '%d рӯз',
+        M : 'як моҳ',
+        MM : '%d моҳ',
+        y : 'як сол',
+        yy : '%d сол'
+    },
+    meridiemParse: /шаб|субҳ|рӯз|бегоҳ/,
+    meridiemHour: function (hour, meridiem) {
+        if (hour === 12) {
+            hour = 0;
+        }
+        if (meridiem === 'шаб') {
+            return hour < 4 ? hour : hour + 12;
+        } else if (meridiem === 'субҳ') {
+            return hour;
+        } else if (meridiem === 'рӯз') {
+            return hour >= 11 ? hour : hour + 12;
+        } else if (meridiem === 'бегоҳ') {
+            return hour + 12;
+        }
+    },
+    meridiem: function (hour, minute, isLower) {
+        if (hour < 4) {
+            return 'шаб';
+        } else if (hour < 11) {
+            return 'субҳ';
+        } else if (hour < 16) {
+            return 'рӯз';
+        } else if (hour < 19) {
+            return 'бегоҳ';
+        } else {
+            return 'шаб';
+        }
+    },
+    dayOfMonthOrdinalParse: /\d{1,2}-(ум|юм)/,
+    ordinal: function (number) {
+        var a = number % 10,
+            b = number >= 100 ? 100 : null;
+        return number + (suffixes[number] || suffixes[a] || suffixes[b]);
+    },
+    week : {
+        dow : 1, // Monday is the first day of the week.
+        doy : 7  // The week that contains Jan 1th is the first week of the year.
+    }
+});
+
+return tg;
+
+})));
+
+
+/***/ }),
+
 /***/ "./node_modules/moment/locale/th.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Thai [th]
-//! author : Kridsada Thanabulpong : https://github.com/sirn
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15130,8 +15159,6 @@ return th;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Tagalog (Philippines) [tl-ph]
-//! author : Dan Hagman : https://github.com/hagmandan
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15199,8 +15226,6 @@ return tlPh;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Klingon [tlh]
-//! author : Dominika Kruk : https://github.com/amaranthrose
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15327,17 +15352,12 @@ return tlh;
 /***/ "./node_modules/moment/locale/tr.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-//! moment.js locale configuration
-//! locale : Turkish [tr]
-//! authors : Erhan Gundogan : https://github.com/erhangundogan,
-//!           Burak Yiğit Kaya: https://github.com/BYK
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
    typeof define === 'function' && define.amd ? define(['../moment'], factory) :
    factory(global.moment)
 }(this, (function (moment) { 'use strict';
-
 
 var suffixes = {
     1: '\'inci',
@@ -15398,15 +15418,22 @@ var tr = moment.defineLocale('tr', {
         y : 'bir yıl',
         yy : '%d yıl'
     },
-    dayOfMonthOrdinalParse: /\d{1,2}'(inci|nci|üncü|ncı|uncu|ıncı)/,
-    ordinal : function (number) {
-        if (number === 0) {  // special case for zero
-            return number + '\'ıncı';
+    ordinal: function (number, period) {
+        switch (period) {
+            case 'd':
+            case 'D':
+            case 'Do':
+            case 'DD':
+                return number;
+            default:
+                if (number === 0) {  // special case for zero
+                    return number + '\'ıncı';
+                }
+                var a = number % 10,
+                    b = number % 100 - a,
+                    c = number >= 100 ? 100 : null;
+                return number + (suffixes[a] || suffixes[b] || suffixes[c]);
         }
-        var a = number % 10,
-            b = number % 100 - a,
-            c = number >= 100 ? 100 : null;
-        return number + (suffixes[a] || suffixes[b] || suffixes[c]);
     },
     week : {
         dow : 1, // Monday is the first day of the week.
@@ -15425,9 +15452,6 @@ return tr;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Talossan [tzl]
-//! author : Robin van der Vliet : https://github.com/robin0van0der0v
-//! author : Iustì Canun
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15524,8 +15548,6 @@ return tzl;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Central Atlas Tamazight Latin [tzm-latn]
-//! author : Abdel Said : https://github.com/abdelsaid
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15589,8 +15611,6 @@ return tzmLatn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Central Atlas Tamazight [tzm]
-//! author : Abdel Said : https://github.com/abdelsaid
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15650,13 +15670,134 @@ return tzm;
 
 /***/ }),
 
+/***/ "./node_modules/moment/locale/ug-cn.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+//! moment.js language configuration
+
+;(function (global, factory) {
+    true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
+   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
+   factory(global.moment)
+}(this, (function (moment) { 'use strict';
+
+
+var ugCn = moment.defineLocale('ug-cn', {
+    months: 'يانۋار_فېۋرال_مارت_ئاپرېل_ماي_ئىيۇن_ئىيۇل_ئاۋغۇست_سېنتەبىر_ئۆكتەبىر_نويابىر_دېكابىر'.split(
+        '_'
+    ),
+    monthsShort: 'يانۋار_فېۋرال_مارت_ئاپرېل_ماي_ئىيۇن_ئىيۇل_ئاۋغۇست_سېنتەبىر_ئۆكتەبىر_نويابىر_دېكابىر'.split(
+        '_'
+    ),
+    weekdays: 'يەكشەنبە_دۈشەنبە_سەيشەنبە_چارشەنبە_پەيشەنبە_جۈمە_شەنبە'.split(
+        '_'
+    ),
+    weekdaysShort: 'يە_دۈ_سە_چا_پە_جۈ_شە'.split('_'),
+    weekdaysMin: 'يە_دۈ_سە_چا_پە_جۈ_شە'.split('_'),
+    longDateFormat: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'YYYY-MM-DD',
+        LL: 'YYYY-يىلىM-ئاينىڭD-كۈنى',
+        LLL: 'YYYY-يىلىM-ئاينىڭD-كۈنى، HH:mm',
+        LLLL: 'dddd، YYYY-يىلىM-ئاينىڭD-كۈنى، HH:mm'
+    },
+    meridiemParse: /يېرىم كېچە|سەھەر|چۈشتىن بۇرۇن|چۈش|چۈشتىن كېيىن|كەچ/,
+    meridiemHour: function (hour, meridiem) {
+        if (hour === 12) {
+            hour = 0;
+        }
+        if (
+            meridiem === 'يېرىم كېچە' ||
+            meridiem === 'سەھەر' ||
+            meridiem === 'چۈشتىن بۇرۇن'
+        ) {
+            return hour;
+        } else if (meridiem === 'چۈشتىن كېيىن' || meridiem === 'كەچ') {
+            return hour + 12;
+        } else {
+            return hour >= 11 ? hour : hour + 12;
+        }
+    },
+    meridiem: function (hour, minute, isLower) {
+        var hm = hour * 100 + minute;
+        if (hm < 600) {
+            return 'يېرىم كېچە';
+        } else if (hm < 900) {
+            return 'سەھەر';
+        } else if (hm < 1130) {
+            return 'چۈشتىن بۇرۇن';
+        } else if (hm < 1230) {
+            return 'چۈش';
+        } else if (hm < 1800) {
+            return 'چۈشتىن كېيىن';
+        } else {
+            return 'كەچ';
+        }
+    },
+    calendar: {
+        sameDay: '[بۈگۈن سائەت] LT',
+        nextDay: '[ئەتە سائەت] LT',
+        nextWeek: '[كېلەركى] dddd [سائەت] LT',
+        lastDay: '[تۆنۈگۈن] LT',
+        lastWeek: '[ئالدىنقى] dddd [سائەت] LT',
+        sameElse: 'L'
+    },
+    relativeTime: {
+        future: '%s كېيىن',
+        past: '%s بۇرۇن',
+        s: 'نەچچە سېكونت',
+        ss: '%d سېكونت',
+        m: 'بىر مىنۇت',
+        mm: '%d مىنۇت',
+        h: 'بىر سائەت',
+        hh: '%d سائەت',
+        d: 'بىر كۈن',
+        dd: '%d كۈن',
+        M: 'بىر ئاي',
+        MM: '%d ئاي',
+        y: 'بىر يىل',
+        yy: '%d يىل'
+    },
+
+    dayOfMonthOrdinalParse: /\d{1,2}(-كۈنى|-ئاي|-ھەپتە)/,
+    ordinal: function (number, period) {
+        switch (period) {
+            case 'd':
+            case 'D':
+            case 'DDD':
+                return number + '-كۈنى';
+            case 'w':
+            case 'W':
+                return number + '-ھەپتە';
+            default:
+                return number;
+        }
+    },
+    preparse: function (string) {
+        return string.replace(/،/g, ',');
+    },
+    postformat: function (string) {
+        return string.replace(/,/g, '،');
+    },
+    week: {
+        // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
+        dow: 1, // Monday is the first day of the week.
+        doy: 7 // The week that contains Jan 1st is the first week of the year.
+    }
+});
+
+return ugCn;
+
+})));
+
+
+/***/ }),
+
 /***/ "./node_modules/moment/locale/uk.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Ukrainian [uk]
-//! author : zemlanin : https://github.com/zemlanin
-//! Author : Menelion Elensúle : https://github.com/Oire
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15813,9 +15954,6 @@ return uk;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Urdu [ur]
-//! author : Sawood Alam : https://github.com/ibnesayeed
-//! author : Zack : https://github.com/ZackVision
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15919,8 +16057,6 @@ return ur;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Uzbek Latin [uz-latn]
-//! author : Rasulbek Mirzayev : github.com/Rasulbeeek
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -15984,8 +16120,6 @@ return uzLatn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Uzbek [uz]
-//! author : Sardor Muminov : https://github.com/muminoff
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16049,8 +16183,6 @@ return uz;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Vietnamese [vi]
-//! author : Bang Nguyen : https://github.com/bangnk
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16135,8 +16267,6 @@ return vi;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Pseudo [x-pseudo]
-//! author : Andrew Hood : https://github.com/andrewhood125
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16210,8 +16340,6 @@ return xPseudo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Yoruba Nigeria [yo]
-//! author : Atolagbe Abisoye : https://github.com/andela-batolagbe
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16277,9 +16405,6 @@ return yo;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Chinese (China) [zh-cn]
-//! author : suupic : https://github.com/suupic
-//! author : Zeno Zeng : https://github.com/zenozeng
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16395,10 +16520,6 @@ return zhCn;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Chinese (Hong Kong) [zh-hk]
-//! author : Ben : https://github.com/ben-lin
-//! author : Chris Lam : https://github.com/hehachris
-//! author : Konstantin : https://github.com/skfd
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16507,9 +16628,6 @@ return zhHk;
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
-//! locale : Chinese (Taiwan) [zh-tw]
-//! author : Ben : https://github.com/ben-lin
-//! author : Chris Lam : https://github.com/hehachris
 
 ;(function (global, factory) {
     true ? factory(__webpack_require__("./node_modules/moment/moment.js")) :
@@ -16618,10 +16736,6 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var require;//! moment.js
-//! version : 2.20.1
-//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
-//! license : MIT
-//! momentjs.com
 
 ;(function (global, factory) {
      true ? module.exports = factory() :
@@ -17279,7 +17393,6 @@ var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
 // any word (or two) characters or numbers including two/three word month in arabic.
 // includes scottish gaelic two word and hyphenated months
 var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
-
 
 var regexes = {};
 
@@ -18393,10 +18506,6 @@ function localeMeridiem (hours, minutes, isLower) {
 // this rule.
 var getSetHour = makeGetSet('Hours', true);
 
-// months
-// week
-// weekdays
-// meridiem
 var baseConfig = {
     calendar: defaultCalendar,
     longDateFormat: defaultLongDateFormat,
@@ -18450,7 +18559,7 @@ function chooseLocale(names) {
         }
         i++;
     }
-    return null;
+    return globalLocale;
 }
 
 function loadLocale(name) {
@@ -18485,6 +18594,12 @@ function getSetGlobalLocale (key, values) {
             // moment.duration._locale = moment._locale = data;
             globalLocale = data;
         }
+        else {
+            if ((typeof console !==  'undefined') && console.warn) {
+                //warn user if arguments are passed but the locale could not be set
+                console.warn('Locale ' + key +  ' not found. Did you forget to load it?');
+            }
+        }
     }
 
     return globalLocale._abbr;
@@ -18492,7 +18607,7 @@ function getSetGlobalLocale (key, values) {
 
 function defineLocale (name, config) {
     if (config !== null) {
-        var parentConfig = baseConfig;
+        var locale, parentConfig = baseConfig;
         config.abbr = name;
         if (locales[name] != null) {
             deprecateSimple('defineLocaleOverride',
@@ -18505,14 +18620,19 @@ function defineLocale (name, config) {
             if (locales[config.parentLocale] != null) {
                 parentConfig = locales[config.parentLocale]._config;
             } else {
-                if (!localeFamilies[config.parentLocale]) {
-                    localeFamilies[config.parentLocale] = [];
+                locale = loadLocale(config.parentLocale);
+                if (locale != null) {
+                    parentConfig = locale._config;
+                } else {
+                    if (!localeFamilies[config.parentLocale]) {
+                        localeFamilies[config.parentLocale] = [];
+                    }
+                    localeFamilies[config.parentLocale].push({
+                        name: name,
+                        config: config
+                    });
+                    return null;
                 }
-                localeFamilies[config.parentLocale].push({
-                    name: name,
-                    config: config
-                });
-                return null;
             }
         }
         locales[name] = new Locale(mergeConfigs(parentConfig, config));
@@ -19860,7 +19980,7 @@ function isSameOrBefore (input, units) {
 function diff (input, units, asFloat) {
     var that,
         zoneDelta,
-        delta, output;
+        output;
 
     if (!this.isValid()) {
         return NaN;
@@ -19933,7 +20053,7 @@ function toISOString(keepOffset) {
         if (utc) {
             return this.toDate().toISOString();
         } else {
-            return new Date(this._d.valueOf()).toISOString().replace('Z', formatMoment(m, 'Z'));
+            return new Date(this.valueOf() + this.utcOffset() * 60 * 1000).toISOString().replace('Z', formatMoment(m, 'Z'));
         }
     }
     return formatMoment(m, utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ');
@@ -20487,48 +20607,26 @@ proto.toString          = toString;
 proto.unix              = unix;
 proto.valueOf           = valueOf;
 proto.creationData      = creationData;
-
-// Year
 proto.year       = getSetYear;
 proto.isLeapYear = getIsLeapYear;
-
-// Week Year
 proto.weekYear    = getSetWeekYear;
 proto.isoWeekYear = getSetISOWeekYear;
-
-// Quarter
 proto.quarter = proto.quarters = getSetQuarter;
-
-// Month
 proto.month       = getSetMonth;
 proto.daysInMonth = getDaysInMonth;
-
-// Week
 proto.week           = proto.weeks        = getSetWeek;
 proto.isoWeek        = proto.isoWeeks     = getSetISOWeek;
 proto.weeksInYear    = getWeeksInYear;
 proto.isoWeeksInYear = getISOWeeksInYear;
-
-// Day
 proto.date       = getSetDayOfMonth;
 proto.day        = proto.days             = getSetDayOfWeek;
 proto.weekday    = getSetLocaleDayOfWeek;
 proto.isoWeekday = getSetISODayOfWeek;
 proto.dayOfYear  = getSetDayOfYear;
-
-// Hour
 proto.hour = proto.hours = getSetHour;
-
-// Minute
 proto.minute = proto.minutes = getSetMinute;
-
-// Second
 proto.second = proto.seconds = getSetSecond;
-
-// Millisecond
 proto.millisecond = proto.milliseconds = getSetMillisecond;
-
-// Offset
 proto.utcOffset            = getSetOffset;
 proto.utc                  = setOffsetToUTC;
 proto.local                = setOffsetToLocal;
@@ -20539,12 +20637,8 @@ proto.isLocal              = isLocal;
 proto.isUtcOffset          = isUtcOffset;
 proto.isUtc                = isUtc;
 proto.isUTC                = isUtc;
-
-// Timezone
 proto.zoneAbbr = getZoneAbbr;
 proto.zoneName = getZoneName;
-
-// Deprecations
 proto.dates  = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
 proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
 proto.years  = deprecate('years accessor is deprecated. Use year instead', getSetYear);
@@ -20575,19 +20669,15 @@ proto$1.relativeTime    = relativeTime;
 proto$1.pastFuture      = pastFuture;
 proto$1.set             = set;
 
-// Month
 proto$1.months            =        localeMonths;
 proto$1.monthsShort       =        localeMonthsShort;
 proto$1.monthsParse       =        localeMonthsParse;
 proto$1.monthsRegex       = monthsRegex;
 proto$1.monthsShortRegex  = monthsShortRegex;
-
-// Week
 proto$1.week = localeWeek;
 proto$1.firstDayOfYear = localeFirstDayOfYear;
 proto$1.firstDayOfWeek = localeFirstDayOfWeek;
 
-// Day of Week
 proto$1.weekdays       =        localeWeekdays;
 proto$1.weekdaysMin    =        localeWeekdaysMin;
 proto$1.weekdaysShort  =        localeWeekdaysShort;
@@ -20597,7 +20687,6 @@ proto$1.weekdaysRegex       =        weekdaysRegex;
 proto$1.weekdaysShortRegex  =        weekdaysShortRegex;
 proto$1.weekdaysMinRegex    =        weekdaysMinRegex;
 
-// Hours
 proto$1.isPM = localeIsPM;
 proto$1.meridiem = localeMeridiem;
 
@@ -20704,6 +20793,7 @@ getSetGlobalLocale('en', {
 });
 
 // Side effect imports
+
 hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', getSetGlobalLocale);
 hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', getLocale);
 
@@ -21079,7 +21169,6 @@ proto$2.toJSON         = toISOString$1;
 proto$2.locale         = locale;
 proto$2.localeData     = localeData;
 
-// Deprecations
 proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
 proto$2.lang = lang;
 
@@ -21104,7 +21193,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.20.1';
+hooks.version = '2.21.0';
 
 setHookCallback(createLocal);
 
@@ -22796,7 +22885,7 @@ var sizerStyle = {
 	whiteSpace: 'pre'
 };
 
-var INPUT_PROPS_BLACKLIST = ['injectStyles', 'inputClassName', 'inputRef', 'inputStyle', 'minWidth', 'onAutosize', 'placeholderIsMinWidth'];
+var INPUT_PROPS_BLACKLIST = ['extraWidth', 'injectStyles', 'inputClassName', 'inputRef', 'inputStyle', 'minWidth', 'onAutosize', 'placeholderIsMinWidth'];
 
 var cleanInputProps = function cleanInputProps(inputProps) {
 	INPUT_PROPS_BLACKLIST.forEach(function (field) {
@@ -22814,7 +22903,7 @@ var copyStyles = function copyStyles(styles, node) {
 	node.style.textTransform = styles.textTransform;
 };
 
-var isIE = typeof window === 'undefined' ? false : /MSIE |Trident\/|Edge\//.test(window.navigator.userAgent);
+var isIE = typeof window !== 'undefined' && window.navigator ? /MSIE |Trident\/|Edge\//.test(window.navigator.userAgent) : false;
 
 var generateId = function generateId() {
 	// we only need an auto-generated ID for stylesheet injection, which is only
@@ -22910,10 +22999,9 @@ var AutosizeInput = function (_Component) {
 			} else {
 				newInputWidth = this.sizer.scrollWidth + 2;
 			}
-			// allow for stepper UI on number types
-			if (this.props.type === 'number') {
-				newInputWidth += 16;
-			}
+			// add extraWidth to the detected width. for number types, this defaults to 16 to allow for the stepper UI
+			var extraWidth = this.props.type === 'number' && this.props.extraWidth === undefined ? 16 : parseInt(this.props.extraWidth) || 0;
+			newInputWidth += extraWidth;
 			if (newInputWidth < this.props.minWidth) {
 				newInputWidth = this.props.minWidth;
 			}
@@ -23002,11 +23090,11 @@ var AutosizeInput = function (_Component) {
 	return AutosizeInput;
 }(_react.Component);
 
-;
-
 AutosizeInput.propTypes = {
 	className: _propTypes2.default.string, // className for the outer element
 	defaultValue: _propTypes2.default.any, // default field value
+	extraWidth: _propTypes2.default.oneOfType([// additional width for input element
+	_propTypes2.default.number, _propTypes2.default.string]),
 	id: _propTypes2.default.string, // id to use for the input, can be set for consistent snapshots
 	injectStyles: _propTypes2.default.bool, // inject the custom stylesheet to hide clear UI, defaults to true
 	inputClassName: _propTypes2.default.string, // className for the input element
@@ -23015,7 +23103,7 @@ AutosizeInput.propTypes = {
 	minWidth: _propTypes2.default.oneOfType([// minimum width for input element
 	_propTypes2.default.number, _propTypes2.default.string]),
 	onAutosize: _propTypes2.default.func, // onAutosize handler: function(newWidth) {}
-	onChange: _propTypes2.default.func, // onChange handler: function(newValue) {}
+	onChange: _propTypes2.default.func, // onChange handler: function(event) {}
 	placeholder: _propTypes2.default.string, // placeholder text
 	placeholderIsMinWidth: _propTypes2.default.bool, // don't collapse size to less than the placeholder
 	style: _propTypes2.default.object, // css styles for the outer element
@@ -23043,51 +23131,60 @@ exports.default = AutosizeInput;
 /* unused harmony export defaultArrowRenderer */
 /* unused harmony export defaultClearRenderer */
 /* unused harmony export defaultFilterOptions */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__("./node_modules/react-dom/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_input_autosize__ = __webpack_require__("./node_modules/react-input-autosize/lib/AutosizeInput.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_input_autosize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_input_autosize__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames__ = __webpack_require__("./node_modules/classnames/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_input_autosize__ = __webpack_require__("./node_modules/react-input-autosize/lib/AutosizeInput.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_input_autosize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react_input_autosize__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__("./node_modules/classnames/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_dom__ = __webpack_require__("./node_modules/react-dom/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_dom__);
 
 
 
 
 
 
-function arrowRenderer(_ref) {
+var arrowRenderer = function arrowRenderer(_ref) {
 	var onMouseDown = _ref.onMouseDown;
 
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', {
+	return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('span', {
 		className: 'Select-arrow',
 		onMouseDown: onMouseDown
 	});
-}
+};
 
 arrowRenderer.propTypes = {
-	onMouseDown: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func
+	onMouseDown: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func
+};
+
+var clearRenderer = function clearRenderer() {
+	return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('span', {
+		className: 'Select-clear',
+		dangerouslySetInnerHTML: { __html: '&times;' }
+	});
 };
 
 var map = [{ 'base': 'A', 'letters': /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g }, { 'base': 'AA', 'letters': /[\uA732]/g }, { 'base': 'AE', 'letters': /[\u00C6\u01FC\u01E2]/g }, { 'base': 'AO', 'letters': /[\uA734]/g }, { 'base': 'AU', 'letters': /[\uA736]/g }, { 'base': 'AV', 'letters': /[\uA738\uA73A]/g }, { 'base': 'AY', 'letters': /[\uA73C]/g }, { 'base': 'B', 'letters': /[\u0042\u24B7\uFF22\u1E02\u1E04\u1E06\u0243\u0182\u0181]/g }, { 'base': 'C', 'letters': /[\u0043\u24B8\uFF23\u0106\u0108\u010A\u010C\u00C7\u1E08\u0187\u023B\uA73E]/g }, { 'base': 'D', 'letters': /[\u0044\u24B9\uFF24\u1E0A\u010E\u1E0C\u1E10\u1E12\u1E0E\u0110\u018B\u018A\u0189\uA779]/g }, { 'base': 'DZ', 'letters': /[\u01F1\u01C4]/g }, { 'base': 'Dz', 'letters': /[\u01F2\u01C5]/g }, { 'base': 'E', 'letters': /[\u0045\u24BA\uFF25\u00C8\u00C9\u00CA\u1EC0\u1EBE\u1EC4\u1EC2\u1EBC\u0112\u1E14\u1E16\u0114\u0116\u00CB\u1EBA\u011A\u0204\u0206\u1EB8\u1EC6\u0228\u1E1C\u0118\u1E18\u1E1A\u0190\u018E]/g }, { 'base': 'F', 'letters': /[\u0046\u24BB\uFF26\u1E1E\u0191\uA77B]/g }, { 'base': 'G', 'letters': /[\u0047\u24BC\uFF27\u01F4\u011C\u1E20\u011E\u0120\u01E6\u0122\u01E4\u0193\uA7A0\uA77D\uA77E]/g }, { 'base': 'H', 'letters': /[\u0048\u24BD\uFF28\u0124\u1E22\u1E26\u021E\u1E24\u1E28\u1E2A\u0126\u2C67\u2C75\uA78D]/g }, { 'base': 'I', 'letters': /[\u0049\u24BE\uFF29\u00CC\u00CD\u00CE\u0128\u012A\u012C\u0130\u00CF\u1E2E\u1EC8\u01CF\u0208\u020A\u1ECA\u012E\u1E2C\u0197]/g }, { 'base': 'J', 'letters': /[\u004A\u24BF\uFF2A\u0134\u0248]/g }, { 'base': 'K', 'letters': /[\u004B\u24C0\uFF2B\u1E30\u01E8\u1E32\u0136\u1E34\u0198\u2C69\uA740\uA742\uA744\uA7A2]/g }, { 'base': 'L', 'letters': /[\u004C\u24C1\uFF2C\u013F\u0139\u013D\u1E36\u1E38\u013B\u1E3C\u1E3A\u0141\u023D\u2C62\u2C60\uA748\uA746\uA780]/g }, { 'base': 'LJ', 'letters': /[\u01C7]/g }, { 'base': 'Lj', 'letters': /[\u01C8]/g }, { 'base': 'M', 'letters': /[\u004D\u24C2\uFF2D\u1E3E\u1E40\u1E42\u2C6E\u019C]/g }, { 'base': 'N', 'letters': /[\u004E\u24C3\uFF2E\u01F8\u0143\u00D1\u1E44\u0147\u1E46\u0145\u1E4A\u1E48\u0220\u019D\uA790\uA7A4]/g }, { 'base': 'NJ', 'letters': /[\u01CA]/g }, { 'base': 'Nj', 'letters': /[\u01CB]/g }, { 'base': 'O', 'letters': /[\u004F\u24C4\uFF2F\u00D2\u00D3\u00D4\u1ED2\u1ED0\u1ED6\u1ED4\u00D5\u1E4C\u022C\u1E4E\u014C\u1E50\u1E52\u014E\u022E\u0230\u00D6\u022A\u1ECE\u0150\u01D1\u020C\u020E\u01A0\u1EDC\u1EDA\u1EE0\u1EDE\u1EE2\u1ECC\u1ED8\u01EA\u01EC\u00D8\u01FE\u0186\u019F\uA74A\uA74C]/g }, { 'base': 'OI', 'letters': /[\u01A2]/g }, { 'base': 'OO', 'letters': /[\uA74E]/g }, { 'base': 'OU', 'letters': /[\u0222]/g }, { 'base': 'P', 'letters': /[\u0050\u24C5\uFF30\u1E54\u1E56\u01A4\u2C63\uA750\uA752\uA754]/g }, { 'base': 'Q', 'letters': /[\u0051\u24C6\uFF31\uA756\uA758\u024A]/g }, { 'base': 'R', 'letters': /[\u0052\u24C7\uFF32\u0154\u1E58\u0158\u0210\u0212\u1E5A\u1E5C\u0156\u1E5E\u024C\u2C64\uA75A\uA7A6\uA782]/g }, { 'base': 'S', 'letters': /[\u0053\u24C8\uFF33\u1E9E\u015A\u1E64\u015C\u1E60\u0160\u1E66\u1E62\u1E68\u0218\u015E\u2C7E\uA7A8\uA784]/g }, { 'base': 'T', 'letters': /[\u0054\u24C9\uFF34\u1E6A\u0164\u1E6C\u021A\u0162\u1E70\u1E6E\u0166\u01AC\u01AE\u023E\uA786]/g }, { 'base': 'TZ', 'letters': /[\uA728]/g }, { 'base': 'U', 'letters': /[\u0055\u24CA\uFF35\u00D9\u00DA\u00DB\u0168\u1E78\u016A\u1E7A\u016C\u00DC\u01DB\u01D7\u01D5\u01D9\u1EE6\u016E\u0170\u01D3\u0214\u0216\u01AF\u1EEA\u1EE8\u1EEE\u1EEC\u1EF0\u1EE4\u1E72\u0172\u1E76\u1E74\u0244]/g }, { 'base': 'V', 'letters': /[\u0056\u24CB\uFF36\u1E7C\u1E7E\u01B2\uA75E\u0245]/g }, { 'base': 'VY', 'letters': /[\uA760]/g }, { 'base': 'W', 'letters': /[\u0057\u24CC\uFF37\u1E80\u1E82\u0174\u1E86\u1E84\u1E88\u2C72]/g }, { 'base': 'X', 'letters': /[\u0058\u24CD\uFF38\u1E8A\u1E8C]/g }, { 'base': 'Y', 'letters': /[\u0059\u24CE\uFF39\u1EF2\u00DD\u0176\u1EF8\u0232\u1E8E\u0178\u1EF6\u1EF4\u01B3\u024E\u1EFE]/g }, { 'base': 'Z', 'letters': /[\u005A\u24CF\uFF3A\u0179\u1E90\u017B\u017D\u1E92\u1E94\u01B5\u0224\u2C7F\u2C6B\uA762]/g }, { 'base': 'a', 'letters': /[\u0061\u24D0\uFF41\u1E9A\u00E0\u00E1\u00E2\u1EA7\u1EA5\u1EAB\u1EA9\u00E3\u0101\u0103\u1EB1\u1EAF\u1EB5\u1EB3\u0227\u01E1\u00E4\u01DF\u1EA3\u00E5\u01FB\u01CE\u0201\u0203\u1EA1\u1EAD\u1EB7\u1E01\u0105\u2C65\u0250]/g }, { 'base': 'aa', 'letters': /[\uA733]/g }, { 'base': 'ae', 'letters': /[\u00E6\u01FD\u01E3]/g }, { 'base': 'ao', 'letters': /[\uA735]/g }, { 'base': 'au', 'letters': /[\uA737]/g }, { 'base': 'av', 'letters': /[\uA739\uA73B]/g }, { 'base': 'ay', 'letters': /[\uA73D]/g }, { 'base': 'b', 'letters': /[\u0062\u24D1\uFF42\u1E03\u1E05\u1E07\u0180\u0183\u0253]/g }, { 'base': 'c', 'letters': /[\u0063\u24D2\uFF43\u0107\u0109\u010B\u010D\u00E7\u1E09\u0188\u023C\uA73F\u2184]/g }, { 'base': 'd', 'letters': /[\u0064\u24D3\uFF44\u1E0B\u010F\u1E0D\u1E11\u1E13\u1E0F\u0111\u018C\u0256\u0257\uA77A]/g }, { 'base': 'dz', 'letters': /[\u01F3\u01C6]/g }, { 'base': 'e', 'letters': /[\u0065\u24D4\uFF45\u00E8\u00E9\u00EA\u1EC1\u1EBF\u1EC5\u1EC3\u1EBD\u0113\u1E15\u1E17\u0115\u0117\u00EB\u1EBB\u011B\u0205\u0207\u1EB9\u1EC7\u0229\u1E1D\u0119\u1E19\u1E1B\u0247\u025B\u01DD]/g }, { 'base': 'f', 'letters': /[\u0066\u24D5\uFF46\u1E1F\u0192\uA77C]/g }, { 'base': 'g', 'letters': /[\u0067\u24D6\uFF47\u01F5\u011D\u1E21\u011F\u0121\u01E7\u0123\u01E5\u0260\uA7A1\u1D79\uA77F]/g }, { 'base': 'h', 'letters': /[\u0068\u24D7\uFF48\u0125\u1E23\u1E27\u021F\u1E25\u1E29\u1E2B\u1E96\u0127\u2C68\u2C76\u0265]/g }, { 'base': 'hv', 'letters': /[\u0195]/g }, { 'base': 'i', 'letters': /[\u0069\u24D8\uFF49\u00EC\u00ED\u00EE\u0129\u012B\u012D\u00EF\u1E2F\u1EC9\u01D0\u0209\u020B\u1ECB\u012F\u1E2D\u0268\u0131]/g }, { 'base': 'j', 'letters': /[\u006A\u24D9\uFF4A\u0135\u01F0\u0249]/g }, { 'base': 'k', 'letters': /[\u006B\u24DA\uFF4B\u1E31\u01E9\u1E33\u0137\u1E35\u0199\u2C6A\uA741\uA743\uA745\uA7A3]/g }, { 'base': 'l', 'letters': /[\u006C\u24DB\uFF4C\u0140\u013A\u013E\u1E37\u1E39\u013C\u1E3D\u1E3B\u017F\u0142\u019A\u026B\u2C61\uA749\uA781\uA747]/g }, { 'base': 'lj', 'letters': /[\u01C9]/g }, { 'base': 'm', 'letters': /[\u006D\u24DC\uFF4D\u1E3F\u1E41\u1E43\u0271\u026F]/g }, { 'base': 'n', 'letters': /[\u006E\u24DD\uFF4E\u01F9\u0144\u00F1\u1E45\u0148\u1E47\u0146\u1E4B\u1E49\u019E\u0272\u0149\uA791\uA7A5]/g }, { 'base': 'nj', 'letters': /[\u01CC]/g }, { 'base': 'o', 'letters': /[\u006F\u24DE\uFF4F\u00F2\u00F3\u00F4\u1ED3\u1ED1\u1ED7\u1ED5\u00F5\u1E4D\u022D\u1E4F\u014D\u1E51\u1E53\u014F\u022F\u0231\u00F6\u022B\u1ECF\u0151\u01D2\u020D\u020F\u01A1\u1EDD\u1EDB\u1EE1\u1EDF\u1EE3\u1ECD\u1ED9\u01EB\u01ED\u00F8\u01FF\u0254\uA74B\uA74D\u0275]/g }, { 'base': 'oi', 'letters': /[\u01A3]/g }, { 'base': 'ou', 'letters': /[\u0223]/g }, { 'base': 'oo', 'letters': /[\uA74F]/g }, { 'base': 'p', 'letters': /[\u0070\u24DF\uFF50\u1E55\u1E57\u01A5\u1D7D\uA751\uA753\uA755]/g }, { 'base': 'q', 'letters': /[\u0071\u24E0\uFF51\u024B\uA757\uA759]/g }, { 'base': 'r', 'letters': /[\u0072\u24E1\uFF52\u0155\u1E59\u0159\u0211\u0213\u1E5B\u1E5D\u0157\u1E5F\u024D\u027D\uA75B\uA7A7\uA783]/g }, { 'base': 's', 'letters': /[\u0073\u24E2\uFF53\u00DF\u015B\u1E65\u015D\u1E61\u0161\u1E67\u1E63\u1E69\u0219\u015F\u023F\uA7A9\uA785\u1E9B]/g }, { 'base': 't', 'letters': /[\u0074\u24E3\uFF54\u1E6B\u1E97\u0165\u1E6D\u021B\u0163\u1E71\u1E6F\u0167\u01AD\u0288\u2C66\uA787]/g }, { 'base': 'tz', 'letters': /[\uA729]/g }, { 'base': 'u', 'letters': /[\u0075\u24E4\uFF55\u00F9\u00FA\u00FB\u0169\u1E79\u016B\u1E7B\u016D\u00FC\u01DC\u01D8\u01D6\u01DA\u1EE7\u016F\u0171\u01D4\u0215\u0217\u01B0\u1EEB\u1EE9\u1EEF\u1EED\u1EF1\u1EE5\u1E73\u0173\u1E77\u1E75\u0289]/g }, { 'base': 'v', 'letters': /[\u0076\u24E5\uFF56\u1E7D\u1E7F\u028B\uA75F\u028C]/g }, { 'base': 'vy', 'letters': /[\uA761]/g }, { 'base': 'w', 'letters': /[\u0077\u24E6\uFF57\u1E81\u1E83\u0175\u1E87\u1E85\u1E98\u1E89\u2C73]/g }, { 'base': 'x', 'letters': /[\u0078\u24E7\uFF58\u1E8B\u1E8D]/g }, { 'base': 'y', 'letters': /[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g }, { 'base': 'z', 'letters': /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g }];
 
-function stripDiacritics(str) {
+var stripDiacritics = function stripDiacritics(str) {
 	for (var i = 0; i < map.length; i++) {
 		str = str.replace(map[i].letters, map[i].base);
 	}
 	return str;
-}
+};
 
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
+var trim = function trim(str) {
+  return str.replace(/^\s+|\s+$/g, '');
+};
 
-function filterOptions(options, filterValue, excludeOptions, props) {
-	var _this = this;
+var isValid = function isValid(value) {
+	return typeof value !== 'undefined' && value !== null && value !== '';
+};
 
+var filterOptions = function filterOptions(options, filterValue, excludeOptions, props) {
 	if (props.ignoreAccents) {
 		filterValue = stripDiacritics(filterValue);
 	}
@@ -23106,30 +23203,40 @@ function filterOptions(options, filterValue, excludeOptions, props) {
 
 	return options.filter(function (option) {
 		if (excludeOptions && excludeOptions.indexOf(option[props.valueKey]) > -1) return false;
-		if (props.filterOption) return props.filterOption.call(_this, option, filterValue);
+		if (props.filterOption) return props.filterOption.call(undefined, option, filterValue);
 		if (!filterValue) return true;
-		var valueTest = String(option[props.valueKey]);
-		var labelTest = String(option[props.labelKey]);
+
+		var value = option[props.valueKey];
+		var label = option[props.labelKey];
+		var hasValue = isValid(value);
+		var hasLabel = isValid(label);
+
+		if (!hasValue && !hasLabel) {
+			return false;
+		}
+
+		var valueTest = hasValue ? String(value) : null;
+		var labelTest = hasLabel ? String(label) : null;
 
 		if (props.ignoreAccents) {
-			if (props.matchProp !== 'label') valueTest = stripDiacritics(valueTest);
-			if (props.matchProp !== 'value') labelTest = stripDiacritics(labelTest);
+			if (valueTest && props.matchProp !== 'label') valueTest = stripDiacritics(valueTest);
+			if (labelTest && props.matchProp !== 'value') labelTest = stripDiacritics(labelTest);
 		}
 
 		if (props.ignoreCase) {
-			if (props.matchProp !== 'label') valueTest = valueTest.toLowerCase();
-			if (props.matchProp !== 'value') labelTest = labelTest.toLowerCase();
+			if (valueTest && props.matchProp !== 'label') valueTest = valueTest.toLowerCase();
+			if (labelTest && props.matchProp !== 'value') labelTest = labelTest.toLowerCase();
 		}
-		return props.matchPos === 'start' ? props.matchProp !== 'label' && valueTest.substr(0, filterValue.length) === filterValue || props.matchProp !== 'value' && labelTest.substr(0, filterValue.length) === filterValue : props.matchProp !== 'label' && valueTest.indexOf(filterValue) >= 0 || props.matchProp !== 'value' && labelTest.indexOf(filterValue) >= 0;
-	});
-}
 
-function menuRenderer(_ref) {
+		return props.matchPos === 'start' ? valueTest && props.matchProp !== 'label' && valueTest.substr(0, filterValue.length) === filterValue || labelTest && props.matchProp !== 'value' && labelTest.substr(0, filterValue.length) === filterValue : valueTest && props.matchProp !== 'label' && valueTest.indexOf(filterValue) >= 0 || labelTest && props.matchProp !== 'value' && labelTest.indexOf(filterValue) >= 0;
+	});
+};
+
+var menuRenderer = function menuRenderer(_ref) {
 	var focusedOption = _ref.focusedOption,
 	    focusOption = _ref.focusOption,
 	    inputValue = _ref.inputValue,
 	    instancePrefix = _ref.instancePrefix,
-	    labelKey = _ref.labelKey,
 	    onFocus = _ref.onFocus,
 	    onOptionRef = _ref.onOptionRef,
 	    onSelect = _ref.onSelect,
@@ -23146,17 +23253,17 @@ function menuRenderer(_ref) {
 
 	return options.map(function (option, i) {
 		var isSelected = valueArray && valueArray.some(function (x) {
-			return x[valueKey] == option[valueKey];
+			return x[valueKey] === option[valueKey];
 		});
 		var isFocused = option === focusedOption;
-		var optionClass = __WEBPACK_IMPORTED_MODULE_4_classnames___default()(optionClassName, {
+		var optionClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()(optionClassName, {
 			'Select-option': true,
 			'is-selected': isSelected,
 			'is-focused': isFocused,
 			'is-disabled': option.disabled
 		});
 
-		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+		return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 			Option,
 			{
 				className: optionClass,
@@ -23180,14 +23287,38 @@ function menuRenderer(_ref) {
 			optionRenderer(option, i, inputValue)
 		);
 	});
-}
+};
 
-function clearRenderer() {
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', {
-		className: 'Select-clear',
-		dangerouslySetInnerHTML: { __html: '&times;' }
-	});
-}
+menuRenderer.propTypes = {
+	focusOption: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	focusedOption: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object,
+	inputValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string,
+	instancePrefix: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string,
+	onFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	onOptionRef: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	onSelect: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	optionClassName: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string,
+	optionComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	optionRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	options: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.array,
+	removeValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	selectValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
+	valueArray: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.array,
+	valueKey: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string
+};
+
+var blockEvent = (function (event) {
+	event.preventDefault();
+	event.stopPropagation();
+	if (event.target.tagName !== 'A' || !('href' in event.target)) {
+		return;
+	}
+	if (event.target.target) {
+		window.open(event.target.href, event.target.target);
+	} else {
+		window.location.href = event.target.href;
+	}
+});
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -23438,20 +23569,6 @@ var Option = function (_React$Component) {
 	}
 
 	createClass(Option, [{
-		key: 'blockEvent',
-		value: function blockEvent(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			if (event.target.tagName !== 'A' || !('href' in event.target)) {
-				return;
-			}
-			if (event.target.target) {
-				window.open(event.target.href, event.target.target);
-			} else {
-				window.location.href = event.target.href;
-			}
-		}
-	}, {
 		key: 'handleMouseDown',
 		value: function handleMouseDown(event) {
 			event.preventDefault();
@@ -23479,13 +23596,13 @@ var Option = function (_React$Component) {
 		}
 	}, {
 		key: 'handleTouchMove',
-		value: function handleTouchMove(event) {
+		value: function handleTouchMove() {
 			// Set a flag that the view is being dragged
 			this.dragging = true;
 		}
 	}, {
 		key: 'handleTouchStart',
-		value: function handleTouchStart(event) {
+		value: function handleTouchStart() {
 			// Set a flag that the view is not being dragged
 			this.dragging = false;
 		}
@@ -23504,15 +23621,15 @@ var Option = function (_React$Component) {
 			    instancePrefix = _props.instancePrefix,
 			    optionIndex = _props.optionIndex;
 
-			var className = __WEBPACK_IMPORTED_MODULE_4_classnames___default()(this.props.className, option.className);
+			var className = __WEBPACK_IMPORTED_MODULE_1_classnames___default()(this.props.className, option.className);
 
-			return option.disabled ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return option.disabled ? __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'div',
 				{ className: className,
-					onMouseDown: this.blockEvent,
-					onClick: this.blockEvent },
+					onMouseDown: blockEvent,
+					onClick: blockEvent },
 				this.props.children
-			) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			) : __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'div',
 				{ className: className,
 					style: option.style,
@@ -23531,22 +23648,20 @@ var Option = function (_React$Component) {
 		}
 	}]);
 	return Option;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-
+}(__WEBPACK_IMPORTED_MODULE_3_react___default.a.Component);
 
 Option.propTypes = {
-	children: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node,
-	className: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // className (based on mouse position)
-	instancePrefix: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string.isRequired, // unique prefix for the ids (used for aria)
-	isDisabled: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // the option is disabled
-	isFocused: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // the option is focused
-	isSelected: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // the option is selected
-	onFocus: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // method to handle mouseEnter on option element
-	onSelect: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // method to handle click on option element
-	onUnfocus: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // method to handle mouseLeave on option element
-	option: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object.isRequired, // object that is base for that option
-	optionIndex: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number // index of the option, used to generate unique ids for aria
+	children: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node,
+	className: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // className (based on mouse position)
+	instancePrefix: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string.isRequired, // unique prefix for the ids (used for aria)
+	isDisabled: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // the option is disabled
+	isFocused: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // the option is focused
+	isSelected: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // the option is selected
+	onFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // method to handle mouseEnter on option element
+	onSelect: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // method to handle click on option element
+	onUnfocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // method to handle mouseLeave on option element
+	option: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object.isRequired, // object that is base for that option
+	optionIndex: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.number // index of the option, used to generate unique ids for aria
 };
 
 var Value = function (_React$Component) {
@@ -23599,13 +23714,13 @@ var Value = function (_React$Component) {
 		}
 	}, {
 		key: 'handleTouchMove',
-		value: function handleTouchMove(event) {
+		value: function handleTouchMove() {
 			// Set a flag that the view is being dragged
 			this.dragging = true;
 		}
 	}, {
 		key: 'handleTouchStart',
-		value: function handleTouchStart(event) {
+		value: function handleTouchStart() {
 			// Set a flag that the view is not being dragged
 			this.dragging = false;
 		}
@@ -23613,7 +23728,7 @@ var Value = function (_React$Component) {
 		key: 'renderRemoveIcon',
 		value: function renderRemoveIcon() {
 			if (this.props.disabled || !this.props.onRemove) return;
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'span',
 				{ className: 'Select-value-icon',
 					'aria-hidden': 'true',
@@ -23628,11 +23743,11 @@ var Value = function (_React$Component) {
 		key: 'renderLabel',
 		value: function renderLabel() {
 			var className = 'Select-value-label';
-			return this.props.onClick || this.props.value.href ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return this.props.onClick || this.props.value.href ? __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'a',
 				{ className: className, href: this.props.value.href, target: this.props.value.target, onMouseDown: this.handleMouseDown, onTouchEnd: this.handleMouseDown },
 				this.props.children
-			) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			) : __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'span',
 				{ className: className, role: 'option', 'aria-selected': 'true', id: this.props.id },
 				this.props.children
@@ -23641,9 +23756,9 @@ var Value = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'div',
-				{ className: __WEBPACK_IMPORTED_MODULE_4_classnames___default()('Select-value', this.props.value.className),
+				{ className: __WEBPACK_IMPORTED_MODULE_1_classnames___default()('Select-value', this.props.value.className),
 					style: this.props.value.style,
 					title: this.props.value.title
 				},
@@ -23653,21 +23768,19 @@ var Value = function (_React$Component) {
 		}
 	}]);
 	return Value;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-
+}(__WEBPACK_IMPORTED_MODULE_3_react___default.a.Component);
 
 Value.propTypes = {
-	children: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node,
-	disabled: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // disabled prop passed to ReactSelect
-	id: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // Unique id for the value - used for aria
-	onClick: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // method to handle click on value label
-	onRemove: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // method to handle removal of the value
-	value: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object.isRequired // the option object for this value
+	children: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node,
+	disabled: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // disabled prop passed to ReactSelect
+	id: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // Unique id for the value - used for aria
+	onClick: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // method to handle click on value label
+	onRemove: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // method to handle removal of the value
+	value: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object.isRequired // the option object for this value
 };
 
 /*!
-  Copyright (c) 2017 Jed Watson.
+  Copyright (c) 2018 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/react-select
 */
@@ -23675,10 +23788,58 @@ var stringifyValue = function stringifyValue(value) {
 	return typeof value === 'string' ? value : value !== null && JSON.stringify(value) || '';
 };
 
-var stringOrNode = __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node]);
-var stringOrNumber = __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number]);
+var stringOrNode = __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node]);
+var stringOrNumber = __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.number]);
 
 var instanceId = 1;
+
+var shouldShowValue = function shouldShowValue(state, props) {
+	var inputValue = state.inputValue,
+	    isPseudoFocused = state.isPseudoFocused,
+	    isFocused = state.isFocused;
+	var onSelectResetsInput = props.onSelectResetsInput;
+
+
+	if (!inputValue) return true;
+
+	if (!onSelectResetsInput) {
+		return !(!isFocused && isPseudoFocused || isFocused && !isPseudoFocused);
+	}
+
+	return false;
+};
+
+var shouldShowPlaceholder = function shouldShowPlaceholder(state, props, isOpen) {
+	var inputValue = state.inputValue,
+	    isPseudoFocused = state.isPseudoFocused,
+	    isFocused = state.isFocused;
+	var onSelectResetsInput = props.onSelectResetsInput;
+
+
+	return !inputValue || !onSelectResetsInput && !isOpen && !isPseudoFocused && !isFocused;
+};
+
+/**
+ * Retrieve a value from the given options and valueKey
+ * @param {String|Number|Array} value	- the selected value(s)
+ * @param {Object}		 props	- the Select component's props (or nextProps)
+ */
+var expandValue = function expandValue(value, props) {
+	var valueType = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+	if (valueType !== 'string' && valueType !== 'number' && valueType !== 'boolean') return value;
+	var options = props.options,
+	    valueKey = props.valueKey;
+
+	if (!options) return;
+	for (var i = 0; i < options.length; i++) {
+		if (String(options[i][valueKey]) === String(value)) return options[i];
+	}
+};
+
+var handleRequired = function handleRequired(value, multi) {
+	if (!value) return true;
+	return multi ? value.length === 0 : Object.keys(value).length === 0;
+};
 
 var Select$1 = function (_React$Component) {
 	inherits(Select, _React$Component);
@@ -23688,7 +23849,7 @@ var Select$1 = function (_React$Component) {
 
 		var _this = possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
-		['clearValue', 'focusOption', 'handleInputBlur', 'handleInputChange', 'handleInputFocus', 'handleInputValueChange', 'handleKeyDown', 'handleMenuScroll', 'handleMouseDown', 'handleMouseDownOnArrow', 'handleMouseDownOnMenu', 'handleRequired', 'handleTouchOutside', 'handleTouchMove', 'handleTouchStart', 'handleTouchEnd', 'handleTouchEndClearValue', 'handleValueClick', 'getOptionLabel', 'onOptionRef', 'removeValue', 'selectValue'].forEach(function (fn) {
+		['clearValue', 'focusOption', 'getOptionLabel', 'handleInputBlur', 'handleInputChange', 'handleInputFocus', 'handleInputValueChange', 'handleKeyDown', 'handleMenuScroll', 'handleMouseDown', 'handleMouseDownOnArrow', 'handleMouseDownOnMenu', 'handleTouchEnd', 'handleTouchEndClearValue', 'handleTouchMove', 'handleTouchOutside', 'handleTouchStart', 'handleValueClick', 'onOptionRef', 'removeValue', 'selectValue'].forEach(function (fn) {
 			return _this[fn] = _this[fn].bind(_this);
 		});
 
@@ -23710,7 +23871,7 @@ var Select$1 = function (_React$Component) {
 
 			if (this.props.required) {
 				this.setState({
-					required: this.handleRequired(valueArray[0], this.props.multi)
+					required: handleRequired(valueArray[0], this.props.multi)
 				});
 			}
 		}
@@ -23731,11 +23892,15 @@ var Select$1 = function (_React$Component) {
 
 			if (nextProps.required) {
 				this.setState({
-					required: this.handleRequired(valueArray[0], nextProps.multi)
+					required: handleRequired(valueArray[0], nextProps.multi)
 				});
 			} else if (this.props.required) {
 				// Used to be required but it's not any more
 				this.setState({ required: false });
+			}
+
+			if (this.state.inputValue && this.props.value !== nextProps.value && nextProps.onSelectResetsInput) {
+				this.setState({ inputValue: this.handleInputValueChange('') });
 			}
 		}
 	}, {
@@ -23743,8 +23908,8 @@ var Select$1 = function (_React$Component) {
 		value: function componentDidUpdate(prevProps, prevState) {
 			// focus to the selected option
 			if (this.menu && this.focused && this.state.isOpen && !this.hasScrolledToOption) {
-				var focusedOptionNode = Object(__WEBPACK_IMPORTED_MODULE_2_react_dom__["findDOMNode"])(this.focused);
-				var menuNode = Object(__WEBPACK_IMPORTED_MODULE_2_react_dom__["findDOMNode"])(this.menu);
+				var focusedOptionNode = Object(__WEBPACK_IMPORTED_MODULE_4_react_dom__["findDOMNode"])(this.focused);
+				var menuNode = Object(__WEBPACK_IMPORTED_MODULE_4_react_dom__["findDOMNode"])(this.menu);
 
 				var scrollTop = menuNode.scrollTop;
 				var scrollBottom = scrollTop + menuNode.offsetHeight;
@@ -23765,8 +23930,8 @@ var Select$1 = function (_React$Component) {
 
 			if (this._scrollToFocusedOptionOnUpdate && this.focused && this.menu) {
 				this._scrollToFocusedOptionOnUpdate = false;
-				var focusedDOM = Object(__WEBPACK_IMPORTED_MODULE_2_react_dom__["findDOMNode"])(this.focused);
-				var menuDOM = Object(__WEBPACK_IMPORTED_MODULE_2_react_dom__["findDOMNode"])(this.menu);
+				var focusedDOM = Object(__WEBPACK_IMPORTED_MODULE_4_react_dom__["findDOMNode"])(this.focused);
+				var menuDOM = Object(__WEBPACK_IMPORTED_MODULE_4_react_dom__["findDOMNode"])(this.menu);
 				var focusedRect = focusedDOM.getBoundingClientRect();
 				var menuRect = menuDOM.getBoundingClientRect();
 				if (focusedRect.bottom > menuRect.bottom) {
@@ -23835,13 +24000,13 @@ var Select$1 = function (_React$Component) {
 		}
 	}, {
 		key: 'handleTouchMove',
-		value: function handleTouchMove(event) {
+		value: function handleTouchMove() {
 			// Set a flag that the view is being dragged
 			this.dragging = true;
 		}
 	}, {
 		key: 'handleTouchStart',
-		value: function handleTouchStart(event) {
+		value: function handleTouchStart() {
 			// Set a flag that the view is not being dragged
 			this.dragging = false;
 		}
@@ -23884,6 +24049,7 @@ var Select$1 = function (_React$Component) {
 						isPseudoFocused: false
 					});
 				}
+
 				return;
 			}
 
@@ -23892,7 +24058,7 @@ var Select$1 = function (_React$Component) {
 
 			// for the non-searchable select, toggle the menu
 			if (!this.props.searchable) {
-				// TODO: This code means that if a select is searchable, onClick the options menu will not appear, only on subsequent click will it open.
+				// This code means that if a select is searchable, onClick the options menu will not appear, only on subsequent click will it open.
 				this.focus();
 				return this.setState({
 					isOpen: !this.state.isOpen
@@ -23906,6 +24072,8 @@ var Select$1 = function (_React$Component) {
 				this.focus();
 
 				var input = this.input;
+				var toOpen = true;
+
 				if (typeof input.getInput === 'function') {
 					// Get the actual DOM input if the ref is an <AutosizeInput /> component
 					input = input.getInput();
@@ -23914,15 +24082,22 @@ var Select$1 = function (_React$Component) {
 				// clears the value so that the cursor will be at the end of input when the component re-renders
 				input.value = '';
 
+				if (this._focusAfterClear) {
+					toOpen = false;
+					this._focusAfterClear = false;
+				}
+
 				// if the input is focused, ensure the menu is open
 				this.setState({
-					isOpen: true,
-					isPseudoFocused: false
+					isOpen: toOpen,
+					isPseudoFocused: false,
+					focusedOption: null
 				});
 			} else {
 				// otherwise, focus the input and open the menu
 				this._openAfterFocus = this.props.openOnClick;
 				this.focus();
+				this.setState({ focusedOption: null });
 			}
 		}
 	}, {
@@ -23933,18 +24108,18 @@ var Select$1 = function (_React$Component) {
 			if (this.props.disabled || event.type === 'mousedown' && event.button !== 0) {
 				return;
 			}
-			// If the menu isn't open, let the event bubble to the main handleMouseDown
-			if (!this.state.isOpen) {
+
+			if (this.state.isOpen) {
+				// prevent default event handlers
+				event.stopPropagation();
+				event.preventDefault();
+				// close the menu
+				this.closeMenu();
+			} else {
+				// If the menu isn't open, let the event bubble to the main handleMouseDown
 				this.setState({
 					isOpen: true
 				});
-			}
-			// prevent default event handlers
-			event.stopPropagation();
-			event.preventDefault();
-			// close the menu
-			if (this.state.isOpen) {
-				this.closeMenu();
 			}
 		}
 	}, {
@@ -23955,6 +24130,7 @@ var Select$1 = function (_React$Component) {
 			if (this.props.disabled || event.type === 'mousedown' && event.button !== 0) {
 				return;
 			}
+
 			event.stopPropagation();
 			event.preventDefault();
 
@@ -23966,9 +24142,9 @@ var Select$1 = function (_React$Component) {
 		value: function closeMenu() {
 			if (this.props.onCloseResetsInput) {
 				this.setState({
+					inputValue: this.handleInputValueChange(''),
 					isOpen: false,
-					isPseudoFocused: this.state.isFocused && !this.props.multi,
-					inputValue: this.handleInputValueChange('')
+					isPseudoFocused: this.state.isFocused && !this.props.multi
 				});
 			} else {
 				this.setState({
@@ -23982,14 +24158,20 @@ var Select$1 = function (_React$Component) {
 		key: 'handleInputFocus',
 		value: function handleInputFocus(event) {
 			if (this.props.disabled) return;
-			var isOpen = this.state.isOpen || this._openAfterFocus || this.props.openOnFocus;
+
+			var toOpen = this.state.isOpen || this._openAfterFocus || this.props.openOnFocus;
+			toOpen = this._focusAfterClear ? false : toOpen; //if focus happens after clear values, don't open dropdown yet.
+
 			if (this.props.onFocus) {
 				this.props.onFocus(event);
 			}
+
 			this.setState({
 				isFocused: true,
-				isOpen: isOpen
+				isOpen: !!toOpen
 			});
+
+			this._focusAfterClear = false;
 			this._openAfterFocus = false;
 		}
 	}, {
@@ -24024,9 +24206,22 @@ var Select$1 = function (_React$Component) {
 			}
 
 			this.setState({
+				inputValue: newInputValue,
 				isOpen: true,
-				isPseudoFocused: false,
-				inputValue: newInputValue
+				isPseudoFocused: false
+			});
+		}
+	}, {
+		key: 'setInputValue',
+		value: function setInputValue(newValue) {
+			if (this.props.onInputChange) {
+				var nextState = this.props.onInputChange(newValue);
+				if (nextState != null && (typeof nextState === 'undefined' ? 'undefined' : _typeof(nextState)) !== 'object') {
+					newValue = '' + nextState;
+				}
+			}
+			this.setState({
+				inputValue: newValue
 			});
 		}
 	}, {
@@ -24060,15 +24255,15 @@ var Select$1 = function (_React$Component) {
 						event.preventDefault();
 						this.popValue();
 					}
-					return;
+					break;
 				case 9:
 					// tab
 					if (event.shiftKey || !this.state.isOpen || !this.props.tabSelectsValue) {
-						return;
+						break;
 					}
 					event.preventDefault();
 					this.selectFocusedOption();
-					return;
+					break;
 				case 13:
 					// enter
 					event.preventDefault();
@@ -24078,10 +24273,10 @@ var Select$1 = function (_React$Component) {
 					} else {
 						this.focusNextOption();
 					}
-					return;
 					break;
 				case 27:
 					// escape
+					event.preventDefault();
 					if (this.state.isOpen) {
 						this.closeMenu();
 						event.stopPropagation();
@@ -24093,44 +24288,50 @@ var Select$1 = function (_React$Component) {
 				case 32:
 					// space
 					if (this.props.searchable) {
-						return;
+						break;
 					}
 					event.preventDefault();
 					if (!this.state.isOpen) {
 						this.focusNextOption();
-						return;
+						break;
 					}
 					event.stopPropagation();
 					this.selectFocusedOption();
 					break;
 				case 38:
 					// up
+					event.preventDefault();
 					this.focusPreviousOption();
 					break;
 				case 40:
 					// down
+					event.preventDefault();
 					this.focusNextOption();
 					break;
 				case 33:
 					// page up
+					event.preventDefault();
 					this.focusPageUpOption();
 					break;
 				case 34:
 					// page down
+					event.preventDefault();
 					this.focusPageDownOption();
 					break;
 				case 35:
 					// end key
 					if (event.shiftKey) {
-						return;
+						break;
 					}
+					event.preventDefault();
 					this.focusEndOption();
 					break;
 				case 36:
 					// home key
 					if (event.shiftKey) {
-						return;
+						break;
 					}
+					event.preventDefault();
 					this.focusStartOption();
 					break;
 				case 46:
@@ -24139,11 +24340,8 @@ var Select$1 = function (_React$Component) {
 						event.preventDefault();
 						this.popValue();
 					}
-					return;
-				default:
-					return;
+					break;
 			}
-			event.preventDefault();
 		}
 	}, {
 		key: 'handleValueClick',
@@ -24162,12 +24360,6 @@ var Select$1 = function (_React$Component) {
 			}
 		}
 	}, {
-		key: 'handleRequired',
-		value: function handleRequired(value, multi) {
-			if (!value) return true;
-			return multi ? value.length === 0 : Object.keys(value).length === 0;
-		}
-	}, {
 		key: 'getOptionLabel',
 		value: function getOptionLabel(op) {
 			return op[this.props.labelKey];
@@ -24175,15 +24367,15 @@ var Select$1 = function (_React$Component) {
 
 		/**
    * Turns a value into an array from the given options
-   * @param	{String|Number|Array}	value		- the value of the select input
-   * @param	{Object}		nextProps	- optionally specify the nextProps so the returned array uses the latest configuration
+   * @param {String|Number|Array} value		- the value of the select input
+   * @param {Object}		nextProps	- optionally specify the nextProps so the returned array uses the latest configuration
    * @returns	{Array}	the value of the select represented in an array
    */
 
 	}, {
 		key: 'getValueArray',
-		value: function getValueArray(value, nextProps) {
-			var _this2 = this;
+		value: function getValueArray(value) {
+			var nextProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
 
 			/** support optionally passing in the `nextProps` so `componentWillReceiveProps` updates will function as expected */
 			var props = (typeof nextProps === 'undefined' ? 'undefined' : _typeof(nextProps)) === 'object' ? nextProps : this.props;
@@ -24196,88 +24388,68 @@ var Select$1 = function (_React$Component) {
 					value = [value];
 				}
 				return value.map(function (value) {
-					return _this2.expandValue(value, props);
+					return expandValue(value, props);
 				}).filter(function (i) {
 					return i;
 				});
 			}
-			var expandedValue = this.expandValue(value, props);
+			var expandedValue = expandValue(value, props);
 			return expandedValue ? [expandedValue] : [];
-		}
-
-		/**
-   * Retrieve a value from the given options and valueKey
-   * @param	{String|Number|Array}	value	- the selected value(s)
-   * @param	{Object}		props	- the Select component's props (or nextProps)
-   */
-
-	}, {
-		key: 'expandValue',
-		value: function expandValue(value, props) {
-			var valueType = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-			if (valueType !== 'string' && valueType !== 'number' && valueType !== 'boolean') return value;
-			var options = props.options,
-			    valueKey = props.valueKey;
-
-			if (!options) return;
-			for (var i = 0; i < options.length; i++) {
-				if (String(options[i][valueKey]) === String(value)) return options[i];
-			}
 		}
 	}, {
 		key: 'setValue',
 		value: function setValue(value) {
-			var _this3 = this;
+			var _this2 = this;
 
 			if (this.props.autoBlur) {
 				this.blurInput();
 			}
 			if (this.props.required) {
-				var required = this.handleRequired(value, this.props.multi);
+				var required = handleRequired(value, this.props.multi);
 				this.setState({ required: required });
 			}
+			if (this.props.simpleValue && value) {
+				value = this.props.multi ? value.map(function (i) {
+					return i[_this2.props.valueKey];
+				}).join(this.props.delimiter) : value[this.props.valueKey];
+			}
 			if (this.props.onChange) {
-				if (this.props.simpleValue && value) {
-					value = this.props.multi ? value.map(function (i) {
-						return i[_this3.props.valueKey];
-					}).join(this.props.delimiter) : value[this.props.valueKey];
-				}
 				this.props.onChange(value);
 			}
 		}
 	}, {
 		key: 'selectValue',
 		value: function selectValue(value) {
-			var _this4 = this;
+			var _this3 = this;
 
 			// NOTE: we actually add/set the value in a callback to make sure the
 			// input value is empty to avoid styling issues in Chrome
 			if (this.props.closeOnSelect) {
 				this.hasScrolledToOption = false;
 			}
+			var updatedValue = this.props.onSelectResetsInput ? '' : this.state.inputValue;
 			if (this.props.multi) {
-				var updatedValue = this.props.onSelectResetsInput ? '' : this.state.inputValue;
 				this.setState({
 					focusedIndex: null,
 					inputValue: this.handleInputValueChange(updatedValue),
 					isOpen: !this.props.closeOnSelect
 				}, function () {
-					var valueArray = _this4.getValueArray(_this4.props.value);
+					var valueArray = _this3.getValueArray(_this3.props.value);
 					if (valueArray.some(function (i) {
-						return i[_this4.props.valueKey] === value[_this4.props.valueKey];
+						return i[_this3.props.valueKey] === value[_this3.props.valueKey];
 					})) {
-						_this4.removeValue(value);
+						_this3.removeValue(value);
 					} else {
-						_this4.addValue(value);
+						_this3.addValue(value);
 					}
 				});
 			} else {
 				this.setState({
-					inputValue: this.handleInputValueChange(''),
+					inputValue: this.handleInputValueChange(updatedValue),
 					isOpen: !this.props.closeOnSelect,
 					isPseudoFocused: this.state.isFocused
 				}, function () {
-					_this4.setValue(value);
+					_this3.setValue(value);
 				});
 			}
 		}
@@ -24309,11 +24481,11 @@ var Select$1 = function (_React$Component) {
 	}, {
 		key: 'removeValue',
 		value: function removeValue(value) {
-			var _this5 = this;
+			var _this4 = this;
 
 			var valueArray = this.getValueArray(this.props.value);
 			this.setValue(valueArray.filter(function (i) {
-				return i[_this5.props.valueKey] !== value[_this5.props.valueKey];
+				return i[_this4.props.valueKey] !== value[_this4.props.valueKey];
 			}));
 			this.focus();
 		}
@@ -24325,12 +24497,16 @@ var Select$1 = function (_React$Component) {
 			if (event && event.type === 'mousedown' && event.button !== 0) {
 				return;
 			}
+
 			event.preventDefault();
+
 			this.setValue(this.getResetValue());
 			this.setState({
-				isOpen: false,
-				inputValue: this.handleInputValueChange('')
+				inputValue: this.handleInputValueChange(''),
+				isOpen: false
 			}, this.focus);
+
+			this._focusAfterClear = true;
 		}
 	}, {
 		key: 'getResetValue',
@@ -24390,11 +24566,14 @@ var Select$1 = function (_React$Component) {
 			});
 			this._scrollToFocusedOptionOnUpdate = true;
 			if (!this.state.isOpen) {
-				this.setState({
-					isOpen: true,
-					inputValue: '',
-					focusedOption: this._focusedOption || (options.length ? options[dir === 'next' ? 0 : options.length - 1].option : null)
-				});
+				var newState = {
+					focusedOption: this._focusedOption || (options.length ? options[dir === 'next' ? 0 : options.length - 1].option : null),
+					isOpen: true
+				};
+				if (this.props.onSelectResetsInput) {
+					newState.inputValue = '';
+				}
+				this.setState(newState);
 				return;
 			}
 			if (!options.length) return;
@@ -24425,11 +24604,11 @@ var Select$1 = function (_React$Component) {
 					focusedIndex = potentialIndex;
 				}
 			} else if (dir === 'page_down') {
-				var potentialIndex = focusedIndex + this.props.pageSize;
-				if (potentialIndex > options.length - 1) {
+				var _potentialIndex = focusedIndex + this.props.pageSize;
+				if (_potentialIndex > options.length - 1) {
 					focusedIndex = options.length - 1;
 				} else {
-					focusedIndex = potentialIndex;
+					focusedIndex = _potentialIndex;
 				}
 			}
 
@@ -24458,21 +24637,22 @@ var Select$1 = function (_React$Component) {
 		key: 'renderLoading',
 		value: function renderLoading() {
 			if (!this.props.isLoading) return;
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'span',
 				{ className: 'Select-loading-zone', 'aria-hidden': 'true' },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'Select-loading' })
+				__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('span', { className: 'Select-loading' })
 			);
 		}
 	}, {
 		key: 'renderValue',
 		value: function renderValue(valueArray, isOpen) {
-			var _this6 = this;
+			var _this5 = this;
 
 			var renderLabel = this.props.valueRenderer || this.getOptionLabel;
 			var ValueComponent = this.props.valueComponent;
 			if (!valueArray.length) {
-				return !this.state.inputValue ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				var showPlaceholder = shouldShowPlaceholder(this.state, this.props, isOpen);
+				return showPlaceholder ? __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 					'div',
 					{ className: 'Select-placeholder' },
 					this.props.placeholder
@@ -24481,34 +24661,36 @@ var Select$1 = function (_React$Component) {
 			var onClick = this.props.onValueClick ? this.handleValueClick : null;
 			if (this.props.multi) {
 				return valueArray.map(function (value, i) {
-					return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 						ValueComponent,
 						{
-							id: _this6._instancePrefix + '-value-' + i,
-							instancePrefix: _this6._instancePrefix,
-							disabled: _this6.props.disabled || value.clearableValue === false,
-							key: 'value-' + i + '-' + value[_this6.props.valueKey],
+							disabled: _this5.props.disabled || value.clearableValue === false,
+							id: _this5._instancePrefix + '-value-' + i,
+							instancePrefix: _this5._instancePrefix,
+							key: 'value-' + i + '-' + value[_this5.props.valueKey],
 							onClick: onClick,
-							onRemove: _this6.removeValue,
+							onRemove: _this5.removeValue,
+							placeholder: _this5.props.placeholder,
 							value: value
 						},
 						renderLabel(value, i),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 							'span',
 							{ className: 'Select-aria-only' },
 							'\xA0'
 						)
 					);
 				});
-			} else if (!this.state.inputValue) {
+			} else if (shouldShowValue(this.state, this.props)) {
 				if (isOpen) onClick = null;
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 					ValueComponent,
 					{
-						id: this._instancePrefix + '-value-item',
 						disabled: this.props.disabled,
+						id: this._instancePrefix + '-value-item',
 						instancePrefix: this._instancePrefix,
 						onClick: onClick,
+						placeholder: this.props.placeholder,
 						value: valueArray[0]
 					},
 					renderLabel(valueArray[0])
@@ -24519,31 +24701,38 @@ var Select$1 = function (_React$Component) {
 		key: 'renderInput',
 		value: function renderInput(valueArray, focusedOptionIndex) {
 			var _classNames,
-			    _this7 = this;
+			    _this6 = this;
 
-			var className = __WEBPACK_IMPORTED_MODULE_4_classnames___default()('Select-input', this.props.inputProps.className);
-			var isOpen = !!this.state.isOpen;
+			var className = __WEBPACK_IMPORTED_MODULE_1_classnames___default()('Select-input', this.props.inputProps.className);
+			var isOpen = this.state.isOpen;
 
-			var ariaOwns = __WEBPACK_IMPORTED_MODULE_4_classnames___default()((_classNames = {}, defineProperty(_classNames, this._instancePrefix + '-list', isOpen), defineProperty(_classNames, this._instancePrefix + '-backspace-remove-message', this.props.multi && !this.props.disabled && this.state.isFocused && !this.state.inputValue), _classNames));
+			var ariaOwns = __WEBPACK_IMPORTED_MODULE_1_classnames___default()((_classNames = {}, defineProperty(_classNames, this._instancePrefix + '-list', isOpen), defineProperty(_classNames, this._instancePrefix + '-backspace-remove-message', this.props.multi && !this.props.disabled && this.state.isFocused && !this.state.inputValue), _classNames));
+
+			var value = this.state.inputValue;
+			if (value && !this.props.onSelectResetsInput && !this.state.isFocused) {
+				// it hides input value when it is not focused and was not reset on select
+				value = '';
+			}
+
 			var inputProps = _extends({}, this.props.inputProps, {
-				role: 'combobox',
-				'aria-expanded': '' + isOpen,
-				'aria-owns': ariaOwns,
-				'aria-haspopup': '' + isOpen,
 				'aria-activedescendant': isOpen ? this._instancePrefix + '-option-' + focusedOptionIndex : this._instancePrefix + '-value',
 				'aria-describedby': this.props['aria-describedby'],
-				'aria-labelledby': this.props['aria-labelledby'],
+				'aria-expanded': '' + isOpen,
+				'aria-haspopup': '' + isOpen,
 				'aria-label': this.props['aria-label'],
+				'aria-labelledby': this.props['aria-labelledby'],
+				'aria-owns': ariaOwns,
 				className: className,
-				tabIndex: this.props.tabIndex,
 				onBlur: this.handleInputBlur,
 				onChange: this.handleInputChange,
 				onFocus: this.handleInputFocus,
 				ref: function ref(_ref) {
-					return _this7.input = _ref;
+					return _this6.input = _ref;
 				},
+				role: 'combobox',
 				required: this.state.required,
-				value: this.state.inputValue
+				tabIndex: this.props.tabIndex,
+				value: value
 			});
 
 			if (this.props.inputRenderer) {
@@ -24551,37 +24740,36 @@ var Select$1 = function (_React$Component) {
 			}
 
 			if (this.props.disabled || !this.props.searchable) {
-				var _props$inputProps = this.props.inputProps,
-				    inputClassName = _props$inputProps.inputClassName,
-				    divProps = objectWithoutProperties(_props$inputProps, ['inputClassName']);
+				var divProps = objectWithoutProperties(this.props.inputProps, []);
 
 
-				var _ariaOwns = __WEBPACK_IMPORTED_MODULE_4_classnames___default()(defineProperty({}, this._instancePrefix + '-list', isOpen));
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', _extends({}, divProps, {
-					role: 'combobox',
+				var _ariaOwns = __WEBPACK_IMPORTED_MODULE_1_classnames___default()(defineProperty({}, this._instancePrefix + '-list', isOpen));
+				return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('div', _extends({}, divProps, {
 					'aria-expanded': isOpen,
 					'aria-owns': _ariaOwns,
 					'aria-activedescendant': isOpen ? this._instancePrefix + '-option-' + focusedOptionIndex : this._instancePrefix + '-value',
-					'aria-labelledby': this.props['aria-labelledby'],
+					'aria-disabled': '' + this.props.disabled,
 					'aria-label': this.props['aria-label'],
+					'aria-labelledby': this.props['aria-labelledby'],
 					className: className,
-					tabIndex: this.props.tabIndex || 0,
 					onBlur: this.handleInputBlur,
 					onFocus: this.handleInputFocus,
 					ref: function ref(_ref2) {
-						return _this7.input = _ref2;
+						return _this6.input = _ref2;
 					},
-					'aria-disabled': '' + !!this.props.disabled,
-					style: { border: 0, width: 1, display: 'inline-block' } }));
+					role: 'combobox',
+					style: { border: 0, width: 1, display: 'inline-block' },
+					tabIndex: this.props.tabIndex || 0
+				}));
 			}
 
 			if (this.props.autosize) {
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_input_autosize___default.a, _extends({ id: this.props.id }, inputProps, { minWidth: '5' }));
+				return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_input_autosize___default.a, _extends({ id: this.props.id }, inputProps, { minWidth: '5' }));
 			}
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'div',
-				{ className: className, key: 'input-wrap' },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', _extends({ id: this.props.id }, inputProps))
+				{ className: className, key: 'input-wrap', style: { display: 'inline-block' } },
+				__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('input', _extends({ id: this.props.id }, inputProps))
 			);
 		}
 	}, {
@@ -24589,16 +24777,19 @@ var Select$1 = function (_React$Component) {
 		value: function renderClear() {
 			var valueArray = this.getValueArray(this.props.value);
 			if (!this.props.clearable || !valueArray.length || this.props.disabled || this.props.isLoading) return;
+			var ariaLabel = this.props.multi ? this.props.clearAllText : this.props.clearValueText;
 			var clear = this.props.clearRenderer();
 
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'span',
-				{ className: 'Select-clear-zone', title: this.props.multi ? this.props.clearAllText : this.props.clearValueText,
-					'aria-label': this.props.multi ? this.props.clearAllText : this.props.clearValueText,
+				{
+					'aria-label': ariaLabel,
+					className: 'Select-clear-zone',
 					onMouseDown: this.clearValue,
-					onTouchStart: this.handleTouchStart,
+					onTouchEnd: this.handleTouchEndClearValue,
 					onTouchMove: this.handleTouchMove,
-					onTouchEnd: this.handleTouchEndClearValue
+					onTouchStart: this.handleTouchStart,
+					title: ariaLabel
 				},
 				clear
 			);
@@ -24616,7 +24807,7 @@ var Select$1 = function (_React$Component) {
 				return null;
 			}
 
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'span',
 				{
 					className: 'Select-arrow-zone',
@@ -24641,8 +24832,8 @@ var Select$1 = function (_React$Component) {
 					labelKey: this.props.labelKey,
 					matchPos: this.props.matchPos,
 					matchProp: this.props.matchProp,
-					valueKey: this.props.valueKey,
-					trimFilter: this.props.trimFilter
+					trimFilter: this.props.trimFilter,
+					valueKey: this.props.valueKey
 				});
 			} else {
 				return options;
@@ -24666,19 +24857,19 @@ var Select$1 = function (_React$Component) {
 					instancePrefix: this._instancePrefix,
 					labelKey: this.props.labelKey,
 					onFocus: this.focusOption,
+					onOptionRef: this.onOptionRef,
 					onSelect: this.selectValue,
 					optionClassName: this.props.optionClassName,
 					optionComponent: this.props.optionComponent,
 					optionRenderer: this.props.optionRenderer || this.getOptionLabel,
 					options: options,
-					selectValue: this.selectValue,
 					removeValue: this.removeValue,
+					selectValue: this.selectValue,
 					valueArray: valueArray,
-					valueKey: this.props.valueKey,
-					onOptionRef: this.onOptionRef
+					valueKey: this.props.valueKey
 				});
 			} else if (this.props.noResultsText) {
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 					'div',
 					{ className: 'Select-noresults' },
 					this.props.noResultsText
@@ -24690,29 +24881,32 @@ var Select$1 = function (_React$Component) {
 	}, {
 		key: 'renderHiddenField',
 		value: function renderHiddenField(valueArray) {
-			var _this8 = this;
+			var _this7 = this;
 
 			if (!this.props.name) return;
 			if (this.props.joinValues) {
 				var value = valueArray.map(function (i) {
-					return stringifyValue(i[_this8.props.valueKey]);
+					return stringifyValue(i[_this7.props.valueKey]);
 				}).join(this.props.delimiter);
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
-					type: 'hidden',
-					ref: function ref(_ref3) {
-						return _this8.value = _ref3;
-					},
+				return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('input', {
+					disabled: this.props.disabled,
 					name: this.props.name,
-					value: value,
-					disabled: this.props.disabled });
+					ref: function ref(_ref3) {
+						return _this7.value = _ref3;
+					},
+					type: 'hidden',
+					value: value
+				});
 			}
 			return valueArray.map(function (item, index) {
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { key: 'hidden.' + index,
-					type: 'hidden',
+				return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('input', {
+					disabled: _this7.props.disabled,
+					key: 'hidden.' + index,
+					name: _this7.props.name,
 					ref: 'value' + index,
-					name: _this8.props.name,
-					value: stringifyValue(item[_this8.props.valueKey]),
-					disabled: _this8.props.disabled });
+					type: 'hidden',
+					value: stringifyValue(item[_this7.props.valueKey])
+				});
 			});
 		}
 	}, {
@@ -24745,26 +24939,32 @@ var Select$1 = function (_React$Component) {
 	}, {
 		key: 'renderOuter',
 		value: function renderOuter(options, valueArray, focusedOption) {
-			var _this9 = this;
+			var _this8 = this;
 
 			var menu = this.renderMenu(options, valueArray, focusedOption);
 			if (!menu) {
 				return null;
 			}
 
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'div',
 				{ ref: function ref(_ref5) {
-						return _this9.menuContainer = _ref5;
+						return _this8.menuContainer = _ref5;
 					}, className: 'Select-menu-outer', style: this.props.menuContainerStyle },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 					'div',
-					{ ref: function ref(_ref4) {
-							return _this9.menu = _ref4;
-						}, role: 'listbox', tabIndex: -1, className: 'Select-menu', id: this._instancePrefix + '-list',
-						style: this.props.menuStyle,
+					{
+						className: 'Select-menu',
+						id: this._instancePrefix + '-list',
+						onMouseDown: this.handleMouseDownOnMenu,
 						onScroll: this.handleMenuScroll,
-						onMouseDown: this.handleMouseDownOnMenu },
+						ref: function ref(_ref4) {
+							return _this8.menu = _ref4;
+						},
+						role: 'listbox',
+						style: this.props.menuStyle,
+						tabIndex: -1
+					},
 					menu
 				)
 			);
@@ -24772,7 +24972,7 @@ var Select$1 = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this10 = this;
+			var _this9 = this;
 
 			var valueArray = this.getValueArray(this.props.value);
 			var options = this._visibleOptions = this.filterOptions(this.props.multi && this.props.removeSelected ? valueArray : null);
@@ -24786,9 +24986,8 @@ var Select$1 = function (_React$Component) {
 			} else {
 				focusedOption = this._focusedOption = null;
 			}
-			var className = __WEBPACK_IMPORTED_MODULE_4_classnames___default()('Select', this.props.className, {
-				'Select--multi': this.props.multi,
-				'Select--single': !this.props.multi,
+			var className = __WEBPACK_IMPORTED_MODULE_1_classnames___default()('Select', this.props.className, {
+				'has-value': valueArray.length,
 				'is-clearable': this.props.clearable,
 				'is-disabled': this.props.disabled,
 				'is-focused': this.state.isFocused,
@@ -24796,41 +24995,42 @@ var Select$1 = function (_React$Component) {
 				'is-open': isOpen,
 				'is-pseudo-focused': this.state.isPseudoFocused,
 				'is-searchable': this.props.searchable,
-				'has-value': valueArray.length,
-				'Select--rtl': this.props.rtl
+				'Select--multi': this.props.multi,
+				'Select--rtl': this.props.rtl,
+				'Select--single': !this.props.multi
 			});
 
 			var removeMessage = null;
 			if (this.props.multi && !this.props.disabled && valueArray.length && !this.state.inputValue && this.state.isFocused && this.props.backspaceRemoves) {
-				removeMessage = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				removeMessage = __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 					'span',
 					{ id: this._instancePrefix + '-backspace-remove-message', className: 'Select-aria-only', 'aria-live': 'assertive' },
 					this.props.backspaceToRemoveMessage.replace('{label}', valueArray[valueArray.length - 1][this.props.labelKey])
 				);
 			}
 
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				'div',
 				{ ref: function ref(_ref7) {
-						return _this10.wrapper = _ref7;
+						return _this9.wrapper = _ref7;
 					},
 					className: className,
 					style: this.props.wrapperStyle },
 				this.renderHiddenField(valueArray),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 					'div',
 					{ ref: function ref(_ref6) {
-							return _this10.control = _ref6;
+							return _this9.control = _ref6;
 						},
 						className: 'Select-control',
-						style: this.props.style,
 						onKeyDown: this.handleKeyDown,
 						onMouseDown: this.handleMouseDown,
 						onTouchEnd: this.handleTouchEnd,
+						onTouchMove: this.handleTouchMove,
 						onTouchStart: this.handleTouchStart,
-						onTouchMove: this.handleTouchMove
+						style: this.props.style
 					},
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 						'span',
 						{ className: 'Select-multi-value-wrapper', id: this._instancePrefix + '-value' },
 						this.renderValue(valueArray, isOpen),
@@ -24846,87 +25046,85 @@ var Select$1 = function (_React$Component) {
 		}
 	}]);
 	return Select;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-
-
+}(__WEBPACK_IMPORTED_MODULE_3_react___default.a.Component);
 
 Select$1.propTypes = {
-	'aria-describedby': __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // html id(s) of element(s) that should be used to describe this input (for assistive tech)
-	'aria-label': __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // aria label (for assistive tech)
-	'aria-labelledby': __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // html id of an element that should be used as the label (for assistive tech)
-	arrowRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // create the drop-down caret element
-	autoBlur: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // automatically blur the component when an option is selected
-	autoFocus: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // autofocus the component on mount
-	autofocus: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // deprecated; use autoFocus instead
-	autosize: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to enable autosizing or not
-	backspaceRemoves: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether backspace removes an item if there is no text input
-	backspaceToRemoveMessage: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // message to use for screenreaders to press backspace to remove the current item - {label} is replaced with the item label
-	className: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // className for the outer element
+	'aria-describedby': __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // html id(s) of element(s) that should be used to describe this input (for assistive tech)
+	'aria-label': __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // aria label (for assistive tech)
+	'aria-labelledby': __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // html id of an element that should be used as the label (for assistive tech)
+	arrowRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // create the drop-down caret element
+	autoBlur: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // automatically blur the component when an option is selected
+	autoFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // autofocus the component on mount
+	autofocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // deprecated; use autoFocus instead
+	autosize: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to enable autosizing or not
+	backspaceRemoves: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether backspace removes an item if there is no text input
+	backspaceToRemoveMessage: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // message to use for screenreaders to press backspace to remove the current item - {label} is replaced with the item label
+	className: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // className for the outer element
 	clearAllText: stringOrNode, // title for the "clear" control when multi: true
-	clearRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // create clearable x element
+	clearRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // create clearable x element
 	clearValueText: stringOrNode, // title for the "clear" control
-	clearable: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // should it be possible to reset value
-	closeOnSelect: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to close the menu when a value is selected
-	deleteRemoves: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether delete removes an item if there is no text input
-	delimiter: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // delimiter to use to join multiple values for the hidden field value
-	disabled: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether the Select is disabled or not
-	escapeClearsValue: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether escape clears the value when the menu is closed
-	filterOption: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // method to filter a single option (option, filterString)
-	filterOptions: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any, // boolean to enable default filtering or function to filter the options array ([options], filterString, [values])
-	id: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // html id to set on the input element for accessibility or tests
-	ignoreAccents: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to strip diacritics when filtering
-	ignoreCase: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to perform case-insensitive filtering
-	inputProps: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object, // custom attributes for the Input
-	inputRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // returns a custom input component
-	instanceId: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // set the components instanceId
-	isLoading: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether the Select is loading externally or not (such as options being loaded)
-	joinValues: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // joins multiple values into a single form field with the delimiter (legacy mode)
-	labelKey: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // path of the label value in option objects
-	matchPos: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // (any|start) match the start or entire string when filtering
-	matchProp: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // (any|label|value) which option property to filter on
-	menuBuffer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number, // optional buffer (in px) between the bottom of the viewport and the bottom of the menu
-	menuContainerStyle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object, // optional style to apply to the menu container
-	menuRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // renders a custom menu with options
-	menuStyle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object, // optional style to apply to the menu
-	multi: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // multi-value input
-	name: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // generates a hidden <input /> tag with this field name for html forms
+	clearable: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // should it be possible to reset value
+	closeOnSelect: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to close the menu when a value is selected
+	deleteRemoves: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether delete removes an item if there is no text input
+	delimiter: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // delimiter to use to join multiple values for the hidden field value
+	disabled: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether the Select is disabled or not
+	escapeClearsValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether escape clears the value when the menu is closed
+	filterOption: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // method to filter a single option (option, filterString)
+	filterOptions: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any, // boolean to enable default filtering or function to filter the options array ([options], filterString, [values])
+	id: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // html id to set on the input element for accessibility or tests
+	ignoreAccents: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to strip diacritics when filtering
+	ignoreCase: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to perform case-insensitive filtering
+	inputProps: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object, // custom attributes for the Input
+	inputRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // returns a custom input component
+	instanceId: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // set the components instanceId
+	isLoading: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether the Select is loading externally or not (such as options being loaded)
+	joinValues: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // joins multiple values into a single form field with the delimiter (legacy mode)
+	labelKey: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // path of the label value in option objects
+	matchPos: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // (any|start) match the start or entire string when filtering
+	matchProp: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // (any|label|value) which option property to filter on
+	menuBuffer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.number, // optional buffer (in px) between the bottom of the viewport and the bottom of the menu
+	menuContainerStyle: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object, // optional style to apply to the menu container
+	menuRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // renders a custom menu with options
+	menuStyle: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object, // optional style to apply to the menu
+	multi: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // multi-value input
+	name: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // generates a hidden <input /> tag with this field name for html forms
 	noResultsText: stringOrNode, // placeholder displayed when there are no matching search results
-	onBlur: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // onBlur handler: function (event) {}
-	onBlurResetsInput: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether input is cleared on blur
-	onChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // onChange handler: function (newValue) {}
-	onClose: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // fires when the menu is closed
-	onCloseResetsInput: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether input is cleared when menu is closed through the arrow
-	onFocus: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // onFocus handler: function (event) {}
-	onInputChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // onInputChange handler: function (inputValue) {}
-	onInputKeyDown: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // input keyDown handler: function (event) {}
-	onMenuScrollToBottom: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // fires when the menu is scrolled to the bottom; can be used to paginate options
-	onOpen: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // fires when the menu is opened
-	onSelectResetsInput: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether input is cleared on select (works only for multiselect)
-	onValueClick: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // onClick handler for value labels: function (value, event) {}
-	openOnClick: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // boolean to control opening the menu when the control is clicked
-	openOnFocus: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // always open options menu on focus
-	optionClassName: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // additional class(es) to apply to the <Option /> elements
-	optionComponent: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // option component to render in dropdown
-	optionRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // optionRenderer: function (option) {}
-	options: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.array, // array of options
-	pageSize: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number, // number of entries to page when using page up/down keys
+	onBlur: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // onBlur handler: function (event) {}
+	onBlurResetsInput: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether input is cleared on blur
+	onChange: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // onChange handler: function (newValue) {}
+	onClose: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // fires when the menu is closed
+	onCloseResetsInput: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether input is cleared when menu is closed through the arrow
+	onFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // onFocus handler: function (event) {}
+	onInputChange: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // onInputChange handler: function (inputValue) {}
+	onInputKeyDown: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // input keyDown handler: function (event) {}
+	onMenuScrollToBottom: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // fires when the menu is scrolled to the bottom; can be used to paginate options
+	onOpen: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // fires when the menu is opened
+	onSelectResetsInput: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether input is cleared on select (works only for multiselect)
+	onValueClick: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // onClick handler for value labels: function (value, event) {}
+	openOnClick: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // boolean to control opening the menu when the control is clicked
+	openOnFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // always open options menu on focus
+	optionClassName: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // additional class(es) to apply to the <Option /> elements
+	optionComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // option component to render in dropdown
+	optionRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // optionRenderer: function (option) {}
+	options: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.array, // array of options
+	pageSize: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.number, // number of entries to page when using page up/down keys
 	placeholder: stringOrNode, // field placeholder, displayed when there's no value
-	removeSelected: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether the selected option is removed from the dropdown on multi selects
-	required: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // applies HTML5 required attribute when needed
-	resetValue: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any, // value to use when you clear the control
-	rtl: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // set to true in order to use react-select in right-to-left direction
-	scrollMenuIntoView: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // boolean to enable the viewport to shift so that the full menu fully visible when engaged
-	searchable: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to enable searching feature or not
-	simpleValue: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // pass the value to onChange as a simple value (legacy pre 1.0 mode), defaults to false
-	style: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object, // optional style to apply to the control
+	removeSelected: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether the selected option is removed from the dropdown on multi selects
+	required: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // applies HTML5 required attribute when needed
+	resetValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any, // value to use when you clear the control
+	rtl: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // set to true in order to use react-select in right-to-left direction
+	scrollMenuIntoView: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // boolean to enable the viewport to shift so that the full menu fully visible when engaged
+	searchable: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to enable searching feature or not
+	simpleValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // pass the value to onChange as a simple value (legacy pre 1.0 mode), defaults to false
+	style: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object, // optional style to apply to the control
 	tabIndex: stringOrNumber, // optional tab index of the control
-	tabSelectsValue: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to treat tabbing out while focused to be value selection
-	trimFilter: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // whether to trim whitespace around filter value
-	value: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any, // initial field value
-	valueComponent: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // value component to render
-	valueKey: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, // path of the label value in option objects
-	valueRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // valueRenderer: function (option) {}
-	wrapperStyle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object // optional style to apply to the component wrapper
+	tabSelectsValue: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to treat tabbing out while focused to be value selection
+	trimFilter: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // whether to trim whitespace around filter value
+	value: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any, // initial field value
+	valueComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // value component to render
+	valueKey: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, // path of the label value in option objects
+	valueRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // valueRenderer: function (option) {}
+	wrapperStyle: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object // optional style to apply to the component wrapper
 };
 
 Select$1.defaultProps = {
@@ -24957,8 +25155,8 @@ Select$1.defaultProps = {
 	multi: false,
 	noResultsText: 'No results found',
 	onBlurResetsInput: true,
-	onSelectResetsInput: true,
 	onCloseResetsInput: true,
+	onSelectResetsInput: true,
 	openOnClick: true,
 	optionComponent: Option,
 	pageSize: 5,
@@ -24976,28 +25174,32 @@ Select$1.defaultProps = {
 };
 
 var propTypes = {
-	autoload: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool.isRequired, // automatically call the `loadOptions` prop on-mount; defaults to true
-	cache: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any, // object to use to cache results; set to null/false to disable caching
-	children: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func.isRequired, // Child function responsible for creating the inner Select component; (props: Object): PropTypes.element
-	ignoreAccents: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // strip diacritics when filtering; defaults to true
-	ignoreCase: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // perform case-insensitive filtering; defaults to true
-	loadOptions: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func.isRequired, // callback to load options asynchronously; (inputValue: string, callback: Function): ?Promise
-	loadingPlaceholder: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([// replaces the placeholder while options are loading
-	__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node]),
-	multi: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool, // multi-value input
-	noResultsText: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([// field noResultsText, displayed when no options come back from the server
-	__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node]),
-	onChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // onChange handler: function (newValue) {}
-	onInputChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func, // optional for keeping track of what is being typed
-	options: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.array.isRequired, // array of options
-	placeholder: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([// field placeholder, displayed when there's no value (shared with Select)
-	__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node]),
-	searchPromptText: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([// label to prompt for search input
-	__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node]),
-	value: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any // initial field value
+	autoload: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool.isRequired, // automatically call the `loadOptions` prop on-mount; defaults to true
+	cache: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any, // object to use to cache results; set to null/false to disable caching
+	children: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func.isRequired, // Child function responsible for creating the inner Select component; (props: Object): PropTypes.element
+	ignoreAccents: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // strip diacritics when filtering; defaults to true
+	ignoreCase: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // perform case-insensitive filtering; defaults to true
+	loadOptions: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func.isRequired, // callback to load options asynchronously; (inputValue: string, callback: Function): ?Promise
+	loadingPlaceholder: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.oneOfType([// replaces the placeholder while options are loading
+	__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node]),
+	multi: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.bool, // multi-value input
+	noResultsText: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.oneOfType([// field noResultsText, displayed when no options come back from the server
+	__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node]),
+	onChange: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // onChange handler: function (newValue) {}
+	onInputChange: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func, // optional for keeping track of what is being typed
+	options: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.array.isRequired, // array of options
+	placeholder: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.oneOfType([// field placeholder, displayed when there's no value (shared with Select)
+	__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node]),
+	searchPromptText: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.oneOfType([// label to prompt for search input
+	__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.node]),
+	value: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any // initial field value
 };
 
 var defaultCache = {};
+
+var defaultChildren = function defaultChildren(props) {
+	return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(Select$1, props);
+};
 
 var defaultProps = {
 	autoload: true,
@@ -25176,8 +25378,6 @@ var Async = function (_Component) {
 			var _props3 = this.props,
 			    children = _props3.children,
 			    loadingPlaceholder = _props3.loadingPlaceholder,
-			    multi = _props3.multi,
-			    onChange = _props3.onChange,
 			    placeholder = _props3.placeholder;
 			var _state2 = this.state,
 			    isLoading = _state2.isLoading,
@@ -25200,14 +25400,10 @@ var Async = function (_Component) {
 		}
 	}]);
 	return Async;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_3_react__["Component"]);
 
 Async.propTypes = propTypes;
 Async.defaultProps = defaultProps;
-
-function defaultChildren(props) {
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Select$1, props);
-}
 
 var CreatableSelect = function (_React$Component) {
 	inherits(CreatableSelect, _React$Component);
@@ -25238,7 +25434,7 @@ var CreatableSelect = function (_React$Component) {
 
 			if (isValidNewOption({ label: this.inputValue })) {
 				var option = newOptionCreator({ label: this.inputValue, labelKey: this.labelKey, valueKey: this.valueKey });
-				var _isOptionUnique = this.isOptionUnique({ option: option });
+				var _isOptionUnique = this.isOptionUnique({ option: option, options: options });
 
 				// Don't add the same option twice.
 				if (_isOptionUnique) {
@@ -25363,7 +25559,7 @@ var CreatableSelect = function (_React$Component) {
 		}
 	}, {
 		key: 'onOptionSelect',
-		value: function onOptionSelect(option, event) {
+		value: function onOptionSelect(option) {
 			if (option === this._createPlaceholderOption) {
 				this.createNewOption();
 			} else {
@@ -25381,10 +25577,8 @@ var CreatableSelect = function (_React$Component) {
 			var _this2 = this;
 
 			var _props4 = this.props,
-			    newOptionCreator = _props4.newOptionCreator,
-			    shouldKeyDownEventCreateNewOption = _props4.shouldKeyDownEventCreateNewOption,
 			    refProp = _props4.ref,
-			    restProps = objectWithoutProperties(_props4, ['newOptionCreator', 'shouldKeyDownEventCreateNewOption', 'ref']);
+			    restProps = objectWithoutProperties(_props4, ['ref']);
 			var children = this.props.children;
 
 			// We can't use destructuring default values to set the children,
@@ -25419,32 +25613,33 @@ var CreatableSelect = function (_React$Component) {
 		}
 	}]);
 	return CreatableSelect;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+}(__WEBPACK_IMPORTED_MODULE_3_react___default.a.Component);
 
+var defaultChildren$2 = function defaultChildren(props) {
+	return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(Select$1, props);
+};
 
-
-function defaultChildren$2(props) {
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Select$1, props);
-}
-
-function isOptionUnique(_ref3) {
+var isOptionUnique = function isOptionUnique(_ref3) {
 	var option = _ref3.option,
 	    options = _ref3.options,
 	    labelKey = _ref3.labelKey,
 	    valueKey = _ref3.valueKey;
 
+	if (!options || !options.length) {
+		return true;
+	}
+
 	return options.filter(function (existingOption) {
 		return existingOption[labelKey] === option[labelKey] || existingOption[valueKey] === option[valueKey];
 	}).length === 0;
-}
+};
 
-function isValidNewOption(_ref4) {
+var isValidNewOption = function isValidNewOption(_ref4) {
 	var label = _ref4.label;
-
 	return !!label;
-}
+};
 
-function newOptionCreator(_ref5) {
+var newOptionCreator = function newOptionCreator(_ref5) {
 	var label = _ref5.label,
 	    labelKey = _ref5.labelKey,
 	    valueKey = _ref5.valueKey;
@@ -25453,14 +25648,15 @@ function newOptionCreator(_ref5) {
 	option[valueKey] = label;
 	option[labelKey] = label;
 	option.className = 'Select-create-option-placeholder';
+
 	return option;
-}
+};
 
-function promptTextCreator(label) {
+var promptTextCreator = function promptTextCreator(label) {
 	return 'Create option "' + label + '"';
-}
+};
 
-function shouldKeyDownEventCreateNewOption(_ref6) {
+var shouldKeyDownEventCreateNewOption = function shouldKeyDownEventCreateNewOption(_ref6) {
 	var keyCode = _ref6.keyCode;
 
 	switch (keyCode) {
@@ -25472,7 +25668,7 @@ function shouldKeyDownEventCreateNewOption(_ref6) {
 		default:
 			return false;
 	}
-}
+};
 
 // Default prop methods
 CreatableSelect.isOptionUnique = isOptionUnique;
@@ -25495,47 +25691,47 @@ CreatableSelect.propTypes = {
 	// Child function responsible for creating the inner Select component
 	// This component can be used to compose HOCs (eg Creatable and Async)
 	// (props: Object): PropTypes.element
-	children: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	children: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// See Select.propTypes.filterOptions
-	filterOptions: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any,
+	filterOptions: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any,
 
 	// Searches for any matching option within the set of options.
 	// This function prevents duplicate options from being created.
 	// ({ option: Object, options: Array, labelKey: string, valueKey: string }): boolean
-	isOptionUnique: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	isOptionUnique: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// Determines if the current input text represents a valid option.
 	// ({ label: string }): boolean
-	isValidNewOption: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	isValidNewOption: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// See Select.propTypes.menuRenderer
-	menuRenderer: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.any,
+	menuRenderer: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.any,
 
 	// Factory to create new option.
 	// ({ label: string, labelKey: string, valueKey: string }): Object
-	newOptionCreator: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	newOptionCreator: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// input change handler: function (inputValue) {}
-	onInputChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	onInputChange: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// input keyDown handler: function (event) {}
-	onInputKeyDown: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	onInputKeyDown: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// new option click handler: function (option) {}
-	onNewOptionClick: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	onNewOptionClick: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// See Select.propTypes.options
-	options: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.array,
+	options: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.array,
 
 	// Creates prompt/placeholder option text.
 	// (filterText: string): string
-	promptTextCreator: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	promptTextCreator: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
-	ref: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+	ref: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func,
 
 	// Decides if a keyDown event (eg its `keyCode`) should result in the creation of a new option.
-	shouldKeyDownEventCreateNewOption: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func
+	shouldKeyDownEventCreateNewOption: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func
 };
 
 var AsyncCreatableSelect = function (_React$Component) {
@@ -25556,7 +25752,7 @@ var AsyncCreatableSelect = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 				Async,
 				this.props,
 				function (_ref) {
@@ -25564,7 +25760,7 @@ var AsyncCreatableSelect = function (_React$Component) {
 					    asyncProps = objectWithoutProperties(_ref, ['ref']);
 
 					var asyncRef = ref;
-					return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
 						CreatableSelect,
 						asyncProps,
 						function (_ref2) {
@@ -25586,16 +25782,14 @@ var AsyncCreatableSelect = function (_React$Component) {
 		}
 	}]);
 	return AsyncCreatableSelect;
-}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+}(__WEBPACK_IMPORTED_MODULE_3_react___default.a.Component);
 
-
-
-function defaultChildren$1(props) {
-	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Select$1, props);
-}
+var defaultChildren$1 = function defaultChildren(props) {
+	return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(Select$1, props);
+};
 
 AsyncCreatableSelect.propTypes = {
-	children: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func.isRequired // Child function responsible for creating the inner Select component; (props: Object): PropTypes.element
+	children: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func.isRequired // Child function responsible for creating the inner Select component; (props: Object): PropTypes.element
 };
 
 AsyncCreatableSelect.defaultProps = {
@@ -39956,6 +40150,7 @@ var App = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'select',
                 { value: this.state.selectedCollection,
+                  name: 'collections',
                   onChange: function onChange(_ref3) {
                     var target = _ref3.target;
                     return _this11.changeCollection(target.value);
