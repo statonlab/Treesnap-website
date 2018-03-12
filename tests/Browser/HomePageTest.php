@@ -22,7 +22,10 @@ class HomePageTest extends DuskTestCase
     public function testHomePageHasUnauthenticatedUserLinks()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new HomePage())->assertSee('Login')->assertSee('Register')->assertDontSee('Account');
+            $browser->visit(new HomePage())
+                ->assertSee('Login')
+                ->assertSee('Register')
+                ->assertDontSee('Account');
         });
     }
 
