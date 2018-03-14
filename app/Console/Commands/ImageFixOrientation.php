@@ -6,7 +6,6 @@ use App\Observation;
 use App\Services\Thumbnail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Storage;
 
 class ImageFixOrientation extends Command
 {
@@ -41,21 +40,26 @@ class ImageFixOrientation extends Command
      */
     public function handle()
     {
-        Observation::chunk(200, function ($observations) {
+        $corrected = 0;
+        Observation::chunk(200, function ($observations) use(&$corrected) {
             foreach ($observations as $observation) {
-                $this->fixOrientation($observation);
+                $corrected += $this->fixOrientation($observation);
             }
         });
+
+        $this->info("Corrected $corrected images!");
     }
 
     /**
      * Do the fixing.
      *
      * @param $observation
+     * @return int
      */
     protected function fixOrientation($observation)
     {
         $needs_thumbnail = false;
+        $corrected = 0;
         foreach ($observation->images as $key => $images) {
             foreach ($images as $index => $image_path) {
                 // Deal only with JPEG images
@@ -88,6 +92,7 @@ class ImageFixOrientation extends Command
                     // Get public path
                     $needs_thumbnail = true;
                     $this->info("Fixed: $path");
+                    $corrected++;
                 } else {
                     $this->error("Error: $path");
                 }
@@ -105,5 +110,7 @@ class ImageFixOrientation extends Command
             $this->info("Thumbnail created: $path");
             $observation->save();
         }
+
+        return $corrected;
     }
 }

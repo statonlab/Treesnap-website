@@ -31,7 +31,7 @@ class ImagesController extends Controller
         $this->validate($request, [
             'key' => 'nullable',
             // Allow up to 10MB image size
-            'image' => 'required|image|max:10240',
+            'image' => 'required|image|max:30240',
         ]);
 
         // Determine whether a thumbnail job should be dispatched
