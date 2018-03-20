@@ -296,8 +296,12 @@ export default class ObservationScene extends Component {
   }
 
   getImage(observation) {
-    const key = Object.keys(observation.images)[0]
-    return observation.images[key][0]
+    let keys = Object.keys(observation.images)
+    if (keys.length > 0) {
+      return observation.images[keys[0]][0]
+    } else {
+      return ''
+    }
   }
 
   getMeta() {
