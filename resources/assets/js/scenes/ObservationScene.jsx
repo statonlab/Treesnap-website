@@ -8,7 +8,6 @@ import Notify from '../components/Notify'
 import moment from 'moment'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
-import Helmet from 'react-helmet'
 
 export default class ObservationScene extends Component {
   constructor(props) {
@@ -296,45 +295,9 @@ export default class ObservationScene extends Component {
     )
   }
 
-  getImage(observation) {
-    let keys = Object.keys(observation.images)
-    if (keys.length > 0) {
-      return observation.images[keys[0]][0]
-    } else {
-      return ''
-    }
-  }
-
-  getMeta() {
-    if (!this.state.observation) {
-      return null
-    }
-
-    const observation = this.state.observation
-    const title       = (observation.observation_category === 'Other' ? observation.meta_data.otherLabel : observation.observation_category)
-    const description = `${title} was observed and shared with scientists on TreeSnap`
-    const image       = this.getImage(observation)
-    const url         = `https://treesnap.org/observation/${observation.observation_id}`
-
-    return (
-      <Helmet>
-        <meta property="og:title" content={title + ` (${observation.observation_id}) | TreeSnap`}/>
-        <meta property="og:description" content={description}/>
-        <meta property="og:image" content={image}/>
-        <meta property="og:url" content={url}/>
-
-        <meta name="twitter:title" content={title + ` (${observation.observation_id}) | TreeSnap`}/>
-        <meta name="twitter:description" content={description}/>
-        <meta name="twitter:image" content={image}/>
-        <meta name="twitter:card" content="summary_large_image"/>
-      </Helmet>
-    )
-  }
-
   render() {
     return (
       <div>
-        {this.getMeta()}
         {this.props.admin ? null : <Navbar/>}
         <Spinner visible={this.state.loading}/>
         <div className="home-section short-content">

@@ -41,6 +41,8 @@ Route::get('/logout', 'UsersController@logout');
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');
 Route::get('/web/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@show');
+// Prefetched observation view to support FB open graph and twitter cards
+Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
 
 // Map
 Route::get('/web/map', 'MapController@index');

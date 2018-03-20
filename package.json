@@ -49,7 +49,6 @@
     "react-async-script": "^0.9.1",
     "react-dom": "^15.6.2",
     "react-google-recaptcha": "^0.9.9",
-    "react-helmet": "^5.2.0",
     "react-icons": "^2.2.7",
     "react-image-gallery": "^0.7.16",
     "react-router-dom": "^4.2.2",

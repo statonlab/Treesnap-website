@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\Traits\Observes;
 use App\Observation;
+use App\Services\MetaLabels;
 use App\User;
 use Illuminate\Http\Request;
 use App\Events\ObservationDeleted;
@@ -135,6 +136,56 @@ class ObservationsController extends Controller
     }
 
     /**
+     * Pre-fetched observation data to provide to open graph.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showPreFetch($id, Request $request)
+    {
+        $user = $request->user();
+        $is_admin = false;
+        if ($user) {
+            $is_admin = User::hasRole(['admin', 'scientist'], $user);
+        }
+        $observation = Observation::with('user')->findOrFail($id);
+
+        if ($observation->is_private) {
+            if (! $is_admin) {
+                return abort(404);
+            }
+        }
+
+        $user = auth()->check() ? auth()->user() : false;
+
+        $TreeSnap = [
+            'csrfToken' => csrf_token(),
+            'loggedIn' => $user ? true : false,
+            'role' => $user ? $user->role->name : null,
+            'user' => false,
+            'metaLabels' => (new MetaLabels())->toObject(),
+        ];
+
+        if ($user) {
+            $TreeSnap['user'] = [
+                'name' => $user->name,
+                'id' => $user->id,
+            ];
+        }
+
+        $title = $observation->observation_category === 'Other' ? $observation->data['otherLabel'] : $observation->observation_category;
+        $meta = [
+            'title' => $title." ($observation->id) | TreeSnap",
+            'description' => "$title was observed and shared with scientists on TreeSnap",
+            'image' => url($observation->thumbnail),
+            'url' => "https://treesnap.org/observation/$observation->id",
+        ];
+
+        return view('home')->with(compact('TreeSnap', 'meta'));
+    }
+
+    /**
      * Return available categories.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -182,7 +233,7 @@ class ObservationsController extends Controller
         // Broadcast that an observation has been deleted
         event(new ObservationDeleted([
             'id' => $observation->id,
-            'user_id' => $observation->user_id
+            'user_id' => $observation->user_id,
         ]));
 
         $observation->delete();
