@@ -310,21 +310,21 @@ export default class ObservationScene extends Component {
     }
 
     const observation = this.state.observation
-    const title       = (observation.observation_category === 'Other' ? observation.meta_data.otherLabel : observation.observation_category) + ` (${observation.id})`
+    const title       = (observation.observation_category === 'Other' ? observation.meta_data.otherLabel : observation.observation_category)
     const description = `${title} was found and shared with scientists on TreeSnap`
     const image       = this.getImage(observation)
     const url         = `https://treesnap.org/observation/${observation.observation_id}`
 
     return (
       <div>
-        <meta property="og:title" content={title}/>
+        <meta property="og:title" content={title + ` (${observation.observation_id}) | TreeSnap`}/>
         <meta property="og:description" content={description}/>
-        <meta property="og:image" content={`https://treesnap.org/${image}`}/>
+        <meta property="og:image" content={image}/>
         <meta property="og:url" content={url}/>
 
-        <meta name="twitter:title" content={title}/>
+        <meta name="twitter:title" content={title + ` (${observation.observation_id}) | TreeSnap`}/>
         <meta name="twitter:description" content={description}/>
-        <meta name="twitter:image" content={`https://treesnap.org/${image}`}/>
+        <meta name="twitter:image" content={image}/>
         <meta name="twitter:card" content="summary_large_image"/>
       </div>
     )
