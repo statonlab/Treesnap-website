@@ -62,10 +62,14 @@
         <meta property="og:description" content="{{$meta['description']}}"/>
         <meta property="og:image" content="{{$meta['image']}}"/>
         <meta property="og:url" content="{{$meta['url']}}"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:app_id" content="205282770229616"/>
+        <meta property="og:image:width" content="600"/>
+        <meta property="og:image:height" content="400"/>
 
         <meta name="twitter:title" content="{{$meta['title']}}"/>
         <meta name="twitter:description" content="{{$meta['description']}}"/>
-        <meta name="twitter:image"content="{{$meta['image']}}"/>
+        <meta name="twitter:image" content="{{$meta['image']}}"/>
         <meta name="twitter:card" content="summary_large_image"/>
     @endif
 </head>
