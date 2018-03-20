@@ -295,9 +295,41 @@ export default class ObservationScene extends Component {
     )
   }
 
+  getImage(observation) {
+    const key = Object.keys(observation.images)[0]
+    return observation.images[key][0]
+  }
+
+  getMeta() {
+    if (!this.state.observation) {
+      return null
+    }
+
+    const observation = this.state.observation
+    const title       = (observation.observation_category === 'Other' ? observation.meta_data.otherLabel : observation.observation_category) + ` (${observation.id})`
+    const description = `${title} was found and shared with scientists on TreeSnap`
+    const image       = this.getImage(observation)
+    const url         = `https://treesnap.org/observation/${observation.observation_id}`
+
+    return (
+      <div>
+        <meta property="og:title" content={title}/>
+        <meta property="og:description" content={description}/>
+        <meta property="og:image" content={`https://treesnap.org/${image}`}/>
+        <meta property="og:url" content={url}/>
+
+        <meta name="twitter:title" content={title}/>
+        <meta name="twitter:description" content={description}/>
+        <meta name="twitter:image" content={`https://treesnap.org/${image}`}/>
+        <meta name="twitter:card" content="summary_large_image"/>
+      </div>
+    )
+  }
+
   render() {
     return (
       <div>
+        {this.getMeta()}
         {this.props.admin ? null : <Navbar/>}
         <Spinner visible={this.state.loading}/>
         <div className="home-section short-content">

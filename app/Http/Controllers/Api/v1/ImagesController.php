@@ -30,7 +30,7 @@ class ImagesController extends Controller
 
         $this->validate($request, [
             'key' => 'nullable',
-            // Allow up to 10MB image size
+            // Allow up to 30MB image size
             'image' => 'required|image|max:30240',
         ]);
 
