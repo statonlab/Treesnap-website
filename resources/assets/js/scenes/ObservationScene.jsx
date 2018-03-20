@@ -8,6 +8,7 @@ import Notify from '../components/Notify'
 import moment from 'moment'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
+import Helmet from 'react-helmet'
 
 export default class ObservationScene extends Component {
   constructor(props) {
@@ -311,12 +312,12 @@ export default class ObservationScene extends Component {
 
     const observation = this.state.observation
     const title       = (observation.observation_category === 'Other' ? observation.meta_data.otherLabel : observation.observation_category)
-    const description = `${title} was found and shared with scientists on TreeSnap`
+    const description = `${title} was observed and shared with scientists on TreeSnap`
     const image       = this.getImage(observation)
     const url         = `https://treesnap.org/observation/${observation.observation_id}`
 
     return (
-      <div>
+      <Helmet>
         <meta property="og:title" content={title + ` (${observation.observation_id}) | TreeSnap`}/>
         <meta property="og:description" content={description}/>
         <meta property="og:image" content={image}/>
@@ -326,7 +327,7 @@ export default class ObservationScene extends Component {
         <meta name="twitter:description" content={description}/>
         <meta name="twitter:image" content={image}/>
         <meta name="twitter:card" content="summary_large_image"/>
-      </div>
+      </Helmet>
     )
   }
 
