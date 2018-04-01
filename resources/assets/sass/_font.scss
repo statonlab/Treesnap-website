@@ -10,6 +10,10 @@
   color: $primary;
 }
 
+.text-info {
+  color: $info;
+}
+
 .help {
   &.is-warning {
     color: darken($warning, 10%);

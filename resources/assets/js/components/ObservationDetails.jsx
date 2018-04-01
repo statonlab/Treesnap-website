@@ -13,6 +13,7 @@ import Utils from '../helpers/Utils'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
 import {Link} from 'react-router-dom'
+import EmailModal from '../admin/components/EmailModal'
 
 export default class ObservationDetails extends Component {
   constructor(props) {
@@ -29,7 +30,15 @@ export default class ObservationDetails extends Component {
       controlModalContent: '',
       collections        : [],
       showModal          : false,
-      deleted            : false
+      deleted            : false,
+      showEmail          : false,
+      contact            : {
+        to  : {
+          user_id: 0,
+          name   : ''
+        },
+        from: ''
+      }
     }
   }
 
@@ -37,7 +46,24 @@ export default class ObservationDetails extends Component {
    * Set up the observation state.
    */
   componentWillMount() {
-    this._setup(this.props.observation)
+    const observation = this.props.observation
+    this._setup(observation)
+
+    if (User.can('contact users')) {
+      axios.get('/web/user').then(response => {
+        let user    = response.data.data
+        let contact = {
+          from: user.email,
+          to  : {
+            user_id: observation.user.id,
+            name   : observation.user.name
+          }
+        }
+        this.setState({contact})
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 
   /**
@@ -77,6 +103,7 @@ export default class ObservationDetails extends Component {
    * Set up the state.
    */
   _setup(observation) {
+
     if (typeof observation.location !== 'undefined') {
       observation.latitude        = observation.location.latitude
       observation.longitude       = observation.location.longitude
@@ -195,6 +222,15 @@ export default class ObservationDetails extends Component {
                 <i className="fa fa-flag text-danger"></i>
               </span>
               <span>Flag Observation</span>
+            </a>
+            : null}
+          {User.can('contact users') ?
+            <a className="button is-outlined"
+               onClick={() => this.setState({showEmail: true})}>
+              <span className="icon is-small">
+                <i className="fa fa-envelope text-info"></i>
+              </span>
+              <span>Contact Submitter</span>
             </a>
             : null}
         </div>
@@ -330,6 +366,23 @@ export default class ObservationDetails extends Component {
     )
   }
 
+  renderEmailModal() {
+    if (!User.can('contact users')) {
+      return null
+    }
+
+    return (
+      <EmailModal
+        visible={this.state.showEmail}
+        contact={this.state.contact}
+        observation={this.observation}
+        onCloseRequest={() => {
+          this.setState({showEmail: false})
+        }}
+      />
+    )
+  }
+
   render() {
     if (this.state.deleted) {
       return this.deleted()
@@ -427,6 +480,7 @@ export default class ObservationDetails extends Component {
           </div>
         </div>
         {this._renderImagesModal()}
+        {this.renderEmailModal()}
       </div>
     )
   }
