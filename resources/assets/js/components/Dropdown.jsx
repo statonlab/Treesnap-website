@@ -20,10 +20,19 @@ export default class Dropdown extends Component {
     }, 100)
   }
 
+  toggle() {
+    if(this.state.show) {
+      this.hide()
+      return
+    }
+
+    this.show()
+  }
+
   render() {
     return (
       <div className={`dropdown${this.state.show ? ' is-active' : ''}${this.props.right ? ' is-right' : ''} has-text-left`}>
-        <div className="dropdown-trigger" onFocus={this.show.bind(this)} onBlur={this.hide.bind(this)}>
+        <div className="dropdown-trigger" onClick={this.toggle.bind(this)} onBlur={this.hide.bind(this)}>
           {this.props.trigger}
         </div>
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
