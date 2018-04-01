@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import marked from 'marked'
 import moment from 'moment'
 import Spinner from '../../components/Spinner'
 import RichTextEditor from 'react-rte'
@@ -22,7 +21,7 @@ export default class EmailModal extends Component {
       recipient  : '',
       from       : '',
       observation: {},
-      includeInfo: 0,
+      includeInfo: 1,
       loading    : false,
       sent       : false,
       errors     : {
@@ -399,7 +398,7 @@ export default class EmailModal extends Component {
 EmailModal.PropTypes = {
   contact       : PropTypes.object.isRequired,
   onCloseRequest: PropTypes.func.isRequired,
-  observations  : PropTypes.object.isRequired,
+  observation   : PropTypes.object.isRequired,
   visible       : PropTypes.bool
 }
 
