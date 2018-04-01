@@ -854,9 +854,7 @@ export default class App extends Component {
           collections={this.state.ownedCollections}
           onSubmit={(collection) => {
             Notify.push(`Observation added to "${collection.label}" successfully`)
-            this.setState({
-              selectedMarker: this.filter.newCollection(this.state.selectedMarker, collection)
-            })
+            this.setState({})
 
             // Update all collections if a new one has been created.
             let collections = this.state.collections
@@ -871,7 +869,14 @@ export default class App extends Component {
               value: collection.id
             })
 
-            this.setState({collections})
+            this.setState({
+              collections,
+              ownedCollections: this.state.ownedCollections.concat({
+                label: collection.label,
+                value: collection.id
+              }),
+              selectedMarker  : this.filter.newCollection(this.state.selectedMarker, collection)
+            })
           }}
         />
 
