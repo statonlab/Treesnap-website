@@ -6,7 +6,7 @@ body, body *:not(html):not(style):not(br):not(tr):not(code) {
 }
 
 body {
-    background-color: #f5f8fa;
+    background-color: #FFFFFF;
     color: #74787E;
     height: 100%;
     hyphens: auto;
@@ -105,10 +105,15 @@ img {
 .header {
     padding: 25px 0;
     text-align: center;
+    vertical-align: middle;
+}
+
+.header img {
+    margin-right: 10px;
 }
 
 .header a {
-    color: #bbbfc3;
+    color: #444444;
     font-size: 19px;
     font-weight: bold;
     text-decoration: none;

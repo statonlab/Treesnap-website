@@ -376,7 +376,7 @@ export default class MyObservationsScene extends Component {
                 })
               })
             }
-            
+
             if (exists) {
               return
             }

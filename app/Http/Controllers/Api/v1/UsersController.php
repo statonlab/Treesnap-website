@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Notifications\WelcomeNotification;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -64,6 +65,8 @@ class UsersController extends Controller
         if (! $user) {
             return $this->error('Unable to create new user.', 100);
         }
+
+        $user->notify(new WelcomeNotification());
 
         return $this->created([
             'user_id' => $user->id,
