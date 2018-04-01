@@ -366,7 +366,17 @@ export default class MyObservationsScene extends Component {
           collections={this.state.ownedCollections}
           onCollectionCreated={collection => {
             let exists = !observation.collections.every(c => c.id !== collection.id)
+            let owned = !this.state.ownedCollections.every(c => c.value !== collection.id)
 
+            if(!owned) {
+              this.setState({
+                ownedCollections: this.state.ownedCollections.concat({
+                  label: collection.label,
+                  value: collection.id
+                })
+              })
+            }
+            
             if (exists) {
               return
             }
