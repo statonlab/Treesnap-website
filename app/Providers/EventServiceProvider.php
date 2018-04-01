@@ -14,7 +14,9 @@ use App\Listeners\ClearObservationsCache;
 use App\Listeners\CreateObservationThumbnails;
 use App\Listeners\NotifyGroupLeaderOfNewUser;
 use App\Listeners\SendInvitation;
+use App\Listeners\SendWelcomeNotification;
 use App\Listeners\ShareCollectionsWithNewGroupMember;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -45,6 +47,9 @@ class EventServiceProvider extends ServiceProvider
         UserJoinedGroup::class => [
             ShareCollectionsWithNewGroupMember::class,
             NotifyGroupLeaderOfNewUser::class,
+        ],
+        Registered::class => [
+            SendWelcomeNotification::class,
         ],
     ];
 
