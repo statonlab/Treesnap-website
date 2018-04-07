@@ -691,16 +691,16 @@ export default class ObservationsScene extends Component {
                     observation.flags.push(data)
                   }}
                   onCollectionCreated={(data) => {
-                    let collections = this.state.collections
-                    let found       = false
-                    collections.map(collection => {
+                    let ownedCollections = this.state.ownedCollections
+                    let found            = false
+                    ownedCollections.map(collection => {
                       if (collection.value === data.id) {
                         found = true
                       }
                     })
 
                     if (!found) {
-                      collections.push({
+                      ownedCollections.push({
                         label: data.label,
                         value: data.id
                       })
@@ -711,6 +711,7 @@ export default class ObservationsScene extends Component {
                       label      : data.label,
                       description: data.description
                     })
+                    this.setState({ownedCollections})
                     this.forceUpdate()
                     Notify.push(`Added "${observation.observation_category}" to "${data.label}" successfully`)
                   }}
