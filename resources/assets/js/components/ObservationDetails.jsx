@@ -305,6 +305,13 @@ export default class ObservationDetails extends Component {
   _renderMetaData(label, data, key) {
     if (Utils.isJson(data) === true) {
       data = JSON.parse(data)
+      if (Array.isArray(data)) {
+        data = data.join(', ')
+      } else if (typeof data == 'object') {
+        data = Object.keys(data).map(key => {
+          return data[key]
+        }).join(', ')
+      }
     }
 
     return (
