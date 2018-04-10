@@ -10,10 +10,21 @@ const mix = require('laravel-mix')
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+// Watch configuration
 mix.browserSync('treesnap.test')
 
+// Webpack code splitting config
+mix.webpackConfig({
+  output: {
+    publicPath   : '/',
+    chunkFilename: 'js/[name].js'
+  }
+})
+
+// JS and CSS configuration
 mix.react('resources/assets/js/app.jsx', 'public/js')
   .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
   .sass('resources/assets/sass/app.scss', 'public/css')
-  .extract(['react', 'react-dom', 'jquery', 'react-router-dom', 'lodash', 'axios'])
+  .extract(['react', 'lodash', 'axios', 'moment'])
   .version()

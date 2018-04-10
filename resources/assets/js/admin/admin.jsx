@@ -3,18 +3,61 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import User from '../helpers/User'
+import Loadable from 'react-loadable'
 import AdminSidebar from './components/AdminSidebar'
 import AdminNavbar from './components/AdminNavbar'
-import DashboardScene from './scenes/DashboardScene'
-import UsersScene from './scenes/UsersScene'
-import UserScene from './scenes/UserScene'
-import Groups from '../components/Groups'
-import Group from '../components/Group'
-import ObservationsScene from './scenes/ObservationsScene'
-import CurateScene from './scenes/CurateScene'
-import FiltersScene from '../scenes/FiltersScene'
-import CollectionsScene from '../scenes/CollectionsScene'
-import ObservationScene from '../scenes/ObservationScene'
+
+const loading = () => (<div>Loading..</div>)
+
+const DashboardScene = Loadable({
+  loader: () => import('./scenes/DashboardScene'),
+  loading
+})
+
+const UsersScene = Loadable({
+  loader: () => import('./scenes/UsersScene'),
+  loading
+})
+
+const UserScene = Loadable({
+  loader: () => import('./scenes/UserScene'),
+  loading
+})
+
+const Groups = Loadable({
+  loader: () => import('../components/Groups'),
+  loading
+})
+
+const Group = Loadable({
+  loader: () => import('../components/Group'),
+  loading
+})
+
+const ObservationsScene = Loadable({
+  loader: () => import('./scenes/ObservationsScene'),
+  loading
+})
+
+const CurateScene = Loadable({
+  loader: () => import('./scenes/CurateScene'),
+  loading
+})
+
+const FiltersScene = Loadable({
+  loader: () => import('../scenes/FiltersScene'),
+  loading
+})
+
+const CollectionsScene = Loadable({
+  loader: () => import('../scenes/CollectionsScene'),
+  loading
+})
+
+const ObservationScene = Loadable({
+  loader: () => import('../scenes/ObservationScene'),
+  loading
+})
 
 class Admin extends Component {
   render() {
