@@ -6,57 +6,56 @@ import User from '../helpers/User'
 import Loadable from 'react-loadable'
 import AdminSidebar from './components/AdminSidebar'
 import AdminNavbar from './components/AdminNavbar'
-
-const loading = () => (<div>Loading..</div>)
+import PageLoader from '../helpers/PageLoader'
 
 const DashboardScene = Loadable({
   loader: () => import('./scenes/DashboardScene'),
-  loading
+  loading: PageLoader
 })
 
 const UsersScene = Loadable({
   loader: () => import('./scenes/UsersScene'),
-  loading
+  loading: PageLoader
 })
 
 const UserScene = Loadable({
   loader: () => import('./scenes/UserScene'),
-  loading
+  loading: PageLoader
 })
 
 const Groups = Loadable({
   loader: () => import('../components/Groups'),
-  loading
+  loading: PageLoader
 })
 
 const Group = Loadable({
   loader: () => import('../components/Group'),
-  loading
+  loading: PageLoader
 })
 
 const ObservationsScene = Loadable({
   loader: () => import('./scenes/ObservationsScene'),
-  loading
+  loading: PageLoader
 })
 
 const CurateScene = Loadable({
   loader: () => import('./scenes/CurateScene'),
-  loading
+  loading: PageLoader
 })
 
 const FiltersScene = Loadable({
   loader: () => import('../scenes/FiltersScene'),
-  loading
+  loading: PageLoader
 })
 
 const CollectionsScene = Loadable({
   loader: () => import('../scenes/CollectionsScene'),
-  loading
+  loading: PageLoader
 })
 
 const ObservationScene = Loadable({
   loader: () => import('../scenes/ObservationScene'),
-  loading
+  loading: PageLoader
 })
 
 class Admin extends Component {
