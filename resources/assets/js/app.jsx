@@ -6,19 +6,74 @@ import './bootstrap'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import WelcomeScene from './scenes/WelcomeScene'
-import AccountScene from './scenes/AccountScene'
-import ObservationScene from './scenes/ObservationScene'
-import MapScene from './scenes/MapScene'
-import ContactUsScene from './scenes/ContactUsScene'
-import NotFoundScene from './scenes/NotFoundScene'
-import KnowledgeScene from './scenes/KnowledgeScene'
-import KnowledgeViewScene from './scenes/KnowledgeViewScene'
-import MyObservationsScene from './scenes/MyObservationsScene'
-import AccountCollectionsScene from './scenes/AccountCollectionsScene'
-import AccountFiltersScene from './scenes/AccountFiltersScene'
-import GroupScene from './scenes/GroupScene'
-import GroupsScene from './scenes/GroupsScene'
+import Loadable from 'react-loadable'
+
+const loading = () => (<div>Loading..</div>)
+
+const WelcomeScene = Loadable({
+  loader: () => import('./scenes/WelcomeScene'),
+  loading
+})
+
+const AccountScene = Loadable({
+  loader: () => import('./scenes/AccountScene'),
+  loading
+})
+
+const ObservationScene = Loadable({
+  loader: () => import('./scenes/ObservationScene'),
+  loading
+})
+
+const MapScene = Loadable({
+  loader: () => import('./scenes/MapScene'),
+  loading
+})
+
+const ContactUsScene = Loadable({
+  loader: () => import('./scenes/ContactUsScene'),
+  loading
+})
+
+const NotFoundScene = Loadable({
+  loader: () => import('./scenes/NotFoundScene'),
+  loading
+})
+
+const KnowledgeScene = Loadable({
+  loader: () => import('./scenes/KnowledgeScene'),
+  loading
+})
+
+const KnowledgeViewScene = Loadable({
+  loader: () => import('./scenes/KnowledgeViewScene'),
+  loading
+})
+
+const MyObservationsScene = Loadable({
+  loader: () => import('./scenes/MyObservationsScene'),
+  loading
+})
+
+const AccountCollectionsScene = Loadable({
+  loader: () => import('./scenes/AccountCollectionsScene'),
+  loading
+})
+
+const AccountFiltersScene = Loadable({
+  loader: () => import('./scenes/AccountFiltersScene'),
+  loading
+})
+
+const GroupScene = Loadable({
+  loader: () => import('./scenes/GroupScene'),
+  loading
+})
+
+const GroupsScene = Loadable({
+  loader: () => import('./scenes/GroupsScene'),
+  loading
+})
 
 class App extends Component {
   render() {

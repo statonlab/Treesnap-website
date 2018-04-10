@@ -22,7 +22,7 @@ export default class Sidebar extends Component {
           : null}
           <li>
             <NavLink to="/groups" activeClassName="is-active">
-              <i className="fa fa-users"></i> User Groups
+              <i className="fa fa-users"></i> Groups
             </NavLink>
           </li>
           <li>
