@@ -60,6 +60,7 @@ class DownloadsController extends Controller
         $header = [
             'Unique ID',
             'Observation Category',
+            'Latin Name',
             'Coordinates',
             'Comments',
             'Address',
@@ -72,30 +73,33 @@ class DownloadsController extends Controller
         Storage::put($path, $this->line($header, $extension));
 
         // Generate Collection
-        $collection->observations()->chunk(200, function ($observations) use ($user, $path, $extension) {
-            foreach ($observations as $observation) {
-                if ($this->hasPrivilegedPermissions($user, $observation)) {
-                    $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
-                    $location = "{$observation->latitude}, {$observation->longitude}";
-                } else {
-                    $comment = '';
-                    $location = "{$observation->fuzzy_coords['latitude']}, {$observation->fuzzy_coords['longitude']}";
+        $collection->observations()
+            ->with(['latinName'])
+            ->chunk(200, function ($observations) use ($user, $path, $extension) {
+                foreach ($observations as $observation) {
+                    if ($this->hasPrivilegedPermissions($user, $observation)) {
+                        $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
+                        $location = "{$observation->latitude}, {$observation->longitude}";
+                    } else {
+                        $comment = '';
+                        $location = "{$observation->fuzzy_coords['latitude']}, {$observation->fuzzy_coords['longitude']}";
+                    }
+
+                    $line = [
+                        $observation->mobile_id,
+                        $observation->observation_category,
+                        "{$observation->latinName->genus} {$observation->latinName->species}",
+                        $location,
+                        $comment,
+                        $observation->address['formatted'],
+                        $observation->collection_date->toDateString(),
+                    ];
+
+                    // Add meta data line
+                    $line = array_merge($line, $this->extractMetaData($observation));
+                    Storage::append($path, $this->line($line, $extension));
                 }
-
-                $line = [
-                    $observation->mobile_id,
-                    $observation->observation_category,
-                    $location,
-                    $comment,
-                    $observation->address['formatted'],
-                    $observation->collection_date->toDateString(),
-                ];
-
-                // Add meta data line
-                $line = array_merge($line, $this->extractMetaData($observation->data));
-                Storage::append($path, $this->line($line, $extension));
-            }
-        });
+            });
 
         $this->createAutoRemovableFile($path, $user->id);
 
@@ -129,7 +133,7 @@ class DownloadsController extends Controller
      * Create a line based on extension.
      *
      * @param array $row
-     * @param $extension
+     * @param string $extension tsv or csv
      * @return string
      */
     protected function line(array $row, $extension)
@@ -155,7 +159,8 @@ class DownloadsController extends Controller
     protected function csvLine(array $row)
     {
         foreach ($row as $key => $value) {
-            $row[$key] = '"'.$value.'"';
+            // Remove all quotes from the string since that's against csv specs
+            $row[$key] = '"'.str_replace('"', '', $value).'"';
         }
 
         return implode(",", $row)."\n";
@@ -226,10 +231,11 @@ class DownloadsController extends Controller
     /**
      * Extract meta data as a line from observation.
      *
-     * @param $data
+     * @param Observation $observation
      */
-    protected function extractMetaData($data)
+    protected function extractMetaData($observation)
     {
+        $data = $observation->data;
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {

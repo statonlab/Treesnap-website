@@ -17,17 +17,19 @@ class LatinName extends Model
         'common',
     ];
 
+    protected static $cache = [];
+
     /**
      * Get the latin name from the common name.
      *
-     * @param $category
-     * @param $data
+     * @param string $category The observation category
+     * @param array $data The
      * @return int|mixed
      */
     public static function getID($category, $data)
     {
         $data = (array)$data;
-        
+
         // Find the appropriate latin name
         switch ($category) {
             case 'Ash':
