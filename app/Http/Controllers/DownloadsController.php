@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Collection;
 use App\File;
 use App\Http\Controllers\Traits\Observes;
+use App\Observation;
 use App\Services\MetaLabels;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Storage;
@@ -40,6 +42,7 @@ class DownloadsController extends Controller
      */
     public function collection(Collection $collection, Request $request, $extension = 'tsv')
     {
+        /** @var \App\User $user */
         $user = $request->user();
         if (! $collection->users->contains('id', $user->id)) {
             return abort(403);
@@ -69,14 +72,20 @@ class DownloadsController extends Controller
         Storage::put($path, $this->line($header, $extension));
 
         // Generate Collection
-        $collection->observations()->chunk(200, function ($observations) use ($path, $extension) {
+        $collection->observations()->chunk(200, function ($observations) use ($user, $path, $extension) {
             foreach ($observations as $observation) {
-                $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
+                if ($this->hasPrivilegedPermissions($user, $observation)) {
+                    $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
+                    $location = "{$observation->latitude}, {$observation->longitude}";
+                } else {
+                    $comment = '';
+                    $location = "{$observation->fuzzy_coords['latitude']}, {$observation->fuzzy_coords['longitude']}";
+                }
 
                 $line = [
                     $observation->mobile_id,
                     $observation->observation_category,
-                    "{$observation->latitude}, {$observation->longitude}",
+                    $location,
                     $comment,
                     $observation->address['formatted'],
                     $observation->collection_date->toDateString(),
@@ -91,6 +100,29 @@ class DownloadsController extends Controller
         $this->createAutoRemovableFile($path, $user->id);
 
         return response()->download(storage_path('app/'.$path), $name);
+    }
+
+    /**
+     * Checks if a user has privileged access to an observation.
+     *
+     * @param User $user
+     * @param Observation $observation
+     * @return bool True if user has privileged access or false otherwise.
+     */
+    protected function hasPrivilegedPermissions(User $user, Observation $observation)
+    {
+        // Owners can access the observation private information
+        if ($user->id === $observation->user_id) {
+            return true;
+        }
+
+        // Admins and scientists can access the observation
+        if ($user->isAdmin() || $user->isScientist()) {
+            return true;
+        }
+
+        // Check if the owner has shared this observation with the user
+        return $user->hasFriend($observation->user_id);
     }
 
     /**
@@ -201,7 +233,7 @@ class DownloadsController extends Controller
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {
-                if(preg_match('/^\[.*\]$/i', $data[$key])) {
+                if (preg_match('/^\[.*\]$/i', $data[$key])) {
                     $line[] = implode(',', json_decode($data[$key]));
                 } else {
                     $line[] = $data[$key];
