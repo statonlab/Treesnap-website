@@ -7,72 +7,71 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Loadable from 'react-loadable'
-
-const loading = () => (<div>Loading..</div>)
+import PageLoader from './helpers/PageLoader'
 
 const WelcomeScene = Loadable({
   loader: () => import('./scenes/WelcomeScene'),
-  loading
+  loading: PageLoader
 })
 
 const AccountScene = Loadable({
   loader: () => import('./scenes/AccountScene'),
-  loading
+  loading: PageLoader
 })
 
 const ObservationScene = Loadable({
   loader: () => import('./scenes/ObservationScene'),
-  loading
+  loading: PageLoader
 })
 
 const MapScene = Loadable({
   loader: () => import('./scenes/MapScene'),
-  loading
+  loading: PageLoader
 })
 
 const ContactUsScene = Loadable({
   loader: () => import('./scenes/ContactUsScene'),
-  loading
+  loading: PageLoader
 })
 
 const NotFoundScene = Loadable({
   loader: () => import('./scenes/NotFoundScene'),
-  loading
+  loading: PageLoader
 })
 
 const KnowledgeScene = Loadable({
   loader: () => import('./scenes/KnowledgeScene'),
-  loading
+  loading: PageLoader
 })
 
 const KnowledgeViewScene = Loadable({
   loader: () => import('./scenes/KnowledgeViewScene'),
-  loading
+  loading: PageLoader
 })
 
 const MyObservationsScene = Loadable({
   loader: () => import('./scenes/MyObservationsScene'),
-  loading
+  loading: PageLoader
 })
 
 const AccountCollectionsScene = Loadable({
   loader: () => import('./scenes/AccountCollectionsScene'),
-  loading
+  loading: PageLoader
 })
 
 const AccountFiltersScene = Loadable({
   loader: () => import('./scenes/AccountFiltersScene'),
-  loading
+  loading: PageLoader
 })
 
 const GroupScene = Loadable({
   loader: () => import('./scenes/GroupScene'),
-  loading
+  loading: PageLoader
 })
 
 const GroupsScene = Loadable({
   loader: () => import('./scenes/GroupsScene'),
-  loading
+  loading: PageLoader
 })
 
 class App extends Component {
