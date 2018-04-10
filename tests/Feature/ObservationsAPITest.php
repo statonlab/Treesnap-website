@@ -199,9 +199,12 @@ class ObservationsAPITest extends TestCase
      */
     public function testUnauthorizedRecordUpdating()
     {
-        $user = User::first();
-        $this->actingAs($user);
-        $observation = Observation::where('user_id', '!=', $user->id)->orderby('id', 'desc')->first();
+        $user1 = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $this->actingAs($user1);
+        $observation = factory(Observation::class)->create([
+            'user_id' => $user2->id
+        ]);
 
         $response = $this->post("/api/v1/observation/{$observation->id}", [
             'data',
