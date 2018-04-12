@@ -65,6 +65,12 @@ Route::post('/invitations/accept/login/{id}', 'InvitesController@acceptLogin');
 Route::post('/invitations/accept/register/{id}', 'InvitesController@acceptRegister');
 Route::get('/invitations/accept/{id}', 'InvitesController@accept');
 
+// Leaderboard
+Route::get('/web/leaderboard/{limit?}', 'LeaderboardController@index');
+
+// Events
+Route::get('/web/events/{limit?}', 'EventsController@index');
+
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
     // Observations
@@ -151,6 +157,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     // Cache
     Route::get('/clear-cache', 'CacheController@clearCache');
+
+    // Events
+    Route::get('/web/events', 'AdminEventsController@index');
+    Route::get('/web/event/{id}', 'AdminEventsController@show');
+    Route::post('/web/events', 'AdminEventsController@create');
+    Route::put('/web/event/{id}','AdminEventsController@update');
+    Route::delete('/web/event/{id}','AdminEventsController@delete');
 });
 
 // Admin or Scientist Only Route Group

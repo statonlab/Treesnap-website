@@ -1,0 +1,59 @@
+.item-box {
+  margin-bottom: .5rem;
+  padding: 1rem;
+  border-radius: $radius;
+
+  &.is-lighter-dark {
+    background-color: $lighter-dark;
+    strong {
+      color: $white;
+    }
+  }
+}
+
+.item-thumbnail {
+  width: 45px;
+  height: 45px;
+}
+
+.hexagon {
+  position: relative;
+  width: 40px;
+  height: 23.09px;
+  margin: 11px 0;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+  }
+
+  &:before {
+    bottom: 100%;
+    border-bottom: 11.15px solid transparent;
+  }
+
+  &:after {
+    top: 100%;
+    width: 0;
+    border-top: 11.15px solid transparent;
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .hexagon.is-#{$name} {
+    background-color: $color;
+    color: color-yiq($color);
+
+    &:before {
+      border-bottom-color: $color;
+    }
+
+    &:after {
+      border-top-color: $color;
+    }
+  }
+}

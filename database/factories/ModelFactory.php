@@ -17,12 +17,13 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
     return [
         'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
+        'email' => $faker->unique()->email,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
         'api_token' => str_random(60),
         'role_id' => \App\Role::inRandomOrder()->first()->id,
         'birth_year' => $faker->year(1997),
+        'is_anonymous' => $faker->boolean,
     ];
 });
 
@@ -41,8 +42,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
             mkdir(storage_path('app/public/images'));
         }
         $image = copy(storage_path('app/faker/flower.jpg'), storage_path('app/public/images/flower.jpg'));
-        $image = explode('/', $image);
-        $image = $image[count($image) - 1];
+        $image = 'flower.jpg';
     }
 
     if (! $thumbnail) {
@@ -50,8 +50,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
             mkdir(storage_path('app/public/thumbnails'));
         }
         $thumbnail = copy(storage_path('app/faker/autumn.jpg'), storage_path('app/public/thumbnails/autumn.jpg'));
-        $thumbnail = explode('/', $thumbnail);
-        $thumbnail = $thumbnail[count($thumbnail) - 1];
+        $thumbnail = 'autumn.jpg';
     }
 
     $categories = [
@@ -118,5 +117,20 @@ $factory->define(App\Collection::class, function (Faker\Generator $faker) {
         'label' => $faker->city,
         'user_id' => \App\User::inRandomOrder()->first()->id,
         'description' => $faker->realText(),
+    ];
+});
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(\App\Event::class, function (Faker\Generator $faker) {
+    return [
+        'title' => str_replace('.', '', ucwords($faker->sentence)),
+        'user_id' => factory(\App\User::class)->create()->id,
+        'start_date' => \Carbon\Carbon::now(),
+        'end_date' => \Carbon\Carbon::now()->addDays(3),
+        'link' => $faker->url,
+        'platform' => 'facebook',
+        'description' => $faker->text,
+        'location' => $faker->address,
+        'timezone' => 'EST',
     ];
 });

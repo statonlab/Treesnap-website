@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Action;
+use App\Event;
 use App\Filter;
 use App\Group;
 use App\Policies\ActionsPolicy;
+use App\Policies\EventsPolicy;
 use App\Policies\FiltersPolicy;
 use App\Policies\GroupsPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -22,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
         Filter::class => FiltersPolicy::class,
         Action::class => ActionsPolicy::class,
         Group::class => GroupsPolicy::class,
+        Event::class => EventsPolicy::class,
     ];
 
     /**

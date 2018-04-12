@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 export default class FeaturesList extends Component {
   render() {
     return (
-      <div className="home-section" style={{padding: '4rem 0'}}>
+      <div className="home-section">
         <div className="container">
           <h2 className="title is-3 featured-title">Application Features</h2>
           <div className="tile is-ancestor">
