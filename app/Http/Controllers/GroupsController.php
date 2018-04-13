@@ -105,6 +105,7 @@ class GroupsController extends Controller
 
         $group = Group::with([
             'users' => function ($query) {
+                /** @var \Illuminate\Database\Eloquent\Builder $query */
                 $query->select(['users.id', 'users.name']);
                 $query->orderBy('users.name', 'asc');
                 $query->orderBy('users.id', 'asc');
@@ -543,11 +544,12 @@ class GroupsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function acceptJoinRequest(Group $group, Request $request) {
+    public function acceptJoinRequest(Group $group, Request $request)
+    {
         $this->authorize('manage', $group);
 
         $this->validate($request, [
-            'request_id' => 'required|exists:group_requests,id'
+            'request_id' => 'required|exists:group_requests,id',
         ]);
 
         // Accept request
@@ -564,11 +566,12 @@ class GroupsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function rejectJoinRequest(Group $group, Request $request) {
+    public function rejectJoinRequest(Group $group, Request $request)
+    {
         $this->authorize('manage', $group);
 
         $this->validate($request, [
-            'request_id' => 'required|exists:group_requests,id'
+            'request_id' => 'required|exists:group_requests,id',
         ]);
 
         // Reject request
@@ -585,11 +588,12 @@ class GroupsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function resetJoinRequest(Group $group, Request $request) {
+    public function resetJoinRequest(Group $group, Request $request)
+    {
         $this->authorize('manage', $group);
 
         $this->validate($request, [
-            'request_id' => 'required|exists:group_requests,id'
+            'request_id' => 'required|exists:group_requests,id',
         ]);
 
         // Undo request
