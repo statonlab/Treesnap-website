@@ -18,7 +18,7 @@ mix.browserSync('treesnap.test')
 mix.webpackConfig({
   output: {
     publicPath   : '/',
-    chunkFilename: 'js/[name].js'
+    chunkFilename: 'js/[name].[chunkhash].js'
   }
 })
 
