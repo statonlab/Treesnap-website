@@ -56,7 +56,8 @@ class User {
     // Admins Only
     this._abilities.admin = [
       'manage users',
-      'delete observations'
+      'delete observations',
+      'manage events'
     ].concat(this._abilities.scientist)
   }
 

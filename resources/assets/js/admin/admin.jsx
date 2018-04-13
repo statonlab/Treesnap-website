@@ -9,52 +9,57 @@ import AdminNavbar from './components/AdminNavbar'
 import PageLoader from '../helpers/PageLoader'
 
 const DashboardScene = Loadable({
-  loader: () => import('./scenes/DashboardScene'),
+  loader : () => import('./scenes/DashboardScene'),
   loading: PageLoader
 })
 
 const UsersScene = Loadable({
-  loader: () => import('./scenes/UsersScene'),
+  loader : () => import('./scenes/UsersScene'),
   loading: PageLoader
 })
 
 const UserScene = Loadable({
-  loader: () => import('./scenes/UserScene'),
+  loader : () => import('./scenes/UserScene'),
   loading: PageLoader
 })
 
 const Groups = Loadable({
-  loader: () => import('../components/Groups'),
+  loader : () => import('../components/Groups'),
   loading: PageLoader
 })
 
 const Group = Loadable({
-  loader: () => import('../components/Group'),
+  loader : () => import('../components/Group'),
   loading: PageLoader
 })
 
 const ObservationsScene = Loadable({
-  loader: () => import('./scenes/ObservationsScene'),
+  loader : () => import('./scenes/ObservationsScene'),
   loading: PageLoader
 })
 
 const CurateScene = Loadable({
-  loader: () => import('./scenes/CurateScene'),
+  loader : () => import('./scenes/CurateScene'),
   loading: PageLoader
 })
 
 const FiltersScene = Loadable({
-  loader: () => import('../scenes/FiltersScene'),
+  loader : () => import('../scenes/FiltersScene'),
   loading: PageLoader
 })
 
 const CollectionsScene = Loadable({
-  loader: () => import('../scenes/CollectionsScene'),
+  loader : () => import('../scenes/CollectionsScene'),
   loading: PageLoader
 })
 
 const ObservationScene = Loadable({
-  loader: () => import('../scenes/ObservationScene'),
+  loader : () => import('../scenes/ObservationScene'),
+  loading: PageLoader
+})
+
+const EventsScene = Loadable({
+  loader : () => import('./scenes/EventsScene'),
   loading: PageLoader
 })
 
@@ -63,7 +68,7 @@ class Admin extends Component {
     return (
       <div>
         <AdminNavbar/>
-        <Router basename="/admin" onChange={() => alert('changed')}>
+        <Router basename="/admin">
           <div className="main-content admin-content">
             <div className="container is-fluid">
               <div className="columns">
@@ -73,6 +78,12 @@ class Admin extends Component {
                 <div className="column">
                   <Switch>
                     <Route exact={true} path="/" component={DashboardScene}/>
+                    {User.can('manage events') ?
+                      <Route path="/events" component={EventsScene}/>
+                      : null}
+                    {/*{User.can('manage events') ?*/}
+                      {/*<Route path="/event/:id" component={EventScene}/>*/}
+                      {/*: null}*/}
                     {User.scientist() ? null
                       : <Route path="/users" component={UsersScene}/>
                     }
@@ -95,7 +106,7 @@ class Admin extends Component {
                   </Switch>
                   <div className="app-footer admin-footer is-flex flex-space-between">
                     <div>
-                      Copyright &copy; 2017&nbsp;
+                      Copyright &copy; {new Date().getFullYear()}&nbsp;
                       <b><a href="https://utk.edu">University of Tennessee at Knoxville</a></b>
                     </div>
                     <div>

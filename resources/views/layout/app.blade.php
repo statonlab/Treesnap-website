@@ -41,7 +41,7 @@
 <div class="home-footer">
     <div class="container">
         <p class="mb-1">
-            Copyright &copy; 2017 University of Tennessee Knoxville and University of Kentucky.
+            Copyright &copy; {{date('Y')}} University of Tennessee Knoxville and University of Kentucky.
         </p>
 
         <p>

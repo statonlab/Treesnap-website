@@ -9,6 +9,7 @@
     <script>
       window.TreeSnap = {!! json_encode($TreeSnap) !!}
     </script>
+    <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
 
     <script>
       (function (i, s, o, g, r, a, m) {

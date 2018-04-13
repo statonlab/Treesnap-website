@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function PageLoader(props) {
-  console.log(props)
   if (props.error !== null) {
     console.log('Found the error', props.error)
     return (

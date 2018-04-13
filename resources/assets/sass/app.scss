@@ -10,6 +10,9 @@
 // Bulma
 @import "node_modules/bulma/bulma";
 
+// Functions
+@import "functions";
+
 // Components
 @import "layout";
 @import "nav";
@@ -25,6 +28,7 @@
 @import "card";
 @import "modal";
 @import "disclaimer";
+@import "hexagon";
 
 // Elements
 @import "form";

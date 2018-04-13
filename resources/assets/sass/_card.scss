@@ -126,3 +126,12 @@ a.card-header-title {
     overflow-x: auto;
   }
 }
+
+.card-equal-height {
+  @include flexbox();
+  @include flex-direction(column);
+  height: 100%;
+  .card-footer {
+    margin-top: auto;
+  }
+}
