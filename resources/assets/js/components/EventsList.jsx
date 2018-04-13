@@ -85,7 +85,7 @@ export default class EventsList extends Component {
           : null}
         {this.state.events.map(this.renderEvent.bind(this))}
         {this.state.events.length === 0 && !this.state.loading ?
-          <p className="text-dark-muted">There are no upcoming events at this time</p>
+          <p className="text-dark-muted has-text-centered">There are no upcoming events at this time</p>
           : null}
       </div>
     )
