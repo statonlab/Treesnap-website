@@ -27,7 +27,7 @@ export default class EventsList extends Component {
   renderEvent(event, key) {
     const start    = event.formatted_start_date
     const end      = event.formatted_end_date
-    //event.location = ''
+    // event.location = event.location || ''
     return (
       <div key={key}>
         <div className="is-flex">

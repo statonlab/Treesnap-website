@@ -81,6 +81,10 @@
   color: lighten(#adb5bd, 15%);
 }
 
+.text-small {
+  font-size: 14px!important;
+}
+
 .elevation-1 {
   box-shadow: $box-shadow;
 }
@@ -102,11 +106,15 @@
 }
 
 .font-weight-light {
-  font-weight: $weight-light;
+  font-weight: $weight-light!important;
 }
 
 .font-weight-bold {
-  font-weight: $weight-bold;
+  font-weight: $weight-bold!important;
+}
+
+.font-weight-normal {
+  font-weight: normal!important;
 }
 
 .invisible-scrollbar::-webkit-scrollbar {

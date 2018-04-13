@@ -1,5 +1,5 @@
-import React, {Component, PropTypes} from 'react'
-
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 export default class Modal extends Component {
   close() {
     if (!this.props.permanent) {
@@ -16,9 +16,11 @@ export default class Modal extends Component {
           </button>
         }
         <div className="modal-background" onClick={this.close.bind(this)}></div>
-        <div className="modal-content image-slider" style={{width: '100%', maxWidth: '700px'}}>
-          {this.props.children}
-        </div>
+        {!this.props.card ?
+          <div className="modal-content image-slider" style={{width: '100%', maxWidth: '700px'}}>
+            {this.props.children}
+          </div>
+          : this.props.children}
       </div>
     )
   }
@@ -27,10 +29,12 @@ export default class Modal extends Component {
 Modal.PropTypes = {
   onCloseRequest: PropTypes.func.isRequired,
   permanent     : PropTypes.bool,
-  showClose     : PropTypes.bool
+  showClose     : PropTypes.bool,
+  card          : PropTypes.bool
 }
 
 Modal.defaultProps = {
   permanent: false,
-  showClose: true
+  showClose: true,
+  card     : false
 }

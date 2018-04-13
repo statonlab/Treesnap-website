@@ -10,7 +10,7 @@ export default class HomeFooter extends Component {
       <div className="home-footer">
         <div className="container">
           <p className="mb-1">
-            Copyright &copy; 2017 University of Tennessee Knoxville and University of Kentucky.
+            Copyright &copy; {new Date().getFullYear()} University of Tennessee Knoxville and University of Kentucky.
           </p>
           <p>
             <a href="/privacy-policy">Privacy Policy and Terms of Use</a>

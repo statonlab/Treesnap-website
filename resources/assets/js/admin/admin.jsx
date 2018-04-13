@@ -68,7 +68,7 @@ class Admin extends Component {
     return (
       <div>
         <AdminNavbar/>
-        <Router basename="/admin" onChange={() => alert('changed')}>
+        <Router basename="/admin">
           <div className="main-content admin-content">
             <div className="container is-fluid">
               <div className="columns">
@@ -106,7 +106,7 @@ class Admin extends Component {
                   </Switch>
                   <div className="app-footer admin-footer is-flex flex-space-between">
                     <div>
-                      Copyright &copy; 2017&nbsp;
+                      Copyright &copy; {new Date().getFullYear()}&nbsp;
                       <b><a href="https://utk.edu">University of Tennessee at Knoxville</a></b>
                     </div>
                     <div>

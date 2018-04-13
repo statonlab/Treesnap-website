@@ -26,7 +26,7 @@ class AdminEventsController extends Controller
             'user' => function ($query) {
                 $query->select(['id', 'name']);
             },
-        ])->paginate($limit);
+        ])->orderBy('id', 'desc')->paginate($limit);
 
         $events->getCollection()->transform(function (Event $event) {
             $start_date = $event->start_date;
