@@ -41,7 +41,7 @@ class LeaderboardController extends Controller
             ->when($limit > 0, function ($query) use ($limit) {
                 $query->limit($limit);
             })
-            ->where('created_at', '>', Carbon::now()->subDays(30))
+            //->where('created_at', '>', Carbon::now()->subDays(30))
             ->groupBy('user_id')
             ->orderBy('observations_count', 'desc')
             ->get();
