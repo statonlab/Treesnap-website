@@ -39,13 +39,12 @@ class LeaderboardController extends Controller
         ])->whereHas('user', function ($query) use ($admin_role_id) {
             $query->where('role_id', '!=', $admin_role_id);
         })->with([
-                'user' => function ($query) {
-                    $query->select(['id', 'name', 'is_anonymous']);
-                },
-            ])->when($limit > 0, function ($query) use ($limit) {
-                $query->limit($limit);
-            })//->where('created_at', '>', Carbon::now()->subDays(30))
-            ->groupBy('user_id')->orderBy('observations_count', 'desc')->get();
+            'user' => function ($query) {
+                $query->select(['id', 'name', 'is_anonymous']);
+            },
+        ])->when($limit > 0, function ($query) use ($limit) {
+            $query->limit($limit);
+        })->groupBy('user_id')->orderBy('observations_count', 'desc')->get();
 
         $isAdmin = $user ? $user->isAdmin() || $user->isScientist() : false;
         foreach ($observations as $observation) {
