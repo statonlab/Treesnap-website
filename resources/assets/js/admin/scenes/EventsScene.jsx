@@ -119,9 +119,9 @@ export default class EventsScene extends Component {
 
             {event.location ? <strong>Location</strong> : null}
             <div className={'mb-1'}>
-              {event.location.split('\n').map((address, key) => {
+              {event.location ? event.location.split('\n').map((address, key) => {
                 return <div key={key}>{address}</div>
-              })}
+              }) : null}
             </div>
 
             <strong>Dates</strong>
