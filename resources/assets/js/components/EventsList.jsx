@@ -27,7 +27,7 @@ export default class EventsList extends Component {
   renderEvent(event, key) {
     const start    = event.formatted_start_date
     const end      = event.formatted_end_date
-    // event.location = event.location || ''
+    const location = event.location
     return (
       <div key={key}>
         <div className="is-flex">
@@ -40,10 +40,10 @@ export default class EventsList extends Component {
             <div className="content">
               <p><strong>{event.title}</strong></p>
               <p>{event.description}</p>
-              {event.location ?
+              {location ?
                 <div className={'text-dark-muted mb-1'}>
                   <strong>Where?</strong><br/>
-                  {event.location.split('\n').map((location, index)=>{
+                  {location.split('\n').map((location, index) => {
                     return <div key={index}>{location}</div>
                   })}
                 </div>
@@ -61,12 +61,14 @@ export default class EventsList extends Component {
                   <i className="fa fa-facebook mr-0"></i>
                   View Event
                 </a>
-                <a href={`https://www.google.com/maps/search/?api=1&query=${event.location.split('\n').join(' ')}`}
-                   className="button is-small is-primary"
-                   target={'_blank'}>
-                  <i className="fa fa-map-marker mr-0"></i>
-                  Map It
-                </a>
+                {locaton ?
+                  <a href={`https://www.google.com/maps/search/?api=1&query=${location.split('\n').join(' ')}`}
+                     className="button is-small is-primary"
+                     target={'_blank'}>
+                    <i className="fa fa-map-marker mr-0"></i>
+                    Map It
+                  </a>
+                  : null}
               </div>
             </div>
           </div>
