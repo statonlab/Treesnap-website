@@ -60,7 +60,7 @@ export default class EventsList extends Component {
                 <div className={'is-flex flex-space-between'}>
                   {event.link ?
                     <a href={event.link} className="button is-small is-info" target={'_blank'}>
-                      {event.platform.toLowerCase() === 'facebook' ? <i className="fa fa-facebook mr-0"></i> : null }
+                      {event.platform && event.platform.toLowerCase() === 'facebook' ? <i className="fa fa-facebook mr-0"></i> : null }
                       View Event
                     </a>
                     : null}
