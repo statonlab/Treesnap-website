@@ -61,7 +61,7 @@ export default class EventsList extends Component {
                   <i className="fa fa-facebook mr-0"></i>
                   View Event
                 </a>
-                {locaton ?
+                {location ?
                   <a href={`https://www.google.com/maps/search/?api=1&query=${location.split('\n').join(' ')}`}
                      className="button is-small is-primary"
                      target={'_blank'}>
