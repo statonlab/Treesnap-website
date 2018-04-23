@@ -104,7 +104,6 @@ export default class EventsScene extends Component {
   renderEvent(event, key) {
     const start    = event.formatted_start_date
     const end      = event.formatted_end_date
-    event.location = event.location || ''
 
     return (
       <div key={key} className={'column is-4'}>
@@ -118,7 +117,7 @@ export default class EventsScene extends Component {
             <strong>Description</strong>
             <p>{event.description}</p>
 
-            {event.location.length > 0 ? <strong>Location</strong> : null}
+            {event.location ? <strong>Location</strong> : null}
             <div className={'mb-1'}>
               {event.location.split('\n').map((address, key) => {
                 return <div key={key}>{address}</div>
@@ -139,7 +138,7 @@ export default class EventsScene extends Component {
               {event.link ?
                 <a href={event.link}
                    className={'button is-small is-info'}>
-                  <i className={`fa fa-${event.platform.toLowerCase()} mr-0`}></i>
+                  <i className={`fa fa-${event.platform ? event.platform.toLowerCase() : ''} mr-0`}></i>
                   View Event{event.platform ? ` on ${event.platform}` : ''}
                 </a>
                 : null}
