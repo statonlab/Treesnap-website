@@ -56,20 +56,24 @@ export default class EventsList extends Component {
                   Event ends at {end.month}, {end.day} {end.year} {end.time}
                 </p>
                 : null}
-              <div className={'is-flex flex-space-between'}>
-                <a href={event.link} className="button is-small is-info" target={'_blank'}>
-                  <i className="fa fa-facebook mr-0"></i>
-                  View Event
-                </a>
-                {location ?
-                  <a href={`https://www.google.com/maps/search/?api=1&query=${location.split('\n').join(' ')}`}
-                     className="button is-small is-primary"
-                     target={'_blank'}>
-                    <i className="fa fa-map-marker mr-0"></i>
-                    Map It
-                  </a>
-                  : null}
-              </div>
+              {event.link || location ?
+                <div className={'is-flex flex-space-between'}>
+                  {event.link ?
+                    <a href={event.link} className="button is-small is-info" target={'_blank'}>
+                      {event.platform.toLowerCase() === 'facebook' ? <i className="fa fa-facebook mr-0"></i> : null }
+                      View Event
+                    </a>
+                    : null}
+                  {location ?
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${location.split('\n').join(' ')}`}
+                       className="button is-small is-primary"
+                       target={'_blank'}>
+                      <i className="fa fa-map-marker mr-0"></i>
+                      Map It
+                    </a>
+                    : null}
+                </div>
+                : null}
             </div>
           </div>
         </div>
