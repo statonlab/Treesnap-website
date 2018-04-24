@@ -12,14 +12,21 @@ export default class HomeJumbotron extends Component {
                 <h3 className="title is-4 mb-none">AVAILABLE NOW</h3>
                 <h1 className="title is-1">Help Our Nation’s Trees!</h1>
                 <p>
-                  Invasive diseases and pests threaten the health of America’s forests. Scientists are working to understand what allows some individual trees to survive, but they need to find healthy, resilient trees in the forest to study. That’s where concerned foresters, landowners, and citizens (you!) can help. Tag trees you find in your community, on your property, or out in the wild using TreeSnap! Scientists will use the data you collect to locate trees for research projects like studying the genetic diversity of tree species and building better tree breeding programs.
+                  Invasive diseases and pests threaten the health of America’s forests.
+                  Scientists are working to understand what allows some individual trees
+                  to survive, but they need to find healthy, resilient trees in the
+                  forest to study. That’s where concerned foresters, landowners, and
+                  citizens (you!) can help. Tag trees you find in your community, on
+                  your property, or out in the wild using TreeSnap! Scientists will use
+                  the data you collect to locate trees for research projects like studying
+                  the genetic diversity of tree species and building better tree breeding programs.
                 </p>
               </div>
 
               <GetAppRow/>
             </div>
             <div className="column is-3 has-text-right mock-container is-hidden-mobile">
-              <img src="/images/mock-min.png" alt="Mock Device" className="mockup-img"/>
+              <img src="/images/x-mockup-min.png" alt="Mock Device" className="mockup-img"/>
             </div>
           </div>
         </div>
