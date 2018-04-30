@@ -44,7 +44,6 @@ An invasive insect, the emerald ash borer, is currently moving through North Ame
   * [USDA Forest Service Northern Research Station 
 ](https://www.fs.fed.us/nrs/tools/ash/)
 
-
 ## White oak
 
 White oak (_Quercus alba_) is an extremely important tree species. It provides wood for lumber (including bourbon barrels) and is also a key food source for wildlife. It is a key component of the central hardwood forests. Mature white oaks typically grow very large, 80-100 feet high, and have broad, full canopies. White oaks can live a very long time and some trees have been found that are over 400 years old.
@@ -71,3 +70,16 @@ Our hope is that this reporting app will let members of the public identify heml
 
 * [Hemlock Restoration Initiatve](http://savehemlocksnc.org/)
 *  [Forest Restoration Alliance](https://threatenedforests.com/)
+
+## Florida Torreya
+
+Florida Torreya (_Torreya taxifolia_) is one of the rarest tree species in the US, with distribution limited to a very narrow area of the upper Apalachicola River basin in Florida and just into Georgia. It used to be the dominant mid-story tree in the Apalachicola bluffs and ravines region, but in the 1950s the trees began dying off from a fungal blight and now only a fraction of trees remain. Help us by providing locations and measurements of trees on private property, and especially to find disease-free trees.
+
+Florida Torreya is also known as Gopherwood, Stinking Cedar, and Florida nutmeg.
+
+### Fusarium torreyae
+
+The deadly fungus has been identified as _Fusarium torreyae_, thought to be imported from Asia, and appears to be ubiquitous in the ravines area. Root sprouts die before reaching maturity and producing fruit, so the species will go extinct in the wild without intervention. Researchers will coordinate with you to take cuttings of your trees which will be grown offsite to save the most genetic diversity possible. Of utmost importance is finding trees that do not exhibit cankers or other signs of disease stress so that genes for disease resistance can be found and used in a breeding program.
+
+### Partners
+* [Atlanta Botanical Gardens]( atlantabg.org/learn/conservation-efforts)

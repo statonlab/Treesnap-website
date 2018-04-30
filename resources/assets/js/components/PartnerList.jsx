@@ -96,7 +96,6 @@ export default class PartnerList extends Component {
           </div>
         </div>
         <div className="box">
-
           <div className="media">
             <div className="media-left">
             <a href ="http://www.foresthealthcenter.org">
@@ -122,7 +121,24 @@ export default class PartnerList extends Component {
           </div>
         </div>
         <div className="box">
-
+          <div className="media">
+            <div className="media-left">
+              <a href ="http://atlantabg.org/">
+                <img src="/images/ABG.png"
+                     alt="Atlanta Botanical Garden icon"
+                     className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">Atlanta Botanical Garden
+              </p>
+              <p className="feature-text">
+               The Atlanta Botanical Garden's mission is to develop and maintain plant collections for display, education, research, conservation and enjoyment. The Garden has launched the Center for Southeastern Conservation, an expansion of the Garden’s conservation research and education. Through conservation of imperiled species and habitats in the Carolinas, Tennessee, Georgia, Florida, Alabama, Mississippi, and Louisiana, the Center protects the natural heritage of one of North America’s most biodiverse regions.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="box">
           <div className="media">
             <div className="media-left">
               <img src="/images/flat-icons/teamwork-3.png"
