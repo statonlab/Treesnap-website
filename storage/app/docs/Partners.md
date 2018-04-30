@@ -29,6 +29,11 @@ The American Chestnut Foundation will use data on chestnuts to find trees that a
  
 The Forest Health Research and Education Center will use data on white oak to build a breeding program.  Their goal is to be better prepared in the event that any invasive pests that target white oak are introduced in the future.
 
+# Atlanta Botanical Garden
+
+[Atlanta Botanical Garden’s](http://atlantabg.org/) mission is to develop and maintain plant collections for display, education, research, conservation and enjoyment. The Garden has launched the Center for Southeastern Conservation, an expansion of the Garden’s conservation research and education. Through conservation of imperiled species and habitats in the Carolinas, Tennessee, Georgia, Florida, Alabama, Mississippi, and Louisiana, the Center protects the natural heritage of one of North America’s most biodiverse regions.
+
+
 # Get involved
 
 Have a project or tree breeding program you want involved?  Let us know! You can visit our [contact page](/contact), or find us on [Facebook](https://www.facebook.com/treesnapapp/) or [Twitter](https://twitter.com/Treesnapapp).
