@@ -40,7 +40,12 @@ class MetaLabels
             'catkins' => 'Catkins',
             'comment' => 'Comment',
             'diameterNumeric_confidence' => 'Diameter Confidence',
-            'heightFirstBranch_confidence' => 'Height Confidence',
+            'heightFirstBranch_confidence' => 'Height of First Branch Confidence',
+            'numberRootSprouts' => 'Number of Root Sprouts',
+            'numberRootSprouts_confidence' => 'Number of Root Sprouts Confidence',
+            'heightNumeric_confidence' => 'Tree Height Confidence',
+            'torreyaFungalBlight' => 'Fungal Blight',
+            'conesMaleFemale' => 'Cones'
         ];
     }
 
