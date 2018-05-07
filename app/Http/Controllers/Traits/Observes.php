@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Services\MetaLabels;
+
 trait Observes
 {
     /**
@@ -16,6 +18,7 @@ trait Observes
         'Hemlock',
         'White Oak',
         'American Elm',
+        'Florida Torreya',
         'Other',
     ];
 
@@ -256,8 +259,9 @@ trait Observes
      */
     protected function getLabel($key)
     {
-        if (isset($this->labels_map[$key])) {
-            return $this->labels_map[$key];
+        $labels = new MetaLabels();
+        if (!is_null($labels->{$key})) {
+            return $labels->{$key};
         }
 
         return $key;

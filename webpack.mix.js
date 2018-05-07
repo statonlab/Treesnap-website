@@ -12,7 +12,7 @@ const mix = require('laravel-mix')
  */
 
 // Watch configuration
-mix.browserSync('treesnap.test')
+mix.browserSync({proxy: 'treesnap.test'})
 
 // Webpack code splitting config
 mix.webpackConfig({

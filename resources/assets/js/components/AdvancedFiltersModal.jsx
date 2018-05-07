@@ -6,6 +6,8 @@ import AshFilters from './subcomponents/AshFilters'
 import HemlockFilters from './subcomponents/HemlockFilters'
 import AmericanElmFilters from './subcomponents/AmericanElmFilters'
 import WhiteOakFilters from './subcomponents/WhiteOakFilters'
+import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
+import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 
 export default class AdvancedFiltersModal extends Component {
@@ -24,6 +26,8 @@ export default class AdvancedFiltersModal extends Component {
       hemlock           : {},
       americanElm       : {},
       whiteOak          : {},
+      floridaTorreya    : {},
+      other             : {},
       resultsCount      : 0,
       loading           : false,
       errors            : {}
@@ -71,6 +75,8 @@ export default class AdvancedFiltersModal extends Component {
       hemlock         : this.state.hemlock,
       americanElm     : this.state.americanElm,
       whiteOak        : this.state.whiteOak,
+      floridaTorreya  : this.state.floridaTorreya,
+      other           : this.state.other,
       address         : {
         city  : this.state.city,
         county: this.state.county,
@@ -126,6 +132,8 @@ export default class AdvancedFiltersModal extends Component {
       hemlock         : filters.hemlock,
       americanElm     : filters.americanElm,
       whiteOak        : filters.whiteOak,
+      other           : filters.other,
+      floridaTorreya  : filters.floridaTorreya,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -192,6 +200,28 @@ export default class AdvancedFiltersModal extends Component {
         <h3 className="title is-4 mb-0">Hemlock Filters (Optional)</h3>
         <div className="bordered">
           <HemlockFilters onChange={(hemlock) => this.count({hemlock})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderFloridaTorreyaFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Florida Torreya Filters (Optional)</h3>
+        <div className="bordered">
+          <FloridaTorreya onChange={(floridaTorreya) => this.count({floridaTorreya})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderOtherFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Other Trees Filters (Optional)</h3>
+        <div className="bordered">
+          <OtherFilters onChange={(other) => this.count({other})}/>
         </div>
       </div>
     )
@@ -270,15 +300,17 @@ export default class AdvancedFiltersModal extends Component {
           </div>
         </div>
 
-        {this.state.selectedCategories.indexOf('American Chestnut') > -1 ? this.renderAmericanChestnutFilters() : null}
-
-        {this.state.selectedCategories.indexOf('Ash') > -1 ? this.renderAshFilters() : null}
-
-        {this.state.selectedCategories.indexOf('Hemlock') > -1 ? this.renderHemlockFilters() : null}
-
-        {this.state.selectedCategories.indexOf('White Oak') > -1 ? this.renderWhiteOakFilters() : null}
-
-        {this.state.selectedCategories.indexOf('American Elm') > -1 ? this.renderAmericanElmFilters() : null}
+        {this.state.selectedCategories.map((label, index) => {
+          const key = 'render' + label.replace(' ', '') + 'Filters'
+          if (typeof this[key] === 'function') {
+            return (
+              <div style={{width: '100%'}} key={index}>
+                {this[key]()}
+              </div>
+            )
+          }
+          return null
+        })}
 
         <div className="column is-6"></div>
 
@@ -346,7 +378,7 @@ export default class AdvancedFiltersModal extends Component {
               <p>
                 Found <b>{this.state.resultsCount || 0}</b> observations that fit your criteria
               </p>
-            : null}
+              : null}
             <button type="button"
                     className="button"
                     onClick={this.close.bind(this)}>
@@ -359,7 +391,6 @@ export default class AdvancedFiltersModal extends Component {
   }
 
   reapplyState(state) {
-    console.log('reapplying:', state)
     this.setState(state)
     if (state.selectedCategories) {
       this.refs.speciesButtonList.setSelected(state.selectedCategories)

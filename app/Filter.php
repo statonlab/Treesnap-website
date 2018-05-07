@@ -12,6 +12,7 @@ class Filter extends Model
         'Hemlock' => 'hemlock',
         'White Oak' => 'whiteOak',
         'American Elm' => 'americanElm',
+        'Florida Torreya' => 'floridaTorreya',
         'Other' => 'other',
     ];
 
@@ -132,7 +133,7 @@ class Filter extends Model
                                 // Extract the filter name
                                 $filterName = substr($filter, 0, strlen($filter) - 3);
                                 $filterMax = "{$filterName}Max";
-                                $allFilters = (array) $filters[static::$filterMapper[$category]];
+                                $allFilters = (array)$filters[static::$filterMapper[$category]];
 
                                 // If the filter is not complete, ignore it
                                 if (! isset($allFilters[$filterMax])) {

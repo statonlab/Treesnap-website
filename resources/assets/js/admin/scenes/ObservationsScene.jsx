@@ -42,7 +42,7 @@ export default class ObservationsScene extends Component {
       showHelpModal     : false
     }
 
-    document.title = 'Observations - TreeSnap'
+    document.title = 'Observations (Admin) - TreeSnap'
   }
 
   /**
