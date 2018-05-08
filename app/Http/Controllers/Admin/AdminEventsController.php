@@ -87,18 +87,21 @@ class AdminEventsController extends Controller
 
         $this->validate($request, $this->getValidationRules());
 
+        $has_start_time = (bool)$request->has_start_time === true;
+        $has_end_time = (bool)$request->has_end_time === true;
+
         $event = Event::create([
             'user_id' => $user->id,
             'title' => $request->title,
             'location' => $request->location,
-            'start_date' => $this->formatDateForDB($request->start_date, $request->has_start_time),
-            'end_date' => $this->formatDateForDB($request->end_date, $request->has_end_time),
+            'start_date' => $this->formatDateForDB($request->start_date, $has_start_time),
+            'end_date' => $this->formatDateForDB($request->end_date, $has_end_time),
             'timezone' => $request->timezone,
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
-            'has_start_time' => $request->has_start_time,
-            'has_end_time' => $request->has_end_time,
+            'has_start_time' => $has_start_time,
+            'has_end_time' => $has_end_time,
         ]);
 
         $event->load([
@@ -125,17 +128,20 @@ class AdminEventsController extends Controller
 
         $this->validate($request, $this->getValidationRules());
 
+        $has_start_time = (bool)$request->has_start_time === true;
+        $has_end_time = (bool)$request->has_end_time === true;
+
         $event->update([
             'title' => $request->title,
             'location' => $request->location,
-            'start_date' => $this->formatDateForDB($request->start_date, $request->has_start_time),
-            'end_date' => $this->formatDateForDB($request->end_date, $request->has_end_time),
+            'start_date' => $this->formatDateForDB($request->start_date, $has_start_time),
+            'end_date' => $this->formatDateForDB($request->end_date, $has_end_time),
             'timezone' => $request->timezone,
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
-            'has_start_time' => $request->has_start_time,
-            'has_end_time' => $request->has_end_time,
+            'has_start_time' => $has_start_time,
+            'has_end_time' => $has_end_time,
         ]);
 
         $event->load([
