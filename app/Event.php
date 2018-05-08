@@ -20,7 +20,9 @@ class Event extends Model
         'platform',
         'description',
         'location',
-        'timezone'
+        'timezone',
+        'has_start_time',
+        'has_end_time',
     ];
 
     /**
@@ -32,7 +34,17 @@ class Event extends Model
         'created_at',
         'updated_at',
         'start_date',
-        'end_date'
+        'end_date',
+    ];
+
+    /**
+     * Casts columns.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'has_start_time' => 'boolean',
+        'has_end_time' => 'boolean',
     ];
 
     /**
@@ -40,7 +52,8 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

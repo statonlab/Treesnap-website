@@ -36,14 +36,14 @@ class AdminEventsController extends Controller
                 'month' => $start_date->format('M'),
                 'day' => $start_date->format('d'),
                 'year' => $start_date->year,
-                'time' => $start_date->format('g:i A'),
+                'time' => $event->has_start_time ? $start_date->format('g:i A') : null,
             ];
 
             $event->formatted_end_date = $end_date ? [
                 'month' => $end_date->format('M'),
                 'day' => $end_date->format('d'),
                 'year' => $end_date->year,
-                'time' => $end_date->format('g:i A'),
+                'time' => $event->has_end_time ? $end_date->format('g:i A') : null,
             ] : null;
 
             return $event;
@@ -97,6 +97,8 @@ class AdminEventsController extends Controller
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
+            'has_start_time' => $request->has_start_time === true,
+            'has_end_time' => $request->has_end_time === true,
         ]);
 
         $event->load([
@@ -132,6 +134,8 @@ class AdminEventsController extends Controller
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
+            'has_start_time' => $request->has_start_time === true,
+            'has_end_time' => $request->has_end_time === true,
         ]);
 
         $event->load([
@@ -177,6 +181,8 @@ class AdminEventsController extends Controller
             'link' => 'nullable|url',
             'platform' => 'nullable|max:20',
             'description' => 'required|min:3',
+            'has_start_time' => 'nullable|boolean',
+            'has_end_time' => 'nullable|boolean',
         ];
     }
 }

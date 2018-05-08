@@ -89,9 +89,7 @@ export default class Calendar extends Component {
                     value={this.state.date.date()}
                     onChange={({target}) => {
                       const date = this.state.date.date(target.value)
-                      this.setState({
-                        date
-                      })
+                      this.setState({date})
                     }}>
               {this.state.days.map((day, key) => {
                 return (<option value={day} key={key}>{day}</option>)
@@ -106,9 +104,7 @@ export default class Calendar extends Component {
                     value={this.state.date.year()}
                     onChange={({target}) => {
                       const date = this.state.date.year(target.value)
-                      this.setState({
-                        date
-                      })
+                      this.setState({date})
                     }}>
               {this.state.years.map((year, key) => {
                 return (<option value={year} key={key}>{year}</option>)
@@ -124,10 +120,9 @@ export default class Calendar extends Component {
                     value={this.state.date.hour()}
                     onChange={({target}) => {
                       const date = this.state.date.hour(target.value)
-                      this.setState({
-                        date
-                      })
-                    }}>
+                      this.setState({date})
+                    }}
+                    disabled={!this.props.includeTime}>
               {this.state.hours.map((hour, key) => {
                 return (<option value={hour} key={key}>{hour}</option>)
               })}
@@ -144,7 +139,8 @@ export default class Calendar extends Component {
                       this.setState({
                         date
                       })
-                    }}>
+                    }}
+                    disabled={!this.props.includeTime}>
               {this.state.minutes.map((minute, key) => {
                 return (<option value={minute} key={key}>{minute}</option>)
               })}
@@ -157,9 +153,11 @@ export default class Calendar extends Component {
 }
 
 Calendar.propTypes = {
-  date: PropTypes.object
+  date       : PropTypes.object,
+  includeTime: PropTypes.bool
 }
 
 Calendar.defaultProps = {
-  date: moment()
+  date       : moment(),
+  includeTime: true
 }

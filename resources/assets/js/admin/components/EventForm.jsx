@@ -9,17 +9,18 @@ export default class EventForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      id         : null,
-      title      : '',
-      timezone   : '',
-      start_date : moment(),
-      end_date   : moment(),
-      link       : '',
-      description: '',
-      location   : '',
-      platform   : '',
-      loading    : false,
-      errors     : new Errors('')
+      id          : null,
+      title       : '',
+      timezone    : '',
+      start_date  : moment().minute(0).hour(0),
+      end_date    : moment().minute(0).hour(0),
+      link        : '',
+      include_time: true,
+      description : '',
+      location    : '',
+      platform    : '',
+      loading     : false,
+      errors      : new Errors('')
     }
   }
 
@@ -28,17 +29,18 @@ export default class EventForm extends Component {
 
     if (event !== null) {
       let start_date = moment(event.start_date, 'YYYY-MM-DD HH:mm:ss')
-      let end_date   = event.end_date ? moment(event.end_date, 'YYYY-MM-DD HH:mm:ss') : start_date.hour(18)
+      let end_date   = moment(event.end_date, 'YYYY-MM-DD HH:mm:ss')
       this.setState({
-        id         : event.id,
-        title      : event.title || '',
-        timezone   : event.timezone || '',
-        start_date : start_date,
-        end_date   : end_date,
-        link       : event.link || '',
-        description: event.description || '',
-        location   : event.location || '',
-        platform   : event.platform || ''
+        id          : event.id,
+        title       : event.title || '',
+        timezone    : event.timezone || '',
+        start_date  : start_date,
+        end_date    : end_date,
+        link        : event.link || '',
+        description : event.description || '',
+        location    : event.location || '',
+        platform    : event.platform || '',
+        include_time: event.has_start_time && event.has_end_time
       })
     }
   }
@@ -97,8 +99,10 @@ export default class EventForm extends Component {
   getData() {
     let data = {
       ...this.state,
-      start_date: this.state.start_date.format('YYYY-MM-DD HH:mm:ss'),
-      end_date  : this.state.end_date.format('YYYY-MM-DD HH:mm:ss')
+      start_date    : this.state.start_date.format('YYYY-MM-DD HH:mm:ss'),
+      end_date      : this.state.end_date.format('YYYY-MM-DD HH:mm:ss'),
+      has_start_time: this.state.include_time,
+      has_end_time  : this.state.include_time
     }
 
     delete data.errors
@@ -148,7 +152,22 @@ export default class EventForm extends Component {
         <div className="field">
           <label className="label">Start Date and Time</label>
           <div className="control">
-            <Calendar date={this.state.start_date} onChange={start_date => this.setState({start_date})}/>
+            <label className="checkbox">
+              <input type="checkbox"
+                     style={{marginRight: '10px'}}
+                     value={true}
+                     onChange={() => this.setState({include_time: !this.state.include_time})}
+                     checked={this.state.include_time}/>
+              Include time
+            </label>
+          </div>
+        </div>
+
+        <div className="field">
+          <div className="control">
+            <Calendar date={this.state.start_date}
+                      onChange={start_date => this.setState({start_date})}
+                      includeTime={this.state.include_time}/>
             {errors.has('start_date') ? <p className={'help is-danger'}>{errors.first('start_date')}</p> : null}
           </div>
         </div>
@@ -156,7 +175,9 @@ export default class EventForm extends Component {
         <div className="field">
           <label className="label">End Date and Time</label>
           <div className="control">
-            <Calendar date={this.state.end_date} onChange={end_date => this.setState({end_date})}/>
+            <Calendar date={this.state.end_date}
+                      onChange={end_date => this.setState({end_date})}
+                      includeTime={this.state.include_time}/>
             {errors.has('end_date') ? <p className={'help is-danger'}>{errors.first('end_date')}</p> : null}
           </div>
         </div>

@@ -101,12 +101,12 @@ export default class EventsScene extends Component {
     })
   }
 
-  renderEvent(event, key) {
-    const start    = event.formatted_start_date
-    const end      = event.formatted_end_date
+  renderEvent(event) {
+    const start = event.formatted_start_date
+    const end   = event.formatted_end_date
 
     return (
-      <div key={key} className={'column is-4'}>
+      <div key={event.id} className={'column is-4'}>
         <div className="card card-equal-height">
           <header className="card-header">
             <h3 className="card-header-title" title={event.title}>
@@ -115,7 +115,11 @@ export default class EventsScene extends Component {
           </header>
           <section className="card-content content mb-none p-0">
             <strong>Description</strong>
-            <p>{event.description}</p>
+            <div className={'mb-1'}>
+              {event.description.split('\n').map((desc, key) => {
+                return (<div key={key}>{desc}</div>)
+              })}
+            </div>
 
             {event.location ? <strong>Location</strong> : null}
             <div className={'mb-1'}>

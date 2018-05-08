@@ -93,9 +93,13 @@ export default class Errors {
         let data = errors.response.data
 
         if (data.error) {
-          // Its a single error message
-          this.errors = {
-            general: [data.error]
+          if (typeof data.error === 'string') {
+            // Its a single error message
+            this.errors = {
+              general: [data.error]
+            }
+          } else {
+            this.errors = data.error
           }
         }
         else {
