@@ -29,7 +29,8 @@ class UsersTableSeeder extends Seeder
             'role_id' => \App\Role::where('name', 'Admin')->first()->id,
         ]);
 
-        // After creating 2 admin users, create 100 random users
-        factory(\App\User::class, 100)->create();
+        // After creating 2 admin users, create 5 random users
+        // We are limiting to 5 here because email has to be unique
+        factory(\App\User::class, 5)->create();
     }
 }

@@ -12,13 +12,24 @@ const mix = require('laravel-mix')
  */
 
 // Watch configuration
-mix.browserSync({proxy: 'treesnap.test'})
+mix.browserSync({
+  proxy: 'treesnap.test',
+  port : 3000,
+  files: [
+    'resources/assets/sass/**/*.scss',
+    'resources/assets/js/**/*.js',
+    'app/**/*.php',
+    'public/js/**/*.js',
+    'public/css/**/*.css'
+  ]
+})
 
 // Webpack code splitting config
 mix.webpackConfig({
   output: {
     publicPath   : '/',
-    chunkFilename: 'js/[name].[chunkhash].js'
+    // chunkFilename: 'js/[name].[chunkhash].js',
+    chunkFilename: `js/[name]${mix.inProduction() ? '.[chunkhash].js' : '.js'}`
   }
 })
 
@@ -27,4 +38,7 @@ mix.react('resources/assets/js/app.jsx', 'public/js')
   .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
   .sass('resources/assets/sass/app.scss', 'public/css')
   .extract(['react', 'lodash', 'axios', 'moment'])
-  .version()
+
+if (mix.inProduction()) {
+  mix.version()
+}

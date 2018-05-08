@@ -119,6 +119,7 @@ class AdminEventsAPITest extends TestCase
             'link' => 'https://facebook.com',
             'platform' => 'facebook',
             'description' => 'Some long text about the event goes here.',
+            'has_start_time' => false,
         ]);
 
         $response->assertStatus(201);
@@ -136,6 +137,8 @@ class AdminEventsAPITest extends TestCase
                 'timezone',
                 'title',
                 'description',
+                'has_start_time',
+                'has_end_time',
             ],
         ]);
     }

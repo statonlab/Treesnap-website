@@ -36,14 +36,14 @@ class AdminEventsController extends Controller
                 'month' => $start_date->format('M'),
                 'day' => $start_date->format('d'),
                 'year' => $start_date->year,
-                'time' => $start_date->format('g:i A'),
+                'time' => $event->has_start_time ? $start_date->format('g:i A') : null,
             ];
 
             $event->formatted_end_date = $end_date ? [
                 'month' => $end_date->format('M'),
                 'day' => $end_date->format('d'),
                 'year' => $end_date->year,
-                'time' => $end_date->format('g:i A'),
+                'time' => $event->has_end_time ? $end_date->format('g:i A') : null,
             ] : null;
 
             return $event;
@@ -87,16 +87,21 @@ class AdminEventsController extends Controller
 
         $this->validate($request, $this->getValidationRules());
 
+        $has_start_time = (bool)$request->has_start_time === true;
+        $has_end_time = (bool)$request->has_end_time === true;
+
         $event = Event::create([
             'user_id' => $user->id,
             'title' => $request->title,
             'location' => $request->location,
-            'start_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->start_date),
-            'end_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->end_date),
+            'start_date' => $this->formatDateForDB($request->start_date, $has_start_time),
+            'end_date' => $this->formatDateForDB($request->end_date, $has_end_time),
             'timezone' => $request->timezone,
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
+            'has_start_time' => $has_start_time,
+            'has_end_time' => $has_end_time,
         ]);
 
         $event->load([
@@ -123,15 +128,20 @@ class AdminEventsController extends Controller
 
         $this->validate($request, $this->getValidationRules());
 
+        $has_start_time = (bool)$request->has_start_time === true;
+        $has_end_time = (bool)$request->has_end_time === true;
+
         $event->update([
             'title' => $request->title,
             'location' => $request->location,
-            'start_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->start_date),
-            'end_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->end_date),
+            'start_date' => $this->formatDateForDB($request->start_date, $has_start_time),
+            'end_date' => $this->formatDateForDB($request->end_date, $has_end_time),
             'timezone' => $request->timezone,
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
+            'has_start_time' => $has_start_time,
+            'has_end_time' => $has_end_time,
         ]);
 
         $event->load([
@@ -177,6 +187,26 @@ class AdminEventsController extends Controller
             'link' => 'nullable|url',
             'platform' => 'nullable|max:20',
             'description' => 'required|min:3',
+            'has_start_time' => 'nullable|boolean',
+            'has_end_time' => 'nullable|boolean',
         ];
+    }
+
+    /**
+     * Sets date to end of day if time is not required.
+     *
+     * @param $date
+     * @param bool $has_time
+     * @return \Carbon\Carbon
+     */
+    protected function formatDateForDB($date, $has_time = true)
+    {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date);
+
+        if (! $has_time) {
+            $date = $date->hour(23)->minute(59)->second(0);
+        }
+
+        return $date;
     }
 }

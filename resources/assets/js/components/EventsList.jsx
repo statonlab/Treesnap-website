@@ -24,12 +24,12 @@ export default class EventsList extends Component {
     })
   }
 
-  renderEvent(event, key) {
+  renderEvent(event) {
     const start    = event.formatted_start_date
     const end      = event.formatted_end_date
     const location = event.location
     return (
-      <div key={key}>
+      <div key={event.id}>
         <div className="is-flex">
           <div className="item has-text-centered font-weight-light bg-warning text-small elevation-2"
                style={{flexBasis: 65, minWidth: 65, maxWidth: 65, height: 65, borderRadius: '50%'}}>

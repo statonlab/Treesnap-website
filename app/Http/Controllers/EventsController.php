@@ -32,14 +32,14 @@ class EventsController extends Controller
                     'month' => $start_date->format('M'),
                     'day' => $start_date->format('d'),
                     'year' => $start_date->year,
-                    'time' => $start_date->format('g:i A'),
+                    'time' => $event->has_start_time ? $start_date->format('g:i A') : null,
                 ];
 
                 $event->formatted_end_date = $end_date ? [
                     'month' => $end_date->format('M'),
                     'day' => $end_date->format('d'),
                     'year' => $end_date->year,
-                    'time' => $end_date->format('g:i A'),
+                    'time' => $event->has_end_time ? $end_date->format('g:i A') : null,
                 ] : null;
 
                 return $event;
