@@ -123,7 +123,7 @@ export default class EventForm extends Component {
             onSubmit={({nativeEvent}) => nativeEvent.preventDefault()}
             onKeyDown={e => this.clearError(e)}>
         <div className="field">
-          <label className="label">Title</label>
+          <label className="label">Title<span className={'text-danger'}>*</span></label>
           <div className="control">
             <input type="text"
                    className={`input`}
@@ -137,7 +137,7 @@ export default class EventForm extends Component {
 
         <div className="field">
           <label className="label">
-            Description
+            Description<span className={'text-danger'}>*</span>
           </label>
           <div className="control">
             <textarea className={`textarea`}
@@ -150,7 +150,7 @@ export default class EventForm extends Component {
         </div>
 
         <div className="field">
-          <label className="label">Start Date and Time</label>
+          <label className="label">Start Date and Time<span className={'text-danger'}>*</span></label>
           <div className="control">
             <label className="checkbox">
               <input type="checkbox"
@@ -173,7 +173,7 @@ export default class EventForm extends Component {
         </div>
 
         <div className="field">
-          <label className="label">End Date and Time</label>
+          <label className="label">End Date and Time<span className={'text-danger'}>*</span></label>
           <div className="control">
             <Calendar date={this.state.end_date}
                       onChange={end_date => this.setState({end_date})}
@@ -183,7 +183,7 @@ export default class EventForm extends Component {
         </div>
 
         <div className="field">
-          <label className="label">Timezone</label>
+          <label className="label">Timezone<span className={'text-danger'}>*</span></label>
           <div className="control">
             <input type="text"
                    className="input"

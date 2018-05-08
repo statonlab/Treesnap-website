@@ -91,14 +91,14 @@ class AdminEventsController extends Controller
             'user_id' => $user->id,
             'title' => $request->title,
             'location' => $request->location,
-            'start_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->start_date),
-            'end_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->end_date),
+            'start_date' => $this->formatDateForDB($request->start_date, $request->has_start_time),
+            'end_date' => $this->formatDateForDB($request->end_date, $request->has_end_time),
             'timezone' => $request->timezone,
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
-            'has_start_time' => $request->has_start_time === true,
-            'has_end_time' => $request->has_end_time === true,
+            'has_start_time' => $request->has_start_time,
+            'has_end_time' => $request->has_end_time,
         ]);
 
         $event->load([
@@ -128,14 +128,14 @@ class AdminEventsController extends Controller
         $event->update([
             'title' => $request->title,
             'location' => $request->location,
-            'start_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->start_date),
-            'end_date' => Carbon::createFromFormat('Y-m-d H:i:s', $request->end_date),
+            'start_date' => $this->formatDateForDB($request->start_date, $request->has_start_time),
+            'end_date' => $this->formatDateForDB($request->end_date, $request->has_end_time),
             'timezone' => $request->timezone,
             'link' => $request->link,
             'platform' => $request->platform,
             'description' => $request->description,
-            'has_start_time' => $request->has_start_time === true,
-            'has_end_time' => $request->has_end_time === true,
+            'has_start_time' => $request->has_start_time,
+            'has_end_time' => $request->has_end_time,
         ]);
 
         $event->load([
@@ -184,5 +184,23 @@ class AdminEventsController extends Controller
             'has_start_time' => 'nullable|boolean',
             'has_end_time' => 'nullable|boolean',
         ];
+    }
+
+    /**
+     * Sets date to end of day if time is not required.
+     *
+     * @param $date
+     * @param bool $has_time
+     * @return \Carbon\Carbon
+     */
+    protected function formatDateForDB($date, $has_time = true)
+    {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date);
+
+        if (! $has_time) {
+            $date = $date->hour(23)->minute(59)->second(0);
+        }
+
+        return $date;
     }
 }
