@@ -1022,7 +1022,7 @@ export default class App extends Component {
 
           {Object.keys(data).map(key => {
             const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-            return this._renderMetaData(label, data[key], key)
+            return this._renderMetaData(label, data[key], key, marker.has_private_comments)
           })}
 
           <div className="sidebar-item">
@@ -1037,13 +1037,14 @@ export default class App extends Component {
   /**
    * Decode meta data.
    *
-   * @param label
-   * @param data
-   * @param key
-   * @returns {XML}
+   * @param {string} label
+   * @param {string|object} data
+   * @param {string} key
+   * @param {boolean} has_private_comments
+   * @return {*}
    * @private
    */
-  _renderMetaData(label, data, key) {
+  _renderMetaData(label, data, key, has_private_comments) {
     if (Utils.isJson(data) === true) {
       data = JSON.parse(data)
     }
@@ -1052,7 +1053,7 @@ export default class App extends Component {
       <div className="sidebar-item" key={key}>
         <h5><strong>{label}</strong></h5>
         <div className="ml-1">
-          {data} {key === 'comment' ?
+          {data} {key === 'comment' && has_private_comments ?
           <p className="help">
             <span className="icon is-small">
               <i className="fa fa-lock"></i>
