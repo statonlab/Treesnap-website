@@ -51,10 +51,11 @@ class ObservationsAPITest extends TestCase
      */
     public function testGettingOneRecord()
     {
-        $user = User::has('observations')->first();
+        $user = factory(User::class)->create();
+        $observation = factory(Observation::class)->create([
+            'user_id' => $user->id,
+        ]);
         $this->actingAs($user);
-
-        $observation = Observation::where('user_id', $user->id)->first();
 
         $response = $this->get("/api/v1/observation/{$observation->id}");
 
@@ -78,7 +79,47 @@ class ObservationsAPITest extends TestCase
     }
 
     /**
+     * Test that comments marked as private don't show up for other users.
+     *
+     * @test
+     */
+    public function testPrivateCommentsDoNotShow() {
+        $user = factory(User::class)->create();
+        $observation = factory(Observation::class)->create([
+            'has_private_comments' => true
+        ]);
+
+        $this->actingAs($user);
+        $response = $this->get('/web/observation/'.$observation->id);
+
+        $response->assertStatus(200);
+        $json = $response->json();
+        $this->assertArrayNotHasKey('comment', $json['data']['meta_data']);
+    }
+
+    /**
+     * Test that comments NOT marked as private Do show up for other users.
+     *
+     * @test
+     */
+    public function testPublicCommentsDoShow() {
+        $user = factory(User::class)->create();
+        $observation = factory(Observation::class)->create([
+            'has_private_comments' => false
+        ]);
+
+        $this->actingAs($user);
+        $response = $this->get('/web/observation/'.$observation->id);
+
+        $response->assertStatus(200);
+        $json = $response->json();
+        $this->assertArrayHasKey('comment', $json['data']['meta_data']);
+    }
+
+    /**
      * Test authorization to access some else's records.
+     *
+     * @test
      */
     public function testGettingRecordThatDoesNotBelongToTheUser()
     {
@@ -203,7 +244,7 @@ class ObservationsAPITest extends TestCase
         $user2 = factory(User::class)->create();
         $this->actingAs($user1);
         $observation = factory(Observation::class)->create([
-            'user_id' => $user2->id
+            'user_id' => $user2->id,
         ]);
 
         $response = $this->post("/api/v1/observation/{$observation->id}", [

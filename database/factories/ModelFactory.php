@@ -97,6 +97,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
         'thumbnail' => '/storage/thumbnails/'.$thumbnail,
+        'has_private_comments' => $faker->randomElement([true, false]),
     ];
 });
 

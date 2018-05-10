@@ -133,6 +133,7 @@ class ObservationsController extends Controller
             'mobile_id' => $request->mobile_id,
             'thumbnail' => '/images/placeholder-min.png',
             'latin_name_id' => LatinName::getID($request->observation_category, $data),
+            'has_private_comments' => (bool)$request->has_private_comments,
         ]);
 
         if (! $observation) {
@@ -188,6 +189,7 @@ class ObservationsController extends Controller
             'images' => $images,
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
+            'has_private_comments' => (bool)$request->has_private_comments,
         ]);
 
         if (! $observation) {
@@ -221,6 +223,7 @@ class ObservationsController extends Controller
             'images.*.*' => 'required|image|max:30240',
             'is_private' => 'required|boolean',
             'mobile_id' => 'required|numeric',
+            'has_private_comments' => 'nullable|boolean',
         ];
     }
 }
