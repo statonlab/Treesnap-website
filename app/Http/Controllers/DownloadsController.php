@@ -16,11 +16,19 @@ class DownloadsController extends Controller
 {
     use Observes;
 
+    /**
+     * Supported formats.
+     *
+     * @var array
+     */
     protected $extensions = [
         'csv',
         'tsv',
     ];
 
+    /**
+     * @var array
+     */
     protected $labels;
 
     /**
@@ -77,12 +85,15 @@ class DownloadsController extends Controller
             ->with(['latinName'])
             ->chunk(200, function ($observations) use ($user, $path, $extension) {
                 foreach ($observations as $observation) {
+                    $comment = '';
+                    $location = "{$observation->fuzzy_coords['latitude']}, {$observation->fuzzy_coords['longitude']}";
+
                     if ($this->hasPrivilegedPermissions($user, $observation)) {
-                        $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
                         $location = "{$observation->latitude}, {$observation->longitude}";
-                    } else {
-                        $comment = '';
-                        $location = "{$observation->fuzzy_coords['latitude']}, {$observation->fuzzy_coords['longitude']}";
+                    }
+
+                    if (! $observation->has_private_comments || $user->id === $observation->user_id) {
+                        $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
                     }
 
                     $line = [
