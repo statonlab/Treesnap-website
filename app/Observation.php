@@ -25,7 +25,8 @@ class Observation extends Model
         'address',
         'fuzzy_coords',
         'mobile_id',
-        'latin_name_id'
+        'latin_name_id',
+        'has_private_comments'
     ];
 
     /**
@@ -50,6 +51,7 @@ class Observation extends Model
         'address' => 'array',
         'fuzzy_coords' => 'array',
         'thumbnails' => 'array',
+        'has_private_comments' => 'bool',
     ];
 
     /**
@@ -67,7 +69,8 @@ class Observation extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function latinName() {
+    public function latinName()
+    {
         return $this->belongsTo('App\LatinName', 'latin_name_id', 'id');
     }
 
@@ -123,10 +126,10 @@ class Observation extends Model
             $query->whereBetween('latitude', [$bounds->northEast->lat, $bounds->southWest->lat]);
         }
 
-        $left_edge =$bounds->southWest->lng;
+        $left_edge = $bounds->southWest->lng;
         $right_edge = $bounds->northEast->lng;
 
-        if($right_edge < $left_edge) {
+        if ($right_edge < $left_edge) {
             $query->where(function ($query) use ($left_edge, $right_edge) {
                 $query->whereBetween('longitude', [$left_edge, 180]);
                 $query->orWhere(function ($query) use ($right_edge) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Events\ObservationCreated;
 use App\Events\ObservationDeleted;
+use App\Events\ObservationUpdated;
 use App\Http\Controllers\Api\v1\Traits\UploadsImages;
 use App\Http\Controllers\Traits\Observes;
 use App\LatinName;
@@ -133,6 +134,7 @@ class ObservationsController extends Controller
             'mobile_id' => $request->mobile_id,
             'thumbnail' => '/images/placeholder-min.png',
             'latin_name_id' => LatinName::getID($request->observation_category, $data),
+            'has_private_comments' => intval($request->has_private_comments) === 1,
         ]);
 
         if (! $observation) {
@@ -176,18 +178,22 @@ class ObservationsController extends Controller
         $old_images = $observation->images;
         $images = $this->uploadImages($request->images);
 
-        // Create the record
+        // Fuzzify coordinates for non-admin users
+        $fuzzy_coords = $this->fuzifyCoorinates($request->latitude, $request->longitude);
+
+        // Update the record
         $observation->update([
-            'user_id' => $user->id,
             'observation_category' => $request->observation_category,
             'data' => json_decode($request->meta_data),
             'longitude' => $request->longitude,
             'latitude' => $request->latitude,
+            'fuzzy_coords' => $fuzzy_coords,
             'location_accuracy' => $request->location_accuracy,
             'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
             'images' => $images,
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
+            'has_private_comments' => intval($request->has_private_comments) === 1,
         ]);
 
         if (! $observation) {
@@ -196,6 +202,8 @@ class ObservationsController extends Controller
 
         // Delete all old images
         $this->deleteImages($old_images);
+
+        event(new ObservationUpdated($observation));
 
         return $this->created(['observation_id' => $observation->id]);
     }
@@ -221,6 +229,7 @@ class ObservationsController extends Controller
             'images.*.*' => 'required|image|max:30240',
             'is_private' => 'required|boolean',
             'mobile_id' => 'required|numeric',
+            'has_private_comments' => 'nullable|boolean',
         ];
     }
 }

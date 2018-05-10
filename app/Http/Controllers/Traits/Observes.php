@@ -78,9 +78,9 @@ trait Observes
     /**
      * Formats the observation record into the expected response.
      *
-     * @param  $observation
-     * @param $admin
-     * @param $user
+     * @param \App\Observation $observation
+     * @param bool $admin
+     * @param \App\User $user
      * @return array
      */
     protected function getObservationJson($observation, $admin = false, $user = null)
@@ -107,8 +107,10 @@ trait Observes
         if ($user && $user->id === $observation->user_id) {
             $data = $observation->data;
             $isOwner = true;
-        } else {
+        } elseif ($observation->has_private_comments) {
             $data = array_except($observation->data, ['comment']);
+        } else {
+            $data = $observation->data;
         }
 
         if ($user && ! $admin && ! $isOwner) {
@@ -137,6 +139,7 @@ trait Observes
             'confirmations' => $user ? $observation->confirmations : [],
             'thumbnail' => $observation->thumbnail,
             'user' => $this->getUserDetails($observation, $user, $inGroup, $admin),
+            'has_private_comments' => $observation->has_private_comments,
         ];
     }
 
@@ -182,14 +185,15 @@ trait Observes
     /**
      * Create a response optimized for the map.
      *
-     * @param $observations
-     * @param $isAdmin
-     * @param $authenticated_user
+     * @param array $observations
+     * @param bool $isAdmin
+     * @param \App\User $authenticated_user
      * @return mixed
      */
     protected function prepForMap($observations, $isAdmin, $authenticated_user = false)
     {
         $all = [];
+        /** @var \App\Observation $observation */
         foreach ($observations as $observation) {
             $flattenedImages = [];
             foreach ($observation->images as $images) {
@@ -217,7 +221,7 @@ trait Observes
             $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
             $shareData = $isAdmin || $inGroup || $owner;
 
-            if ($authenticated_user && $authenticated_user->id === $observation->user_id) {
+            if ($observation->has_private_comments || ($authenticated_user && $authenticated_user->id === $observation->user_id)) {
                 $data = $observation->data;
             } else {
                 $data = array_except($observation->data, ['comment']);
@@ -245,6 +249,7 @@ trait Observes
                 'collections' => $authenticated_user ? $observation->collections : [],
                 'confirmations_count' => $observation->confirmations_count,
                 'thumbnail' => $observation->thumbnail,
+                'has_private_comments' => $observation->has_private_comments
             ];
         }
 
@@ -260,7 +265,7 @@ trait Observes
     protected function getLabel($key)
     {
         $labels = new MetaLabels();
-        if (!is_null($labels->{$key})) {
+        if (! is_null($labels->{$key})) {
             return $labels->{$key};
         }
 

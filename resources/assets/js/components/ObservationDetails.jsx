@@ -19,7 +19,7 @@ export default class ObservationDetails extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
+    this.state       = {
       markers            : [],
       center             : {
         lat: 40.354388,
@@ -40,6 +40,8 @@ export default class ObservationDetails extends Component {
         from: ''
       }
     }
+
+    this.observation = {}
   }
 
   /**
@@ -103,7 +105,7 @@ export default class ObservationDetails extends Component {
    * Set up the state.
    */
   _setup(observation) {
-
+    console.log(observation)
     if (typeof observation.location !== 'undefined') {
       observation.latitude        = observation.location.latitude
       observation.longitude       = observation.location.longitude
@@ -318,7 +320,7 @@ export default class ObservationDetails extends Component {
       <tr key={key}>
         <th>{label}</th>
         <td>
-          {data} {key === 'comment' ?
+          {data} {key === 'comment' && this.props.observation.has_private_comments ?
           <p className="help">
             <span className="icon is-small">
               <i className="fa fa-lock"></i>
