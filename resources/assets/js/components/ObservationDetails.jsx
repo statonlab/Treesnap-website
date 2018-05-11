@@ -19,7 +19,7 @@ export default class ObservationDetails extends Component {
   constructor(props) {
     super(props)
 
-    this.state       = {
+    this.state = {
       markers            : [],
       center             : {
         lat: 40.354388,
@@ -105,7 +105,6 @@ export default class ObservationDetails extends Component {
    * Set up the state.
    */
   _setup(observation) {
-    console.log(observation)
     if (typeof observation.location !== 'undefined') {
       observation.latitude        = observation.location.latitude
       observation.longitude       = observation.location.longitude
@@ -436,6 +435,12 @@ export default class ObservationDetails extends Component {
                     <th>Coordinates</th>
                     <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
                   </tr> : null}
+                {this.observation.custom_id ?
+                  <tr>
+                    <th>Custom Tree Identifier</th>
+                    <td>{this.observation.custom_id}</td>
+                  </tr>
+                  : null}
                 <tr>
                   <th>Date Collected</th>
                   <td>{this.observation.collection_date}</td>

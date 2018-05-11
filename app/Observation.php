@@ -26,7 +26,8 @@ class Observation extends Model
         'fuzzy_coords',
         'mobile_id',
         'latin_name_id',
-        'has_private_comments'
+        'has_private_comments',
+        'custom_id',
     ];
 
     /**

@@ -249,7 +249,8 @@ trait Observes
                 'collections' => $authenticated_user ? $observation->collections : [],
                 'confirmations_count' => $observation->confirmations_count,
                 'thumbnail' => $observation->thumbnail,
-                'has_private_comments' => $observation->has_private_comments
+                'has_private_comments' => $observation->has_private_comments,
+                'custom_id' => $observation->custom_id,
             ];
         }
 

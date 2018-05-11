@@ -83,10 +83,11 @@ class ObservationsAPITest extends TestCase
      *
      * @test
      */
-    public function testPrivateCommentsDoNotShow() {
+    public function testPrivateCommentsDoNotShow()
+    {
         $user = factory(User::class)->create();
         $observation = factory(Observation::class)->create([
-            'has_private_comments' => true
+            'has_private_comments' => true,
         ]);
 
         $this->actingAs($user);
@@ -102,10 +103,11 @@ class ObservationsAPITest extends TestCase
      *
      * @test
      */
-    public function testPublicCommentsDoShow() {
+    public function testPublicCommentsDoShow()
+    {
         $user = factory(User::class)->create();
         $observation = factory(Observation::class)->create([
-            'has_private_comments' => false
+            'has_private_comments' => false,
         ]);
 
         $this->actingAs($user);
@@ -283,5 +285,39 @@ class ObservationsAPITest extends TestCase
         $response = $this->delete("/api/v1/observation/{$observation->id}");
 
         $response->assertStatus(401);
+    }
+
+    /**
+     * Test the custom_id field.
+     *
+     * @test
+     */
+    public function testCreatingObservationWithCustomIDField()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $response = $this->post('/api/v1/observations', [
+            'observation_category' => 'American Chestnut',
+            'meta_data' => json_encode([
+                'comment' => 'Comment: This record has been added via a test.',
+            ]),
+            'longitude' => -90.03073,
+            'latitude' => 34.090,
+            'location_accuracy' => 5.0,
+            'date' => '03-23-2017 20:00:00',
+            'is_private' => true,
+            'mobile_id' => 12345678,
+            'custom_id' => 'myCustomID',
+        ]);
+
+        $response->assertStatus(201);
+
+        $json = $response->json();
+        $observation_id = $json['data']['observation_id'];
+
+        $observation = Observation::find($observation_id);
+
+        $this->assertEquals('myCustomID', $observation->custom_id);
     }
 }

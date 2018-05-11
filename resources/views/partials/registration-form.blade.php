@@ -154,25 +154,25 @@
 </div>
 
 <script>
-    checkAge()
-    function checkAge() {
-        var date            = new Date()
-        var currentYear     = date.getFullYear()
-        var selectedYear    = (document.getElementById('birth-year-dropdown').value)
-        var minorConsentBox = document.getElementById('minor-consent-box')
+  checkAge()
 
-        if (selectedYear.length > 0) {
-            selectedYear = parseInt(selectedYear)
-        }
+  function checkAge() {
+    var date            = new Date()
+    var currentYear     = date.getFullYear()
+    var selectedYear    = (document.getElementById('birth-year-dropdown').value)
+    var minorConsentBox = document.getElementById('minor-consent-box')
 
-        var currentAge = currentYear - selectedYear
-
-        if (currentAge <= 13) {
-            console.log('I confirm I am using this app under the guidance of my parent or guardian.')
-            minorConsentBox.style = 'display: true'
-            return
-        }
-
-        minorConsentBox.style = 'display: none'
+    if (selectedYear.length > 0) {
+      selectedYear = parseInt(selectedYear)
     }
+
+    var currentAge = currentYear - selectedYear
+
+    if (currentAge <= 13) {
+      minorConsentBox.style = 'display: true'
+      return
+    }
+
+    minorConsentBox.style = 'display: none'
+  }
 </script>
