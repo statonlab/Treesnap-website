@@ -395,6 +395,7 @@ export default class ObservationDetails extends Component {
     if (this.state.deleted) {
       return this.deleted()
     }
+    console.log(this.observation)
 
     let data = this.observation.meta_data
     return (
@@ -420,12 +421,17 @@ export default class ObservationDetails extends Component {
         <div className="columns mb-none">
           <div className="column is-8-desktop" style={{minHeight: '300px'}}>
             <div className="flexbox flex-column flex-space-between" style={{minHeight: '300px'}}>
-              <table className="table is-striped">
+              <table className="table is-striped" style={{tableLayout: 'fixed'}}>
                 <tbody>
                 <tr>
-                  <th style={{width: 150}}>Submitted By</th>
+                  <th>Submitted By</th>
                   <td>{this.observation.user.name}</td>
                 </tr>
+                {this.observation.custom_id ?
+                  <tr>
+                    <th>Custom Tree Identifier</th>
+                    <td>{this.observation.custom_id}</td>
+                  </tr> : null}
                 {Object.keys(data).map(key => {
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
                   return this._renderMetaData(label, data[key], key)
@@ -435,12 +441,6 @@ export default class ObservationDetails extends Component {
                     <th>Coordinates</th>
                     <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
                   </tr> : null}
-                {this.observation.custom_id ?
-                  <tr>
-                    <th>Custom Tree Identifier</th>
-                    <td>{this.observation.custom_id}</td>
-                  </tr>
-                  : null}
                 <tr>
                   <th>Date Collected</th>
                   <td>{this.observation.collection_date}</td>
