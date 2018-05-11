@@ -1015,6 +1015,13 @@ export default class App extends Component {
             {marker.title}
           </h3>
 
+          {marker.custom_id ?
+            <div className="sidebar-item">
+              <h5><strong>Custom Tree Identifier</strong></h5>
+              <p className="ml-1">{marker.custom_id}</p>
+            </div>
+            : null}
+
           <div className="sidebar-item">
             <h5><strong>Collection Date</strong></h5>
             <p className="ml-1">{marker.date}</p>
@@ -1022,7 +1029,7 @@ export default class App extends Component {
 
           {Object.keys(data).map(key => {
             const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-            return this._renderMetaData(label, data[key], key, marker.has_private_comments)
+            return this._renderMetaData(label, data[key], key, marker)
           })}
 
           <div className="sidebar-item">
@@ -1040,11 +1047,11 @@ export default class App extends Component {
    * @param {string} label
    * @param {string|object} data
    * @param {string} key
-   * @param {boolean} has_private_comments
+   * @param {object} marker
    * @return {*}
    * @private
    */
-  _renderMetaData(label, data, key, has_private_comments) {
+  _renderMetaData(label, data, key, marker) {
     if (Utils.isJson(data) === true) {
       data = JSON.parse(data)
     }
@@ -1053,7 +1060,7 @@ export default class App extends Component {
       <div className="sidebar-item" key={key}>
         <h5><strong>{label}</strong></h5>
         <div className="ml-1">
-          {data} {key === 'comment' && has_private_comments ?
+          {data} {key === 'comment' && marker.has_private_comments ?
           <p className="help">
             <span className="icon is-small">
               <i className="fa fa-lock"></i>

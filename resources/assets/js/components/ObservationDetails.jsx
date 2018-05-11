@@ -19,7 +19,7 @@ export default class ObservationDetails extends Component {
   constructor(props) {
     super(props)
 
-    this.state       = {
+    this.state = {
       markers            : [],
       center             : {
         lat: 40.354388,
@@ -105,7 +105,6 @@ export default class ObservationDetails extends Component {
    * Set up the state.
    */
   _setup(observation) {
-    console.log(observation)
     if (typeof observation.location !== 'undefined') {
       observation.latitude        = observation.location.latitude
       observation.longitude       = observation.location.longitude
@@ -396,6 +395,7 @@ export default class ObservationDetails extends Component {
     if (this.state.deleted) {
       return this.deleted()
     }
+    console.log(this.observation)
 
     let data = this.observation.meta_data
     return (
@@ -421,12 +421,17 @@ export default class ObservationDetails extends Component {
         <div className="columns mb-none">
           <div className="column is-8-desktop" style={{minHeight: '300px'}}>
             <div className="flexbox flex-column flex-space-between" style={{minHeight: '300px'}}>
-              <table className="table is-striped">
+              <table className="table is-striped" style={{tableLayout: 'fixed'}}>
                 <tbody>
                 <tr>
-                  <th style={{width: 150}}>Submitted By</th>
+                  <th>Submitted By</th>
                   <td>{this.observation.user.name}</td>
                 </tr>
+                {this.observation.custom_id ?
+                  <tr>
+                    <th>Custom Tree Identifier</th>
+                    <td>{this.observation.custom_id}</td>
+                  </tr> : null}
                 {Object.keys(data).map(key => {
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
                   return this._renderMetaData(label, data[key], key)

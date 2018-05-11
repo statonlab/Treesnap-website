@@ -69,6 +69,7 @@ class ObservationsController extends Controller
      * @param $id
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function delete($id, Request $request)
     {
@@ -135,6 +136,7 @@ class ObservationsController extends Controller
             'thumbnail' => '/images/placeholder-min.png',
             'latin_name_id' => LatinName::getID($request->observation_category, $data),
             'has_private_comments' => intval($request->has_private_comments) === 1,
+            'custom_id' => $request->custom_id,
         ]);
 
         if (! $observation) {
@@ -194,6 +196,7 @@ class ObservationsController extends Controller
             'is_private' => $request->is_private,
             'mobile_id' => $request->mobile_id,
             'has_private_comments' => intval($request->has_private_comments) === 1,
+            'custom_id' => $request->custom_id,
         ]);
 
         if (! $observation) {
@@ -230,6 +233,7 @@ class ObservationsController extends Controller
             'is_private' => 'required|boolean',
             'mobile_id' => 'required|numeric',
             'has_private_comments' => 'nullable|boolean',
+            'custom_id' => 'nullable|max:250',
         ];
     }
 }
