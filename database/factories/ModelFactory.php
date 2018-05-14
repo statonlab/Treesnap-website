@@ -60,6 +60,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'White Oak',
         'Hemlock',
         'American Elm',
+        'Florida Torreya'
     ];
 
     $otherTrees = [

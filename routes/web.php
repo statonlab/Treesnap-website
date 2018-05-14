@@ -185,10 +185,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     Route::get('/web/analytics/users/count', 'AnalyticsController@usersCount');
     Route::get('/web/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');
     Route::get('/web/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
+    Route::get('/web/analytics/users-over-time', 'AnalyticsController@usersOverTime');
+
     Route::get('/web/analytics/observations/count', 'AnalyticsController@observationsCount');
     Route::get('/web/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
     Route::get('/web/analytics/observations/states', 'AnalyticsController@observationsCountByState');
-    Route::get('/web/analytics/users-over-time', 'AnalyticsController@usersOverTime');
+    Route::get('/web/analytics/observations-over-time', 'AnalyticsController@observationsOverTime');
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
