@@ -46,7 +46,9 @@ export default class DoughnutChart extends Component {
             '#2A9D8F',
             '#4d7ec8',
             '#f39c12',
-            '#bf5329'
+            '#bf5329',
+            '#FEC1CC',
+            '#FFE0B5'
           ]
         }]
       },
