@@ -9,26 +9,38 @@ export default class LineChart extends Component {
     super(props)
 
     this.state = {
-      loading: false
+      loading: true
     }
   }
 
-  render() {
-    return (
-      <div>
-        <Spinner visible={this.state.loading} inline={true}/>
-        <canvas ref="canvas" style={{height: '200px', width: '100%'}}></canvas>
-      </div>
-    )
+  componentDidMount() {
+    axios.get('/admin/web/analytics/users-over-time').then(response => {
+      let labels        = []
+      let trained_users = []
+      let users         = []
+
+      response.data.data.map(datum => {
+        labels.push(datum.date)
+        trained_users.push(datum.trained_count)
+        users.push(datum.users_count)
+      })
+
+      this.createChart(labels, users, trained_users)
+
+      this.setState({loading: false})
+    }).catch(error => {
+      this.setState({loading: false})
+      console.log(error)
+    })
   }
 
-  componentDidMount() {
+  createChart(labels, users, trained_users) {
     let el    = ReactDOM.findDOMNode(this.refs.canvas)
     let ctx   = el.getContext('2d')
     let chart = new Chart(ctx, {
       type   : 'line',
       data   : {
-        labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels,
         datasets: [{
           label                : 'Trained Users',
           fill                 : false,
@@ -46,7 +58,7 @@ export default class LineChart extends Component {
           pointHoverBorderWidth: 2,
           pointRadius          : 4,
           pointHitRadius       : 10,
-          data                 : [4, 5, 7, 8, 9, 14, 17],
+          data                 : users,
           spanGaps             : false
         }, {
           label                : 'All Users',
@@ -65,7 +77,7 @@ export default class LineChart extends Component {
           pointHoverBorderWidth: 2,
           pointRadius          : 4,
           pointHitRadius       : 10,
-          data                 : [65, 59, 80, 81, 56, 55, 40],
+          data                 : trained_users,
           spanGaps             : false
         }]
       },
@@ -77,6 +89,15 @@ export default class LineChart extends Component {
         }
       }
     })
+  }
+
+  render() {
+    return (
+      <div>
+        <Spinner visible={this.state.loading} inline={true}/>
+        <canvas ref="canvas" style={{height: '200px', width: '100%'}}></canvas>
+      </div>
+    )
   }
 }
 

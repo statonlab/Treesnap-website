@@ -41,7 +41,8 @@ Route::get('/logout', 'UsersController@logout');
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');
 Route::get('/web/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@show');
-// Prefetched observation view to support FB open graph and twitter cards
+
+// Pre-fetched observation view to support FB open graph and twitter cards
 Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
 
 // Map
@@ -162,8 +163,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/web/events', 'AdminEventsController@index');
     Route::get('/web/event/{id}', 'AdminEventsController@show');
     Route::post('/web/events', 'AdminEventsController@create');
-    Route::put('/web/event/{id}','AdminEventsController@update');
-    Route::delete('/web/event/{id}','AdminEventsController@delete');
+    Route::put('/web/event/{id}', 'AdminEventsController@update');
+    Route::delete('/web/event/{id}', 'AdminEventsController@delete');
 });
 
 // Admin or Scientist Only Route Group
@@ -187,6 +188,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     Route::get('/web/analytics/observations/count', 'AnalyticsController@observationsCount');
     Route::get('/web/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
     Route::get('/web/analytics/observations/states', 'AnalyticsController@observationsCountByState');
+    Route::get('/web/analytics/users-over-time', 'AnalyticsController@usersOverTime');
 
     // All other react routes
     Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
+use App\Services\Analytics\UserStatistics;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -85,6 +87,11 @@ class AnalyticsController extends Controller
         return $this->success($data);
     }
 
+    /**
+     * Get observations count per state.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function observationsCountByState()
     {
         $observations = Observation::select('address')->get();
@@ -112,5 +119,40 @@ class AnalyticsController extends Controller
         arsort($states);
 
         return $this->success($states);
+    }
+
+    /**
+     * Create data for users over time chart
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function usersOverTime()
+    {
+        $stats = new UserStatistics();
+        $users = $stats->aggregateUsersCountByMonth(6);
+        $trained_users = $stats->aggregateUsersCountByMonth(6, true);
+
+        $data = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = Carbon::now()->firstOfMonth()->subMonths($i);
+            $formatted = $date->format('M, Y');
+            $datum = [
+                'date' => $formatted,
+                'users_count' => 0,
+                'trained_count' => 0,
+            ];
+
+            if (isset($users[$formatted])) {
+                $datum['users_count'] = $users[$formatted]['users_count'];
+            }
+
+            if (isset($trained_users[$formatted])) {
+                $datum['trained_count'] = $users[$formatted]['users_count'];
+            }
+
+            $data[] = $datum;
+        }
+
+        return $this->success($data);
     }
 }
