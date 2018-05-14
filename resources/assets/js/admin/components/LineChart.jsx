@@ -58,7 +58,7 @@ export default class LineChart extends Component {
           pointHoverBorderWidth: 2,
           pointRadius          : 4,
           pointHitRadius       : 10,
-          data                 : users,
+          data                 : trained_users,
           spanGaps             : false
         }, {
           label                : 'All Users',
@@ -77,7 +77,7 @@ export default class LineChart extends Component {
           pointHoverBorderWidth: 2,
           pointRadius          : 4,
           pointHitRadius       : 10,
-          data                 : trained_users,
+          data                 : users,
           spanGaps             : false
         }]
       },
