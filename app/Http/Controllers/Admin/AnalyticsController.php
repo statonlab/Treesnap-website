@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
+use App\Services\Analytics\ObservationStatistics;
 use App\Services\Analytics\UserStatistics;
 use App\User;
 use Carbon\Carbon;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class AnalyticsController extends Controller
 {
-    use Responds;
+    use Responds, Observes;
 
     /**
      * Count the number of registered users.
@@ -151,6 +153,46 @@ class AnalyticsController extends Controller
             }
 
             $data[] = $datum;
+        }
+
+        return $this->success($data);
+    }
+
+    /**
+     * Get observations over time.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function observationsOverTime()
+    {
+        $stats = new ObservationStatistics();
+        $observations = $stats->aggregateObservationsByMonth(6);
+        $data = [];
+        $categories = $this->observation_categories;
+        sort($categories);
+        for ($i = 5; $i >= 0; $i--) {
+            $date = Carbon::now()->firstOfMonth()->subMonths($i);
+            $formatted = $date->format('M, Y');
+            $category_datum = [];
+            foreach ($categories as $category) {
+                $datum = [
+                    'date' => $formatted,
+                    'observations_count' => 0,
+                    'observation_category' => $category,
+                ];
+
+                if (isset($observations[$formatted]) && isset($observations[$formatted][$category])) {
+                    $record = $observations[$formatted][$category];
+                    $datum['observations_count'] = $record['observations_count'];
+                }
+
+                $category_datum[] = $datum;
+            }
+
+            $data[] = [
+                'label' => $formatted,
+                'data' => $category_datum,
+            ];
         }
 
         return $this->success($data);

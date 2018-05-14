@@ -41,7 +41,7 @@ export default class DashboardScene extends Component {
           </div>
           <div className="column">
             <div className="box is-full-height">
-              <h4 className="title is-5">Users</h4>
+              <h4 className="title is-5">Users Over Time</h4>
               <LineChart/>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default class DashboardScene extends Component {
         <div className="columns">
           <div className="column">
             <div className="box">
-              <h4 className="title is-5">Observations by Season</h4>
+              <h4 className="title is-5">Observations Over Time</h4>
               <BarChart/>
             </div>
           </div>

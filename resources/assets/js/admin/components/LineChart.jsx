@@ -52,7 +52,7 @@ export default class LineChart extends Component {
           borderDashOffset     : 0.0,
           borderJoinStyle      : 'miter',
           pointBorderColor     : '#f39c12',
-          pointBackgroundColor : '#fff',
+          pointBackgroundColor : '#f39c12',
           pointBorderWidth     : 3,
           pointHoverRadius     : 8,
           pointHoverBorderWidth: 2,
@@ -71,7 +71,7 @@ export default class LineChart extends Component {
           borderDashOffset     : 0.0,
           borderJoinStyle      : 'miter',
           pointBorderColor     : 'rgba(42,157,143, 1)',
-          pointBackgroundColor : '#fff',
+          pointBackgroundColor : 'rgba(42,157,143, 1)',
           pointBorderWidth     : 3,
           pointHoverRadius     : 8,
           pointHoverBorderWidth: 2,
@@ -86,7 +86,11 @@ export default class LineChart extends Component {
         legend    : {
           display : true,
           position: 'bottom'
-        }
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false
+        },
       }
     })
   }
