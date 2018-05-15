@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import Spinner from '../../components/Spinner'
 
 export default class ObservationsByStateTable extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      rows: {}
+      rows   : {},
+      loading: true
     }
   }
 
@@ -15,9 +17,11 @@ export default class ObservationsByStateTable extends Component {
     axios.get(`/admin/web/analytics/observations/states/${limit}`).then(response => {
       let rows = response.data.data
       this.setState({
-        rows
+        rows,
+        loading: false
       })
     }).catch(error => {
+      this.setState({loading: false})
       console.log(error)
     })
   }
@@ -26,8 +30,14 @@ export default class ObservationsByStateTable extends Component {
     let {rows} = this.state
     let keys   = Object.keys(rows)
 
+
+
+    if (this.state.loading) {
+      return (<Spinner visible={this.state.loading} inline={true}/>)
+    }
+
     if (keys.length === 0) {
-      return null
+      return (<p>No results found</p>)
     }
 
     return (

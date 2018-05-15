@@ -4,28 +4,6 @@ import PropTypes from 'prop-types'
 export default class Spinner extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      visible: false
-    }
-  }
-
-  /**
-   * Set the spinner's initial visibility.
-   */
-  componentDidMount() {
-    this.setState({visible: this.props.visible})
-  }
-
-  /**
-   * Set the spinner's visibility based on properties.
-   *
-   * @param props
-   */
-  componentWillReceiveProps(props) {
-    if (props.visible !== this.state.visible) {
-      this.setState({visible: props.visible})
-    }
   }
 
   /**
@@ -34,7 +12,7 @@ export default class Spinner extends Component {
    * @returns {*}
    */
   render() {
-    if (!this.state.visible) {
+    if (!this.props.visible) {
       return null
     }
 
