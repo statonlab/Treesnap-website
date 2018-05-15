@@ -189,7 +189,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
 
     Route::get('/web/analytics/observations/count', 'AnalyticsController@observationsCount');
     Route::get('/web/analytics/observations/distribution', 'AnalyticsController@observationsDistribution');
-    Route::get('/web/analytics/observations/states', 'AnalyticsController@observationsCountByState');
+    Route::get('/web/analytics/observations/states/{limit?}', 'AnalyticsController@observationsCountByState');
     Route::get('/web/analytics/observations-over-time', 'AnalyticsController@observationsOverTime');
 
     // All other react routes

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 
 export default class ObservationsByStateTable extends Component {
   constructor(props) {
@@ -9,10 +10,12 @@ export default class ObservationsByStateTable extends Component {
     }
   }
 
-  componentWillMount() {
-    axios.get('/admin/web/analytics/observations/states').then(response => {
+  componentDidMount() {
+    let limit = this.props.limit || null
+    axios.get(`/admin/web/analytics/observations/states/${limit}`).then(response => {
+      let rows = response.data.data
       this.setState({
-        rows: response.data.data
+        rows
       })
     }).catch(error => {
       console.log(error)
@@ -20,8 +23,8 @@ export default class ObservationsByStateTable extends Component {
   }
 
   render() {
-    let rows = this.state.rows
-    let keys = Object.keys(rows)
+    let {rows} = this.state
+    let keys   = Object.keys(rows)
 
     if (keys.length === 0) {
       return null
@@ -32,7 +35,7 @@ export default class ObservationsByStateTable extends Component {
         <thead>
         <tr>
           <th>State</th>
-          <th className="has-text-right"># of Observations Reported</th>
+          <th className="has-text-right">Number of Observations Reported</th>
         </tr>
         </thead>
         <tbody>
@@ -48,4 +51,12 @@ export default class ObservationsByStateTable extends Component {
       </table>
     )
   }
+}
+
+ObservationsByStateTable.propTypes = {
+  limit: PropTypes.number
+}
+
+ObservationsByStateTable.defaultProps = {
+  limit: 10
 }

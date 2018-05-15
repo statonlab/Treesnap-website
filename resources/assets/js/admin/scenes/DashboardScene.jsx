@@ -4,6 +4,7 @@ import DoughnutChart from '../components/DoughnutChart'
 import LineChart from '../components/LineChart'
 import BarChart from '../components/BarChart'
 import ObservationsByStateTable from '../components/ObservationsByStateTable'
+import {NavLink} from 'react-router-dom'
 
 export default class DashboardScene extends Component {
   constructor(props) {
@@ -34,14 +35,14 @@ export default class DashboardScene extends Component {
 
         <div className="columns">
           <div className="column">
-            <div className="box is-full-height">
-              <h4 className="title is-5">Observations Distribution</h4>
+            <div className="box is-full-height p-0">
+              <h4 className="title is-5 p-1 pb-none">Observations Distribution</h4>
               <DoughnutChart url="/admin/web/analytics/observations/distribution"/>
             </div>
           </div>
           <div className="column">
-            <div className="box is-full-height">
-              <h4 className="title is-5">Users Over Time</h4>
+            <div className="box is-full-height p-0">
+              <h4 className="title is-5 p-1 pb-none">Users Over Time</h4>
               <LineChart/>
             </div>
           </div>
@@ -56,10 +57,13 @@ export default class DashboardScene extends Component {
           </div>
 
           <div className="column">
-            <div className="box is-full-height">
-              <h4 className="title is-5">Observations by State</h4>
+            <div className="box">
+              <div className="is-flex flex-space-between">
+                <h4 className="title is-5">Observations by State</h4>
+                <NavLink to={'/observations-by-state'}>View All</NavLink>
+              </div>
               <ObservationsByStateTable/>
-              <p className="help">Sorted by number of observations and limited to top 5.</p>
+              <p className="help">Sorted by number of observations and limited to top 10.</p>
             </div>
           </div>
         </div>
