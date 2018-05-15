@@ -63,6 +63,11 @@ const EventsScene = Loadable({
   loading: PageLoader
 })
 
+const ObservationsByStateScene = Loadable({
+  loading: PageLoader,
+  loader: () => import('./scenes/ObservationsByStateScene')
+})
+
 class Admin extends Component {
   render() {
     return (
@@ -99,6 +104,7 @@ class Admin extends Component {
                     <Route path="/curate" component={CurateScene}/>
                     <Route path="/observation/:id"
                            render={props => <ObservationScene admin={true} {...props}/>}/>
+                    <Route path="/observations-by-state" component={ObservationsByStateScene}/>
                     <Route render={() => {
                       window.location.replace('/no-match')
                       return null

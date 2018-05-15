@@ -92,15 +92,15 @@ class AnalyticsController extends Controller
     /**
      * Get observations count per state.
      *
+     * @param int $limit
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function observationsCountByState()
+    public function observationsCountByState($limit = 5)
     {
         $observations = Observation::select('address')->get();
 
-        $states = [
-            'Tennessee' => 1,
-        ];
+        $states = [];
 
         foreach ($observations as $observation) {
             if (empty($observation->address)) {
@@ -120,7 +120,7 @@ class AnalyticsController extends Controller
 
         arsort($states);
 
-        return $this->success($states);
+        return $this->success(array_slice($states, 0, $limit, true));
     }
 
     /**
