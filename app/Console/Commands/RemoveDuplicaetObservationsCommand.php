@@ -57,8 +57,11 @@ class RemoveDuplicaetObservationsCommand extends Command
                 'user_id' => $duplicate->user_id,
                 'mobile_id' => $duplicate->mobile_id
             ])->orderBy('created_at', 'desc')->get();
-            echo "==== Line ====\n";
-            dump($observations->slice(1)->map(function($f) {
+            echo "==== To Keep ====\n";
+            $observation_to_keep = $observations->shift();
+            dump(['name' => $observation_to_keep->observation_category, 'date' => $observation_to_keep->created_at]);
+            echo "==== To Delete ====\n";
+            dump($observations->map(function($f) {
                 return $f->observation_category;
             })->toArray());
         }
