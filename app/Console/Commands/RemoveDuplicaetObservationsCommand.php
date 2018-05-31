@@ -52,18 +52,20 @@ class RemoveDuplicaetObservationsCommand extends Command
             return "{$observation->user_id}-{$observation->mobile_id}";
         });
 
+        $deleted = 0;
+
         foreach ($duplicates as $duplicate) {
             $observations = Observation::where([
                 'user_id' => $duplicate->user_id,
-                'mobile_id' => $duplicate->mobile_id
+                'mobile_id' => $duplicate->mobile_id,
             ])->orderBy('created_at', 'desc')->get();
-            echo "==== To Keep ====\n";
-            $observation_to_keep = $observations->shift();
-            dump(['name' => $observation_to_keep->observation_category, 'date' => $observation_to_keep->created_at]);
-            echo "==== To Delete ====\n";
-            dump($observations->map(function($f) {
-                return $f->observation_category;
-            })->toArray());
+            $observations->shift();
+            foreach ($observations as $observation) {
+                $deleted++;
+                $observation->delete();
+            }
         }
+
+        $this->info("Deleted $deleted duplicate observation(s)");
     }
 }
