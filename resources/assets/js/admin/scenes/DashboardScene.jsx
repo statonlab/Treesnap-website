@@ -36,13 +36,14 @@ export default class DashboardScene extends Component {
         <div className="columns">
           <div className="column">
             <div className="box is-full-height p-0">
-              <h4 className="title is-5 p-1 pb-none">Observations Distribution</h4>
+              <h4 className="title is-5 p-1 pt-0 pb-none">Observations Distribution</h4>
+              <p>Observations</p>
               <DoughnutChart url="/admin/web/analytics/observations/distribution"/>
             </div>
           </div>
           <div className="column">
             <div className="box is-full-height p-0">
-              <h4 className="title is-5 p-1 pb-none">Users Over Time</h4>
+              <h4 className="title is-5 p-1 pt-0 pb-none">Users Over Time</h4>
               <LineChart/>
             </div>
           </div>
@@ -63,7 +64,7 @@ export default class DashboardScene extends Component {
                 <NavLink to={'/observations-by-state'}>View All</NavLink>
               </div>
               <ObservationsByStateTable/>
-              <p className="help">Sorted by number of observations and limited to top 10.</p>
+              <p className="help">Sorted by number of observations and limited to top 10. <NavLink to={'/observations-by-state'}>View all.</NavLink></p>
             </div>
           </div>
         </div>

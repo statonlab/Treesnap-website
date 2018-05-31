@@ -22,6 +22,7 @@ class ImagesController extends Controller
      */
     public function create($id, Request $request)
     {
+        /** @var Observation $observation */
         $observation = Observation::findOrFail($id);
 
         if($observation->user_id !== $request->user()->id) {

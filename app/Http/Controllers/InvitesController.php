@@ -91,6 +91,8 @@ class InvitesController extends Controller
      */
     public function accept($id, Request $request)
     {
+        // _t is a private token that is part of the GET request
+        // and is attached in the email invitation.
         $this->validate($request, [
             '_t' => 'required',
         ]);
