@@ -69,7 +69,8 @@ class DownloadsController extends Controller
             'Unique ID',
             'Observation Category',
             'Latin Name',
-            'Coordinates',
+            'Latitude',
+            'Longitude',
             'Comments',
             'Address',
             'Collection Date',
@@ -86,10 +87,12 @@ class DownloadsController extends Controller
             ->chunk(200, function ($observations) use ($user, $path, $extension) {
                 foreach ($observations as $observation) {
                     $comment = '';
-                    $location = "{$observation->fuzzy_coords['latitude']}, {$observation->fuzzy_coords['longitude']}";
+                    $latitude = $observation->fuzzy_coords['latitude'];
+                    $longitude = $observation->fuzzy_coords['longitude'];
 
                     if ($this->hasPrivilegedPermissions($user, $observation)) {
-                        $location = "{$observation->latitude}, {$observation->longitude}";
+                        $latitude = $observation->latitude;
+                        $longitude = $observation->longitude;
                     }
 
                     if (! $observation->has_private_comments || $user->id === $observation->user_id) {
@@ -100,7 +103,8 @@ class DownloadsController extends Controller
                         $observation->mobile_id,
                         $observation->observation_category,
                         "{$observation->latinName->genus} {$observation->latinName->species}",
-                        $location,
+                        $latitude,
+                        $longitude,
                         $comment,
                         $observation->address['formatted'],
                         $observation->collection_date->toDateString(),
