@@ -279,6 +279,10 @@ export default class App extends Component {
    * @returns {XML}
    */
   _renderSubmission(marker) {
+    let title = marker.title
+    if (title.length > 30) {
+      title = title.substr(0, 30) + '...'
+    }
     return (
       <a href="javascript:;"
          role="button"
@@ -297,7 +301,7 @@ export default class App extends Component {
            }
          }}>
         <div className="bar-item-field">
-          <strong style={{color: '#fff'}}>{marker.title}</strong>
+          <strong style={{color: '#fff'}}>{title}</strong>
           <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
             {marker.owner}
           </p>
