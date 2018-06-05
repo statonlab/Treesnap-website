@@ -199,6 +199,7 @@ class DownloadsController extends Controller
     {
         $header = [
             'Unique ID',
+            'Custom Identifier',
             'Observation Category',
             'Latin Name',
             'Latitude',
@@ -240,7 +241,8 @@ class DownloadsController extends Controller
         }
 
         $line = [
-            $observation->mobile_id,
+            "{$observation->id}-{$observation->mobile_id}",
+            $observation->custom_id ?: 'NULL',
             $observation->observation_category,
             "{$observation->latinName->genus} {$observation->latinName->species}",
             $latitude,
