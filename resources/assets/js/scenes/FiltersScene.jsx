@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Spinner from '../components/Spinner'
 import {Link} from 'react-router-dom'
 import Tooltip from '../components/Tooltip'
+import Dropdown from '../components/Dropdown'
 
 export default class UsersScene extends Component {
   constructor(props) {
@@ -59,9 +60,26 @@ export default class UsersScene extends Component {
                      </Tooltip>
                      </span>
                      </a>*/}
+          <Dropdown right={true} trigger={(
+            <button className="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span className="icon is-small">
+                <i className="fa fa-download"></i>
+              </span>
+              <span className="icon is-small">
+                <i className="fa fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          )}>
+            <a href={`/services/download/filter/${filter.id}/tsv`} className="dropdown-item">
+              TSV Format
+            </a>
+            <a href={`/services/download/filter/${filter.id}/csv`} className="dropdown-item">
+              CSV Format
+            </a>
+          </Dropdown>
 
           <button type="button"
-                  className="button is-small is-danger"
+                  className="button is-small is-danger ml-1"
                   onClick={(e) => this.deleteFilter(e, filter)}>
             <span className="icon is-small">
               <Tooltip label="Delete">

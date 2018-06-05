@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Filter;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
-use App\Observation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Cache;
@@ -32,7 +31,7 @@ class FiltersController extends Controller
     /**
      * Get and apply filter.
      *
-     * @param $id
+     * @param int $id
      * @param \Illuminate\Http\Request $request
      */
     public function show($id, Request $request)
@@ -47,51 +46,9 @@ class FiltersController extends Controller
     }
 
     /**
-     * Create a new filter, apply it and return the results.
-     *
-     * @param \Illuminate\Http\Request $request
-     */
-    public function create(Request $request, $with_observations = false)
-    {
-        $this->validate($request, [
-            'categories' => 'required',
-            'categories.*' => [
-                'required',
-                Rule::in($this->observation_categories),
-            ],
-            'name' => 'nullable|max:255',
-        ], [
-            'categories.required' => 'The species field is required'
-        ]);
-
-        $filter = null;
-        $user = $request->user();
-
-        // Save the filter if a name is provided
-        if ($user && ! empty($request->name)) {
-            $filter = Filter::create([
-                'user_id' => $user->id,
-                'name' => $request->name,
-                'rules' => $request->all(),
-                'notify_user' => false,
-            ]);
-        }
-
-        $data = [
-            'filter' => $filter,
-        ];
-
-        if ($with_observations) {
-            $data['observations'] = $this->getCachedFilteredObservations($request, $filter);
-        }
-
-        return $this->success($data);
-    }
-
-    /**
      * Apply filters and clean up observations data structure.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      * @param array|null $filters
      * @return array
      */
@@ -108,7 +65,15 @@ class FiltersController extends Controller
             $filters = $request->all();
         }
 
-        $filtered = Filter::apply($filters)->orderBy('collection_date', 'DESC');
+        $filtered = Filter::apply($filters);
+
+        if (! $user) {
+            $filtered->where('is_private', false);
+        } elseif (! $user->isAdmin() && ! $user->isScientist()) {
+            $filtered = $this->addPrivacyClause($filtered, $user);
+        }
+
+        $filtered = $filtered->orderBy('collection_date', 'DESC');
         if (! empty($request->map) && $request->map) {
             if ($user) {
                 $filtered = $filtered->get()->load([
@@ -150,6 +115,48 @@ class FiltersController extends Controller
         });
 
         return $all;
+    }
+
+    /**
+     * Create a new filter, apply it and return the results.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function create(Request $request, $with_observations = false)
+    {
+        $this->validate($request, [
+            'categories' => 'required',
+            'categories.*' => [
+                'required',
+                Rule::in($this->observation_categories),
+            ],
+            'name' => 'nullable|max:255',
+        ], [
+            'categories.required' => 'The species field is required',
+        ]);
+
+        $filter = null;
+        $user = $request->user();
+
+        // Save the filter if a name is provided
+        if ($user && ! empty($request->name)) {
+            $filter = Filter::create([
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'rules' => $request->all(),
+                'notify_user' => false,
+            ]);
+        }
+
+        $data = [
+            'filter' => $filter,
+        ];
+
+        if ($with_observations) {
+            $data['observations'] = $this->getCachedFilteredObservations($request, $filter);
+        }
+
+        return $this->success($data);
     }
 
     /**
@@ -196,7 +203,7 @@ class FiltersController extends Controller
     /**
      * Retrieve filtered observations from cache.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      * @param \App\Filter $filter
      * @return mixed
      */
