@@ -30,7 +30,7 @@ export default class CollectionsScene extends Component {
       selectedGroup     : -1
     }
 
-    this.account = window.location.pathname.toLowerCase().indexOf('account') !== -1
+    this.isAccountPage = window.location.pathname.toLowerCase().indexOf('account') !== -1
 
     document.title = 'Saved Collections - TreeSnap'
   }
@@ -418,8 +418,10 @@ export default class CollectionsScene extends Component {
             <p>
               You have not created any collections yet.
               You can create new collections in the {
-              this.account ? <Link to="/map">Map</Link> : <Link to="/observations">Observations</Link>
-            } page.
+              this.isAccountPage ? <span>
+                <Link to="/map">Map</Link> or <Link to={"/account/observations"}>your observations</Link>
+              </span> : <Link to="/observations">Observations</Link>
+            } page using the <i className="fa fa-star"></i> icon.
             </p>
           }
         </div>
