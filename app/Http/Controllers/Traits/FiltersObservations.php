@@ -13,7 +13,7 @@ trait FiltersObservations
      * Apply observation filters.
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Database\Query\Builder
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -44,7 +44,6 @@ trait FiltersObservations
             $observations = $observations->with($with);
         } elseif (! empty($request->group_id)) {
             $observations = $user->groups()
-                ->wherePivot('share', true)
                 ->findOrFail($request->group_id)
                 ->observations()
                 ->with($with);

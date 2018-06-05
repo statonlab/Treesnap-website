@@ -72,7 +72,7 @@ class Group extends Model
             return $user->id;
         });
 
-        return Observation::whereIn('user_id', $users)->where('is_private', false);
+        return Observation::whereIn('user_id', $users);
     }
 
     /**
