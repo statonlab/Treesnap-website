@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Collection;
 use App\Group;
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\Responds;
@@ -11,7 +12,7 @@ use DB;
 
 class CollectionsController extends Controller
 {
-    use Responds;
+    use Responds, DealsWithObservationPermissions;
 
     /**
      * Get list of collections user has access to (owned and shared)
@@ -188,8 +189,11 @@ class CollectionsController extends Controller
             'users' => function ($query) {
                 $query->select('id', 'name');
             },
-            'observations' => function ($query) {
+            'observations' => function ($query) use ($user) {
                 $query->select('id', 'observation_category');
+                if (! $user->isAdmin() && ! $user->isScientist()) {
+                    $this->addPrivacyClause($query, $user);
+                }
             },
         ])->findOrFail($id);
 

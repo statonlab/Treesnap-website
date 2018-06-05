@@ -11,10 +11,11 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Storage;
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 
 class DownloadsController extends Controller
 {
-    use Observes;
+    use Observes, DealsWithObservationPermissions;
 
     /**
      * Supported formats.
@@ -41,7 +42,7 @@ class DownloadsController extends Controller
     }
 
     /**
-     * Create an collection of observations file.
+     * Create a collection of observations file.
      *
      * @param \App\Collection $collection
      * @param \Illuminate\Http\Request $request
@@ -93,6 +94,10 @@ class DownloadsController extends Controller
                     if ($this->hasPrivilegedPermissions($user, $observation)) {
                         $latitude = $observation->latitude;
                         $longitude = $observation->longitude;
+                    } elseif ($observation->isPrivate) {
+                        // Ignore the observation if it is private and the user
+                        // does not have privileged permissions to access it
+                        continue;
                     }
 
                     if (! $observation->has_private_comments || $user->id === $observation->user_id) {
@@ -119,29 +124,6 @@ class DownloadsController extends Controller
         $this->createAutoRemovableFile($path, $user->id);
 
         return response()->download(storage_path('app/'.$path), $name);
-    }
-
-    /**
-     * Checks if a user has privileged access to an observation.
-     *
-     * @param User $user
-     * @param Observation $observation
-     * @return bool True if user has privileged access or false otherwise.
-     */
-    protected function hasPrivilegedPermissions(User $user, Observation $observation)
-    {
-        // Owners can access the observation private information
-        if ($user->id === $observation->user_id) {
-            return true;
-        }
-
-        // Admins and scientists can access the observation
-        if ($user->isAdmin() || $user->isScientist()) {
-            return true;
-        }
-
-        // Check if the owner has shared this observation with the user
-        return $user->hasFriend($observation->user_id);
     }
 
     /**
