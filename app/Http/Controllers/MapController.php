@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
@@ -10,7 +11,7 @@ use Cache;
 
 class MapController extends Controller
 {
-    use Responds, Observes;
+    use Responds, Observes, DealsWithObservationPermissions;
 
     /**
      * Load observations for the map.
@@ -70,7 +71,6 @@ class MapController extends Controller
      */
     public function getObservationsFromDB($user, $isAdmin, $bounds)
     {
-
         $observations = Observation::with('user')->withCount([
             'confirmations' => function ($query) {
                 $query->where('correct', true);
@@ -83,8 +83,10 @@ class MapController extends Controller
             $observations->bounds($bounds);
         }
 
-        if (! $isAdmin) {
+        if (! $user) {
             $observations = $observations->where('is_private', false);
+        } elseif (! $isAdmin) {
+            $observations = $this->addPrivacyClause($observations, $user);
         }
 
         $observations = $observations->orderBy('observations.id', 'desc')->get();

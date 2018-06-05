@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\Traits\Observes;
 use App\Observation;
@@ -14,7 +15,7 @@ use Storage;
 
 class ObservationsController extends Controller
 {
-    use Responds, Observes;
+    use Responds, Observes, DealsWithObservationPermissions;
 
     /**
      * Get all public observations.
@@ -47,8 +48,12 @@ class ObservationsController extends Controller
             $is_admin = User::hasRole(['admin', 'scientist'], $user);
         }
 
-        if (! $is_admin) {
+        if (! $is_admin && ! $user) {
             $observations = $observations->where('is_private', false);
+        } elseif ($user) {
+            // Remove private observations that don't belong to the current user
+            // from the results but keep private observations that the user owns
+            $observations = $this->addPrivacyClause($observations, $user);
         }
 
         $observations->orderBy('observations.id', 'desc');
@@ -107,13 +112,15 @@ class ObservationsController extends Controller
     {
         $user = $request->user();
         $is_admin = false;
+
         if ($user) {
             $is_admin = User::hasRole(['admin', 'scientist'], $user);
         }
+
         $observation = Observation::with('user')->findOrFail($id);
 
         if ($observation->is_private) {
-            if (! $is_admin) {
+            if(!$this->hasPrivilegedPermissions($user, $observation)) {
                 return $this->unauthorized();
             }
         }
@@ -145,15 +152,11 @@ class ObservationsController extends Controller
     public function showPreFetch($id, Request $request)
     {
         $user = $request->user();
-        $is_admin = false;
-        if ($user) {
-            $is_admin = User::hasRole(['admin', 'scientist'], $user);
-        }
         $observation = Observation::with('user')->findOrFail($id);
 
         if ($observation->is_private) {
-            if (! $is_admin) {
-                return abort(404);
+            if(!$this->hasPrivilegedPermissions($user, $observation)) {
+                return abort(403);
             }
         }
 

@@ -30,7 +30,7 @@ class ObservationsController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $observations = $user->observations()->get();
+        $observations = $user->observations;
         $data = [];
 
         foreach ($observations as $observation) {
@@ -131,7 +131,7 @@ class ObservationsController extends Controller
             'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
             'images' => $images,
             'fuzzy_coords' => $fuzzy_coords,
-            'is_private' => $request->is_private,
+            'is_private' => intval($request->is_private) === 1,
             'mobile_id' => $request->mobile_id,
             'thumbnail' => '/images/placeholder-min.png',
             'latin_name_id' => LatinName::getID($request->observation_category, $data),
@@ -193,7 +193,7 @@ class ObservationsController extends Controller
             'location_accuracy' => $request->location_accuracy,
             'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
             'images' => $images,
-            'is_private' => $request->is_private,
+            'is_private' => intval($request->is_private) === 1,
             'mobile_id' => $request->mobile_id,
             'has_private_comments' => intval($request->has_private_comments) === 1,
             'custom_id' => $request->custom_id,
@@ -230,7 +230,7 @@ class ObservationsController extends Controller
             'date' => 'required|date_format:"m-d-Y H:i:s"',
             'images' => 'nullable',
             'images.*.*' => 'required|image|max:30240',
-            'is_private' => 'required|boolean',
+            'is_private' => 'nullable|boolean',
             'mobile_id' => 'required|numeric',
             'has_private_comments' => 'nullable|boolean',
             'custom_id' => 'nullable|max:250',

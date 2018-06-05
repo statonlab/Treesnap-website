@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Collection;
 use App\Filter;
 use App\Group;
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\User;
 use App\Email;
 use App\Http\Controllers\Traits\Observes;
@@ -17,7 +18,7 @@ use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
-    use Responds, Observes;
+    use Responds, Observes, DealsWithObservationPermissions;
 
     /**
      * Get the user logged in status.
@@ -187,6 +188,8 @@ class UsersController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     protected function getFilteredObservations(Request $request)
     {
@@ -210,9 +213,15 @@ class UsersController extends Controller
         ];
 
         if (! empty($request->collection_id)) {
-            $observations = $user->collections()->findOrFail($request->collection_id)->observations()->with($with);
+            $observations = $user->collections()->findOrFail($request->collection_id)->observations();
+            $observations = $this->addPrivacyClause($observations, $user);
+            $observations = $observations->with($with);
         } elseif (! empty($request->group_id)) {
-            $observations = $user->groups()->findOrFail($request->group_id)->observations()->with($with);
+            $observations = $user->groups()
+                ->wherePivot('share', true)
+                ->findOrFail($request->group_id)
+                ->observations()
+                ->with($with);
         } else {
             $observations = Observation::with($with)->where('user_id', $user->id);
         }
@@ -248,6 +257,8 @@ class UsersController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param Observation $observations
      * @return \App\Observation
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     protected function applyAdvancedFilter(Request $request, $observations)
     {

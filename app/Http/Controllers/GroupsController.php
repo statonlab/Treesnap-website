@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
-use App\Events\GroupJoinRequestCreated;
 use App\Events\UserJoinedGroup;
 use App\Group;
 use App\GroupRequest;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Jobs\SendGroupRequestNotification;
-use App\Notifications\GroupRequestNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -242,6 +240,7 @@ class GroupsController extends Controller
      * @param $id
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function delete($id, Request $request)
     {
