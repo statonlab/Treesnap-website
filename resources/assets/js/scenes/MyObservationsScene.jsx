@@ -4,6 +4,7 @@ import Spinner from '../components/Spinner'
 import Path from '../helpers/Path'
 import AccountView from '../components/AccountView'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
+import Dropdown from '../components/Dropdown'
 
 export default class MyObservationsScene extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class MyObservationsScene extends Component {
       pages                   : [],
       loading                 : false,
       count                   : 0,
-      search                  : [],
+      search                  : '',
       categories              : [],
       selectedCategory        : '',
       hasMorePages            : false,
@@ -69,29 +70,9 @@ export default class MyObservationsScene extends Component {
   loadObservations(state) {
     this.setState({loading: true})
 
-    let advancedFilters = null
-    let filterID        = parseInt(state.selectedFilter)
+    let params = this.getParams(state)
 
-    if (filterID !== 0) {
-      let advancedFiltersArray = state.filters.filter(filter => filter.id === filterID)
-      if (advancedFiltersArray[0]) {
-        advancedFilters = advancedFiltersArray[0].rules
-      }
-    } else if (state.advancedFiltersRules) {
-      advancedFilters = Object.keys(state.advancedFiltersRules).length > 0 ? state.advancedFiltersRules : null
-    }
-
-    axios.get('/web/user/observations', {
-      params: {
-        page            : state.page,
-        per_page        : state.perPage,
-        search          : state.search || '',
-        category        : state.selectedCategory || '',
-        group_id        : parseInt(state.selectedGroup) || '',
-        collection_id   : parseInt(state.selectedCollection) || '',
-        advanced_filters: advancedFilters
-      }
-    }).then(response => {
+    axios.get('/web/user/observations', {params}).then(response => {
       const data = response.data.data
       let state  = {
         observations: data.data,
@@ -125,6 +106,43 @@ export default class MyObservationsScene extends Component {
         alert('Network Error. Please contact us to resolve this issue.')
       }
     })
+  }
+
+  /**
+   * Generate params
+   * @param state
+   * @param withoutPageInfo
+   * @return {{page: *, per_page: (number|*), search: (*|string), category: (*|string), group_id: number | string, collection_id: number | string, advanced_filters: *}}
+   */
+  getParams(state, withoutPageInfo) {
+    let advancedFilters = null
+    let filterID        = parseInt(state.selectedFilter)
+
+    if (filterID !== 0) {
+      let advancedFiltersArray = state.filters.filter(filter => filter.id === filterID)
+      if (advancedFiltersArray[0]) {
+        advancedFilters = advancedFiltersArray[0].rules
+      }
+    } else if (state.advancedFiltersRules) {
+      advancedFilters = Object.keys(state.advancedFiltersRules).length > 0 ? state.advancedFiltersRules : null
+    }
+
+    let params = {
+      page            : state.page,
+      per_page        : state.perPage,
+      search          : state.search || '',
+      category        : state.selectedCategory || '',
+      group_id        : parseInt(state.selectedGroup) || '',
+      collection_id   : parseInt(state.selectedCollection) || '',
+      advanced_filters: advancedFilters
+    }
+
+    if (withoutPageInfo) {
+      delete params.page
+      delete params.per_page
+    }
+
+    return params
   }
 
   /**
@@ -366,9 +384,9 @@ export default class MyObservationsScene extends Component {
           collections={this.state.ownedCollections}
           onCollectionCreated={collection => {
             let exists = !observation.collections.every(c => c.id !== collection.id)
-            let owned = !this.state.ownedCollections.every(c => c.value !== collection.id)
+            let owned  = !this.state.ownedCollections.every(c => c.value !== collection.id)
 
-            if(!owned) {
+            if (!owned) {
               this.setState({
                 ownedCollections: this.state.ownedCollections.concat({
                   label: collection.label,
@@ -401,7 +419,7 @@ export default class MyObservationsScene extends Component {
     return (
       <div className="box">
         <div className="content">
-          <p>You have not submitted any observations yet.</p>
+          <p>You have not submitted any observations matching the specified filters yet.</p>
           <p>
             {
               /* Unfortunately the links have to be structured this way or otherwise the spacing
@@ -541,6 +559,17 @@ export default class MyObservationsScene extends Component {
    * @returns {XML}
    */
   _renderFilters() {
+    let params = this.getParams(this.state, true)
+    let query = ''
+    Object.keys(params).map(key => {
+      if (params[key]) {
+        if (typeof params[key] === 'object') {
+          params[key] = JSON.stringify(params[key])
+        }
+        query += `&${key}=${params[key]}`
+      }
+    })
+
     return (
       <div className="columns is-multiline">
         <div className="column is-4">
@@ -660,7 +689,7 @@ export default class MyObservationsScene extends Component {
           </div>
         </div>
 
-        <div className="column is-4">
+        <div className="column is-2">
           <div className="mt-2">
             <a href="javascript:;" onClick={() => {
               this.setState({showAdvancedFiltersModal: true})
@@ -672,6 +701,29 @@ export default class MyObservationsScene extends Component {
             }}>
               Advanced Filters
             </a>
+          </div>
+        </div>
+
+        <div className="column is-2 has-text-right">
+          <div className="mt-2">
+            <Dropdown right={true} trigger={(
+              <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span className="icon is-small">
+                  <i className="fa fa-download"></i>
+                </span>
+                <span>Download</span>
+                <span className="icon is-small">
+                  <i className="fa fa-angle-down" aria-hidden="true"></i>
+                </span>
+              </button>
+            )}>
+              <a href={`/services/download/observations/tsv?${query}`} className="dropdown-item">
+                TSV Format
+              </a>
+              <a href={`/services/download/observations/csv?${query}`} className="dropdown-item">
+                CSV Format
+              </a>
+            </Dropdown>
           </div>
         </div>
       </div>

@@ -21,12 +21,8 @@ class DownloadsControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $observations = factory(Observation::class, 2)->create([
-            'user_id' => $user->id,
-        ]);
-        $collection = factory(Collection::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $observations = factory(Observation::class, 2)->create(['user_id' => $user->id]);
+        $collection = factory(Collection::class)->create(['user_id' => $user->id]);
 
         $collection->observations()->attach($observations);
         $collection->users()->attach($user);
@@ -47,14 +43,24 @@ class DownloadsControllerTest extends TestCase
             'observation_category' => 'American Chestnut',
             'user_id' => $user->id,
         ]);
-
-        $filter = factory(Filter::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $filter = factory(Filter::class)->create(['user_id' => $user->id]);
 
         $this->assertGreaterThan(0, Filter::apply($filter->rules)->count());
 
         $response = $this->get("/services/download/filter/$filter->id");
+        $response->assertSuccessful();
+    }
+
+    /**
+     * Test that my observations are downloadable.
+     */
+    public function testThatMyObservationsAreDownloadable()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        factory(Observation::class, 2)->create(['user_id' => $user->id]);
+
+        $response = $this->get("/services/download/observations");
         $response->assertSuccessful();
     }
 }
