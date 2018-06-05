@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Collection;
 use App\File;
 use App\Filter;
+use App\Http\Controllers\Traits\FiltersObservations;
 use App\Http\Controllers\Traits\Observes;
 use App\Observation;
 use App\Services\MetaLabels;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Storage;
+use App\User;
 use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 
 class DownloadsController extends Controller
 {
-    use Observes, DealsWithObservationPermissions;
+    use Observes, DealsWithObservationPermissions, FiltersObservations;
 
     /**
      * Supported formats.
@@ -139,6 +142,59 @@ class DownloadsController extends Controller
         return response()->download(storage_path('app/'.$path), $name);
     }
 
+    /**
+     * Download from My Observations Page.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $extension
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function myObservations(Request $request, $extension = 'tsv')
+    {
+        $this->validate($request, [
+            'search' => 'nullable',
+            'collection_id' => 'nullable|exists:collections,id',
+            'category' => ['nullable', Rule::in($this->observation_categories)],
+            'group_id' => 'nullable|exists:groups,id',
+            'advanced_filter' => 'nullable|json',
+        ]);
+
+        $user = $request->user();
+
+        if (! $this->allowedExtension($extension)) {
+            return abort(422, 'Invalid extension');
+        }
+
+        $label = $this->fileNameEscape('observations');
+        $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
+        $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
+
+        $header = $this->prepHeader();
+
+        Storage::put($path, $this->line($header, $extension));
+
+        $this->getFilteredObservations($request)->chunk(200, function ($observations) use ($user, $path, $extension) {
+            foreach ($observations as $observation) {
+                $line = $this->prepObservationLine($observation, $user);
+
+                if ($line !== false) {
+                    Storage::append($path, $this->line($line, $extension));
+                }
+            }
+        });
+
+        $this->createAutoRemovableFile($path, $user->id);
+
+        return response()->download(storage_path('app/'.$path), $name);
+    }
+
+    /**
+     * Create the header array.
+     *
+     * @return array
+     */
     protected function prepHeader()
     {
         $header = [
