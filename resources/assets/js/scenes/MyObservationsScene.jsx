@@ -634,7 +634,7 @@ export default class MyObservationsScene extends Component {
                 : null}
             </div>
             {this.state.collections.length === 0 && !this.state.loading ?
-              <p className="help is-warning">You currently have no collections.</p>
+              <p className="help is-warning">You currently have no collections. Use <i className="fa fa-star"></i> to create one.</p>
               : null}
           </div>
         </div>
