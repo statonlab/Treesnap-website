@@ -60,7 +60,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'White Oak',
         'Hemlock',
         'American Elm',
-        'Florida Torreya'
+        'Florida Torreya',
     ];
 
     $otherTrees = [
@@ -134,5 +134,15 @@ $factory->define(\App\Event::class, function (Faker\Generator $faker) {
         'description' => $faker->text,
         'location' => $faker->address,
         'timezone' => 'EST',
+    ];
+});
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(\App\Filter::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'user_id' => factory(\App\User::class)->create()->id,
+        'notify_user' => $faker->boolean,
+        'rules' => json_decode('{"ash": [], "map": false, "name": "Test2", "address": {"city": null, "state": null, "county": null}, "hemlock": [], "whiteOak": [], "categories": ["American Chestnut"], "americanElm": [], "americanChestnut": []}'),
     ];
 });

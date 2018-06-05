@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Collection;
 use App\File;
+use App\Filter;
 use App\Http\Controllers\Traits\Observes;
 use App\Observation;
 use App\Services\MetaLabels;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Storage;
@@ -42,6 +42,57 @@ class DownloadsController extends Controller
     }
 
     /**
+     * @param int $id
+     * @param \Illuminate\Http\Request $request
+     * @param string $extension
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function filter($id, Request $request, $extension = 'tsv')
+    {
+        /** @var \App\User $user */
+        $user = $request->user();
+
+        $filter = Filter::findOrFail($id);
+
+        $this->authorize('view', $filter);
+
+        if (! $this->allowedExtension($extension)) {
+            return abort(422, 'Invalid extension');
+        }
+
+        $label = $this->fileNameEscape($filter->name);
+        $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
+        $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
+
+        $header = $this->prepHeader();
+
+        Storage::put($path, $this->line($header, $extension));
+
+        $filtered = Filter::apply($filter->rules);
+
+        if (! $user) {
+            $filtered->where('is_private', false);
+        } elseif (! $user->isAdmin() && ! $user->isScientist()) {
+            $filtered = $this->addPrivacyClause($filtered, $user);
+        }
+
+        $filtered->chunk(200, function ($observations) use ($user, $path, $extension) {
+            foreach ($observations as $observation) {
+                $line = $this->prepObservationLine($observation, $user);
+
+                if ($line !== false) {
+                    Storage::append($path, $this->line($line, $extension));
+                }
+            }
+        });
+
+        $this->createAutoRemovableFile($path, $user->id);
+
+        return response()->download(storage_path('app/'.$path), $name);
+    }
+
+    /**
      * Create a collection of observations file.
      *
      * @param \App\Collection $collection
@@ -66,6 +117,30 @@ class DownloadsController extends Controller
         $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
         $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
 
+        $header = $this->prepHeader();
+
+        Storage::put($path, $this->line($header, $extension));
+
+        // Generate Collection
+        $collection->observations()
+            ->with(['latinName'])
+            ->chunk(200, function ($observations) use ($user, $path, $extension) {
+                foreach ($observations as $observation) {
+                    $line = $this->prepObservationLine($observation, $user);
+
+                    if ($line !== false) {
+                        Storage::append($path, $this->line($line, $extension));
+                    }
+                }
+            });
+
+        $this->createAutoRemovableFile($path, $user->id);
+
+        return response()->download(storage_path('app/'.$path), $name);
+    }
+
+    protected function prepHeader()
+    {
         $header = [
             'Unique ID',
             'Observation Category',
@@ -78,52 +153,48 @@ class DownloadsController extends Controller
         ];
 
         // Add meta labels to header
-        $header = array_merge($header, $this->getMetaHeader());
+        return array_merge($header, $this->getMetaHeader());
+    }
 
-        Storage::put($path, $this->line($header, $extension));
+    /**
+     * Prepares a line.
+     *
+     * @param $observation
+     * @param $user
+     * @return array|bool Returns an array of observation data.
+     *                    Returns false if the observation is private.
+     */
+    protected function prepObservationLine($observation, $user)
+    {
+        $comment = '';
+        $latitude = $observation->fuzzy_coords['latitude'];
+        $longitude = $observation->fuzzy_coords['longitude'];
 
-        // Generate Collection
-        $collection->observations()
-            ->with(['latinName'])
-            ->chunk(200, function ($observations) use ($user, $path, $extension) {
-                foreach ($observations as $observation) {
-                    $comment = '';
-                    $latitude = $observation->fuzzy_coords['latitude'];
-                    $longitude = $observation->fuzzy_coords['longitude'];
+        if ($this->hasPrivilegedPermissions($user, $observation)) {
+            $latitude = $observation->latitude;
+            $longitude = $observation->longitude;
+        } elseif ($observation->isPrivate) {
+            // Ignore the observation if it is private and the user
+            // does not have privileged permissions to access it
+            return false;
+        }
 
-                    if ($this->hasPrivilegedPermissions($user, $observation)) {
-                        $latitude = $observation->latitude;
-                        $longitude = $observation->longitude;
-                    } elseif ($observation->isPrivate) {
-                        // Ignore the observation if it is private and the user
-                        // does not have privileged permissions to access it
-                        continue;
-                    }
+        if (! $observation->has_private_comments || $user->id === $observation->user_id) {
+            $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
+        }
 
-                    if (! $observation->has_private_comments || $user->id === $observation->user_id) {
-                        $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
-                    }
+        $line = [
+            $observation->mobile_id,
+            $observation->observation_category,
+            "{$observation->latinName->genus} {$observation->latinName->species}",
+            $latitude,
+            $longitude,
+            $comment,
+            $observation->address['formatted'],
+            $observation->collection_date->toDateString(),
+        ];
 
-                    $line = [
-                        $observation->mobile_id,
-                        $observation->observation_category,
-                        "{$observation->latinName->genus} {$observation->latinName->species}",
-                        $latitude,
-                        $longitude,
-                        $comment,
-                        $observation->address['formatted'],
-                        $observation->collection_date->toDateString(),
-                    ];
-
-                    // Add meta data line
-                    $line = array_merge($line, $this->extractMetaData($observation));
-                    Storage::append($path, $this->line($line, $extension));
-                }
-            });
-
-        $this->createAutoRemovableFile($path, $user->id);
-
-        return response()->download(storage_path('app/'.$path), $name);
+        return array_merge($line, $this->extractMetaData($observation));
     }
 
     /**

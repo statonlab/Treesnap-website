@@ -11,7 +11,7 @@ class GroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Group::class, 50)->create();
+        factory(\App\Group::class, 10)->create();
 
         // Attach users to groups
         $max = \App\User::count();

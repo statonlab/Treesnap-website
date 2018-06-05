@@ -11,7 +11,7 @@ class CollectionsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Collection::class, 50)->create();
+        factory(\App\Collection::class, 10)->create();
 
         // Attach random users to the collection
         $max = \App\User::count();

@@ -141,6 +141,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Download
     Route::get('/services/download/collection/{collection}/{extension?}', 'DownloadsController@collection');
+    Route::get('/services/download/filter/{filter}/{extension?}', 'DownloadsController@filter');
 });
 
 // Admin Route Group
