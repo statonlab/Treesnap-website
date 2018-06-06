@@ -6,6 +6,7 @@ use App\Contact;
 use App\Http\Controllers\Traits\Responds;
 use App\Mail\ContactRequest;
 use App\Mail\ContactUser;
+use App\User;
 use Illuminate\Http\Request;
 use ReCaptcha\ReCaptcha;
 use Mail;
@@ -39,8 +40,24 @@ class ContactController extends Controller
             ]);
         }
 
-        Mail::to(config('mail.from.address'))->queue(new ContactRequest((object) $request->all()));
+        Mail::to($this->getSubscribedAdmins())->queue(new ContactRequest((object)$request->all()));
 
         return $this->success('Message Sent');
+    }
+
+    /**
+     * Get all admin users who subscribed to contact requests.
+     *
+     * @return \App\User[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function getSubscribedAdmins()
+    {
+        return User::with('role')->whereHas('subscriptionTopics', function ($query) {
+            $query->where('key', 'contact');
+        })->get()->reject(function ($user) {
+            return $user->role->name !== 'Admin';
+        })->map(function ($user) {
+            return $user->email;
+        });
     }
 }

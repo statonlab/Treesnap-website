@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Flag;
 use App\Http\Controllers\Traits\Responds;
+use App\Notifications\FlagCreatedNotification;
+use App\User;
 use Illuminate\Http\Request;
 
 class FlagsController extends Controller
@@ -32,7 +34,23 @@ class FlagsController extends Controller
             'comments' => $request->comments,
         ]);
 
+        $this->sendFlagCreatedNotification($flag);
+
         return $this->success($flag);
+    }
+
+    /**
+     * Sends/queues a notification to all admin users who are subscribed.
+     *
+     * @param $flag
+     */
+    protected function sendFlagCreatedNotification($flag)
+    {
+        \Notification::send(User::with('role')->whereHas('subscriptionTopics', function ($query) {
+            $query->where('key', 'flags');
+        })->get()->reject(function ($user) {
+            return $user->role->name !== 'Admin';
+        }), new FlagCreatedNotification($flag));
     }
 
     /**
@@ -54,7 +72,7 @@ class FlagsController extends Controller
         $flag->delete();
 
         return $this->success([
-            'id' => $id
+            'id' => $id,
         ]);
     }
 }

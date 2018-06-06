@@ -21,7 +21,7 @@ export default class Dropdown extends Component {
   }
 
   toggle() {
-    if(this.state.show) {
+    if (this.state.show) {
       this.hide()
       return
     }
@@ -31,8 +31,11 @@ export default class Dropdown extends Component {
 
   render() {
     return (
-      <div className={`dropdown${this.state.show ? ' is-active' : ''}${this.props.right ? ' is-right' : ''} has-text-left`}>
-        <div className="dropdown-trigger" onClick={this.toggle.bind(this)} onBlur={this.hide.bind(this)}>
+      <div className={`dropdown${this.state.show ? ' is-active' : ''}${this.props.right ? ' is-right' : ''} has-text-left`}
+           style={{width: this.props.isBlock ? '100%' : undefined}}>
+        <div className="dropdown-trigger"
+             style={{width: this.props.isBlock ? '100%' : undefined}}
+             onClick={this.toggle.bind(this)} onBlur={this.hide.bind(this)}>
           {this.props.trigger}
         </div>
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
@@ -47,9 +50,11 @@ export default class Dropdown extends Component {
 
 Dropdown.PropTypes = {
   trigger: PropTypes.object.isRequired,
-  right  : PropTypes.bool
+  right  : PropTypes.bool,
+  isBlock: PropTypes.bool
 }
 
 Dropdown.defaultProps = {
-  right: false
+  right  : false,
+  isBlock: false
 }
