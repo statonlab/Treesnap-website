@@ -20,8 +20,11 @@ export default class FlagsScene extends Component {
   }
 
   loadFlags() {
+    this.setState({loading: true})
     axios.get('/admin/web/flags', {
-      page: this.state.page
+      params: {
+        page: this.state.page
+      }
     }).then(response => {
       let {data} = response.data
       this.setState({
@@ -32,6 +35,7 @@ export default class FlagsScene extends Component {
         has_more_pages: data.next_page_url !== null,
         loading       : false
       })
+      window.scrollTo(0, 0)
     }).catch(error => {
       this.setState({loading: false})
       console.log(error)
@@ -46,6 +50,7 @@ export default class FlagsScene extends Component {
     this.setState({
       page: this.state.page + 1
     }, () => {
+      console.log('going to page: ', this.state)
       this.loadFlags()
     })
   }
@@ -72,7 +77,7 @@ export default class FlagsScene extends Component {
         <thead>
         <tr>
           <th>Thumbnail</th>
-          <th>Observation</th>
+          <th style={{width: '300px'}}>Observation</th>
           <th>Reason</th>
           <th>Date Flagged</th>
           <th>Actions</th>
@@ -122,14 +127,16 @@ export default class FlagsScene extends Component {
   renderPaginator() {
     return (
       <nav className="pagination is-centered" role="navigation" aria-label="pagination">
-        <button className="pagination-previous"
-                disabled={this.state.page <= 1}
-                onClick={this.back.bind(this)}>
+        <button type={'button'}
+                className="pagination-previous"
+                disabled={this.state.page <= 1 || this.state.loading}
+                onClick={() => this.back()}>
           Previous
         </button>
-        <button className="pagination-next"
-                disabled={!this.state.has_more_pages}
-                onChange={this.next.bind(this)}>
+        <button type={'button'}
+                className="pagination-next"
+                disabled={!this.state.has_more_pages || this.state.loading}
+                onClick={() => this.next()}>
           Next
         </button>
       </nav>
@@ -139,7 +146,14 @@ export default class FlagsScene extends Component {
   render() {
     return (
       <div>
-        <h1 className="title is-3">Flagged Observations</h1>
+        <div className="columns is-marginless">
+          <div className="column">
+            <h1 className="title is-3">Flagged Observations</h1>
+          </div>
+          <div className="column has-text-right">
+            {this.state.total} flags found. Page {this.state.page} of {Math.ceil(this.state.total / this.state.per_page)}
+          </div>
+        </div>
         <div className="box">
           {this.state.total === 0 && !this.state.loading ? <p>There are no flagged observations.</p> : null}
           {this.renderTable()}

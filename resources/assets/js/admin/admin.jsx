@@ -73,6 +73,11 @@ const FlagsScene = Loadable({
   loader : () => import('./scenes/FlagsScene')
 })
 
+const NotificationsScene = Loadable({
+  loading: PageLoader,
+  loader : () => import('./scenes/NotificationsScene')
+})
+
 class Admin extends Component {
   render() {
     return (
@@ -101,6 +106,7 @@ class Admin extends Component {
                     <Route path="/group/:id" render={props => <Group admin={true} {...props}/>}/>
                     <Route path="/filters" component={FiltersScene}/>
                     <Route path="/flags" component={FlagsScene}/>
+                    <Route path="/notifications" component={NotificationsScene}/>
                     <Route path="/observations" component={ObservationsScene}/>
                     <Route path="/collections"
                            render={props => <CollectionsScene admin={true} {...props}/>}/>
