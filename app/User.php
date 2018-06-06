@@ -112,7 +112,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return (bool) $this->role->is_admin;
+        return (bool)$this->role->is_admin;
     }
 
     /**
@@ -254,5 +254,11 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    public function subscriptionTopics()
+    {
+        return $this->belongsToMany(SubscriptionTopic::class, 'subscription_topics_user', 'user_id',
+            'subscription_topic_id');
     }
 }

@@ -170,6 +170,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     // Flags
     Route::get('/web/flags', 'FlagsController@index');
+
+    // Notifications Settings
+    Route::get('/web/notifications', 'AdminNotificationsController@index');
+    Route::post('/web/notifications/toggle', 'AdminNotificationsController@toggleSubscription');
 });
 
 // Admin or Scientist Only Route Group

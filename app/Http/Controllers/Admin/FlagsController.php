@@ -28,7 +28,9 @@ class FlagsController extends Controller
             'observation' => function ($query) {
                 $query->with('user');
             },
-            'user',
+            'user' => function ($query) {
+                $query->select(['id', 'name', 'email', 'created_at', 'updated_at']);
+            },
         ])->paginate($request->per_page ?: 10);
 
         return $this->success($flags);

@@ -159,6 +159,13 @@ $factory->define(\App\Flag::class, function (Faker\Generator $faker) {
             'This submission is inappropriate',
             'Other',
         ]),
-        'comments' => $faker->sentence
+        'comments' => $faker->sentence,
+    ];
+});
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(\App\SubscriptionTopic::class, function (Faker\Generator $faker) {
+    return [
+        'description' => $faker->sentence,
     ];
 });
