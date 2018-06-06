@@ -146,3 +146,19 @@ $factory->define(\App\Filter::class, function (Faker\Generator $faker) {
         'rules' => json_decode('{"ash": [], "map": false, "name": "Test2", "address": {"city": null, "state": null, "county": null}, "hemlock": [], "whiteOak": [], "categories": ["American Chestnut"], "americanElm": [], "americanChestnut": []}'),
     ];
 });
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(\App\Flag::class, function (Faker\Generator $faker) {
+    return [
+        'observation_id' => factory(\App\Observation::class)->create()->id,
+        'user_id' => factory(\App\User::class)->create()->id,
+        'reason' => $faker->randomElement([
+            'This tree is the wrong species',
+            'This tree is on my private land and I would like it removed',
+            'This submission is spam',
+            'This submission is inappropriate',
+            'Other',
+        ]),
+        'comments' => $faker->sentence
+    ];
+});
