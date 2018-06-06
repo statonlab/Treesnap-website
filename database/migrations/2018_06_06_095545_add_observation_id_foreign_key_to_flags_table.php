@@ -22,6 +22,12 @@ class AddObservationIdForeignKeyToFlagsTable extends Migration
         }
 
         Schema::table('flags', function (Blueprint $table) {
+            $table->unsignedInteger('observation_id')->change();
+            $table->unsignedInteger('observation_id')->change();
+        });
+
+        Schema::table('flags', function(Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('observation_id')->references('id')->on('observations')->onDelete('cascade');
         });
     }
@@ -34,7 +40,11 @@ class AddObservationIdForeignKeyToFlagsTable extends Migration
     public function down()
     {
         Schema::table('flags', function (Blueprint $table) {
+            $table->dropForeign('user_id');
             $table->dropForeign('observation_id');
+
+            $table->integer('observation_id')->change();
+            $table->integer('observation_id')->change();
         });
     }
 }
