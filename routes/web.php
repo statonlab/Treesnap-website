@@ -167,6 +167,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::post('/web/events', 'AdminEventsController@create');
     Route::put('/web/event/{id}', 'AdminEventsController@update');
     Route::delete('/web/event/{id}', 'AdminEventsController@delete');
+
+    // Flags
+    Route::get('/web/flags', 'FlagsController@index');
 });
 
 // Admin or Scientist Only Route Group

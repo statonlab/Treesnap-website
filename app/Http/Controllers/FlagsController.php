@@ -11,17 +11,6 @@ class FlagsController extends Controller
     use Responds;
 
     /**
-     * List flags.
-     * Accessible to admins only.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
-    {
-        return $this->success(Flag::all());
-    }
-
-    /**
      * Create a flag.
      *
      * Accessible to anyone.

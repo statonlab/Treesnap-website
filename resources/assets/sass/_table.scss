@@ -12,6 +12,15 @@
   }
 }
 
+.table-thumbnail-container {
+  width: 120px;
+}
+
+.table-thumbnail {
+  width: 100px;
+  height: auto;
+}
+
 // DATA TABLES BULMA
 table.dataTable.nowrap th, table.dataTable.nowrap td {
   //white-space: nowrap
