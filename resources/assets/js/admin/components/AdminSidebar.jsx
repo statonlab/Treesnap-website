@@ -51,6 +51,13 @@ export default class Sidebar extends Component {
               <i className="fa fa-filter"></i> Filters
             </NavLink>
           </li>
+          {User.can('manage users') ?
+            <li>
+              <NavLink to="/flags" activeClassName="is-active">
+                <i className="fa fa-flag text-danger"></i> Flags
+              </NavLink>
+            </li>
+            : null}
         </ul>
       </aside>
     )

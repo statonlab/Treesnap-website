@@ -65,7 +65,12 @@ const EventsScene = Loadable({
 
 const ObservationsByStateScene = Loadable({
   loading: PageLoader,
-  loader: () => import('./scenes/ObservationsByStateScene')
+  loader : () => import('./scenes/ObservationsByStateScene')
+})
+
+const FlagsScene = Loadable({
+  loading: PageLoader,
+  loader : () => import('./scenes/FlagsScene')
 })
 
 class Admin extends Component {
@@ -86,9 +91,6 @@ class Admin extends Component {
                     {User.can('manage events') ?
                       <Route path="/events" component={EventsScene}/>
                       : null}
-                    {/*{User.can('manage events') ?*/}
-                      {/*<Route path="/event/:id" component={EventScene}/>*/}
-                      {/*: null}*/}
                     {User.scientist() ? null
                       : <Route path="/users" component={UsersScene}/>
                     }
@@ -98,6 +100,7 @@ class Admin extends Component {
                     <Route path="/groups" render={props => <Groups admin={true} {...props}/>}/>
                     <Route path="/group/:id" render={props => <Group admin={true} {...props}/>}/>
                     <Route path="/filters" component={FiltersScene}/>
+                    <Route path="/flags" component={FlagsScene}/>
                     <Route path="/observations" component={ObservationsScene}/>
                     <Route path="/collections"
                            render={props => <CollectionsScene admin={true} {...props}/>}/>
