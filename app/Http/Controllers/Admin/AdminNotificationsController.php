@@ -15,14 +15,22 @@ class AdminNotificationsController extends Controller
 
     public function index()
     {
-        $topics = SubscriptionTopic::all();
-        $admin_role_id = Role::where('name', 'Admin')->first()->id;
-        $users = User::with('subscriptionTopics')->where('role_id', $admin_role_id)->get();
-
         return $this->success([
-            'topics' => $topics,
-            'users' => $users,
+            'topics' => SubscriptionTopic::all(),
+            'users' => $this->getAdminsWithSubscriptions(),
         ]);
+    }
+
+    /**
+     * Get admins with their subscriptions.
+     *
+     * @return \App\User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function getAdminsWithSubscriptions()
+    {
+        $admin_role_id = Role::where('name', 'Admin')->first()->id;
+
+        return User::with('subscriptionTopics')->where('role_id', $admin_role_id)->get();
     }
 
     /**
@@ -42,6 +50,9 @@ class AdminNotificationsController extends Controller
 
         $user->subscriptionTopics()->toggle($request->topic_id);
 
-        return $this->index();
+        return $this->success([
+            'topics' => SubscriptionTopic::all(),
+            'users' => $this->getAdminsWithSubscriptions(),
+        ]);
     }
 }

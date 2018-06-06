@@ -560,7 +560,7 @@ export default class MyObservationsScene extends Component {
    */
   _renderFilters() {
     let params = this.getParams(this.state, true)
-    let query = ''
+    let query  = ''
     Object.keys(params).map(key => {
       if (params[key]) {
         if (typeof params[key] === 'object') {
@@ -634,7 +634,8 @@ export default class MyObservationsScene extends Component {
                 : null}
             </div>
             {this.state.collections.length === 0 && !this.state.loading ?
-              <p className="help is-warning">You currently have no collections. Use <i className="fa fa-star"></i> to create one.</p>
+              <p className="help is-warning">You currently have no collections. Use <i className="fa fa-star"></i> to create one.
+              </p>
               : null}
           </div>
         </div>
@@ -690,8 +691,8 @@ export default class MyObservationsScene extends Component {
         </div>
 
         <div className="column is-2">
-          <div className="mt-2">
-            <a href="javascript:;" onClick={() => {
+          <div className="mt-3">
+            <button type="button" className="button is-primary is-block" onClick={() => {
               this.setState({showAdvancedFiltersModal: true})
               if (this._advancedFilterState) {
                 setTimeout(() => {
@@ -700,32 +701,35 @@ export default class MyObservationsScene extends Component {
               }
             }}>
               Advanced Filters
-            </a>
+            </button>
           </div>
         </div>
 
-        <div className="column is-2 has-text-right">
-          <div className="mt-2">
-            <Dropdown right={true} trigger={(
-              <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                <span className="icon is-small">
-                  <i className="fa fa-download"></i>
-                </span>
-                <span>Download</span>
-                <span className="icon is-small">
-                  <i className="fa fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
-            )}>
-              <a href={`/services/download/observations/tsv?${query}`} className="dropdown-item">
-                TSV Format
-              </a>
-              <a href={`/services/download/observations/csv?${query}`} className="dropdown-item">
-                CSV Format
-              </a>
-            </Dropdown>
+        {this.state.total > 0 ?
+          <div className="column is-2 has-text-right">
+            <div className="mt-3">
+              <Dropdown right={true} isBlock={true} trigger={(
+                <button className="button is-block" aria-haspopup="true" aria-controls="dropdown-menu">
+                  <span className="icon is-small">
+                    <i className="fa fa-download"></i>
+                  </span>
+                  <span>Download</span>
+                  <span className="icon is-small">
+                    <i className="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              )}>
+                <a href={`/services/download/observations/tsv?${query}`} className="dropdown-item">
+                  TSV Format
+                </a>
+                <a href={`/services/download/observations/csv?${query}`} className="dropdown-item">
+                  CSV Format
+                </a>
+              </Dropdown>
+            </div>
           </div>
-        </div>
+          : null}
+
       </div>
     )
   }

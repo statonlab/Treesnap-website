@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
-use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -128,13 +127,6 @@ class UsersController extends Controller
 
         $user->groups()->sync($request->groups);
 
-        $role = Role::findOrFail($request->role);
-        if ($role->name === 'Admin') {
-            $this->addToNotificationsList($user);
-        } else {
-            $this->removeFromNotificationsList($user);
-        }
-
         return $this->created([
             'id' => $user->id,
             'name' => $user->name,
@@ -147,42 +139,5 @@ class UsersController extends Controller
             'is_anonymous' => $user->is_anonymous,
             'birth_year' => $user->birth_year,
         ]);
-    }
-
-    /**
-     * Adds a user to the admin notifications list.
-     *
-     * @param User $user
-     *
-     * @throws \Exception
-     */
-    protected function addToNotificationsList($user)
-    {
-        //$email = AdminNotificationEmail::where('user_id', $user->id)->first();
-        //if ($email) {
-        //    return;
-        //}
-        //
-        //AdminNotificationEmail::create([
-        //    'user_id' => $user->id,
-        //    'topics' => [
-        //        'Flags' => true,
-        //    ],
-        //]);
-    }
-
-    /**
-     * Removes a user from the admin notifications list.
-     *
-     * @param User $user
-     *
-     * @throws \Exception
-     */
-    protected function removeFromNotificationsList($user)
-    {
-        //$email = AdminNotificationEmail::where('user_id', $user->id)->first();
-        //if ($email) {
-        //    $email->delete();
-        //}
     }
 }

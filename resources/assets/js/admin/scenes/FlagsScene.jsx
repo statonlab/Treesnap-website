@@ -80,7 +80,6 @@ export default class FlagsScene extends Component {
           <th style={{width: '300px'}}>Observation</th>
           <th>Reason</th>
           <th>Date Flagged</th>
-          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -115,7 +114,6 @@ export default class FlagsScene extends Component {
                 </div> : null}
               </td>
               <td>{flag.created_at}</td>
-              <td></td>
             </tr>
           )
         })}

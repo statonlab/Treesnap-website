@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Notify from '../../components/Notify'
 
 export default class NotificationsScene extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class NotificationsScene extends Component {
         topics,
         loading: false
       })
+      Notify.push('Subscription updated successfully', 'success')
     }).catch(error => {
       alert('An error occurred while processing your request. Refresh the page to try again. See console for errors.')
       console.error(error)
@@ -53,7 +55,10 @@ export default class NotificationsScene extends Component {
   renderRow(user) {
     return (
       <tr key={user.id}>
-        <td>{user.name}</td>
+        <td>
+          <p><strong>{user.name}</strong></p>
+          <p>{user.email}</p>
+        </td>
         <td>{this.state.topics.map((topic, index) => {
           return (
             <div key={index} className={'checkbox'}>
