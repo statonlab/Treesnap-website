@@ -80,4 +80,30 @@ class AdminFlagsTest extends TestCase
 
         Notification::assertSentTo($users, FlagCreatedNotification::class);
     }
+
+    /** @test */
+    public function testFlagsCanBeDeletedByAdmins() {
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'Admin')->first()->id,
+        ]);
+        $flag = factory(Flag::class)->create();
+
+        $this->actingAs($user);
+
+        $response = $this->delete('/admin/web/flag/'.$flag->id);
+        $response->assertStatus(201);
+    }
+
+    /** @test */
+    public function testFlagsCannotBeDeletedByNonAdmins() {
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'Scientist')->first()->id,
+        ]);
+        $flag = factory(Flag::class)->create();
+
+        $this->actingAs($user);
+
+        $response = $this->delete('/admin/web/flag/'.$flag->id);
+        $response->assertStatus(401);
+    }
 }

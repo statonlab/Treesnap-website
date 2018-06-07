@@ -35,4 +35,17 @@ class FlagsController extends Controller
 
         return $this->success($flags);
     }
+
+    /**
+     * Delete a flag.
+     *
+     * @param Flag $flag
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Exception
+     */
+    public function deleteFlag(Flag $flag) {
+        $flag->delete();
+        return $this->created();
+    }
 }

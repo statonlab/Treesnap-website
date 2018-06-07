@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Notify from '../../components/Notify'
+import Spinner from '../../components/Spinner'
 
 export default class NotificationsScene extends Component {
   constructor(props) {
@@ -27,13 +28,14 @@ export default class NotificationsScene extends Component {
         loading: false
       })
     }).catch(error => {
-      console.log(error)
       this.setState({loading: false})
+      alert('Error occurred while loading your settings. Please refresh the page to try again.')
+      console.error(error)
     })
   }
 
   toggle(user, topic) {
-    this.setState({loading: true})
+    this.setState({toggling: true})
 
     axios.post('/admin/web/notifications/toggle', {
       user_id : user.id,
@@ -43,10 +45,11 @@ export default class NotificationsScene extends Component {
       this.setState({
         users,
         topics,
-        loading: false
+        toggling: false
       })
       Notify.push('Subscription updated successfully', 'success')
     }).catch(error => {
+      this.setState({toggling: false})
       alert('An error occurred while processing your request. Refresh the page to try again. See console for errors.')
       console.error(error)
     })
@@ -64,7 +67,7 @@ export default class NotificationsScene extends Component {
             <div key={index} className={'checkbox'}>
               <input type="checkbox"
                      value={true}
-                     disabled={this.state.loading}
+                     disabled={this.state.toggling}
                      onChange={({target}) => {
                        this.toggle(user, topic)
                      }}
@@ -96,6 +99,7 @@ export default class NotificationsScene extends Component {
             </tbody>
           </table>
         </div>
+        <Spinner visible={this.state.loading}/>
       </div>
     )
   }
