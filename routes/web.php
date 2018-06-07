@@ -170,6 +170,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
 
     // Flags
     Route::get('/web/flags', 'FlagsController@index');
+    Route::delete('/web/flag/{flag}', 'FlagsController@deleteFlag');
 
     // Notifications Settings
     Route::get('/web/notifications', 'AdminNotificationsController@index');

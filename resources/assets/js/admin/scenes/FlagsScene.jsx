@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
+import Dropdown from '../../components/Dropdown'
+import Spinner from '../../components/Spinner'
 
 export default class FlagsScene extends Component {
   constructor(props) {
@@ -35,10 +37,33 @@ export default class FlagsScene extends Component {
         has_more_pages: data.next_page_url !== null,
         loading       : false
       })
+
       window.scrollTo(0, 0)
     }).catch(error => {
       this.setState({loading: false})
       console.log(error)
+    })
+  }
+
+  clearFlag(flag) {
+    if (!confirm('Are you sure you want to delete this flag? This action cannot be undone.')) {
+      return
+    }
+
+    this.setState({loading: true})
+    axios.delete(`/admin/web/flag/${flag.id}`).then(response => {
+      // Reset the page if there are no flags left in this page
+      if (this.state.flags.length === 1 && this.state.page > 1) {
+        this.setState({page: this.state.page - 1}, () => {
+          this.loadFlags()
+        })
+        return
+      }
+      this.loadFlags()
+    }).catch(error => {
+      this.setState({loading: false})
+      alert('An error occurred while clearing the flag. Please refresh the page and try again.')
+      console.error(error)
     })
   }
 
@@ -80,6 +105,7 @@ export default class FlagsScene extends Component {
           <th style={{width: '300px'}}>Observation</th>
           <th>Reason</th>
           <th>Date Flagged</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -114,6 +140,36 @@ export default class FlagsScene extends Component {
                 </div> : null}
               </td>
               <td>{flag.created_at}</td>
+              <td>
+                <Dropdown
+                  right={true}
+                  trigger={(
+                    <button type={'button'}
+                            className={'button'}>
+                      <span>Actions</span>
+                      <span className="icon is-small">
+                        <i className="fa fa-caret-down"></i>
+                      </span>
+                    </button>
+                  )}>
+                  <a href={`/observation/${observation.id}`} className="dropdown-item">
+                    <span className="icon is-small mr-0 text-info">
+                      <i className="fa fa-eye"></i>
+                    </span>
+                    <span>Visit Observation</span>
+                  </a>
+                  <a href="javascript:;"
+                     onClick={() => {
+                       this.clearFlag(flag)
+                     }}
+                     className="dropdown-item">
+                    <span className="icon is-small mr-0 text-danger">
+                      <i className="fa fa-times"></i>
+                    </span>
+                    <span>Clear Flag</span>
+                  </a>
+                </Dropdown>
+              </td>
             </tr>
           )
         })}
@@ -157,6 +213,7 @@ export default class FlagsScene extends Component {
           {this.renderTable()}
           {this.renderPaginator()}
         </div>
+        <Spinner visible={this.state.loading}/>
       </div>
     )
   }
