@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Observation;
 use Illuminate\Console\Command;
 
-class RemoveDuplicaetObservationsCommand extends Command
+class RemoveDuplicateObservationsCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -52,7 +52,10 @@ class RemoveDuplicaetObservationsCommand extends Command
             return "{$observation->user_id}-{$observation->mobile_id}";
         });
 
+        $count = $duplicates->count();
         $deleted = 0;
+
+        $this->line("Found $count duplicate entries.");
 
         foreach ($duplicates as $duplicate) {
             $observations = Observation::where([

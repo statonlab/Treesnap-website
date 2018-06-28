@@ -28,6 +28,7 @@ class UsersController extends Controller
             'class',
             'zipcode',
             'is_anonymous',
+            'roles.name as role',
             'is_admin',
             'role_id',
             DB::raw('(SELECT COUNT(id) FROM observations WHERE users.id=observations.user_id) as observations'),

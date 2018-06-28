@@ -17,7 +17,7 @@ export default class UsersScene extends Component {
     document.title = 'Users - TreeSnap'
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios.get('/admin/web/users').then(response => {
       this.setState({users: response.data.data})
     }).catch(error => {
@@ -46,7 +46,7 @@ export default class UsersScene extends Component {
         <td>{user.is_anonymous ? 'Yes' : 'No'}</td>
         <td>{user.class}</td>
         <td>{user.observations}</td>
-        <td>{user.is_admin ? 'Admin' : 'User'}</td>
+        <td>{user.role}</td>
       </tr>
     )
   }
