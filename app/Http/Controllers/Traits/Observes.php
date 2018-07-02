@@ -219,7 +219,7 @@ trait Observes
             }
 
             $title = $observation->observation_category;
-            $title = $title === 'Other' ? "{$title} ({$observation->data['otherLabel']})" : $title;
+            $title = $title === 'Other' && isset($observation->data['otherLabel']) ? "{$title} ({$observation->data['otherLabel']})" : $title;
             $shareData = $isAdmin || $inGroup || $owner;
 
             if ($observation->has_private_comments || ($authenticated_user && $authenticated_user->id === $observation->user_id)) {
