@@ -58,7 +58,9 @@ export default class Navbar extends Component {
               <NavLink to="/map" className={`navbar-item`} activeClassName={'is-active'}>
                 Map
               </NavLink>
-
+              <NavLink to="/partners" className={`navbar-item`} activeClassName={'is-active'}>
+                Scientific Partners
+              </NavLink>
               <NavLink to="/about" className={`navbar-item`} activeClassName={'is-active'}>
                 About
               </NavLink>
