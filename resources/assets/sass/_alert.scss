@@ -13,6 +13,11 @@
     background-color: $success;
     color: #fff;
   }
+
+  &.is-warning {
+    background-color: $warning;
+    color: #212121;
+  }
 }
 
 .push-notification {

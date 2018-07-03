@@ -74,6 +74,11 @@ const GroupsScene = Loadable({
   loading: PageLoader
 })
 
+const DeveloperScene = Loadable({
+  loader: () => import('./scenes/DeveloperScene'),
+  loading: PageLoader
+})
+
 class App extends Component {
   render() {
     return (
@@ -89,6 +94,7 @@ class App extends Component {
           <Route path={'/observation/:id'} component={ObservationScene}/>
           <Route path={'/map'} component={MapScene}/>
           <Route path={'/contact'} component={ContactUsScene}/>
+          <Route path={'/developer'} component={DeveloperScene}/>
           <Route path={'/about'}
                  component={() =>
                    <KnowledgeViewScene title="About Us"/>

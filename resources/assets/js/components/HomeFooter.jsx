@@ -9,9 +9,13 @@ export default class HomeFooter extends Component {
     return (
       <div className="home-footer">
         <div className="container">
-          <p className="mb-1">
-            Copyright &copy; {new Date().getFullYear()} University of Tennessee Knoxville and University of Kentucky.
-          </p>
+          <div className="columns">
+            <div className="column">
+              <div className="column ">
+                <p>Site Map</p>
+              </div>
+            </div>
+          </div>
           <p>
             <a href="/privacy-policy">Privacy Policy and Terms of Use</a>
           </p>
@@ -32,6 +36,10 @@ export default class HomeFooter extends Component {
               </a>
             </div>
           </div>
+
+          <p>
+            Copyright &copy; {new Date().getFullYear()} University of Tennessee Knoxville and University of Kentucky.
+          </p>
         </div>
       </div>
     )

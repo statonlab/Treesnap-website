@@ -144,5 +144,7 @@ export default class Errors {
     if (this.errors.hasOwnProperty(field)) {
       delete this.errors[field]
     }
+
+    return this
   }
 }
