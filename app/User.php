@@ -19,6 +19,7 @@ class User extends Authenticatable
         'email',
         'password',
         'api_token',
+        'units',
         'is_anonymous',
         'is_private',
         'zipcode',
@@ -46,6 +47,7 @@ class User extends Authenticatable
         'is_anonymous' => 'boolean',
         'is_private' => 'boolean',
         'zipcode' => 'string',
+        'units' => 'string'
     ];
 
     /**
