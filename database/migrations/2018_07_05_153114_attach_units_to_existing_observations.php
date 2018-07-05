@@ -16,6 +16,7 @@ class AttachUnitsToExistingObservations extends Migration
         \App\Observation::chunk(500, function ($observations) use ($converter) {
             /** @var \App\Observation $observation */
             foreach ($observations as $observation) {
+                echo "Fixing observation $observation->id\n";
                 // Extract meta data
                 $data = $observation->data;
                 if (isset($data['heightFirstBranch'])) {
