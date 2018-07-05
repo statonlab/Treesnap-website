@@ -241,10 +241,10 @@ a.box {
 
   a {
     color: #ddd;
-    font-weight: $weight-bold;
     &:hover {
       color: #fff;
       text-decoration: underline;
+      font-weight: $weight-bold;
     }
   }
 }

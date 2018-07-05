@@ -23,7 +23,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-     //   Route::pattern('id', '[0-9]+');
         Route::pattern('limit', '[0-9]+');
 
         parent::boot();
@@ -38,9 +37,9 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $this->mapWebRoutes();
+        $this->mapWebServicesRoutes();
 
-        //
+        $this->mapWebRoutes();
     }
 
     /**
@@ -70,5 +69,20 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "web-services" routes for the application.
+     *
+     * There routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapWebServicesRoutes()
+    {
+        Route::prefix('web-services')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web-services.php'));
     }
 }

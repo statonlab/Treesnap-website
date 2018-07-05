@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -65,6 +66,16 @@ class User extends Authenticatable
     public function observations()
     {
         return $this->hasMany(Observation::class);
+    }
+
+    /**
+     * Get the user's access tokens.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function accessTokens()
+    {
+        return $this->hasMany(AccessToken::class);
     }
 
     /**
