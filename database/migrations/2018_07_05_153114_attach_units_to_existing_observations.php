@@ -27,7 +27,7 @@ class AttachUnitsToExistingObservations extends Migration
                         'US_unit' => 'Feet',
                         'US_value' => $data['heightFirstBranch'],
                         'metric_unit' => 'Meters',
-                        'metric_value' => $converter->feetToMeters($data['heightFirstBranch']),
+                        'metric_value' => $converter->feetToMeters(floatval($data['heightFirstBranch'])),
                     ];
                 }
 
@@ -40,7 +40,7 @@ class AttachUnitsToExistingObservations extends Migration
                         'US_unit' => 'Inches',
                         'US_value' => $data['diameterNumeric'],
                         'metric_unit' => 'cm',
-                        'metric_value' => $converter->inchesToCentimeters($data['diameterNumeric']),
+                        'metric_value' => $converter->inchesToCentimeters(floatval($data['diameterNumeric'])),
                     ];
                 }
 
@@ -53,7 +53,7 @@ class AttachUnitsToExistingObservations extends Migration
                         'US_unit' => 'Feet',
                         'US_value' => $data['heightNumeric'],
                         'metric_unit' => 'Meters',
-                        'metric_value' => $converter->feetToMeters($data['heightNumeric']),
+                        'metric_value' => $converter->feetToMeters(floatval($data['heightNumeric'])),
                     ];
                 }
 

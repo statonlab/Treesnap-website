@@ -63,6 +63,7 @@ class AttachUnits
      */
     public function createValues($value, $unit)
     {
+        $value = floatval($value);
         $converter = new UnitsConverter();
 
         $data = [
