@@ -85,9 +85,9 @@ class AttachUnits
         } elseif ($unit === 'Inches') {
             $data['US_unit'] = $unit;
             $data['US_value'] = $value;
-            $data['metric_unit'] = 'CM';
+            $data['metric_unit'] = 'cm';
             $data['metric_value'] = $converter->inchesToCentimeters($value);
-        } elseif ($unit === 'CM') {
+        } elseif ($unit === 'cm') {
             $data['US_unit'] = 'Inches';
             $data['US_value'] = $converter->centimetersToInches($value);
             $data['metric_unit'] = $unit;

@@ -39,7 +39,7 @@ class AttachUnitsToExistingObservations extends Migration
                     $data['diameterNumeric_values'] = [
                         'US_unit' => 'Inches',
                         'US_value' => $data['diameterNumeric'],
-                        'metric_unit' => 'CM',
+                        'metric_unit' => 'cm',
                         'metric_value' => $converter->inchesToCentimeters($data['diameterNumeric']),
                     ];
                 }
