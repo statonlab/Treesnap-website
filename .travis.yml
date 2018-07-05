@@ -35,6 +35,7 @@ script:
   # Set up db
   - php artisan migrate
   - php artisan db:seed
+  - php artisan passport:keys
   # Run tests
   - npm run production
   - ./vendor/bin/phpunit
