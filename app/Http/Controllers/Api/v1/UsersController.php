@@ -116,6 +116,7 @@ class UsersController extends Controller
             'is_private' => $user->is_private,
             'birth_year' => $user->birth_year,
             'zipcode' => $user->zipcode,
+            'units'
         ]);
     }
 
