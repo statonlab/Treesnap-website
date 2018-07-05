@@ -1032,8 +1032,12 @@ export default class App extends Component {
           </div>
 
           {Object.keys(data).map(key => {
+            let unit = null
+            if (typeof data[`${key}_units`] !== 'undefined') {
+              unit = data[`${key}_units`]
+            }
             const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-            return this._renderMetaData(label, data[key], key, marker)
+            return this._renderMetaData(label, data[key], key, marker, unit)
           })}
 
           <div className="sidebar-item">
@@ -1052,10 +1056,11 @@ export default class App extends Component {
    * @param {string|object} data
    * @param {string} key
    * @param {object} marker
+   * @param {string} unit
    * @return {*}
    * @private
    */
-  _renderMetaData(label, data, key, marker) {
+  _renderMetaData(label, data, key, marker, unit) {
     if (Utils.isJson(data) === true) {
       data = JSON.parse(data)
     }
@@ -1064,7 +1069,7 @@ export default class App extends Component {
       <div className="sidebar-item" key={key}>
         <h5><strong>{label}</strong></h5>
         <div className="ml-1">
-          {data} {key === 'comment' && marker.has_private_comments ?
+          {data} {unit}{key === 'comment' && marker.has_private_comments ?
           <p className="help">
             <span className="icon is-small">
               <i className="fa fa-lock"></i>
