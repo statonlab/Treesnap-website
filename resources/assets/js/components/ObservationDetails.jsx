@@ -303,12 +303,12 @@ export default class ObservationDetails extends Component {
    * @returns {XML}
    * @private
    */
-  _renderMetaData(label, data, key) {
+  _renderMetaData(label, data, key, unit) {
     if (Utils.isJson(data) === true) {
       data = JSON.parse(data)
       if (Array.isArray(data)) {
         data = data.join(', ')
-      } else if (typeof data == 'object') {
+      } else if (typeof data === 'object') {
         data = Object.keys(data).map(key => {
           return data[key]
         }).join(', ')
@@ -319,7 +319,7 @@ export default class ObservationDetails extends Component {
       <tr key={key}>
         <th>{label}</th>
         <td>
-          {data} {key === 'comment' && this.props.observation.has_private_comments ?
+          {data} {unit ? unit : ''}{key === 'comment' && this.props.observation.has_private_comments ?
           <p className="help">
             <span className="icon is-small">
               <i className="fa fa-lock"></i>
@@ -433,8 +433,12 @@ export default class ObservationDetails extends Component {
                     <td>{this.observation.custom_id}</td>
                   </tr> : null}
                 {Object.keys(data).map(key => {
+                  if(key.indexOf('_values') > -1 || key.indexOf('_units') > -1) {
+                    return null
+                  }
+                  const unit = typeof data[`${key}_units`] ? data[`${key}_units`] : null
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-                  return this._renderMetaData(label, data[key], key)
+                  return this._renderMetaData(label, data[key], key, unit)
                 })}
                 {User.can('view accurate location') || User.owns(this.observation) ?
                   <tr>

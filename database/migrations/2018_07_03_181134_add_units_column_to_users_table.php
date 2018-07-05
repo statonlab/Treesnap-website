@@ -14,7 +14,7 @@ class AddUnitsColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('units')->default('US');
+            $table->string('units', 20)->default('US');
         });
     }
 

@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api\v1;
 use App\Events\ObservationCreated;
 use App\Events\ObservationDeleted;
 use App\Events\ObservationUpdated;
+use App\Exceptions\UnitConversionException;
 use App\Http\Controllers\Api\v1\Traits\UploadsImages;
 use App\Http\Controllers\Traits\Observes;
 use App\LatinName;
 use App\Observation;
+use App\Services\AttachUnits;
 use Carbon\Carbon;
+use Doctrine\DBAL\Types\ConversionException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
@@ -119,7 +122,10 @@ class ObservationsController extends Controller
         $fuzzy_coords = $this->fuzifyCoorinates($request->latitude, $request->longitude);
 
         // Create the record
-        $data = json_decode($request->meta_data);
+        $data = json_decode($request->meta_data, true);
+        if (isset($data['otherLabel'])) {
+            $data['otherLabel'] = trim($data['otherLabel']);
+        }
 
         $observation = Observation::create([
             'user_id' => $user->id,
@@ -141,6 +147,14 @@ class ObservationsController extends Controller
 
         if (! $observation) {
             return $this->error('Request could not be completed', 100);
+        }
+
+        try {
+            $fixer = new AttachUnits();
+            $observation = $fixer->attach($observation);
+            $observation->save();
+        } catch (UnitConversionException $exception) {
+            \Log::error('UnitConversionException: '.$exception->getMessage(), $exception->getTrace());
         }
 
         // Fire event
@@ -183,10 +197,15 @@ class ObservationsController extends Controller
         // Fuzzify coordinates for non-admin users
         $fuzzy_coords = $this->fuzifyCoorinates($request->latitude, $request->longitude);
 
+        $data = json_decode($request->meta_data, true);
+        if (isset($data['otherLabel'])) {
+            $data['otherLabel'] = trim($data['otherLabel']);
+        }
+
         // Update the record
         $observation->update([
             'observation_category' => $request->observation_category,
-            'data' => json_decode($request->meta_data),
+            'data' => ! empty($data) ? $data : [],
             'longitude' => $request->longitude,
             'latitude' => $request->latitude,
             'fuzzy_coords' => $fuzzy_coords,
@@ -201,6 +220,14 @@ class ObservationsController extends Controller
 
         if (! $observation) {
             return $this->error('Request could not be completed', 101);
+        }
+
+        try {
+            $fixer = new AttachUnits();
+            $observation = $fixer->attach($observation);
+            $observation->save();
+        } catch (UnitConversionException $exception) {
+            \Log::error('UnitConversionException: '.$exception->getMessage(), $exception->getTrace());
         }
 
         // Delete all old images
@@ -223,7 +250,7 @@ class ObservationsController extends Controller
                 'required',
                 Rule::in($this->observation_categories),
             ],
-            'meta_data' => 'json|nullable',
+            'meta_data' => 'required|json',
             'longitude' => 'required|numeric',
             'latitude' => 'required|numeric',
             'location_accuracy' => 'required|numeric',
