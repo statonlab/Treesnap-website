@@ -13,6 +13,7 @@ export default class HemlockFilters extends Component {
       locationCharacteristics: [],
       nearbyTrees            : [],
       crownHealth            : [],
+      hemlockSpecies         : [],
       diameterNumericMin     : '',
       diameterNumericMax     : ''
     }
@@ -27,6 +28,20 @@ export default class HemlockFilters extends Component {
   render() {
     return (
       <div className="columns is-multiline">
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Species</label>
+            <ButtonList
+              list={[
+                'Eastern hemlock (Tsuga canadensis)',
+                'Carolina hemlock (Tsuga caroliniana)',
+                'Other hemlock species',
+                'I\'m not sure'
+              ]}
+              onChange={hemlockSpecies => this._update('hemlockSpecies', hemlockSpecies)}/>
+          </div>
+        </div>
+
         <div className="column is-6">
           <div className="field">
             <label className="label">Woolly Adelgids</label>
