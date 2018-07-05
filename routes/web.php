@@ -141,6 +141,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/services/download/collection/{collection}/{extension?}', 'DownloadsController@collection');
     Route::get('/services/download/filter/{filter}/{extension?}', 'DownloadsController@filter');
     Route::get('/services/download/observations/{extension?}', 'DownloadsController@myObservations');
+
+    Route::get('/web/oauth/personal-tokens', 'OAuthController@tokens');
+    Route::post('/web/oauth/personal-tokens', 'OAuthController@createTokens');
+    Route::delete('/web/oauth/personal-token/{id}', 'OAuthController@deleteToken');
 });
 
 // Admin Route Group
