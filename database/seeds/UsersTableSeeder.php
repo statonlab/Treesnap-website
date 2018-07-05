@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
             'api_token' => str_random(60),
             'birth_year' => 1974,
             'role_id' => \App\Role::where('name', 'Admin')->first()->id,
+            'units' => 'metric'
         ]);
 
         \App\User::create([
@@ -27,6 +28,7 @@ class UsersTableSeeder extends Seeder
             'api_token' => str_random(60),
             'birth_year' => 1984,
             'role_id' => \App\Role::where('name', 'Admin')->first()->id,
+            'units'=> 'US'
         ]);
 
         // After creating 2 admin users, create 5 random users

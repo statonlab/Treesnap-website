@@ -15,9 +15,11 @@
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
+    $email = explode('@', $faker->email);
+
     return [
         'name' => $faker->name,
-        'email' => $faker->email,
+        'email' => $email[0].uniqid().'@'.$email[1],
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
         'api_token' => str_random(60),
