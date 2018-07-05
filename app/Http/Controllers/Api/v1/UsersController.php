@@ -31,6 +31,7 @@ class UsersController extends Controller
             'is_anonymous' => $user->is_anonymous,
             'is_private' => $user->is_private,
             'birth_year' => $user->birth_year,
+            'units' => $user->units,
         ]);
     }
 
@@ -60,6 +61,7 @@ class UsersController extends Controller
             'zipcode' => $request->zipcode,
             'api_token' => $api_token,
             'birth_year' => $request->birth_year,
+            'units' => $request->units ? $request->units : 'US',
         ]);
 
         if (! $user) {
@@ -77,6 +79,7 @@ class UsersController extends Controller
             'zipcode' => $user->zipcode,
             'birth_year' => $user->birth_year,
             'api_token' => $api_token,
+            'units' => $user->units,
         ]);
     }
 
@@ -103,6 +106,7 @@ class UsersController extends Controller
             'is_private' => $request->is_private ? 1 : 0,
             'birth_year' => $request->birth_year,
             'zipcode' => $request->zipcode,
+            'units' => $request->units ? $request->units : 'US',
         ]);
 
         if (! $update) {
@@ -116,7 +120,7 @@ class UsersController extends Controller
             'is_private' => $user->is_private,
             'birth_year' => $user->birth_year,
             'zipcode' => $user->zipcode,
-            'units'
+            'units' => $user->units,
         ]);
     }
 
@@ -185,6 +189,7 @@ class UsersController extends Controller
             'birth_year' => $user->birth_year,
             'is_anonymous' => $user->is_anonymous,
             'is_private' => $user->is_private,
+            'units' => $user->units,
         ]);
     }
 
@@ -221,6 +226,7 @@ class UsersController extends Controller
                 'max:10',
                 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
             ],
+            'units' => 'nullable|in:US,metric',
         ], $rules));
     }
 
