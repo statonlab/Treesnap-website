@@ -20,6 +20,7 @@ class AttachUnitsToExistingObservations extends Migration
                 // Extract meta data
                 $data = $observation->data;
                 if (isset($data['heightFirstBranch'])) {
+                    echo "Data heightFirstBranch ".$data['heightFirstBranch']."\n";
                     if (! isset($data['heightFirstBranch_units'])) {
                         $data['heightFirstBranch_units'] = 'Feet';
                     }
@@ -33,6 +34,7 @@ class AttachUnitsToExistingObservations extends Migration
                 }
 
                 if (isset($data['diameterNumeric'])) {
+                    echo "Data diameterNumeric ".$data['diameterNumeric']."\n";
                     if (! isset($data['diameterNumeric_units'])) {
                         $data['diameterNumeric_units'] = 'Inches';
                     }
@@ -46,6 +48,7 @@ class AttachUnitsToExistingObservations extends Migration
                 }
 
                 if (isset($data['heightNumeric'])) {
+                    echo "Data heightNumeric ".$data['heightNumeric']."\n";
                     if (! isset($data['heightNumeric_units'])) {
                         $data['heightNumeric_units'] = 'Feet';
                     }
