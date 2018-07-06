@@ -111,10 +111,10 @@ export default class UsersScene extends Component {
             </table>
             :
             <p className="text-muted">
-              You haven't created any filters yet.
+              You have not created any filters yet.
               You can create new filters in the {
               this.account ? <Link to="/map">Map</Link> : <Link to="/observations">Observations</Link>
-            } page.
+            } or {this.account ? <Link to={'/account/observations'}>your observations</Link> : null} page.
             </p>
           }
         </div>

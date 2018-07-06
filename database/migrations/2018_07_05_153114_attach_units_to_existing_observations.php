@@ -12,56 +12,12 @@ class AttachUnitsToExistingObservations extends Migration
     public function up()
     {
         $converter = new \App\Services\UnitsConverter();
+        $attach = new \App\Services\AttachUnits();
 
-        \App\Observation::chunk(500, function ($observations) use ($converter) {
+        \App\Observation::chunk(500, function ($observations) use ($converter, $attach) {
             /** @var \App\Observation $observation */
             foreach ($observations as $observation) {
-                echo "Fixing observation $observation->id\n";
-                // Extract meta data
-                $data = $observation->data;
-                if (isset($data['heightFirstBranch'])) {
-                    echo "Data heightFirstBranch ".$data['heightFirstBranch']."\n";
-                    if (! isset($data['heightFirstBranch_units'])) {
-                        $data['heightFirstBranch_units'] = 'Feet';
-                    }
-
-                    $data['heightFirstBranch_values'] = [
-                        'US_unit' => 'Feet',
-                        'US_value' => $data['heightFirstBranch'],
-                        'metric_unit' => 'Meters',
-                        'metric_value' => $converter->feetToMeters(floatval($data['heightFirstBranch'])),
-                    ];
-                }
-
-                if (isset($data['diameterNumeric'])) {
-                    echo "Data diameterNumeric ".$data['diameterNumeric']."\n";
-                    if (! isset($data['diameterNumeric_units'])) {
-                        $data['diameterNumeric_units'] = 'Inches';
-                    }
-
-                    $data['diameterNumeric_values'] = [
-                        'US_unit' => 'Inches',
-                        'US_value' => $data['diameterNumeric'],
-                        'metric_unit' => 'cm',
-                        'metric_value' => $converter->inchesToCentimeters(floatval($data['diameterNumeric'])),
-                    ];
-                }
-
-                if (isset($data['heightNumeric'])) {
-                    echo "Data heightNumeric ".$data['heightNumeric']."\n";
-                    if (! isset($data['heightNumeric_units'])) {
-                        $data['heightNumeric_units'] = 'Feet';
-                    }
-
-                    $data['heightNumeric_values'] = [
-                        'US_unit' => 'Feet',
-                        'US_value' => $data['heightNumeric'],
-                        'metric_unit' => 'Meters',
-                        'metric_value' => $converter->feetToMeters(floatval($data['heightNumeric'])),
-                    ];
-                }
-
-                $observation->data = $data;
+                $observation = $attach->attach($observation);
                 $observation->save();
             }
         });

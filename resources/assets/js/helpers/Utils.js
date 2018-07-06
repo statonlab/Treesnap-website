@@ -15,6 +15,14 @@ export default class Utils {
     return true
   }
 
+  static unit(unit) {
+    let units = {
+      feet  : window.TreeSnap.units === 'US' ? 'Feet' : 'Meters',
+      inches: window.TreeSnap.units === 'US' ? 'Inches' : 'cm'
+    }
+    return units[unit.toLowerCase()] || null
+  }
+
   /**
    * Flattens an object into an array of values only.
    *

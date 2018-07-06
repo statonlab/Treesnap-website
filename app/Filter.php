@@ -6,16 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Filter extends Model
 {
-    protected static $filterMapper = [
-        'Ash' => 'ash',
-        'American Chestnut' => 'americanChestnut',
-        'Hemlock' => 'hemlock',
-        'White Oak' => 'whiteOak',
-        'American Elm' => 'americanElm',
-        'Florida Torreya' => 'floridaTorreya',
-        'Other' => 'other',
-    ];
-
     /**
      * Fillable columns.
      *
@@ -48,6 +38,32 @@ class Filter extends Model
         'created_at',
         'updated_at',
         'notifications_sent_at',
+    ];
+
+    /**
+     * Fields that support units.
+     *
+     * @var array
+     */
+    protected static $supportsUnits = [
+        'heightFirstBranch',
+        'diameterNumeric',
+        'heightNumeric',
+    ];
+
+    /**
+     * Maps tree name to its filter
+     *
+     * @var array
+     */
+    protected static $filterMapper = [
+        'Ash' => 'ash',
+        'American Chestnut' => 'americanChestnut',
+        'Hemlock' => 'hemlock',
+        'White Oak' => 'whiteOak',
+        'American Elm' => 'americanElm',
+        'Florida Torreya' => 'floridaTorreya',
+        'Other' => 'other',
     ];
 
     /**
@@ -123,6 +139,7 @@ class Filter extends Model
                                 }
                             });
                         } else {
+                            // Check if this is a max/min situation
                             $sub = substr($filter, -3);
                             if ($sub === 'Min' || $sub === 'Max') {
                                 // Ignore max
@@ -140,12 +157,26 @@ class Filter extends Model
                                     continue;
                                 }
 
-                                // Apply the min/max filter
-                                $query->whereBetween("data->$filterName", [
-                                    intVal($value),
-                                    intval($allFilters[$filterMax]),
-                                ]);
+                                if(in_array($filterName, static::$supportsUnits)) {
+                                    $units = 'US';
+                                    $user = auth()->user();
+                                    if($user) {
+                                        $units = $user->units;
+                                    }
+                                    // Apply the min/max filter for fields that DO support units
+                                    $query->whereBetween("data->{$filterName}_values->{$units}_value", [
+                                        intVal($value),
+                                        intval($allFilters[$filterMax]),
+                                    ]);
+                                } else {
+                                    // Apply the min/max filter for fields that do not support units
+                                    $query->whereBetween("data->$filterName", [
+                                        intVal($value),
+                                        intval($allFilters[$filterMax]),
+                                    ]);
+                                }
                             } else {
+                                // It's not max/min filter, so let's check for exact value
                                 $query->where("data->$filter", $value);
                             }
                         }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
+import Utils from '../../helpers/Utils'
 
 export default class HemlockFilters extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ export default class HemlockFilters extends Component {
 
         <div className="column is-6">
           <div className="field">
-            <label className="label">Tree Diameter (inches)</label>
+            <label className="label">Tree Diameter ({Utils.unit('inches')})</label>
             <div className="field is-horizontal">
               <div className="field-body">
                 <div className="field">
@@ -93,7 +94,7 @@ export default class HemlockFilters extends Component {
 
         <div className="column is-6">
           <div className="field">
-            <label className="label">Tree Height (feet)</label>
+            <label className="label">Tree Height ({Utils.unit('feet')})</label>
             <div className="field is-horizontal">
               <div className="field-body">
                 <div className="field">
