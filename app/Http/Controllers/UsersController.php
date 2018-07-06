@@ -81,7 +81,6 @@ class UsersController extends Controller
             'is_anonymous' => $user->is_anonymous,
             'birth_year' => $user->birth_year,
             'units' => $user->units,
-            'test' => "hey testing hot dog"
         ]);
     }
 
@@ -109,7 +108,7 @@ class UsersController extends Controller
             'email' => 'required|email'.$rules,
             'is_anonymous' => 'required|boolean',
             'birth_year' => "required|integer|max:{$today}|min:{$century}",
-            'units' => 'in:US,metric'
+            'units' => 'in:US,metric',
         ]);
 
         $user->fill([
@@ -117,14 +116,14 @@ class UsersController extends Controller
             'email' => $request->email,
             'is_anonymous' => $request->is_anonymous,
             'birth_year' => $request->birth_year,
-            'units' => $request->units
+            'units' => $request->units,
         ])->save();
 
         return $this->success([
             'name' => $user->name,
             'email' => $user->email,
             'is_anonymous' => $user->is_anonymous,
-            'units' => $request->units
+            'units' => $request->units,
         ]);
     }
 

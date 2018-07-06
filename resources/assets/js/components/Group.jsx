@@ -665,6 +665,9 @@ export default class Group extends Component {
     })
   }
 
+  /**
+   * Save the name in the server
+   */
   saveGroupName() {
     this.setState({savingName: true})
 

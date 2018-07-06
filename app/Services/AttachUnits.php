@@ -73,6 +73,8 @@ class AttachUnits
             'metric_value' => '',
         ];
 
+        $unit = ucwords($unit);
+
         if ($unit === 'Feet') {
             $data['US_unit'] = $unit;
             $data['US_value'] = $value;
@@ -88,7 +90,7 @@ class AttachUnits
             $data['US_value'] = $value;
             $data['metric_unit'] = 'cm';
             $data['metric_value'] = $converter->inchesToCentimeters($value);
-        } elseif ($unit === 'cm') {
+        } elseif (strtolower($unit) === 'cm') {
             $data['US_unit'] = 'Inches';
             $data['US_value'] = $converter->centimetersToInches($value);
             $data['metric_unit'] = $unit;

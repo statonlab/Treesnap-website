@@ -8,6 +8,7 @@ export default class AccountScene extends Component {
 
     this.state = {
       name                     : '',
+      units                    : '',
       email                    : '',
       is_anonymous             : 0,
       birth_year               : '',
@@ -15,7 +16,8 @@ export default class AccountScene extends Component {
         name        : [],
         email       : [],
         is_anonymous: [],
-        birth_year  : []
+        birth_year  : [],
+        units       : []
       },
       message                  : '',
       new_password             : '',
@@ -36,6 +38,7 @@ export default class AccountScene extends Component {
       let user = response.data.data
       this.setState({
         name        : user.name,
+        units       : user.units,
         email       : user.email,
         is_anonymous: user.is_anonymous ? 1 : 0,
         birth_year  : user.birth_year
@@ -59,22 +62,27 @@ export default class AccountScene extends Component {
       name        : this.state.name,
       email       : this.state.email,
       is_anonymous: this.state.is_anonymous,
-      birth_year  : this.state.birth_year
+      birth_year  : this.state.birth_year,
+      units       : this.state.units
     }).then(response => {
       let user = response.data.data
 
       this.setState({
         name        : user.name,
         email       : user.email,
+        units       : user.units,
         is_anonymous: user.is_anonymous ? 1 : 0,
         message     : 'Account updated successfully',
         errors      : {
           name        : [],
           email       : [],
           is_anonymous: [],
-          birth_year  : []
+          birth_year  : [],
+          units       : []
         }
       })
+
+      window.TreeSnap.units = user.units
     }).catch(error => {
       if (error.response && error.response.status === 422) {
         let errors = error.response.data
@@ -239,6 +247,23 @@ export default class AccountScene extends Component {
                   return <p className="help is-danger" key={index}>{error}</p>
                 })}
                 <p className="help">Anonymous users have their information hidden from other users.</p>
+              </div>
+            </div>
+
+            <div className="field">
+              <label className="label">Measurement Units</label>
+              <div className="control">
+                <span
+                  className={`select${this.state.errors.units.length > 0 ? ' is-danger' : ''}`}>
+                  <select value={this.state.units}
+                          onChange={e => this.setState({units: e.target.value})}>
+                    <option value="US">US (Foot, Inches)</option>
+                    <option value="metric">Metric (Centimeters, Meters)</option>
+                  </select>
+                </span>
+                {this.state.errors.units.map((error, index) => {
+                  return <p className="help is-danger" key={index}>{error}</p>
+                })}
               </div>
             </div>
 

@@ -76,8 +76,34 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
     $c = $categories[rand() % count($categories)];
 
+    $numericValue = random_int(0, 1000);
+    $converter = new \App\Services\UnitsConverter();
     $data = [
         'comment' => 'Comment on record '.rand() % 3000,
+        'diameterNumeric' => $numericValue,
+        'diameterNumeric_units' => 'Inches',
+        'diameterNumeric_values' => [
+            'US_value' => $numericValue,
+            'US_unit' => 'Inches',
+            'metric_value' => $converter->inchesToCentimeters($numericValue),
+            'metric_unit' => 'cm',
+        ],
+        'heightFirstBranch' => $numericValue * 2,
+        'heightFirstBranch_units' => 'Feet',
+        'heightFirstBranch_values' => [
+            'US_value' => $numericValue * 2,
+            'US_unit' => 'Feet',
+            'metric_value' => $converter->feetToMeters($numericValue * 2),
+            'metric_unit' => 'Meters',
+        ],
+        'heightNumeric' => $numericValue * 3,
+        'heightNumeric_units' => 'Feet',
+        'heightNumeric_values' => [
+            'US_value' => $numericValue * 3,
+            'US_unit' => 'Feet',
+            'metric_value' => $converter->feetToMeters($numericValue * 3),
+            'metric_unit' => 'Meters',
+        ],
     ];
 
     if ($c === 'Other') {

@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = auth()->check() ? auth()->user() : false;
+        $user = auth()->user();
 
         $TreeSnap = [
             'csrfToken' => csrf_token(),
@@ -25,6 +25,7 @@ class HomeController extends Controller
             'role' => $user ? $user->role->name : null,
             'user' => false,
             'metaLabels' => (new MetaLabels())->toObject(),
+            'units' => 'US',
         ];
 
         if ($user) {
@@ -32,6 +33,7 @@ class HomeController extends Controller
                 'name' => $user->name,
                 'id' => $user->id,
             ];
+            $TreeSnap['units'] = $user->units;
         }
 
         return view('home')->with(compact('TreeSnap'));

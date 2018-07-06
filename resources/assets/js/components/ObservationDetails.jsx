@@ -38,7 +38,8 @@ export default class ObservationDetails extends Component {
           name   : ''
         },
         from: ''
-      }
+      },
+      selectedUnit       : window.TreeSnap.units || 'US'
     }
 
     this.observation = {}
@@ -392,10 +393,10 @@ export default class ObservationDetails extends Component {
   }
 
   render() {
+
     if (this.state.deleted) {
       return this.deleted()
     }
-    console.log(this.observation)
 
     let data = this.observation.meta_data
     return (
@@ -403,6 +404,17 @@ export default class ObservationDetails extends Component {
         <div className="columns is-mobile flex-v-center">
           <div className="column">
             <h3 className="title is-4">{this.observation.observation_category}</h3>
+          </div>
+          <div className="column is-narrow">
+            <span className="select">
+              <select value={this.state.selectedUnit} onChange={({target}) => {
+                window.units = target.value
+                this.setState({selectedUnit: target.value})
+              }}>
+                <option value="US">US Units</option>
+                <option value="metric">Metric Units</option>
+              </select>
+            </span>
           </div>
           {User.can('delete observations') || User.owns(this.observation) ?
             <div className="column is-narrow">
@@ -433,12 +445,18 @@ export default class ObservationDetails extends Component {
                     <td>{this.observation.custom_id}</td>
                   </tr> : null}
                 {Object.keys(data).map(key => {
-                  if(key.indexOf('_values') > -1 || key.indexOf('_units') > -1) {
+                  if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1) {
                     return null
                   }
-                  const unit = typeof data[`${key}_units`] ? data[`${key}_units`] : null
+                  let unit    = null
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-                  return this._renderMetaData(label, data[key], key, unit)
+                  let val     = data[key]
+                  if (typeof data[`${key}_values`] !== 'undefined') {
+                    unit = data[`${key}_values`][`${this.state.selectedUnit}_unit`]
+                    val  = data[`${key}_values`][`${this.state.selectedUnit}_value`]
+                  }
+
+                  return this._renderMetaData(label, val, key, unit)
                 })}
                 {User.can('view accurate location') || User.owns(this.observation) ?
                   <tr>

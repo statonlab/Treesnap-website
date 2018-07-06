@@ -18,6 +18,7 @@ class AdminController extends Controller
             'isAdmin' => $user->isAdmin(),
             'isScientist' => $user->isScientist(),
             'role' => $user->role->name,
+            'units' => $user->units,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
