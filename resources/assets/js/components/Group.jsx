@@ -11,13 +11,18 @@ import Path from '../helpers/Path'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
 import GroupJoinRequests from './GroupJoinRequests'
+import Errors from '../helpers/Errors'
 
 export default class Group extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      id                : 0,
       name              : '',
+      newName           : '',
+      updatingName      : false,
+      savingName        : false,
       isSharing         : false,
       users             : [],
       loading           : true,
@@ -68,7 +73,8 @@ export default class Group extends Component {
         users    : data.users,
         isOwner  : data.is_owner,
         leader   : data.owner,
-        isSharing: data.is_sharing
+        isSharing: data.is_sharing,
+        newName  : data.name
       })
 
       document.title = `${data.name} - TreeSnap`
@@ -659,12 +665,74 @@ export default class Group extends Component {
     })
   }
 
+  saveGroupName() {
+    this.setState({savingName: true})
+
+    axios.put(`/web/group/${this.state.id}`, {
+      name: this.state.newName
+    }).then(response => {
+      Notify.push('Group name updated successfully')
+      this.setState({
+        savingName  : false,
+        updatingName: false,
+        name        : response.data.data.name
+      })
+    }).catch(error => {
+      this.setState({savingName: false})
+
+      let errors = new Errors(error)
+      if (errors.has('general')) {
+        alert(errors.first('general'))
+        return
+      }
+
+    })
+  }
+
+  renderNameForm() {
+    return (
+      <form action="#" method="post" onSubmit={(e) => {
+        e.preventDefault()
+        this.saveGroupName()
+      }}>
+        <div className="field is-grouped">
+          <div className="control is-expanded">
+            <input type="text"
+                   className="input is-large"
+                   name="name"
+                   autoFocus={true}
+                   value={this.state.newName}
+                   onChange={({target}) => this.setState({newName: target.value})}/>
+          </div>
+          <div className="control">
+            <button className={`button is-primary is-large`}
+                    type="submit">
+              Done
+            </button>
+          </div>
+        </div>
+      </form>
+    )
+  }
+
+  renderName() {
+    return (
+      <h1 className="title is-3 is-flex align-items-end">
+        {this.state.name}
+        <button className="button is-link is-small"
+                type="button"
+                onClick={() => this.setState({updatingName: true})}>rename
+        </button>
+      </h1>
+    )
+  }
+
   render() {
     return (
       <div>
         <div className="columns">
           <div className="column">
-            <h1 className="title is-3">{this.state.name}</h1>
+            {this.state.updatingName ? this.renderNameForm() : this.renderName()}
           </div>
           <div className="column has-text-right">
             <a href="javascript:;"

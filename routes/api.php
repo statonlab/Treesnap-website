@@ -11,9 +11,9 @@
 */
 
 Route::group([
-  'prefix' => 'v1',
-  'namespace' => 'Api\v1',
-  'middleware' => ['auth:api'],
+    'prefix' => 'v1',
+    'namespace' => 'Api\v1',
+    'middleware' => ['auth:api'],
 ], function () {
     // Observations Controller
     Route::get('/observations', 'ObservationsController@index');
@@ -29,6 +29,7 @@ Route::group([
     Route::get('/user', 'UsersController@show');
     Route::put('/user', 'UsersController@update');
     Route::patch('/user/password', 'UsersController@updatePassword');
+    Route::patch('/user', 'UsersController@patchSingleField');
 
     // Actions
     Route::get('/actions', 'ActionsController@index');
@@ -37,8 +38,8 @@ Route::group([
 
 // Methods that do not require an api_key
 Route::group([
-  'prefix' => 'v1',
-  'namespace' => 'Api\v1',
+    'prefix' => 'v1',
+    'namespace' => 'Api\v1',
 ], function () {
     Route::post('/users', 'UsersController@create');
     Route::post('/user/login', 'UsersController@login');

@@ -92,6 +92,31 @@ class GroupsController extends Controller
     }
 
     /**
+     * Update the group name.
+     *
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function updateName(Group $group, Request $request)
+    {
+        $this->authorize('update', $group);
+
+        $this->validate($request, [
+            'name' => 'required|min:3|max:255',
+        ]);
+
+        $group->fill([
+            'name' => $request->name,
+        ])->save();
+
+        return $this->success([
+            'name' => $group->name,
+        ]);
+    }
+
+    /**
      * Get a certain group.
      *
      * @param $id
