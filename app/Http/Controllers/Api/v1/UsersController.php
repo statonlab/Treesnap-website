@@ -194,20 +194,66 @@ class UsersController extends Controller
     }
 
     /**
+     * Update a single field.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function patchSingleField(Request $request)
+    {
+        $fields = $request->all();
+        if (count($fields) !== 2) {
+            return $this->error('Please provide a valid field');
+        }
+
+        $user = $request->user();
+        $fields = collect(array_keys($fields));
+        $field = $fields->filter(function ($f) {
+            return $f !== 'api_token';
+        })->first();
+        $rules = $this->validationRules($fields, true, $user);
+
+        if (isset($rules[$field])) {
+            $this->validate($request, [
+                $field => $rules[$field],
+            ]);
+        }
+
+        $user->fill([
+            $field => $request->{$field},
+        ])->save();
+
+        return $this->success([
+            $field => $request->{$field},
+        ]);
+    }
+
+    /**
      * Generates a validator.
      *
      * @param $data
      * @param bool $is_update
-     * @param null $user
+     * @param User $user
      * @return mixed
      */
     protected function makeValidation($data, $is_update = false, $user = null)
+    {
+        return Validator::make($data, $this->validationRules($data, $is_update, $user));
+    }
+
+    /**
+     * @param $data
+     * @param bool $is_update
+     * @param User $user
+     * @return array
+     */
+    protected function validationRules($data, $is_update = false, $user = null)
     {
         $rules = [
             'email' => 'required|email',
         ];
 
-        if ($is_update) {
+        if ($is_update && isset($data['email'])) {
             if ($data['email'] != $user->email) {
                 $rules['email'] .= '|unique:users';
             }
@@ -216,7 +262,7 @@ class UsersController extends Controller
             $rules['email'] .= '|unique:users';
         }
 
-        return Validator::make($data, array_merge([
+        return array_merge([
             'name' => 'required|min:3',
             'is_anonymous' => 'nullable|boolean',
             'is_private' => 'nullable|boolean',
@@ -227,7 +273,7 @@ class UsersController extends Controller
                 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
             ],
             'units' => 'nullable|in:US,metric',
-        ], $rules));
+        ], $rules);
     }
 
     /**

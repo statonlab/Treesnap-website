@@ -101,6 +101,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'collection_date' => \Carbon\Carbon::now(),
         'thumbnail' => '/storage/thumbnails/'.$thumbnail,
         'has_private_comments' => $faker->randomElement([true, false]),
+        'mobile_id' => random_int(10000000, 99999999),
     ];
 });
 

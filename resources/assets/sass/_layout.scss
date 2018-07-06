@@ -295,3 +295,7 @@ a.box {
     }
   }
 }
+
+.align-items-end {
+  @include align-items(flex-end)
+}
