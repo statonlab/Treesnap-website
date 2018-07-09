@@ -45,7 +45,7 @@ export default class UsersScene extends Component {
         <td>{user.email}</td>
         <td>{user.is_anonymous ? 'Yes' : 'No'}</td>
         <td>{user.class}</td>
-        <td>{user.observations}</td>
+        <td>{user.observations_count}</td>
         <td>{user.role}</td>
       </tr>
     )

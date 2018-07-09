@@ -34,7 +34,7 @@ class UsersController extends Controller
             'roles.name as role',
             'is_admin',
             'role_id',
-            DB::raw('(SELECT COUNT(id) FROM observations WHERE users.id=observations.user_id) as observations'),
+            DB::raw('(SELECT COUNT(id) FROM observations WHERE users.id=observations.user_id) as observations_count'),
         ])->join('roles', 'roles.id', '=', 'users.role_id')->get();
 
         return $this->success($users);
