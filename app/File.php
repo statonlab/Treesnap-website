@@ -23,7 +23,7 @@ class File extends Model
      * @var array
      */
     protected $casts = [
-        'auto_delete' => 'Boolean',
+        'auto_delete' => 'boolean',
     ];
 
     /**
