@@ -101,4 +101,38 @@ class OAuthServerAPITest extends TestCase
 
         $this->assertEquals($response->json('error_code'), 0);
     }
+
+    /** @test */
+    public function testRefreshingTokensWithWrongAuthenticationBearerToken()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $token = $user->createToken(uniqid());
+        $token2 = $user->createToken(uniqid());
+
+        AccessToken::create([
+            'user_id' => $user->id,
+            'token_id' => $token->token->id,
+            'token' => $token->accessToken,
+        ]);
+
+        AccessToken::create([
+            'user_id' => $user->id,
+            'token_id' => $token2->token->id,
+            'token' => $token2->accessToken,
+        ]);
+
+        $response = $this->withHeader('Authorization', "Bearer $token->accessToken")
+            ->post('/web-services/v1/refresh-tokens', [
+                'access_token' => $token2->accessToken,
+            ]);
+
+        $response->assertStatus(401);
+        $response->assertJsonStructure([
+            'error_code',
+            'message',
+        ]);
+
+        $this->assertEquals($response->json('error_code'), 1100);
+    }
 }

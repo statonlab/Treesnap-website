@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\WebServices\v1;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\AccessToken;
@@ -31,11 +30,21 @@ class TokensController extends Controller
             'token' => $request->access_token,
         ])->first();
 
+        // Make sure the tokens exist
         if (! $accessToken || ! $accessToken->OAuthToken) {
             return JsonResponse::create([
                 'error_code' => 1000,
                 'message' => 'Tokens not found',
             ], 404);
+        }
+
+        // Verify that the authentication access code is the one being renewed
+        // This automatically guarantees that we are not renewing already expired tokens
+        if ($accessToken->token !== $request->bearerToken()) {
+            return JsonResponse::create([
+                'error_code' => 1100,
+                'message' => 'Tokens mismatch',
+            ], 401);
         }
 
         // Generate new tokens
