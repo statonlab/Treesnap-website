@@ -54,7 +54,19 @@ export default class UsersScene extends Component {
   render() {
     return (
       <div>
-        <h1 className="title is-3">Users</h1>
+        <div className="columns">
+          <div className="column">
+            <h1 className="title is-3">Users</h1>
+          </div>
+          <div className="column is-narrow has-text-right">
+            <a href={'/admin/users/download'} className={'button'}>
+              <span className="icon is-small">
+                <i className="fa fa-download"></i>
+              </span>
+              <span>Download</span>
+            </a>
+          </div>
+        </div>
         <div className="box">
           <table className="table is-striped mb-none" id="users-table">
             <thead>

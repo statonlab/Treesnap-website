@@ -154,6 +154,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     Route::get('/web/users', 'UsersController@index');
     Route::get('/web/user/{id}', 'UsersController@show');
     Route::put('/web/user/{id}', 'UsersController@update');
+    Route::get('/users/download', 'UsersController@download');
+
 
     // Roles
     Route::get('/web/roles', 'RolesController@index');

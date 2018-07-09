@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\File;
+use App\Http\Controllers\Traits\CreatesDownloadableFiles;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    use Responds, Observes;
+    use Responds, Observes, CreatesDownloadableFiles;
 
     /**
      * Get all users.
@@ -140,5 +143,60 @@ class UsersController extends Controller
             'is_anonymous' => $user->is_anonymous,
             'birth_year' => $user->birth_year,
         ]);
+    }
+
+    /**
+     * Allow admins to download a list of users.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function download(Request $request)
+    {
+        $filename = 'Users_'.uniqid().'_'.date('m-d-Y').'.csv';
+        $path = "downloads/$filename";
+        $extension = 'csv';
+
+        // Create the file
+        \Storage::put($path, $this->line([
+            'Name',
+            'Registration Date',
+            'Email Address',
+            'Number of Observations',
+            'Most Recent Observation Date',
+        ], $extension));
+
+        // Create auto removable file
+        File::create([
+            'auto_delete' => true,
+            'user_id' => $request->user()->id,
+            'path' => $path,
+        ]);
+
+        // Load the data
+        $users = User::select([
+            'users.id',
+            'users.name',
+            'users.created_at',
+            'users.email',
+            DB::raw('(SELECT observations.created_at FROM observations WHERE users.id=observations.user_id ORDER BY observations.id DESC LIMIT 1) AS recent_observation_date'),
+            DB::raw('(SELECT COUNT(*) FROM observations WHERE users.id=observations.user_id) AS observations_count')
+        ])->orderBy('users.id', 'desc')->get();
+
+        foreach ($users as $user) {
+            $recent_observation = $user->recent_observation_date;
+            if(!is_null($recent_observation)) {
+                $recent_observation = Carbon::createFromFormat('Y-m-d H:m:s', $recent_observation)->format('m/d/y');
+            }
+
+            \Storage::append($path, $this->line([
+                $user->name,
+                $user->created_at->format('m/d/Y'),
+                $user->email,
+                $user->observations_count,
+                $recent_observation ?: 'Inapplicable'
+            ], $extension));
+        }
+
+        return response()->download(storage_path("app/$path"), $filename);
     }
 }
