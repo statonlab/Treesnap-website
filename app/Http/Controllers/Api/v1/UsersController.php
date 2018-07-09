@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Notifications\WelcomeNotification;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -62,6 +63,7 @@ class UsersController extends Controller
             'api_token' => $api_token,
             'birth_year' => $request->birth_year,
             'units' => $request->units ? $request->units : 'US',
+            'role_id' => Role::where('name', 'User')->first()->id
         ]);
 
         if (! $user) {

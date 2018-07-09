@@ -8,8 +8,6 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
-    use CreatesUsers;
-
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -21,7 +19,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use CreatesUsers, RegistersUsers;
 
     /**
      * Where to redirect users after registration.
