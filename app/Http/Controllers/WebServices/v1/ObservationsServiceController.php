@@ -60,7 +60,8 @@ class ObservationsServiceController extends Controller
         $user = $request->user();
 
         $this->validate($request, [
-            'per_page' => 'nullable|int',
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:1|max:100',
             'order_by' => ['nullable', Rule::in($this->sortable_fields)],
             'order_direction' => 'nullable|in:desc,asc',
             'filters' => 'nullable|json',
