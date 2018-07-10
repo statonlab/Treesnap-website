@@ -46,6 +46,7 @@ trait Responds
     {
         return response()->json([
             'data' => $data,
+            'error_code' => 0
         ], 200);
     }
 
@@ -54,6 +55,7 @@ trait Responds
      *
      * @param String $message
      * @param Integer $error_code Internal application error code.
+     * @param Integer $http_error_code The http error code. defaults to 422 bad request
      * @return \Illuminate\Http\JsonResponse
      */
     protected function error($message, $error_code = 100, $http_error_code = 422)

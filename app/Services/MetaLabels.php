@@ -45,7 +45,7 @@ class MetaLabels
             'numberRootSprouts_confidence' => 'Number of Root Sprouts Confidence',
             'heightNumeric_confidence' => 'Tree Height Confidence',
             'torreyaFungalBlight' => 'Fungal Blight',
-            'conesMaleFemale' => 'Cones'
+            'conesMaleFemale' => 'Cones',
         ];
     }
 
@@ -64,6 +64,16 @@ class MetaLabels
     }
 
     /**
+     * Whether the key for the exists.
+     *
+     * @param $key
+     * @return bool
+     */
+    public function has($key) {
+        return isset($this->labels[$key]);
+    }
+
+    /**
      * Get json format.
      *
      * @return string
@@ -76,7 +86,7 @@ class MetaLabels
      * Get labels in object format.
      * Useful for encoding to json.
      *
-     * @return object
+     * @return \stdClass
      */
     public function toObject() {
         return (object) $this->labels;

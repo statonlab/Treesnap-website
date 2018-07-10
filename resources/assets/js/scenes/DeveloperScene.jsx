@@ -4,6 +4,7 @@ import Spinner from '../components/Spinner'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import Notify from '../components/Notify'
+import User from '../helpers/User'
 
 export default class DeveloperScene extends Component {
   constructor(props) {
@@ -130,7 +131,43 @@ export default class DeveloperScene extends Component {
     )
   }
 
+  renderAuthenticated() {
+    return (
+      <div>
+        <div className="box">
+          <h3 className="title is-5">API Tokens</h3>
+          {this.state.tokens.length <= 0 && !this.state.loading ?
+            <div className="alert is-warning">
+              You have no API tokens. Use the form below to create a new one.
+            </div>
+            : this.renderTokensTable()}
+        </div>
+        <div className="box">
+          <h3 className="title is-5">Create New API Tokens</h3>
+          <DeveloperTokensForm
+            onCreate={token => {
+              Notify.push('Token created successfully!', 'success')
+              this.setState({tokens: [this.setUpToken(token)].concat(this.state.tokens)})
+            }}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderUnauthenticated() {
+    return (
+      <div>
+        <div className="box">
+          <div className="alert is-danger mb-none">
+            Please <a href="/login">login</a> to view this page.
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render() {
+
     return (
       <div>
         <Navbar/>
@@ -139,24 +176,7 @@ export default class DeveloperScene extends Component {
             <div className="columns">
               <div className="column is-12">
                 <h1 className="title is-3">Developer Dashboard</h1>
-
-                <div className="box">
-                  <h3 className="title is-5">API Tokens</h3>
-                  {this.state.tokens.length <= 0 && !this.state.loading ?
-                    <div className="alert is-warning">
-                      You have no API tokens. Use the form below to create a new one.
-                    </div>
-                    : this.renderTokensTable()}
-                </div>
-
-                <div className="box">
-                  <h3 className="title is-5">Create New API Tokens</h3>
-                  <DeveloperTokensForm
-                    onCreate={token => {
-                      Notify.push('Token created successfully!', 'success')
-                      this.setState({tokens: [this.setUpToken(token)].concat(this.state.tokens)})
-                    }}/>
-                </div>
+                {User.authenticated() ? this.renderAuthenticated() : this.renderUnauthenticated()}
               </div>
             </div>
           </div>
