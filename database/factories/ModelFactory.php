@@ -118,9 +118,13 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'images' => [
             'images' => ['/storage/images/'.$image],
         ],
-        'latitude' => $faker->latitude(),
-        'longitude' => $faker->longitude(),
-        'location_accuracy' => 60.09932,
+        'latitude' => $faker->latitude,
+        'longitude' => $faker->longitude,
+        'fuzzy_coords' => [
+            'longitude' => $faker->longitude,
+            'latitude' => $faker->latitude,
+        ],
+        'location_accuracy' => $faker->randomFloat(2, 5, 100),
         'data' => $data,
         'address' => $addresses[rand() % count($addresses)],
         'is_private' => false,

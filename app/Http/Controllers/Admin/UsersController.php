@@ -185,7 +185,7 @@ class UsersController extends Controller
         foreach ($users as $user) {
             $recent_observation = $user->recent_observation_date;
             if(!is_null($recent_observation)) {
-                $recent_observation = Carbon::createFromFormat('Y-m-d H:m:s', $recent_observation)->format('m/d/y');
+                $recent_observation = Carbon::createFromFormat('Y-m-d H:i:s', $recent_observation)->format('m/d/y');
             }
 
             \Storage::append($path, $this->line([

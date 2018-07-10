@@ -17,6 +17,7 @@ Route::group([
     'namespace' => 'WebServices\v1',
     'middleware' => ['auth:web-services'],
 ], function () {
+    Route::get('/observations', 'ObservationsServiceController@observations');
     Route::get('/my-observations', 'ObservationsServiceController@myObservations');
 
     // Refresh OAuth Tokens

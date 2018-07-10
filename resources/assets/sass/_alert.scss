@@ -4,6 +4,11 @@
   margin-bottom: 1rem;
   border-radius: $radius;
 
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
   &.is-danger {
     background-color: $danger;
     color: #fff;
@@ -17,6 +22,11 @@
   &.is-warning {
     background-color: $warning;
     color: #212121;
+
+    a {
+      color: #212121;
+      text-decoration: underline;
+    }
   }
 }
 
