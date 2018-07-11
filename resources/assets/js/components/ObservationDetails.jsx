@@ -464,10 +464,10 @@ export default class ObservationDetails extends Component {
                     <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
                   </tr> : null}
 
-                {this.observation.location_accuracy ?
+                {this.observation.location.accuracy ?
                   <tr>
                     <th>Location Accuracy</th>
-                    <td>{User.can('view accurate location') || User.owns(this.observation) ? this.observation.location_accuracy : 'Within 5 miles radius'}</td>
+                    <td>{User.can('view accurate location') || User.owns(this.observation) ? this.observation.location.accuracy : 'Within 5 miles radius'}</td>
                   </tr>
                   : null}
 
