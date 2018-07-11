@@ -74,7 +74,7 @@ class ImageFixOrientation extends Command
                     continue;
                 }
 
-                $exif = exif_read_data($path);
+                $exif = @exif_read_data($path);
                 if (! isset($exif['Orientation'])) {
                     continue;
                 }
