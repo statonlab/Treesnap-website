@@ -1065,6 +1065,10 @@ export default class App extends Component {
       data = JSON.parse(data)
     }
 
+    if (typeof data === 'object') {
+      return null
+    }
+
     return (
       <div className="sidebar-item" key={key}>
         <h5><strong>{label}</strong></h5>
