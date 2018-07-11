@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\WebServices\v1;
 
 use App\Filter;
-use App\Http\Controllers\Traits\FiltersObservations;
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\Http\Controllers\Traits\Responds;
 use App\Http\Controllers\WebServices\v1\ResponseFormatters\ObservationResponse;
 use App\Observation;
-use Illuminate\Http\JsonResponse;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 
 class ObservationsServiceController extends Controller
 {
-    use Responds;
+    use Responds, DealsWithObservationPermissions;
 
     protected $sortable_fields = [
         'category' => 'observation_category',
@@ -84,6 +84,10 @@ class ObservationsServiceController extends Controller
 
         if ($request->filters) {
             $observations = Filter::apply($request->filters, $observations);
+        }
+
+        if(!$current_user_only && User::hasRole(['User'], $user)) {
+            $this->addPrivacyClause($observations, $user);
         }
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $paginated */
