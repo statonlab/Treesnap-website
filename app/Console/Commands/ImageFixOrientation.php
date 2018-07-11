@@ -41,7 +41,7 @@ class ImageFixOrientation extends Command
     public function handle()
     {
         $corrected = 0;
-        Observation::chunk(200, function ($observations) use(&$corrected) {
+        Observation::chunk(200, function ($observations) use (&$corrected) {
             foreach ($observations as $observation) {
                 $corrected += $this->fixOrientation($observation);
             }
@@ -75,6 +75,11 @@ class ImageFixOrientation extends Command
                 }
 
                 $exif = @exif_read_data($path);
+
+                if (! $exif) {
+                    continue;
+                }
+
                 if (! isset($exif['Orientation'])) {
                     continue;
                 }
