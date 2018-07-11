@@ -463,6 +463,14 @@ export default class ObservationDetails extends Component {
                     <th>Coordinates</th>
                     <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
                   </tr> : null}
+
+                {this.observation.location_accuracy ?
+                  <tr>
+                    <th>Location Accuracy</th>
+                    <td>{User.can('view accurate location') || User.owns(this.observation) ? this.observation.location_accuracy : 'Within 5 miles radius'}</td>
+                  </tr>
+                  : null}
+
                 <tr>
                   <th>Date Collected</th>
                   <td>{this.observation.collection_date}</td>
