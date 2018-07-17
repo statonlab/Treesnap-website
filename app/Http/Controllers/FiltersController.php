@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filter;
+use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Cache;
 
 class FiltersController extends Controller
 {
-    use Responds, Observes;
+    use Responds, Observes, DealsWithObservationPermissions;
 
     /**
      * Get all available filters.
