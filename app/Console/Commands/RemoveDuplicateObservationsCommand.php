@@ -68,7 +68,7 @@ class RemoveDuplicateObservationsCommand extends Command
                     continue;
                 }
 
-                if($observation->latitude !== $toKeep->latitude || $observation->longitude !== $toKeep->longitude) {
+                if ($observation->latitude !== $toKeep->latitude || $observation->longitude !== $toKeep->longitude) {
                     continue;
                 }
 
@@ -119,7 +119,6 @@ class RemoveDuplicateObservationsCommand extends Command
             $images[$key] = array_unique(array_merge($images[$key], $list));
         }
 
-        $toKeep->images = $images;
-        $toKeep->save();
+        $toKeep->fill(['images' => $images])->save();
     }
 }

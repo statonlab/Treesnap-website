@@ -36,7 +36,6 @@ class DuplicateObservationsRemoverTest extends TestCase
 
         // Create duplicate observations
         $observation = factory(Observation::class)->create();
-        sleep(1);
         $this->duplicates = factory(Observation::class, 10)->create([
             'user_id' => $observation->user_id,
             'observation_category' => $observation->observation_category,
@@ -52,17 +51,24 @@ class DuplicateObservationsRemoverTest extends TestCase
     public function testThatDuplicatesGetRemoved()
     {
         // Assert duplicates exist
-        $this->assertGreaterThan(0, Observation::where([
-            'mobile_id' => $this->observation->mobile_id,
-            'user_id' => $this->observation->user_id,
-        ])->count());
+        $this->assertEquals(11, $this->getDuplicatesCount());
 
-        // Run the command and make sure only 1 observation is kept (the latest of the duplicates)
+        // Run the command
         $exitCode = Artisan::call('observations:flush-duplicates');
         $this->assertEquals(0, $exitCode);
 
-        $ids = [$this->observation->id] + $this->duplicates->pluck('id')->all();
-        $observations_count = Observation::whereIn('id', $ids)->count();
-        $this->assertEquals(1, $observations_count);
+        // We should have only 1 observation left from the list we created
+        $this->assertEquals(1, $this->getDuplicatesCount());
+    }
+
+    protected function getDuplicatesCount()
+    {
+        return Observation::where([
+            'mobile_id' => $this->observation->mobile_id,
+            'user_id' => $this->observation->user_id,
+            'observation_category' => $this->observation->observation_category,
+            'latitude' => $this->observation->latitude,
+            'longitude' => $this->observation->longitude,
+        ])->count();
     }
 }
