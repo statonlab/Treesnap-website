@@ -112,6 +112,14 @@ export default class Map extends Component {
     return this.maps.getBounds()
   }
 
+  getCenter() {
+    return this.maps.getCenter()
+  }
+
+  getZoom() {
+    return this.maps.getZoom()
+  }
+
   /**
    * Create Cluster.
    */
