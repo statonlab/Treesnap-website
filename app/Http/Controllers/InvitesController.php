@@ -163,7 +163,7 @@ class InvitesController extends Controller
 
         $user->groups()->detach($invite->group_id);
         $user->groups()->attach($invite->group_id, [
-            'share' => $request->share ? true : false,
+            'share' => $request->share == 1 ? true : false,
         ]);
 
         event(new UserJoinedGroup($user, $group));
@@ -183,17 +183,19 @@ class InvitesController extends Controller
 
         $invite = Invite::where('token', $request->_t)->findOrFail($id);
 
+        /** @var \App\User $user */
         $user = $this->register($request);
 
         $invite->status = $this->status['accepted'];
         $invite->save();
 
         // Make sure the group exists
+        /** @var Group $group */
         $group = Group::findOrFail($invite->group_id);
 
         $user->groups()->detach($invite->group_id);
         $user->groups()->attach($invite->group_id, [
-            'share' => $request->share ? true : false,
+            'share' => $request->share == 1 ? true : false,
         ]);
 
         event(new UserJoinedGroup($user, $group));

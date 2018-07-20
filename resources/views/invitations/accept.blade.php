@@ -32,7 +32,7 @@
                                 'fields' => '<div class="field">
                                 <div class="control">
                                     <label class="checkbox">
-                                        <input type="checkbox" value="1" checked="checked"/>
+                                        <input name="share" type="checkbox" value="1" checked="checked"/>
                                         Share my observations with this group including accurate location coordinates.
                                     </label>
                                 </div>
@@ -53,7 +53,7 @@
                                 'fields' => '<div class="field">
                                 <div class="control">
                                     <label class="checkbox">
-                                        <input type="checkbox" value="1" checked="checked"/>
+                                        <input name="share" type="checkbox" value="1" checked="checked"/>
                                         Share my observations with this group including accurate location coordinates.
                                     </label>
                                 </div>
