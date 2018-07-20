@@ -18,18 +18,14 @@ import CollectionForm from '../components/CollectionForm'
 import FlagForm from '../components/FlagForm'
 import Utils from '../helpers/Utils'
 import User from '../helpers/User'
+import Path from '../helpers/Path'
 
 export default class App extends Component {
   constructor(props) {
     super(props)
 
-    this.defaultMapPosition = {
-      center: {
-        lat: 40.354388,
-        lng: -95.998237
-      },
-      zoom  : 5
-    }
+    this.initPosition()
+
 
     this.initialLoad = true
 
@@ -78,6 +74,43 @@ export default class App extends Component {
   componentDidMount() {
     this.setState({loading: true})
     this.initSidebar()
+  }
+
+  /**
+   *
+   */
+  initPosition() {
+    this.defaultMapPosition = {
+      center: {
+        lat: 40.354388,
+        lng: -95.998237
+      },
+      zoom  : 5
+    }
+
+    try {
+      let parsed = Path.parseUrl(this.props.location.search)
+
+      if (typeof parsed.zoom !== 'undefined') {
+        let zoom = parseInt(parsed.zoom)
+        if (!isNaN(zoom) && zoom > 1 && zoom < 16) {
+          this.defaultMapPosition.zoom = zoom
+        }
+      }
+
+      if (typeof parsed.center !== 'undefined') {
+        let center = parsed.center.split(',')
+        if (center.length === 2) {
+          let lat = parseFloat(center[0])
+          let lng = parseFloat(center[1])
+          if (!isNaN(lat) && !isNaN(lng)) {
+            this.defaultMapPosition.center = {lat, lng}
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**
@@ -134,6 +167,10 @@ export default class App extends Component {
       showFlagForm       : false
     })
     this.refs.maps.resize()
+  }
+
+  updateHistory(center, zoom) {
+    this.props.history.replace(`/map/?center=${center.lat()},${center.lng()}&zoom=${zoom}`)
   }
 
   /**
@@ -446,6 +483,11 @@ export default class App extends Component {
    * @param newBounds
    */
   boundsChanged(newBounds) {
+    let center = this.refs.maps.getCenter()
+    let zoom   = this.refs.maps.getZoom()
+
+    this.updateHistory(center, zoom)
+
     // Determine if the initial loader completed then respond to bounds change
     // If the initial loader is done, this.initialLoad is set to FALSE
     if (!this.initialLoad) {
@@ -1168,17 +1210,6 @@ export default class App extends Component {
         <Navbar container={true}/>
 
         {this._renderSidebar()}
-
-        <button
-          type="button"
-          className="button reset-map-button"
-          onClick={this.resetMapPosition.bind(this)}>
-          <span className="icon">
-            <i className="fa fa-search"></i>
-          </span>
-          <span>Reset Position</span>
-        </button>
-
         {this._renderMap()}
         {this._renderFilterButton()}
         {this._renderBottomBar()}
