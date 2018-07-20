@@ -326,12 +326,9 @@ export default class App extends Component {
    * @param name
    */
   changeCategory(name) {
-    let selectedCategories = this.state.selectedCategories
-
-    if (selectedCategories.indexOf(name) !== -1) {
-      selectedCategories = selectedCategories.filter(c => name !== c)
-    } else {
-      selectedCategories.push(name)
+    let selectedCategories = this.state.categories
+    if (name !== 'all') {
+      selectedCategories = [name]
     }
 
     let markers = this.filter.category(selectedCategories)
@@ -636,25 +633,16 @@ export default class App extends Component {
         <div className="field">
           <label className="label">Observation Category</label>
           <div className="control">
-            <div className="checkbox-container">
-              {this.state.categories.map((category, index) => {
-                return (
-                  <a key={index}
-                     href="javascript:;"
-                     className={`button is-full checkbox-button${this.state.selectedCategories.indexOf(category) !== -1 ? ' is-active' : ''}`}
-                     onClick={() => {
-                       this.changeCategory(category)
-                     }}>
-                    <span className="icon mr-0">
-                      {this.state.selectedCategories.indexOf(category) !== -1 ? <i className="fa fa-check"></i> :
-                        <i className="fa fa-times"></i>}
-                    </span>
-                    <span>{category} {this.state.selectedCategories.indexOf(category) === -1 ?
-                      <small>(removed)</small> : null}</span>
-                  </a>
-                )
-              })}
-            </div>
+            <span className="select is-full-width">
+              <select onChange={({target}) => {
+                this.changeCategory(target.value)
+              }} value={this.state.selectedCategories.length === 1 ? this.state.selectedCategories[0] : 'all'}>
+                <option value={'all'}>All Categories</option>
+                {this.state.categories.map((category, index) => {
+                  return <option value={category} key={index}>{category}</option>
+                })}
+              </select>
+            </span>
           </div>
         </div>
 
