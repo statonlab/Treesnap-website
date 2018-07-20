@@ -34,7 +34,7 @@ class RemoveDuplicateObservationsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
@@ -52,23 +52,63 @@ class RemoveDuplicateObservationsCommand extends Command
             return "{$observation->user_id}-{$observation->mobile_id}";
         });
 
-        $count = $duplicates->count();
         $deleted = 0;
-
-        $this->line("Found $count duplicate entries.");
 
         foreach ($duplicates as $duplicate) {
             $observations = Observation::where([
                 'user_id' => $duplicate->user_id,
                 'mobile_id' => $duplicate->mobile_id,
             ])->orderBy('created_at', 'desc')->get();
-            $observations->shift();
+            $toKeep = $observations->shift();
+
             foreach ($observations as $observation) {
+                if ($this->countImages($observation->images) > 0) {
+                    $this->mergeImages($toKeep, $observation);
+                }
+                
                 $deleted++;
                 $observation->delete();
             }
         }
 
         $this->info("Deleted $deleted duplicate observation(s)");
+    }
+
+    /**
+     * Count number of images.
+     *
+     * @param array $images
+     * @return int
+     */
+    protected function countImages(array $images)
+    {
+        $count = 0;
+
+        foreach ($images as $key => $list) {
+            $count += count($list);
+        }
+
+        return $count;
+    }
+
+    /**
+     * Merge images of observations.
+     *
+     * @param Observation $toKeep
+     * @param Observation $toDelete
+     */
+    protected function mergeImages($toKeep, $toDelete)
+    {
+        $images = $toKeep->images;
+        foreach ($toDelete->images as $key => $list) {
+            if (! isset($images[$key])) {
+                $images[$key] = [];
+            }
+
+            $images[$key] = array_merge($images[$key], $list);
+        }
+
+        $toKeep->images = $images;
+        $toKeep->save();
     }
 }

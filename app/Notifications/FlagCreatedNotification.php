@@ -53,7 +53,7 @@ class FlagCreatedNotification extends Notification implements ShouldQueue
             ->line('An observation has been flagged. The reason specified is:')
             ->line($this->flag->reason)
             ->line($this->flag->comments)
-            ->action('See All Flags', url('/'))
+            ->action('See All Flags', url('/admin/flags'))
             ->line('Thank you for using TreeSnap!');
     }
 
