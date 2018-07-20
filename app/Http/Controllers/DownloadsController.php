@@ -240,10 +240,9 @@ class DownloadsController extends Controller
             return false;
         }
 
+        $data = $observation->data;
         if (! $observation->has_private_comments || $user->id === $observation->user_id) {
-            $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
-        } elseif (isset($observation->data['comment'])) {
-            unset($observation->data['comment']);
+            $comment = isset($data['comment']) ? $data['comment'] : '';
         }
 
         $line = [
@@ -321,6 +320,9 @@ class DownloadsController extends Controller
     protected function extractMetaData($observation)
     {
         $data = $observation->data;
+        if (isset($data['comment'])) {
+            unset($data['comment']);
+        }
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {
