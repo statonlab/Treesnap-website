@@ -60,7 +60,7 @@ class RemoveDuplicateObservationsCommand extends Command
                 'mobile_id' => $duplicate->mobile_id,
             ])->orderBy('created_at', 'desc')->get();
 
-            /** @var Observation $toKeep */
+            /** @var Observation $toKeep The most recent observation in the list */
             $toKeep = $observations->shift();
 
             foreach ($observations as $observation) {
