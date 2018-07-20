@@ -74,6 +74,7 @@ class DownloadsController extends Controller
         Storage::put($path, $this->line($header, $extension));
 
         $filtered = Filter::apply($filter->rules);
+        $filtered = $filtered->with(['latinName']);
 
         if (! $user) {
             $filtered->where('is_private', false);
@@ -205,6 +206,7 @@ class DownloadsController extends Controller
             'Latin Name',
             'Latitude',
             'Longitude',
+            'Location Accuracy',
             'Comments',
             'Address',
             'Collection Date',
@@ -227,18 +229,20 @@ class DownloadsController extends Controller
         $comment = '';
         $latitude = $observation->fuzzy_coords['latitude'];
         $longitude = $observation->fuzzy_coords['longitude'];
-
+        $location_accuracy = 'Fuzzy: within 8 kilometers';
         if ($this->hasPrivilegedPermissions($user, $observation)) {
             $latitude = $observation->latitude;
             $longitude = $observation->longitude;
+            $location_accuracy = "Exact: within {$observation->location_accuracy} meters";
         } elseif ($observation->isPrivate) {
             // Ignore the observation if it is private and the user
             // does not have privileged permissions to access it
             return false;
         }
 
+        $data = $observation->data;
         if (! $observation->has_private_comments || $user->id === $observation->user_id) {
-            $comment = isset($observation->data['comment']) ? $observation->data['comment'] : '';
+            $comment = isset($data['comment']) ? $data['comment'] : '';
         }
 
         $line = [
@@ -248,6 +252,7 @@ class DownloadsController extends Controller
             "{$observation->latinName->genus} {$observation->latinName->species}",
             $latitude,
             $longitude,
+            $location_accuracy,
             $comment,
             $observation->address['formatted'],
             $observation->collection_date->toDateString(),
@@ -255,8 +260,6 @@ class DownloadsController extends Controller
 
         return array_merge($line, $this->extractMetaData($observation));
     }
-
-
 
     /**
      * Checks if given extension is allowed.
@@ -317,6 +320,9 @@ class DownloadsController extends Controller
     protected function extractMetaData($observation)
     {
         $data = $observation->data;
+        if (isset($data['comment'])) {
+            unset($data['comment']);
+        }
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {

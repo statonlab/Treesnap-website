@@ -47,7 +47,7 @@ class DownloadsControllerTest extends TestCase
 
         $this->assertGreaterThan(0, Filter::apply($filter->rules)->count());
 
-        $response = $this->get("/services/download/filter/$filter->id");
+        $response = $this->withHeader('Accept', 'application/json')->get("/services/download/filter/$filter->id");
         $response->assertSuccessful();
     }
 

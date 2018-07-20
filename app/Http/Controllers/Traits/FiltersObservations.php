@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 trait FiltersObservations
 {
-
     /**
      * Apply observation filters.
      *
@@ -21,10 +20,6 @@ trait FiltersObservations
     {
         $user = $request->user();
 
-        if (empty($request->per_page)) {
-            $request->per_page = 6;
-        }
-
         $with = [
             'collections' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
@@ -36,6 +31,7 @@ trait FiltersObservations
                 $query->where('user_id', $user->id);
             },
             'user',
+            'latinName',
         ];
 
         if (! empty($request->collection_id)) {
@@ -43,10 +39,7 @@ trait FiltersObservations
             $observations = $this->addPrivacyClause($observations, $user);
             $observations = $observations->with($with);
         } elseif (! empty($request->group_id)) {
-            $observations = $user->groups()
-                ->findOrFail($request->group_id)
-                ->observations()
-                ->with($with);
+            $observations = $user->groups()->findOrFail($request->group_id)->observations()->with($with);
         } else {
             $observations = Observation::with($with)->where('user_id', $user->id);
         }
