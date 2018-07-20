@@ -59,13 +59,24 @@ class RemoveDuplicateObservationsCommand extends Command
                 'user_id' => $duplicate->user_id,
                 'mobile_id' => $duplicate->mobile_id,
             ])->orderBy('created_at', 'desc')->get();
+
+            /** @var Observation $toKeep */
             $toKeep = $observations->shift();
 
             foreach ($observations as $observation) {
+                if ($observation->observation_category !== $toKeep->observation_category) {
+                    continue;
+                }
+
+                if($observation->latitude !== $toKeep->latitude || $observation->longitude !== $toKeep->longitude) {
+                    continue;
+                }
+
+                // Ensure images are not lost
                 if ($this->countImages($observation->images) > 0) {
                     $this->mergeImages($toKeep, $observation);
                 }
-                
+
                 $deleted++;
                 $observation->delete();
             }
@@ -105,7 +116,7 @@ class RemoveDuplicateObservationsCommand extends Command
                 $images[$key] = [];
             }
 
-            $images[$key] = array_merge($images[$key], $list);
+            $images[$key] = array_unique(array_merge($images[$key], $list));
         }
 
         $toKeep->images = $images;
