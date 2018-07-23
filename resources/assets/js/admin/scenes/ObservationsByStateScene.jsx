@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import ObservationsByStateTable from '../components/ObservationsByStateTable'
+import Scene from '../../scenes/Scene'
 
-export default class ObservationsByStateScene extends Component {
+export default class ObservationsByStateScene extends Scene {
   render() {
     return (
       <div>

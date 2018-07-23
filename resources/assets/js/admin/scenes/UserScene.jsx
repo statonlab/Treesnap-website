@@ -4,8 +4,9 @@ import moment from 'moment'
 import Spinner from '../../components/Spinner'
 import Select from 'react-select'
 import ObservationCard from '../../components/ObservationCard'
+import Scene from '../../scenes/Scene'
 
-export default class UserScene extends Component {
+export default class UserScene extends Scene {
   constructor(props) {
     super(props)
 

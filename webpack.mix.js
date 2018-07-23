@@ -19,8 +19,6 @@ mix.browserSync({
     'resources/assets/sass/**/*.scss',
     'resources/assets/js/**/*.js',
     'app/**/*.php',
-    'public/js/**/*.js',
-    'public/css/**/*.css'
   ]
 })
 

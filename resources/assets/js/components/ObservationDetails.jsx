@@ -301,6 +301,7 @@ export default class ObservationDetails extends Component {
    * @param label
    * @param data
    * @param key
+   * @param unit
    * @returns {XML}
    * @private
    */
@@ -439,13 +440,15 @@ export default class ObservationDetails extends Component {
                   <th>Submitted By</th>
                   <td>{this.observation.user.name}</td>
                 </tr>
+
                 {this.observation.custom_id ?
                   <tr>
                     <th>Custom Tree Identifier</th>
                     <td>{this.observation.custom_id}</td>
                   </tr> : null}
+
                 {Object.keys(data).map(key => {
-                  if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1) {
+                  if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
                     return null
                   }
                   let unit    = null
@@ -458,16 +461,16 @@ export default class ObservationDetails extends Component {
 
                   return this._renderMetaData(label, val, key, unit)
                 })}
-                {User.can('view accurate location') || User.owns(this.observation) ?
-                  <tr>
-                    <th>Coordinates</th>
-                    <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
-                  </tr> : null}
+
+                <tr>
+                  <th>Coordinates</th>
+                  <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
+                </tr>
 
                 {this.observation.location.accuracy ?
                   <tr>
                     <th>Location Accuracy</th>
-                    <td>{User.can('view accurate location') || User.owns(this.observation) ? 'Within '+this.observation.location.accuracy + ' meters radius': 'Within 5 miles radius'}</td>
+                    <td>{User.can('view accurate location') || User.owns(this.observation) ? 'Within ' + this.observation.location.accuracy + ' meters radius' : 'Within 5 miles radius'}</td>
                   </tr>
                   : null}
 

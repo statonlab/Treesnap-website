@@ -5,8 +5,9 @@ import Path from '../../helpers/Path'
 import EventForm from '../components/EventForm'
 import Errors from '../../helpers/Errors'
 import Notify from '../../components/Notify'
+import Scene from '../../scenes/Scene'
 
-export default class EventsScene extends Component {
+export default class EventsScene extends Scene {
   constructor(props) {
     super(props)
 

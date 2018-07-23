@@ -5,8 +5,9 @@ import Path from '../helpers/Path'
 import AccountView from '../components/AccountView'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import Dropdown from '../components/Dropdown'
+import Scene from './Scene'
 
-export default class MyObservationsScene extends Component {
+export default class MyObservationsScene extends Scene {
   constructor(props) {
     super(props)
     this.state = {

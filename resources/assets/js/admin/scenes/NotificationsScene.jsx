@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import Notify from '../../components/Notify'
 import Spinner from '../../components/Spinner'
+import Scene from '../../scenes/Scene'
 
-export default class NotificationsScene extends Component {
+export default class NotificationsScene extends Scene {
   constructor(props) {
     super(props)
 

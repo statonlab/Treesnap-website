@@ -4,8 +4,9 @@ import HomeFooter from '../components/HomeFooter'
 import LinksSidebar from '../components/LinksSidebar'
 import ReCaptcha from 'react-google-recaptcha'
 import KnowledgeSidebarLinks from '../helpers/KnowledgeSidebarLinks'
+import Scene from './Scene'
 
-export default class ContactUsScene extends Component {
+export default class ContactUsScene extends Scene {
   constructor(props) {
     super(props)
 

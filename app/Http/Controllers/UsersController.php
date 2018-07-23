@@ -173,7 +173,7 @@ class UsersController extends Controller
         $user = $request->user();
         $admin = User::hasRole(['scientist', 'admin'], $user);
 
-        $observations = $this->getFilteredObservations($request)->paginate($request->per_page);;
+        $observations = $this->getFilteredObservations($request)->paginate($request->per_page);
 
         $data = [];
         foreach ($observations as $observation) {

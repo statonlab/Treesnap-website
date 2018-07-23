@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Traits;
 
 use App\Filter;
 use App\Observation;
+use App\User;
 use Illuminate\Http\Request;
 
 trait FiltersObservations
@@ -19,7 +20,7 @@ trait FiltersObservations
     protected function getFilteredObservations(Request $request)
     {
         $user = $request->user();
-
+        $is_admin = User::hasRole(['Scientist', 'Admin'], $user);
         $with = [
             'collections' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
@@ -36,7 +37,6 @@ trait FiltersObservations
 
         if (! empty($request->collection_id)) {
             $observations = $user->collections()->findOrFail($request->collection_id)->observations();
-            $observations = $this->addPrivacyClause($observations, $user);
             $observations = $observations->with($with);
         } elseif (! empty($request->group_id)) {
             $observations = $user->groups()->findOrFail($request->group_id)->observations()->with($with);
@@ -64,6 +64,10 @@ trait FiltersObservations
 
         if (! empty($request->advanced_filter)) {
             $observations = $this->applyAdvancedFilter($request, $observations);
+        }
+
+        if (! $is_admin) {
+            $observations = $this->addPrivacyClause($observations, $user);
         }
 
         return $observations->orderBy('id', 'desc');

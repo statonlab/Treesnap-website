@@ -8,8 +8,9 @@ import Notify from '../components/Notify'
 import moment from 'moment'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
+import Scene from './Scene'
 
-export default class ObservationScene extends Component {
+export default class ObservationScene extends Scene {
   constructor(props) {
     super(props)
 

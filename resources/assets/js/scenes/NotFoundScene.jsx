@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import Scene from './Scene'
 
-export default class NotFoundScene extends Component {
+export default class NotFoundScene extends Scene {
   constructor(props) {
     super(props)
 

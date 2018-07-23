@@ -11,6 +11,23 @@
 |
 */
 
+if (! function_exists('fuzifyCoorinates')) {
+    function fuzifyCoorinates($original_latitude, $original_longitude)
+    {
+        // Generate fuzzified coordinates.  Transform by 10,000 to ensure mt_rand is working on integers
+        $miles = 5;
+        //72.4637681159 = 1000 / 69 miles per lat/2 for radius
+        $range = $miles * 72.4637681159;
+        $latitude = $original_latitude * 10000 + mt_rand($range * (-1), $range);
+        $longitude = $original_longitude * 10000 + mt_rand($range * (-1), $range);
+
+        return [
+            'latitude' => $latitude / 10000,
+            'longitude' => $longitude / 10000,
+        ];
+    }
+}
+
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
@@ -111,6 +128,11 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     }
 
     $user = factory(\App\User::class)->create();
+    $location = [
+        'lat' => $faker->latitude,
+        'lng' => $faker->longitude,
+    ];
+    $fuzzy = fuzifyCoorinates($location['lat'], $location['lng']);
 
     return [
         'user_id' => $user->id,
@@ -118,20 +140,18 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'images' => [
             'images' => ['/storage/images/'.$image],
         ],
-        'latitude' => $faker->latitude,
-        'longitude' => $faker->longitude,
-        'fuzzy_coords' => [
-            'longitude' => $faker->longitude,
-            'latitude' => $faker->latitude,
-        ],
+        'latitude' => $location['lat'],
+        'longitude' => $location['lng'],
+        'fuzzy_coords' => $fuzzy,
         'location_accuracy' => $faker->randomFloat(2, 5, 100),
         'data' => $data,
         'address' => $addresses[rand() % count($addresses)],
-        'is_private' => false,
+        'is_private' => rand() % 2 === 0,
         'collection_date' => \Carbon\Carbon::now(),
         'thumbnail' => '/storage/thumbnails/'.$thumbnail,
         'has_private_comments' => $faker->randomElement([true, false]),
         'mobile_id' => random_int(10000000, 99999999),
+        'custom_id' => rand() % 2 === 0 ? uniqid() : null,
     ];
 });
 

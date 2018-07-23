@@ -6,8 +6,9 @@ import HomeFooter from '../components/HomeFooter'
 import Leaderboard from '../components/Leaderboard'
 import TwitterFeed from '../components/TwitterFeed'
 import EventsList from '../components/EventsList'
+import Scene from './Scene'
 
-export default class Welcome extends Component {
+export default class Welcome extends Scene {
   constructor(props) {
     super(props)
 

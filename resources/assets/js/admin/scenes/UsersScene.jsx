@@ -4,8 +4,9 @@ import 'datatables.net'
 import '../plugins/dataTables.bulma'
 import {Link} from 'react-router-dom'
 import Spinner from '../../components/Spinner'
+import Scene from '../../scenes/Scene'
 
-export default class UsersScene extends Component {
+export default class UsersScene extends Scene {
   constructor(props) {
     super(props)
 

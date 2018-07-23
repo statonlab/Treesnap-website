@@ -5,8 +5,9 @@ import LineChart from '../components/LineChart'
 import BarChart from '../components/BarChart'
 import ObservationsByStateTable from '../components/ObservationsByStateTable'
 import {NavLink} from 'react-router-dom'
+import Scene from '../../scenes/Scene'
 
-export default class DashboardScene extends Component {
+export default class DashboardScene extends Scene {
   constructor(props) {
     super(props)
     document.title = 'Admin Dashboard - TreeSnap'
