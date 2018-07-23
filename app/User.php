@@ -59,6 +59,13 @@ class User extends Authenticatable
     protected $friends = [];
 
     /**
+     * Whether a list of friends have been generated.
+     *
+     * @var bool
+     */
+    protected $firendsGenerated = false;
+
+    /**
      * Get the observations of a user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -244,6 +251,16 @@ class User extends Authenticatable
                 $this->friends[] = $user->id;
             }
         }
+
+        $this->firendsGenerated = true;
+    }
+
+    public function friends() {
+        if(!$this->friendsGenerated) {
+            $this->generateFriends();
+        }
+
+        return $this->friends;
     }
 
     /**

@@ -17,10 +17,6 @@ class ObservationsController extends Controller
         $orderBy = 'created_at';
         $orderDir = 'desc';
 
-        
-
         $observations = Observation::with('user');
-
-
     }
 }
