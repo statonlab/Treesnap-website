@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import Dropdown from '../../components/Dropdown'
 import Spinner from '../../components/Spinner'
+import Scene from '../../scenes/Scene'
 
-export default class FlagsScene extends Component {
+export default class FlagsScene extends Scene {
   constructor(props) {
     super(props)
 

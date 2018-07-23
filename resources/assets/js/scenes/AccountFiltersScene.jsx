@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import FiltersScene from './FiltersScene'
 import AccountView from '../components/AccountView'
+import Scene from './Scene'
 
-export default class AccountFiltersScene extends Component {
+export default class AccountFiltersScene extends Scene {
   componentDidMount() {
     window.fixHeight()
   }

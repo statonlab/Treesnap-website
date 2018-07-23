@@ -19,8 +19,9 @@ import FlagForm from '../components/FlagForm'
 import Utils from '../helpers/Utils'
 import User from '../helpers/User'
 import Path from '../helpers/Path'
+import Scene from './Scene'
 
-export default class App extends Component {
+export default class App extends Scene {
   constructor(props) {
     super(props)
 
@@ -1062,6 +1063,9 @@ export default class App extends Component {
           </div>
 
           {Object.keys(data).map(key => {
+            if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
+              return null
+            }
             let unit = null
             if (typeof data[`${key}_units`] !== 'undefined') {
               unit = data[`${key}_units`]

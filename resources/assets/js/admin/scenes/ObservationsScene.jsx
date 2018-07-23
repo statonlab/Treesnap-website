@@ -7,8 +7,9 @@ import ObservationsFilter from '../../helpers/ObservationsFilter'
 import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 import Notify from '../../components/Notify'
 import FiltersHelpModal from '../components/FiltersHelpModal'
+import Scene from '../../scenes/Scene'
 
-export default class ObservationsScene extends Component {
+export default class ObservationsScene extends Scene {
   constructor(props) {
     super(props)
 

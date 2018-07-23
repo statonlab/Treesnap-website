@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import AccountView from '../components/AccountView'
 import moment from 'moment'
+import Scene from './Scene'
 
-export default class AccountScene extends Component {
+export default class AccountScene extends Scene {
   constructor(props) {
     super(props)
 

@@ -3,8 +3,9 @@ import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
 import Spinner from '../../components/Spinner'
 import EmailModal from '../components/EmailModal'
+import Scene from '../../scenes/Scene'
 
-export default class CurateScene extends Component {
+export default class CurateScene extends Scene {
   constructor(props) {
     super(props)
 

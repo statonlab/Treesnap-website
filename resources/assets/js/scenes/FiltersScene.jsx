@@ -3,8 +3,9 @@ import Spinner from '../components/Spinner'
 import {Link} from 'react-router-dom'
 import Tooltip from '../components/Tooltip'
 import Dropdown from '../components/Dropdown'
+import Scene from './Scene'
 
-export default class UsersScene extends Component {
+export default class UsersScene extends Scene {
   constructor(props) {
     super(props)
 

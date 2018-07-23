@@ -6,8 +6,9 @@ import LinksSidebar from '../components/LinksSidebar'
 import Spinner from '../components/Spinner'
 import PropTypes from 'prop-types'
 import KnowledgeSidebarLinks from '../helpers/KnowledgeSidebarLinks'
+import Scene from './Scene'
 
-export default class KnowledgeScene extends Component {
+export default class KnowledgeScene extends Scene {
   constructor(props) {
     super(props)
 

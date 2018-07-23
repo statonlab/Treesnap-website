@@ -5,8 +5,9 @@ import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import Notify from '../components/Notify'
 import User from '../helpers/User'
+import Scene from './Scene'
 
-export default class DeveloperScene extends Component {
+export default class DeveloperScene extends Scene {
   constructor(props) {
     super(props)
 

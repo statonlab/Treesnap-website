@@ -9,8 +9,9 @@ import {Link} from 'react-router-dom'
 import Dropdown from '../components/Dropdown'
 import User from '../helpers/User'
 import UnshareCollectionModal from '../components/UnshareCollectionModal'
+import Scene from './Scene'
 
-export default class CollectionsScene extends Component {
+export default class CollectionsScene extends Scene {
   constructor(props) {
     super(props)
 
