@@ -16,7 +16,8 @@ if (! function_exists('fuzifyCoorinates')) {
     {
         // Generate fuzzified coordinates.  Transform by 10,000 to ensure mt_rand is working on integers
         $miles = 5;
-        //72.4637681159 = 1000 / 69 miles per lat/2 for radius
+
+        // 72.4637681159 = 1000 / 69 miles per lat/2 for radius
         $range = $miles * 72.4637681159;
         $latitude = $original_latitude * 10000 + mt_rand($range * (-1), $range);
         $longitude = $original_longitude * 10000 + mt_rand($range * (-1), $range);
@@ -146,7 +147,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'location_accuracy' => $faker->randomFloat(2, 5, 100),
         'data' => $data,
         'address' => $addresses[rand() % count($addresses)],
-        'is_private' => rand() % 2 === 0,
+        'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
         'thumbnail' => '/storage/thumbnails/'.$thumbnail,
         'has_private_comments' => $faker->randomElement([true, false]),
@@ -195,8 +196,9 @@ $factory->define(\App\Filter::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'user_id' => factory(\App\User::class)->create()->id,
-        'notify_user' => $faker->boolean,
+        'notify_user' => false,
         'rules' => json_decode('{"ash": [], "map": false, "name": "Test2", "address": {"city": null, "state": null, "county": null}, "hemlock": [], "whiteOak": [], "categories": ["American Chestnut"], "americanElm": [], "americanChestnut": []}'),
+        'notifications_sent_at' => null
     ];
 });
 

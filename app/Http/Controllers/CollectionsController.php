@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Collection;
 use App\Group;
 use App\Http\Controllers\Traits\DealsWithObservationPermissions;
+use App\Http\Controllers\Traits\Observes;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\Responds;
@@ -12,7 +13,7 @@ use DB;
 
 class CollectionsController extends Controller
 {
-    use Responds, DealsWithObservationPermissions;
+    use Responds, DealsWithObservationPermissions, Observes;
 
     /**
      * Get list of collections user has access to (owned and shared)
@@ -184,21 +185,22 @@ class CollectionsController extends Controller
     public function show($id, Request $request)
     {
         $user = $request->user();
+        $is_admin = User::hasRole(['Admin', 'Scientist'], $user);
 
         $collection = Collection::with([
             'users' => function ($query) {
                 $query->select('id', 'name');
             },
-            'observations' => function ($query) use ($user) {
+            'observations' => function ($query) use ($user, $is_admin) {
                 $query->select('id', 'observation_category');
-                if (! $user->isAdmin() && ! $user->isScientist()) {
+                if (! $is_admin) {
                     $this->addPrivacyClause($query, $user);
                 }
             },
         ])->findOrFail($id);
 
         // Make sure the user has access to this observation
-        if (! $collection->users->contains($user->id)) {
+        if (! $collection->users->contains('id', $user->id)) {
             return $this->unauthorized();
         }
 

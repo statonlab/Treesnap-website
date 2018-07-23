@@ -87,6 +87,7 @@ class ObservationsAPITest extends TestCase
     {
         $user = factory(User::class)->create();
         $observation = factory(Observation::class)->create([
+            'is_private' => false,
             'has_private_comments' => true,
         ]);
 
@@ -108,6 +109,7 @@ class ObservationsAPITest extends TestCase
         $user = factory(User::class)->create();
         $observation = factory(Observation::class)->create([
             'has_private_comments' => false,
+            'is_private' => false,
         ]);
 
         $this->actingAs($user);

@@ -63,7 +63,7 @@ class User extends Authenticatable
      *
      * @var bool
      */
-    protected $firendsGenerated = false;
+    protected $friendsGenerated = false;
 
     /**
      * Get the observations of a user.
@@ -232,7 +232,7 @@ class User extends Authenticatable
      */
     public function hasFriend($user_id)
     {
-        if (empty($this->friends)) {
+        if (!$this->friendsGenerated) {
             $this->generateFriends();
         }
 
@@ -252,7 +252,7 @@ class User extends Authenticatable
             }
         }
 
-        $this->firendsGenerated = true;
+        $this->friendsGenerated = true;
     }
 
     public function friends() {
