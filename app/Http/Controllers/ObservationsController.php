@@ -10,7 +10,6 @@ use App\Services\MetaLabels;
 use App\User;
 use Illuminate\Http\Request;
 use App\Events\ObservationDeleted;
-use Cache;
 use Storage;
 
 class ObservationsController extends Controller
@@ -114,9 +113,10 @@ class ObservationsController extends Controller
         $is_admin = false;
 
         if ($user) {
-            $is_admin = User::hasRole(['admin', 'scientist'], $user);
+            $is_admin = User::hasRole(['Admin', 'Scientist'], $user);
         }
 
+        /** @var \App\Observation $observation */
         $observation = Observation::with('user')->findOrFail($id);
 
         if ($observation->is_private) {
