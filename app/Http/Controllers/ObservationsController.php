@@ -48,9 +48,9 @@ class ObservationsController extends Controller
             $is_admin = User::hasRole(['admin', 'scientist'], $user);
         }
 
-        if (! $is_admin && ! $user) {
+        if (! $user) {
             $observations = $observations->where('is_private', false);
-        } elseif ($user) {
+        } elseif (! $is_admin) {
             // Remove private observations that don't belong to the current user
             // from the results but keep private observations that the user owns
             $observations = $this->addPrivacyClause($observations, $user);
@@ -120,7 +120,7 @@ class ObservationsController extends Controller
         $observation = Observation::with('user')->findOrFail($id);
 
         if ($observation->is_private) {
-            if(!$this->hasPrivilegedPermissions($user, $observation)) {
+            if (! $this->hasPrivilegedPermissions($user, $observation)) {
                 return $this->unauthorized();
             }
         }
@@ -155,7 +155,7 @@ class ObservationsController extends Controller
         $observation = Observation::with('user')->findOrFail($id);
 
         if ($observation->is_private) {
-            if(!$this->hasPrivilegedPermissions($user, $observation)) {
+            if (! $this->hasPrivilegedPermissions($user, $observation)) {
                 return abort(403);
             }
         }

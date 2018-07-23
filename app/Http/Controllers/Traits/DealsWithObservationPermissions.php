@@ -48,16 +48,18 @@ trait DealsWithObservationPermissions
      */
     protected function addPrivacyClause(&$observations, User $user)
     {
+        $friends = array_unique($user->friends() + [$user->id]);
+
         // WHERE (user_id = $user->id AND is_private BETWEEN [0, 1])
         //    OR (user_id != $user->id AND is_private = 0)
-        return $observations->where(function ($query) use ($user) {
-            $query->where(function ($query) use ($user) {
+        return $observations->where(function ($query) use ($user, $friends) {
+            $query->where(function ($query) use ($user, $friends) {
                 /** @var \Eloquent $query */
-                $query->where('user_id', $user->id);
+                $query->whereIn('user_id', $friends);
                 $query->whereBetween('is_private', [0, 1]);
-            })->orWhere(function ($query) use ($user) {
+            })->orWhere(function ($query) use ($user, $friends) {
                 /** @var \Eloquent $query */
-                $query->where('user_id', '!=', $user->id);
+                $query->whereNotIn('user_id', $friends);
                 $query->where('is_private', false);
             });
         });
