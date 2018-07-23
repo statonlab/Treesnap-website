@@ -19,6 +19,7 @@ export default class Group extends Component {
 
     this.state = {
       id                : 0,
+      isPrivate         : false,
       name              : '',
       newName           : '',
       updatingName      : false,
@@ -44,7 +45,8 @@ export default class Group extends Component {
       lastPage          : 1,
       pages             : [],
       collections       : [],
-      countByUsers      : []
+      countByUsers      : [],
+      privacyUpdating   : false
     }
   }
 
@@ -611,57 +613,97 @@ export default class Group extends Component {
   }
 
   _renderPrivacyModal() {
-    if (this.state.isSharing) {
-      return (
-        <div>
-          <p className="mb-1">
-            You are currently sharing your observations including accurate location coordinates with members
-            of this group.
-          </p>
-
-          <div className="field">
-            <div className="control">
-              <button className="button is-danger" type="button" onClick={() => this.changeSharingStatus(false)}>
-                Stop Sharing Observations
-              </button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
     return (
       <div>
-        <p className="mb-1">
-          You are currently <strong>not</strong> sharing your observations with members of this group.
-        </p>
-
         <div className="field">
-          <div className="control">
-            <button className="button is-primary" type="button" onClick={() => this.changeSharingStatus(true)}>
-              Share Observations
-            </button>
-          </div>
+          <label className="label">Observation Sharing</label>
+          <label className="checkbox">
+            <input type="checkbox"
+                   checked={this.state.isSharing}
+                   value={1}
+                   onChange={({target}) => this.changeSharingStatus(target.checked)}
+                   disabled={this.state.privacyUpdating}
+            />
+            <span className={'ml-1'}>
+              Share my observations with the members of this group. Sharing will include sensitive information such as accurate location coordinates.
+            </span>
+          </label>
         </div>
+
+        {this.state.isOwner ? <div className="field mb-2">
+          <label className="label">Discoverability</label>
+          <span className="select">
+            <select value={this.state.isPrivate}
+                    onChange={({target}) => this.toggleDiscoverability(parseInt(target.value))}>
+              <option value={1}>Users must be invited to join</option>
+              <option value={0}>Allow anyone to find this group and apply to join</option>
+            </select>
+          </span>
+        </div> : null}
+
+        <button type="button"
+                className="button is-primary"
+                disabled={this.state.privacyUpdating}
+                onClick={() => this.setState({showPrivacyModal: false})}>
+          Done
+        </button>
       </div>
     )
   }
 
+  toggleDiscoverability(isPrivate) {
+    this.setState({
+      privacyUpdating: true
+    })
+    const id = this.state.id
+    axios.patch(`/web/group/${id}/discoverability`, {
+      is_private: isPrivate
+    }).then(response => {
+      this.setState({
+        privacyUpdating: false,
+        isPrivate      : response.data.data.is_private
+      })
+      Notify.push('Privacy settings updated successfully')
+    }).catch(error => {
+      console.error(error)
+
+      this.setState({
+        privacyUpdating: false
+      })
+
+      let errors = new Errors(error)
+      if (errors.has('general')) {
+        Notify.push(errors.first('general'), 'danger')
+      } else if (errors.has('is_private')) {
+        Notify.push(errors.first('is_private'), 'danger')
+      }
+    })
+  }
+
   changeSharingStatus(share) {
-    let id = this.props.match.params.id
-    this.setState({loading: true})
+    const id = this.state.id
+    this.setState({privacyUpdating: false})
     axios.patch(`/web/group/${id}/sharing`, {share}).then(response => {
       this.setState({
-        isSharing: response.data.data,
-        loading  : false
+        isSharing      : response.data.data,
+        privacyUpdating: false
       })
 
       this.loadObservations(this.state)
-    }).catch(error => {
-      console.log(error)
+
+      Notify.push('Privacy settings updated successfully')
+    }).catch(e => {
+      console.error(e)
       this.setState({
-        loading: false
+        privacyUpdating: false
       })
+
+      let errors = new Errors(e)
+      if (errors.has('share')) {
+        Notify.push(errors.first('share'), 'danger')
+      } else if (errors.has('general')) {
+        Notify.push(errors.first('general'), 'danger')
+      }
     })
   }
 
@@ -801,7 +843,8 @@ export default class Group extends Component {
         </BoxModal>
 
         <BoxModal visible={this.state.showPrivacyModal}
-                  onCloseRequest={() => this.setState({showPrivacyModal: false})}>
+                  onCloseRequest={() => this.setState({showPrivacyModal: false})}
+                  showCloseButton={false}>
           <h4 className="title is-4">
             Group Privacy Settings
 
