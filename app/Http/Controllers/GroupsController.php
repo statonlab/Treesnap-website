@@ -81,6 +81,7 @@ class GroupsController extends Controller
             'share' => $request->share ? true : false,
         ]);
 
+        // Attach the owner to the response
         $group->setAttribute('owner', [
             'id' => $user->id,
             'name' => $user->name,
@@ -114,6 +115,29 @@ class GroupsController extends Controller
         return $this->success([
             'name' => $group->name,
         ]);
+    }
+
+    /**
+     * Toggle the privacy of the group. Switches
+     * from public to invite only.
+     *
+     * @param \App\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function toggleDiscoverability(Group $group, Request $request) {
+        $this->authorize('update', $group);
+
+        $this->validate($request, [
+            'is_private' => 'required|boolean'
+        ]);
+
+        $group->fill([
+            'is_private' => $request->is_private
+        ])->save();
+
+        return $this->success(['is_private' => $group->is_private]);
     }
 
     /**
