@@ -147,7 +147,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'location_accuracy' => $faker->randomFloat(2, 5, 100),
         'data' => $data,
         'address' => $addresses[rand() % count($addresses)],
-        'is_private' => rand() % 2 === 0,
+        'is_private' => false,
         'collection_date' => \Carbon\Carbon::now(),
         'thumbnail' => '/storage/thumbnails/'.$thumbnail,
         'has_private_comments' => $faker->randomElement([true, false]),
