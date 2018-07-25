@@ -27,6 +27,9 @@ class User extends Authenticatable
         'class',
         'birth_year',
         'role_id',
+        'provider',
+        'provider_id',
+        'avatar',
     ];
 
     /**
@@ -48,7 +51,7 @@ class User extends Authenticatable
         'is_anonymous' => 'boolean',
         'is_private' => 'boolean',
         'zipcode' => 'string',
-        'units' => 'string'
+        'units' => 'string',
     ];
 
     /**
@@ -232,7 +235,7 @@ class User extends Authenticatable
      */
     public function hasFriend($user_id)
     {
-        if (!$this->friendsGenerated) {
+        if (! $this->friendsGenerated) {
             $this->generateFriends();
         }
 
@@ -255,8 +258,9 @@ class User extends Authenticatable
         $this->friendsGenerated = true;
     }
 
-    public function friends() {
-        if(!$this->friendsGenerated) {
+    public function friends()
+    {
+        if (! $this->friendsGenerated) {
             $this->generateFriends();
         }
 

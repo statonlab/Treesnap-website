@@ -64,6 +64,33 @@ trait CreatesUsers
             'zipcode' => isset($data['zipcode']) ? $data['zipcode'] : '',
             'is_private' => false,
             'role_id' => $role->id,
+            'units' => 'US',
+        ]);
+    }
+
+    /**
+     * Find the user with the given email or create a new one.
+     *
+     * @param $user
+     * @return User|\Illuminate\Database\Eloquent\Model
+     */
+    protected function findOrCreateUser($user)
+    {
+        $role = Role::where('name', 'User')->first();
+
+        return User::firstOrCreate([
+            'email' => $user['email'],
+        ], [
+            'name' => $user['name'],
+            'api_token' => $this->generateAPIToken(),
+            'birth_year' => $user['birth_year'],
+            'is_private' => false,
+            'is_anonymous' => false,
+            'role_id' => $role->id,
+            'avatar' => isset($user['avatar']) ? $user['avatar'] : null,
+            'units' => 'US',
+            'provider' => $user['provider'],
+            'provider_id' => $user['provider_id'],
         ]);
     }
 

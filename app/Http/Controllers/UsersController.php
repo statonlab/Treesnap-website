@@ -74,6 +74,8 @@ class UsersController extends Controller
     {
         $user = $request->user();
 
+        $has_password = User::find($user->id)->makeVisible('password')->password !== null;
+
         return $this->success([
             'id' => $user->id,
             'name' => $user->name,
@@ -81,6 +83,8 @@ class UsersController extends Controller
             'is_anonymous' => $user->is_anonymous,
             'birth_year' => $user->birth_year,
             'units' => $user->units,
+            'provider' => ucwords($user->provider),
+            'has_password' => $has_password,
         ]);
     }
 
@@ -152,6 +156,34 @@ class UsersController extends Controller
     }
 
     /**
+     * Create a password for users who don't have one.
+     * Users who have chosen to connect with a social
+     * provider, don't have a password by default.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createPassword(Request $request)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->makeVisible('password')->password !== null) {
+            return abort(401);
+        }
+
+        $this->validate($request, [
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user->fill([
+            'password' => bcrypt($request->password),
+        ])->save();
+
+        return $this->success('Password created successfully.');
+    }
+
+    /**
      * Get paginated observations for a user.
      *
      * @param \Illuminate\Http\Request $request
@@ -195,9 +227,11 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard()->logout();
+
+        $request->session()->invalidate();
 
         return redirect()->to('/');
     }

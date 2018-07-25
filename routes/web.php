@@ -35,6 +35,9 @@ Route::post('/contact', 'ContactController@send');
 Auth::routes();
 Route::get('/logout', 'UsersController@logout');
 
+Route::get('/login/{provider}', 'Auth\LoginController@redirectToSocialProvider');
+Route::get('/login/{provider}/callback', 'Auth\LoginController@handleSocialProviderCallback');
+
 // Observations
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');
 Route::get('/web/observations/{limit?}', 'ObservationsController@index');
@@ -82,6 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Users controller
     Route::get('/web/user', 'UsersController@show');
     Route::put('/web/user', 'UsersController@update');
+    Route::post('/web/user/create-password', 'UsersController@createPassword');
     Route::patch('/web/user/password', 'UsersController@updatePassword');
     Route::get('/web/user/observations', 'UsersController@observations');
 

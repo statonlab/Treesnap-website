@@ -9,7 +9,7 @@
                         <h3 class="title is-4">Register</h3>
                         <div class="box-body">
                             <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
-                                @include('partials.registration-form', ['validate' => true])
+                                @include('partials.registration-form', ['validate' => true, 'show_social_login' => true])
                             </form>
                         </div>
                     </div>
