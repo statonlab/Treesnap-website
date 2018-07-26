@@ -45,8 +45,7 @@ class UsersAPITest extends TestCase
      */
     public function testUpdatingUser()
     {
-        // Get the last user created
-        $user = User::orderBy('id', 'desc')->first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $response = $this->put('/api/v1/user', [
@@ -75,7 +74,7 @@ class UsersAPITest extends TestCase
      */
     public function testGettingUser()
     {
-        $user = User::orderBy('id', 'desc')->first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $response = $this->get('/api/v1/user');
@@ -96,8 +95,13 @@ class UsersAPITest extends TestCase
      */
     public function testAuthenticatingAUser()
     {
+        $user = factory(User::class)->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('testpass')
+        ]);
+
         $response = $this->post('/api/v1/user/login', [
-            'email' => 'almasaeed2010@gmail.com',
+            'email' => 'test@example.com',
             'password' => 'testpass',
         ]);
 
