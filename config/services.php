@@ -38,5 +38,8 @@ return [
     'google' => [
         'maps' => env('MAPS_API_KEY'),
         'recaptcha' => env('RECAPTCHA_SECRET'),
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT')
     ],
 ];

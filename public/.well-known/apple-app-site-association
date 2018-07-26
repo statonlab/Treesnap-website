@@ -1,0 +1,15 @@
+{
+    "webcredentials": {
+        "apps": [
+            "ZGGV6E3YS4.edu.utk.treesource"
+        ],
+        "details": [
+            {
+                "appID": "ZGGV6E3YS4.edu.utk.treesource",
+                "paths": [
+                    "/mobile/login/*"
+                ]
+            }
+        ]
+    }
+}

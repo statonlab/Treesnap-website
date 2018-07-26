@@ -203,6 +203,31 @@ class InvitesController extends Controller
         return redirect()->to("/account/group/{$invite->group_id}");
     }
 
+    public function acceptAuthenticated($id, Request $request)
+    {
+        /** @var \App\User $user */
+        $user = $request->user();
+
+        // Accept the invite
+        $invite = Invite::where('token', $request->_t)->findOrFail($id);
+        $invite->status = $this->status['accepted'];
+        $invite->save();
+
+        // Make sure the group exists
+        /** @var Group $group */
+        $group = Group::findOrFail($invite->group_id);
+
+        // Add the user to the group
+        $user->groups()->detach($invite->group_id);
+        $user->groups()->attach($invite->group_id, [
+            'share' => $request->share == 1 ? true : false,
+        ]);
+
+        event(new UserJoinedGroup($user, $group));
+
+        return redirect()->to("/account/group/{$invite->group_id}");
+    }
+
     /**
      * Handle registered user.
      *

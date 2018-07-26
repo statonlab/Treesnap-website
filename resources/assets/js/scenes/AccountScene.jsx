@@ -25,7 +25,9 @@ export default class AccountScene extends Scene {
       old_password             : '',
       new_password_confirmation: '',
       password_errors          : [],
-      password_message         : ''
+      password_message         : '',
+      provider                 : '',
+      has_password             : true
     }
 
     document.title = 'User Account'
@@ -42,7 +44,9 @@ export default class AccountScene extends Scene {
         units       : user.units,
         email       : user.email,
         is_anonymous: user.is_anonymous ? 1 : 0,
-        birth_year  : user.birth_year
+        birth_year  : user.birth_year,
+        provider    : user.provider,
+        has_password: user.has_password
       })
 
       window.fixHeight()
@@ -148,6 +152,143 @@ export default class AccountScene extends Scene {
         {this.state.password_errors.map((error, index) => {
           return <p key={index}>{error}</p>
         })}
+      </div>
+    )
+  }
+
+  renderPasswordForm() {
+    return (
+      <div className="box">
+        <h1 className="title is-4">Change Password</h1>
+        <form action="#" method="post" onSubmit={this.submitPassword.bind(this)}>
+          {this.renderPasswordErrors()}
+
+          {this.state.password_message !== '' ?
+            <div className="alert is-success">
+              {this.state.password_message}
+            </div>
+            : null}
+
+          <div className="field limit-width">
+            <label className="label">Old Password</label>
+            <div className="control">
+              <input type="password"
+                     className="input"
+                     placeholder="Old password"
+                     value={this.state.old_password}
+                     onChange={e => this.setState({old_password: e.target.value})}/>
+            </div>
+          </div>
+
+          <div className="field limit-width">
+            <label className="label">New Password</label>
+            <div className="control">
+              <input type="password"
+                     className="input"
+                     placeholder="New password"
+                     value={this.state.new_password}
+                     onChange={e => this.setState({new_password: e.target.value})}/>
+            </div>
+          </div>
+
+          <div className="field limit-width">
+            <label className="label">Repeat Password</label>
+            <div className="control">
+              <input type="password"
+                     className="input"
+                     placeholder="Repeat new password"
+                     value={this.state.new_password_confirmation}
+                     onChange={e => this.setState({new_password_confirmation: e.target.value})}/>
+            </div>
+          </div>
+
+          <div className="field mt-1">
+            <div className="control">
+              <button type="submit"
+                      className="button is-primary">
+                Update Password
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    )
+  }
+
+  submitNewPassword(e) {
+    e.preventDefault()
+
+    axios.post('/web/user/create-password', {
+      password             : this.state.new_password,
+      password_confirmation: this.state.new_password_confirmation
+    }).then(response => {
+      this.setState({
+        has_password             : true,
+        password_message         : 'Password created successfully. You may now login using your email and new password.',
+        new_password             : '',
+        new_password_confirmation: ''
+      })
+    }).catch(e => {
+      if (e.response && e.response.status === 422) {
+        this.setState({
+          password_errors: e.response.data.password
+        })
+      }
+
+      console.log(e)
+    })
+  }
+
+  renderCreatePasswordForm() {
+    return (
+      <div className="box">
+        <h1 className="title is-4 mb-1">Create Password</h1>
+        <form action="#" method="post" onSubmit={this.submitNewPassword.bind(this)}>
+          {this.renderPasswordErrors()}
+
+          {this.state.password_message !== '' ?
+            <div className="alert is-success">
+              {this.state.password_message}
+            </div>
+            : null}
+
+          <div className={'alert is-warning mb-1'}>
+            You are logged in using your {this.state.provider} account and have not yet set up a password with TreeSnap.
+            <br/>
+            Setting up a password with TreeSnap allows you to login without using third party services such as {this.state.provider}.
+          </div>
+
+          <div className="field limit-width">
+            <label className="label">Password</label>
+            <div className="control">
+              <input type="password"
+                     className="input"
+                     placeholder="New password"
+                     value={this.state.new_password}
+                     onChange={e => this.setState({new_password: e.target.value})}/>
+            </div>
+          </div>
+
+          <div className="field limit-width">
+            <label className="label">Repeat Password</label>
+            <div className="control">
+              <input type="password"
+                     className="input"
+                     placeholder="Repeat new password"
+                     value={this.state.new_password_confirmation}
+                     onChange={e => this.setState({new_password_confirmation: e.target.value})}/>
+            </div>
+          </div>
+
+          <div className="field mt-1">
+            <div className="control">
+              <button type="submit"
+                      className="button is-primary">
+                Save Password
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     )
   }
@@ -275,60 +416,8 @@ export default class AccountScene extends Scene {
             </div>
           </form>
         </div>
-        <div className="box">
-          <h1 className="title is-4">Change Password</h1>
-          <form action="#" method="post" onSubmit={this.submitPassword.bind(this)}>
-            {this.renderPasswordErrors()}
 
-            {this.state.password_message !== '' ?
-              <div className="alert is-success">
-                {this.state.password_message}
-              </div>
-              : null}
-
-            <div className="field limit-width">
-              <label className="label">Old Password</label>
-              <div className="control">
-                <input type="password"
-                       className="input"
-                       placeholder="Old password"
-                       value={this.state.old_password}
-                       onChange={e => this.setState({old_password: e.target.value})}/>
-              </div>
-            </div>
-
-            <div className="field limit-width">
-              <label className="label">New Password</label>
-              <div className="control">
-                <input type="password"
-                       className="input"
-                       placeholder="New password"
-                       value={this.state.new_password}
-                       onChange={e => this.setState({new_password: e.target.value})}/>
-              </div>
-            </div>
-
-            <div className="field limit-width">
-              <label className="label">Repeat Password</label>
-              <div className="control">
-                <input type="password"
-                       className="input"
-                       placeholder="Repeat new password"
-                       value={this.state.new_password_confirmation}
-                       onChange={e => this.setState({new_password_confirmation: e.target.value})}/>
-              </div>
-            </div>
-
-            <div className="field mt-1">
-              <div className="control">
-                <button type="submit"
-                        className="button is-primary">
-                  Update Password
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+        {this.state.has_password ? this.renderPasswordForm() : this.renderCreatePasswordForm()}
       </AccountView>
     )
   }
