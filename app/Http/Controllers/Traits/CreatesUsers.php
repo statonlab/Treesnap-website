@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Rules\Provider;
 use Validator;
 use App\User;
 use App\Role;
@@ -20,7 +21,13 @@ trait CreatesUsers
 
         $validator_array = [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                new Provider(),
+                'unique:users',
+            ],
             'password' => 'required|min:6|confirmed',
             'agreement' => 'required|boolean|in:1',
             'birth_year' => 'required|integer',

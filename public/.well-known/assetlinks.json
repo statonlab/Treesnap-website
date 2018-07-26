@@ -1,0 +1,25 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.treesource",
+    "sha256_cert_fingerprints":
+    ["02:F1:1E:05:27:93:23:88:49:AF:B9:9A:75:49:24:44:49:6F:D9:27:7C:85:EA:A7:D4:F7:6C:B9:3E:A6:02:5A"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.get_login_creds"],
+  "target": {
+    "namespace": "web",
+    "site": "https://treesnap.org"
+  }
+},
+{
+  "relation": ["delegate_permission/common.get_login_creds"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.treesource",
+    "sha256_cert_fingerprints":
+    ["02:F1:1E:05:27:93:23:88:49:AF:B9:9A:75:49:24:44:49:6F:D9:27:7C:85:EA:A7:D4:F7:6C:B9:3E:A6:02:5A"]
+  }
+}]

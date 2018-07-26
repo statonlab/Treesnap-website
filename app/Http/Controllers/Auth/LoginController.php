@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\CreatesUsers;
+use App\Http\Controllers\Traits\HandlesMobileSchemes;
+use App\Rules\Provider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -20,7 +23,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers, CreatesUsers;
+    use AuthenticatesUsers, CreatesUsers, HandlesMobileSchemes;
 
     /**
      * Where to redirect users after login.
@@ -36,18 +39,47 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', [
+            'except' => [
+                'logout',
+                'redirectToSocialProvider',
+                'handleSocialProviderCallback',
+            ],
+        ]);
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => [
+                'required',
+                'email',
+                new Provider(),
+            ],
+            'password' => 'required|string',
+        ]);
     }
 
     /**
      * Redirect the user to the authentication screen where
      * users can authorize TreeSnap to get their info.
      *
+     * @param Request $request
      * @param string $provider name of provider.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function redirectToSocialProvider($provider)
+    public function redirectToSocialProvider(Request $request, $provider)
     {
+        if ($request->has('redirect_to')) {
+            session()->put('social_redirect_to', $request->redirect_to);
+        }
+
         $validator = \Validator::make(['provider' => $provider], [
             'provider' => 'required|in:google',
         ]);
@@ -90,6 +122,8 @@ class LoginController extends Controller
     }
 
     /**
+     * Handle the response obtained from google.
+     *
      * @param $response
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -108,6 +142,62 @@ class LoginController extends Controller
 
         auth()->login($user, true);
 
-        return redirect()->to($this->redirectTo);
+        $this->setRedirectPath($user);
+
+        return $this->redirect($this->redirectTo);
+    }
+
+    /**
+     * Handle mobile app opening.
+     *
+     * @param $path
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirect($path)
+    {
+        if (starts_with($path, 'treesnap://')) {
+            return redirect()->away($path);
+        }
+
+        return redirect()->to($path);
+    }
+
+    /**
+     * Handle social redirects after authentication has completed.
+     *
+     * @param \App\User $user
+     */
+    protected function setRedirectPath($user)
+    {
+        $path = session('social_redirect_to', false);
+
+        if ($path === false) {
+            return;
+        }
+
+        if (starts_with($path, 'http')) {
+            $url = parse_url($path);
+            if ($url === false) {
+                $this->redirectTo = $path;
+
+                return;
+            }
+
+            $url_path = strtolower($url['path']);
+
+            if (str_contains($url_path, 'mobile/login/ios')) {
+                $this->redirectTo = "{$this->iosScheme}/social-login/{$user->api_token}";
+
+                return;
+            }
+
+            if (str_contains($url_path, 'mobile/login/android')) {
+                $this->redirectTo = "{$this->androidScheme}/social-login/{$user->api_token}";
+
+                return;
+            }
+        }
+
+        $this->redirectTo = $path;
     }
 }

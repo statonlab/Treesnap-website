@@ -22,6 +22,7 @@ class UsersController extends Controller
      */
     public function show(Request $request)
     {
+        /** @var User $user */
         $user = $request->user();
 
         return $this->success([
@@ -33,6 +34,8 @@ class UsersController extends Controller
             'is_private' => $user->is_private,
             'birth_year' => $user->birth_year,
             'units' => $user->units,
+            'api_token' => $user->api_token,
+            'provider' => $user->provider,
         ]);
     }
 
@@ -45,6 +48,13 @@ class UsersController extends Controller
      */
     public function create(Request $request)
     {
+        $platform = $this->getLoginPlatform($request->email);
+        if ($platform) {
+            return $this->validationError([
+                'email' => ["You previously used $platform to login. Please use $platform again."],
+            ]);
+        }
+
         $validator = $this->makeValidation($request->all());
 
         if ($validator->fails()) {
@@ -63,7 +73,7 @@ class UsersController extends Controller
             'api_token' => $api_token,
             'birth_year' => $request->birth_year,
             'units' => $request->units ? $request->units : 'US',
-            'role_id' => Role::where('name', 'User')->first()->id
+            'role_id' => Role::where('name', 'User')->first()->id,
         ]);
 
         if (! $user) {
@@ -82,6 +92,7 @@ class UsersController extends Controller
             'birth_year' => $user->birth_year,
             'api_token' => $api_token,
             'units' => $user->units,
+            'provider' => 'treesnap',
         ]);
     }
 
@@ -123,6 +134,7 @@ class UsersController extends Controller
             'birth_year' => $user->birth_year,
             'zipcode' => $user->zipcode,
             'units' => $user->units,
+            'provider' => 'treesnap',
         ]);
     }
 
@@ -165,6 +177,13 @@ class UsersController extends Controller
      */
     public function login(Request $request)
     {
+        $platform = $this->getLoginPlatform($request->email);
+        if ($platform) {
+            return $this->validationError([
+                'email' => ['You need to login using '.$platform],
+            ]);
+        }
+
         // Validate the request
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -292,5 +311,31 @@ class UsersController extends Controller
         }
 
         return $str;
+    }
+
+    /**
+     * Gets the provider for the user email.
+     *
+     * @param string $email
+     * @return mixed Returns false if the user needs tp provide a password to authenticate.
+     *               Returns the platform if the user can't use password to authenticate.
+     */
+    protected function getLoginPlatform($email)
+    {
+        if (! $email) {
+            return false;
+        }
+
+        $user = User::where('email', $email)->whereNull('password')->first();
+
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->provider !== 'treesnap') {
+            return ucwords($user->provider);
+        }
+
+        return false;
     }
 }

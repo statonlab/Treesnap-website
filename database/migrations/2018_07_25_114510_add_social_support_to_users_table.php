@@ -15,7 +15,7 @@ class AddSocialSupportToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('password')->nullable()->change();
-            $table->string('provider', 100)->nullable()->after('remember_token');
+            $table->string('provider', 100)->nullable()->after('remember_token')->default('treesnap');
             $table->string('provider_id')->index()->nullable()->before('created_at');
             $table->string('avatar')->nullable()->after('provider_id');
         });

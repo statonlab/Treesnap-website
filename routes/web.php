@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Invitations
     Route::get('/web/invites/{group_id}', 'InvitesController@showPendingInvitations');
     Route::post('/web/invite', 'InvitesController@newInvitation');
+    Route::post('/invitations/accept/authenticated/{id}', 'InvitesController@acceptAuthenticated');
 
     // Unsubscribe
     Route::get('/services/unsubscribe/filter/{filter}', 'SubscriptionsController@unsubscribeFilter');
@@ -148,6 +149,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/services/download/filter/{filter}/{extension?}', 'DownloadsController@filter');
     Route::get('/services/download/observations/{extension?}', 'DownloadsController@myObservations');
 
+    // Authentication
     Route::get('/web/oauth/personal-tokens', 'OAuthController@tokens');
     Route::post('/web/oauth/personal-tokens', 'OAuthController@createTokens');
     Route::delete('/web/oauth/personal-token/{id}', 'OAuthController@deleteToken');
