@@ -35,14 +35,17 @@ class ContactUser extends Mailable implements ShouldQueue
     protected $_to = '';
 
     /**
-     * CC
+     * The body of the message.
      *
-     * @var array
+     * @var string
      */
-    protected $_cc = [];
-
     public $_message = '';
 
+    /**
+     * The subject.
+     *
+     * @var string
+     */
     public $_subject = '';
 
     /**
@@ -54,12 +57,12 @@ class ContactUser extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Contact $contact, $subject, $message)
+    public function __construct(Contact $contact, $subject, $message, $_to = null)
     {
         $this->contact = $contact;
 
         $receiver = $contact->recipient;
-        $this->_to = $receiver->email;
+        $this->_to = ! is_null($_to) ? $_to : $receiver->email;
         $this->_message = $message;
         $this->_subject = $subject;
 
@@ -90,10 +93,9 @@ class ContactUser extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->from(config('mail.from.address'))
-                    ->replyTo($this->contact->from)
-                    ->to($this->_to)
-                    ->cc($this->_cc)
-                    ->subject($this->_subject)
-                    ->markdown('emails.contact-user');
+            ->replyTo($this->contact->from)
+            ->to($this->_to)
+            ->subject($this->_subject)
+            ->markdown('emails.contact-user');
     }
 }
