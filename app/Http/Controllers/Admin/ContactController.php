@@ -58,6 +58,14 @@ class ContactController extends Controller
 
         Mail::queue(new ContactUser($contact, $request->subject, $request->message));
 
+        if (count($all_cc) > 0) {
+            $message = 'This is a copy of the email you sent through TreeSnap.';
+            $message .= "\n\n";
+            $message .= $request->message;
+
+            Mail::queue(new ContactUser($contact, $request->subject, $message, $all_cc));
+        }
+
         return $this->success('Message sent successfully');
     }
 }
