@@ -222,7 +222,7 @@ trait Observes
             $title = $title === 'Other' && isset($observation->data['otherLabel']) ? "{$title} ({$observation->data['otherLabel']})" : $title;
             $shareData = $isAdmin || $inGroup || $owner;
 
-            if ($observation->has_private_comments || ($authenticated_user && $authenticated_user->id === $observation->user_id)) {
+            if (! $observation->has_private_comments || ($authenticated_user && $authenticated_user->id === $observation->user_id)) {
                 $data = $observation->data;
             } else {
                 $data = array_except($observation->data, ['comment']);
@@ -252,6 +252,7 @@ trait Observes
                 'thumbnail' => $observation->thumbnail,
                 'has_private_comments' => $observation->has_private_comments,
                 'custom_id' => $observation->custom_id,
+                'mobile_id' => $observation->mobile_id,
             ];
         }
 
