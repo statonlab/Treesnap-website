@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 class MetaLabels
@@ -46,6 +47,7 @@ class MetaLabels
             'heightNumeric_confidence' => 'Tree Height Confidence',
             'torreyaFungalBlight' => 'Fungal Blight',
             'conesMaleFemale' => 'Cones',
+            'deerRub' => 'Deer Rub',
         ];
     }
 
@@ -69,7 +71,8 @@ class MetaLabels
      * @param $key
      * @return bool
      */
-    public function has($key) {
+    public function has($key)
+    {
         return isset($this->labels[$key]);
     }
 
@@ -78,7 +81,8 @@ class MetaLabels
      *
      * @return string
      */
-    public function toJson() {
+    public function toJson()
+    {
         return json_encode($this->toObject());
     }
 
@@ -88,14 +92,16 @@ class MetaLabels
      *
      * @return \stdClass
      */
-    public function toObject() {
-        return (object) $this->labels;
+    public function toObject()
+    {
+        return (object)$this->labels;
     }
 
     /**
      * Return the labels in array format.
      */
-    public function toArray() {
+    public function toArray()
+    {
         return $this->labels;
     }
 }
