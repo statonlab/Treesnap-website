@@ -144,6 +144,15 @@ trait Observes
         ];
     }
 
+    /**
+     * Determine whether the user name is anonymous.
+     *
+     * @param \App\Observation $observation
+     * @param \App\User $user
+     * @param bool $inGroup
+     * @param bool $isAdmin
+     * @return array
+     */
     protected function getUserDetails($observation, $user, $inGroup, $isAdmin)
     {
         $anonymous = $observation->user->is_anonymous;

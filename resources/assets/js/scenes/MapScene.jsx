@@ -304,10 +304,14 @@ export default class App extends Scene {
       zoom = 15
     }
 
-    this.refs.maps.goTo({
+    const center = {
       lat: marker.position.latitude,
       lng: marker.position.longitude
-    }, zoom)
+    }
+
+    this.refs.maps.goTo(center, zoom)
+
+    this.updateHistory(center, zoom)
   }
 
   /**
@@ -333,7 +337,8 @@ export default class App extends Scene {
              showFilters   : false
            })
            this.openSidebar()
-           this.goToSubmission(marker, 10)
+           let zoom = this.refs.maps.getZoom()
+           this.goToSubmission(marker, zoom > 10 ? zoom : 13)
            if (marker.ref !== null) {
              marker.ref.openCallout()
            }
