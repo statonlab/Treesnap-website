@@ -143,6 +143,7 @@ class CreateLatinNamesTable extends Migration
             'Ulmus rubra' => 'Slippery elm',
             'Ulmus thomasii' => 'Rock elm',
             'Zanthoxylum americanum' => 'Prickly ash',
+            'Torreya taxifolia' => 'Florida Torreya'
         ];
 
         foreach ($latinNames as $latin => $common) {
