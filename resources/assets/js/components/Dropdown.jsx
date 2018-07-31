@@ -48,7 +48,7 @@ export default class Dropdown extends Component {
   }
 }
 
-Dropdown.PropTypes = {
+Dropdown.propTypes = {
   trigger: PropTypes.object.isRequired,
   right  : PropTypes.bool,
   isBlock: PropTypes.bool

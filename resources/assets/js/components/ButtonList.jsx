@@ -71,7 +71,7 @@ export default class ButtonList extends Component {
   }
 }
 
-ButtonList.PropTypes = {
+ButtonList.propTypes = {
   list             : PropTypes.array.isRequired,
   onChange         : PropTypes.func.isRequired,
   selectedByDefault: PropTypes.bool

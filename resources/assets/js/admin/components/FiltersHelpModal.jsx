@@ -25,7 +25,7 @@ export default class FiltersHelpModal extends Component {
   }
 }
 
-FiltersHelpModal.PropTypes = {
+FiltersHelpModal.propTypes = {
   onCloseRequest: PropTypes.func.isRequired,
   visible       : PropTypes.bool.isRequired
 }

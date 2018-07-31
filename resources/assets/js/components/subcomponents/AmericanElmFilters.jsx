@@ -105,6 +105,6 @@ export default class AmericanElmFilters extends Component {
   }
 }
 
-AmericanElmFilters.PropTypes = {
+AmericanElmFilters.propTypes = {
   onChange: PropTypes.func.isRequired
 }

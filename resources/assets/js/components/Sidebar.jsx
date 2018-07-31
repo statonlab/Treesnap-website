@@ -16,8 +16,7 @@ export default class Sidebar extends Component {
   }
 }
 
-Sidebar.PropTypes = {
-  name          : PropTypes.string.isRequired,
+Sidebar.propTypes = {
   onCloseRequest: PropTypes.func
 }
 

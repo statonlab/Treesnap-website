@@ -46,7 +46,7 @@ export default class ShareCollectionModal extends Component {
   }
 }
 
-ShareCollectionModal.PropTypes = {
+ShareCollectionModal.propTypes = {
   visible       : PropTypes.bool.isRequired,
   onCloseRequest: PropTypes.func.isRequired,
   collection    : PropTypes.object

@@ -74,7 +74,6 @@ export default class Map extends Component {
   goTo(center, zoom = 20) {
     this.maps.setCenter(center)
     this.maps.setZoom(zoom)
-    //this.props.onBoundsChange(this.maps.getBounds())
     google.maps.event.trigger(this.maps, 'idle')
   }
 
@@ -86,7 +85,7 @@ export default class Map extends Component {
   renderChildren() {
     if (this.refs && this.refs.mapContainer) {
       return React.Children.map(this.props.children, child => {
-        if (child.type === Marker) {
+        if (child.type.name === 'Marker') {
           return React.cloneElement(child, {
             maps     : this.maps,
             onCreate : (marker) => {
@@ -120,6 +119,10 @@ export default class Map extends Component {
     return this.maps.getZoom()
   }
 
+  getMaps() {
+    return this.maps
+  }
+
   /**
    * Create Cluster.
    */
@@ -151,7 +154,7 @@ export default class Map extends Component {
   }
 }
 
-Map.PropTypes = {
+Map.propTypes = {
   center        : PropTypes.object,
   zoom          : PropTypes.number,
   onBoundsChange: PropTypes.func,

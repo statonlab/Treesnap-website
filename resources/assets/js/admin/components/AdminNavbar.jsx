@@ -118,7 +118,7 @@ export default class AdminNavbar extends Component {
   }
 }
 
-AdminNavbar.PropTypes = {
+AdminNavbar.propTypes = {
   container: PropTypes.bool
 }
 

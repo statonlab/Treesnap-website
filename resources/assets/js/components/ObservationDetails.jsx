@@ -540,7 +540,7 @@ export default class ObservationDetails extends Component {
   }
 }
 
-ObservationDetails.PropTypes = {
+ObservationDetails.propTypes = {
   observation        : PropTypes.object.isRequired,
   showControls       : PropTypes.bool,
   onAddedToCollection: PropTypes.func,

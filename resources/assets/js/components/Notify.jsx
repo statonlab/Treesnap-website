@@ -92,7 +92,7 @@ export default class Notify extends Component {
   }
 }
 
-Notify.PropTypes = {
+Notify.propTypes = {
   message  : PropTypes.string.isRequired,
   type     : PropTypes.string,
   container: PropTypes.object.isRequired

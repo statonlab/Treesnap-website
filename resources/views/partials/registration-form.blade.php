@@ -118,7 +118,7 @@
                            value="1" {{ old('agreement') ? 'checked' : '' }}
                            class="mr-0"
                     >
-                    I agree to the &nbsp;<a href="/terms-of-use">TreeSnap license and terms of service</a>
+                    I agree to the <a href="/terms-of-use">TreeSnap license and terms of service</a>
                 </label>
             </div>
             @if ($errors->has('agreement') &&  $validate)
@@ -146,8 +146,19 @@
             @endif
         </div>
 
-
         <div class="field">
+            <div class="control">
+                <div class="g-recaptcha" data-sitekey="6Lfg5yAUAAAAAI1zWo0wO1b1YPbcIAjj_GDcLeaY"></div>
+                @if ($errors->has('recaptcha') &&  $validate)
+                    <p class="help is-danger">
+                        {{ $errors->first('recaptcha') }}
+                    </p>
+                @endif
+            </div>
+        </div>
+
+
+        <div class="field mb-none">
             <div class="control">
                 <button type="submit" class="button is-primary">
                     Register
@@ -193,3 +204,4 @@
     minorConsentBox.style = 'display: none'
   }
 </script>
+<script src='https://www.google.com/recaptcha/api.js'></script>

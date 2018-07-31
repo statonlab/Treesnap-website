@@ -395,7 +395,7 @@ export default class EmailModal extends Component {
   }
 }
 
-EmailModal.PropTypes = {
+EmailModal.propTypes = {
   contact       : PropTypes.object.isRequired,
   onCloseRequest: PropTypes.func.isRequired,
   observation   : PropTypes.object.isRequired,

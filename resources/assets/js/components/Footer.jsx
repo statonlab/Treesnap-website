@@ -17,4 +17,4 @@ export default class Footer extends Component {
   }
 }
 
-Footer.PropTypes = {}
+Footer.propTypes = {}

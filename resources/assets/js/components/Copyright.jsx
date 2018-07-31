@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 
 export default class Copyright extends Component {
   render() {
@@ -12,6 +11,3 @@ export default class Copyright extends Component {
   }
 }
 
-Copyright.PropTypes = {
-  name: PropTypes.string.isRequired
-}

@@ -45,7 +45,7 @@ export default class Dropdown extends Component {
   }
 }
 
-Dropdown.PropTypes = {
+Dropdown.propTypes = {
   right: PropTypes.bool
 }
 

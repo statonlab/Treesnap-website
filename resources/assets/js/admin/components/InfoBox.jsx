@@ -41,7 +41,7 @@ export default class InfoBox extends Component {
   }
 }
 
-InfoBox.PropTypes = {
+InfoBox.propTypes = {
   icon : PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   body : PropTypes.string,

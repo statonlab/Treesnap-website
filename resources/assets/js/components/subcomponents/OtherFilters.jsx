@@ -35,6 +35,6 @@ export default class OtherFilters extends Component {
   }
 }
 
-OtherFilters.PropTypes = {
+OtherFilters.propTypes = {
   onChange: PropTypes.func.isRequired
 }

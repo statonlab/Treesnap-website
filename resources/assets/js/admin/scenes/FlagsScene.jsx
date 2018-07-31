@@ -76,7 +76,6 @@ export default class FlagsScene extends Scene {
     this.setState({
       page: this.state.page + 1
     }, () => {
-      console.log('going to page: ', this.state)
       this.loadFlags()
     })
   }

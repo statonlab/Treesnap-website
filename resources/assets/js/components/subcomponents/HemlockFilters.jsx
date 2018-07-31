@@ -151,6 +151,6 @@ export default class HemlockFilters extends Component {
   }
 }
 
-HemlockFilters.PropTypes = {
+HemlockFilters.propTypes = {
   onChange: PropTypes.func.isRequired
 }

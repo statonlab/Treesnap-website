@@ -792,7 +792,7 @@ export default class Group extends Component {
         </div>
 
         <GroupJoinRequests
-          groupID={this.props.match.params.id}
+          groupID={parseInt(this.props.match.params.id)}
           onAccept={this.loadGroup.bind(this)}
         >
         </GroupJoinRequests>
@@ -863,7 +863,7 @@ export default class Group extends Component {
   }
 }
 
-Group.PropTypes = {
+Group.propTypes = {
   admin: PropTypes.bool
 }
 

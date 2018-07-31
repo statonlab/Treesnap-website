@@ -241,7 +241,7 @@ export default class GroupJoinRequests extends Component {
   }
 }
 
-GroupJoinRequests.PropTypes = {
+GroupJoinRequests.propTypes = {
   groupID : PropTypes.number.isRequired,
   onAccept: PropTypes.func
 }

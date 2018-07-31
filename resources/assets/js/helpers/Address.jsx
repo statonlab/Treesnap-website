@@ -39,6 +39,6 @@ export default class Address extends Component {
   }
 }
 
-Address.PropTypes = {
+Address.propTypes = {
   position: PropTypes.object.isRequired
 }

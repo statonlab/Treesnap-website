@@ -199,7 +199,7 @@ export default class FlagForm extends Component {
   }
 }
 
-FlagForm.PropTypes = {
+FlagForm.propTypes = {
   observationId: PropTypes.number.isRequired,
   onSubmit     : PropTypes.func,
   flagged      : PropTypes.bool,

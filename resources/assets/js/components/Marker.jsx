@@ -110,8 +110,8 @@ export default class Marker extends Component {
   }
 }
 
-Marker.PropTypes = {
-  maps     : PropTypes.object.isRequired,
+Marker.propTypes = {
+  maps     : PropTypes.object,
   position : PropTypes.object.isRequired,
   title    : PropTypes.string,
   show     : PropTypes.bool,

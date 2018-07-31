@@ -146,6 +146,6 @@ export default class AshFilters extends Component {
   }
 }
 
-AshFilters.PropTypes = {
+AshFilters.propTypes = {
   onChange: PropTypes.func.isRequired
 }

@@ -128,6 +128,6 @@ export default class WhiteOakFilters extends Component {
   }
 }
 
-WhiteOakFilters.PropTypes = {
+WhiteOakFilters.propTypes = {
   onChange: PropTypes.func.isRequired
 }

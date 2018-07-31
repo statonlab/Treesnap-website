@@ -116,7 +116,7 @@ export default class Navbar extends Component {
   }
 }
 
-Navbar.PropTypes = {
+Navbar.propTypes = {
   container: PropTypes.bool,
   home     : PropTypes.bool
 }

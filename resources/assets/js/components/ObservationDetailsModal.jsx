@@ -27,7 +27,7 @@ export default class ObservationDetailsModal extends Component {
   }
 }
 
-ObservationDetailsModal.PropTypes = {
+ObservationDetailsModal.propTypes = {
   visible       : PropTypes.bool.isRequired,
   onCloseRequest: PropTypes.func.isRequired,
   observation   : PropTypes.object.isRequired

@@ -139,6 +139,6 @@ export default class BarChart extends Component {
   }
 }
 
-BarChart.PropTypes = {
+BarChart.propTypes = {
   url: PropTypes.string
 }

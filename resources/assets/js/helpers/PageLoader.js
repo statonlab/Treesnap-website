@@ -2,7 +2,6 @@ import React from 'react'
 
 export default function PageLoader(props) {
   if (props.error !== null) {
-    console.log('Found the error', props.error)
     return (
       <div className="container">
         <div className="columns">

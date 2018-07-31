@@ -17,7 +17,7 @@ export default class DropdownItem extends Component {
   }
 }
 
-DropdownItem.PropTypes = {
+DropdownItem.propTypes = {
   onClick: PropTypes.func,
   href   : PropTypes.string
 }

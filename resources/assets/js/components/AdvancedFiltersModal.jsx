@@ -398,7 +398,7 @@ export default class AdvancedFiltersModal extends Component {
   }
 }
 
-AdvancedFiltersModal.PropTypes = {
+AdvancedFiltersModal.propTypes = {
   visible         : PropTypes.bool.isRequired,
   onCloseRequest  : PropTypes.func.isRequired,
   onCreate        : PropTypes.func.isRequired,
