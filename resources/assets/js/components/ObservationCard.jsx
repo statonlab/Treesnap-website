@@ -30,7 +30,7 @@ export default class ObservationCard extends Component {
       },
       correctMarks     : 0,
       incorrectMarks   : 0,
-      showDetailsModal : false,
+      showDetailsModal : false
     }
 
     this.timeoutWatcher = null
@@ -484,13 +484,17 @@ export default class ObservationCard extends Component {
                 </a><br/>
 
                 {observation.custom_id ? <div>
-                  <small><strong>ID</strong> {observation.custom_id}</small><br/>
-                </div> : <div style={{height: 24}}></div>}
+                    <small><strong>Custom ID</strong> {observation.custom_id}</small>
+                    <br/>
+                  </div> :
+                  <div>
+                    <small><strong>ID</strong> {observation.mobile_id}</small>
+                  </div>}
 
                 {this.props.owner || User.can('view accurate location') ?
-                <small className="no-wrap">
-                  {observation.location.latitude}, {observation.location.longitude}<br/>
-                </small>
+                  <small className="no-wrap">
+                    {observation.location.latitude}, {observation.location.longitude}<br/>
+                  </small>
                   : null}
 
                 <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>

@@ -447,6 +447,13 @@ export default class ObservationDetails extends Component {
                     <td>{this.observation.custom_id}</td>
                   </tr> : null}
 
+                {this.observation.mobile_id ?
+                  <tr>
+                    <th>ID</th>
+                    <td>{this.observation.mobile_id}</td>
+                  </tr>
+                  : null}
+
                 {Object.keys(data).map(key => {
                   if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
                     return null
