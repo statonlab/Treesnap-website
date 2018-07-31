@@ -1057,6 +1057,13 @@ export default class App extends Scene {
             </div>
             : null}
 
+          {marker.mobile_id ?
+            <div className="sidebar-item">
+              <h5><strong>ID</strong></h5>
+              <p className="ml-1">{marker.mobile_id}</p>
+            </div>
+            : null}
+
           <div className="sidebar-item">
             <h5><strong>Collection Date</strong></h5>
             <p className="ml-1">{marker.date}</p>
