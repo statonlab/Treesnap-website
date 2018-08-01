@@ -171,7 +171,20 @@ export default class App extends Scene {
   }
 
   updateHistory(center, zoom) {
-    this.props.history.replace(`/map/?center=${center.lat},${center.lng}&zoom=${zoom}`)
+    let lat, lng
+    if(typeof center.lat === 'function') {
+      lat = center.lat()
+    } else {
+      lat = center.lat
+    }
+
+    if(typeof center.lng === 'function') {
+      lng = center.lng()
+    } else {
+      lng = center.lng
+    }
+
+    this.props.history.replace(`/map/?center=${lat},${lng}&zoom=${zoom}`)
   }
 
   /**
