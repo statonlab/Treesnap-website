@@ -118,17 +118,19 @@ Marker.propTypes = {
   onCreate : PropTypes.func,
   onClick  : PropTypes.func,
   onDestroy: PropTypes.func,
-  owner_id: PropTypes.number
+  owner_id : PropTypes.number
 }
 
 Marker.defaultProps = {
-  title: '',
-  show : true,
+  title   : '',
+  show    : true,
   onCreate() {
   },
   onClick() {
   },
   onHide() {
+  },
+  onDestroy() {
   },
   owner_id: 0
 }
