@@ -171,7 +171,7 @@ export default class App extends Scene {
   }
 
   updateHistory(center, zoom) {
-    this.props.history.replace(`/map/?center=${center.lat()},${center.lng()}&zoom=${zoom}`)
+    this.props.history.replace(`/map/?center=${center.lat},${center.lng}&zoom=${zoom}`)
   }
 
   /**
@@ -309,7 +309,7 @@ export default class App extends Scene {
       lng: marker.position.longitude
     }
 
-    this.refs.maps.goTo(center, zoom)
+    this.refs.maps.goTo(new google.maps.LatLng(center), zoom)
 
     this.updateHistory(center, zoom)
   }
