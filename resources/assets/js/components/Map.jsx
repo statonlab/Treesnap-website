@@ -43,7 +43,7 @@ export default class Map extends Component {
     })
 
     this.maps.addListener('idle', () => {
-      this.props.onBoundsChange(this.maps.getBounds())
+      this.props.onBoundsChange(this.getBounds())
     })
 
     this.maps.addListener('click', () => EventEmitter.emit('mapClicked'))
@@ -85,7 +85,7 @@ export default class Map extends Component {
   renderChildren() {
     if (this.refs && this.refs.mapContainer) {
       return React.Children.map(this.props.children, child => {
-        if (child.type.name === 'Marker') {
+        if (child.type === Marker) {
           return React.cloneElement(child, {
             maps     : this.maps,
             onCreate : (marker) => {
@@ -147,7 +147,7 @@ export default class Map extends Component {
 
   render() {
     return (
-      <div ref="mapContainer" {..._.omit(this.props, ['center', 'zoom', 'onBoundsChange', 'onLoad'])}>
+      <div ref="mapContainer" {..._.omit(this.props, [Object.keys(Map.propTypes)])}>
         {this.renderChildren()}
       </div>
     )
