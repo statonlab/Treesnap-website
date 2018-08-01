@@ -38,7 +38,7 @@ export default class Spinner extends Component {
   }
 }
 
-Spinner.PropTypes = {
+Spinner.propTypes = {
   visible       : PropTypes.bool.isRequired,
   containerStyle: PropTypes.object,
   inline        : PropTypes.bool

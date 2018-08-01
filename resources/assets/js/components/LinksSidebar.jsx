@@ -38,7 +38,7 @@ export default class LinksSidebar extends Component {
   }
 }
 
-LinksSidebar.PropTypes = {
+LinksSidebar.propTypes = {
   links: PropTypes.array.isRequired,
   title: PropTypes.string
 }

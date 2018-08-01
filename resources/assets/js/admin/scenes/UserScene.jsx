@@ -571,6 +571,6 @@ export default class UserScene extends Scene {
   }
 }
 
-UserScene.PropTypes = {
+UserScene.propTypes = {
   location: PropTypes.object.isRequired
 }

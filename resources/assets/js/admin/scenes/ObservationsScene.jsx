@@ -642,14 +642,14 @@ export default class ObservationsScene extends Scene {
             <h1 className="title is-3"> Observations</h1>
           </div>
           <div className="column is-6 has-text-right">
-            <button type="button"
-                    className="button is-info"
-                    onClick={() => this.setState({showHelpModal: true})}>
-              <span className="icon">
-                <i className="fa fa-question-circle-o"></i>
-              </span>
-              <span style={{marginTop: -2}}>Help</span>
-            </button>
+            {/*<button type="button"*/}
+                    {/*className="button is-info"*/}
+                    {/*onClick={() => this.setState({showHelpModal: true})}>*/}
+              {/*<span className="icon">*/}
+                {/*<i className="fa fa-question-circle-o"></i>*/}
+              {/*</span>*/}
+              {/*<span style={{marginTop: -2}}>Help</span>*/}
+            {/*</button>*/}
           </div>
         </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Traits;
 
 use App\Rules\Provider;
+use ReCaptcha\ReCaptcha;
 use Validator;
 use App\User;
 use App\Role;
@@ -38,6 +39,16 @@ trait CreatesUsers
                 'min:5',
                 'max:10',
                 'regex:/^([0-9]{5})(-[0-9]{4})?$/i',
+            ],
+            'recaptcha' => [
+                'g-required',
+                function ($attribute, $value, $fail) {
+                    $recaptcha = new ReCaptcha(config('services.google.recaptcha'));
+                    $verify = $recaptcha->verify($value, \Request::ip());
+                    if (! $verify->isSuccess()) {
+                        return $fail('Please verify you are not a robot');
+                    }
+                },
             ],
         ];
 

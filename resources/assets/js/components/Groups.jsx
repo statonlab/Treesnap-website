@@ -243,7 +243,7 @@ export default class Groups extends Component {
   }
 }
 
-Groups.PropTypes = {
+Groups.propTypes = {
   admin: PropTypes.bool
 }
 

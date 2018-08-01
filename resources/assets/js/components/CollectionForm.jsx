@@ -143,7 +143,7 @@ export default class CollectionForm extends Component {
   }
 }
 
-CollectionForm.PropTypes = {
+CollectionForm.propTypes = {
   observationId: PropTypes.number.isRequired,
   collections  : PropTypes.array,
   onSubmit     : PropTypes.func

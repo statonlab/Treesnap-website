@@ -54,8 +54,7 @@ export default class KnowledgeViewScene extends Scene {
   }
 }
 
-KnowledgeViewScene.PropTypes = {
-  docPath: PropTypes.string.isRequired,
+KnowledgeViewScene.propTypes = {
   title  : PropTypes.string
 }
 

@@ -31,7 +31,7 @@ export default class BoxModal extends Component {
   }
 }
 
-BoxModal.PropTypes = {
+BoxModal.propTypes = {
   visible        : PropTypes.bool.isRequired,
   onCloseRequest : PropTypes.func.isRequired,
   showCloseButton: PropTypes.bool

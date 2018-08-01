@@ -134,6 +134,6 @@ export default class AmericanChestnutFilters extends Component {
   }
 }
 
-AmericanChestnutFilters.PropTypes = {
+AmericanChestnutFilters.propTypes = {
   onChange: PropTypes.func.isRequired
 }

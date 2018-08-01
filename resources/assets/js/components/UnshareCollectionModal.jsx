@@ -166,6 +166,6 @@ export default class UnshareCollectionModal extends Component {
   }
 }
 
-UnshareCollectionModal.PropTypes = {
+UnshareCollectionModal.propTypes = {
   collection: PropTypes.object.isRequired
 }

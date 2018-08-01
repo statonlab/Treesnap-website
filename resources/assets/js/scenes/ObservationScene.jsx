@@ -312,7 +312,7 @@ export default class ObservationScene extends Scene {
   }
 }
 
-ObservationScene.PropTypes = {
+ObservationScene.propTypes = {
   admin: PropTypes.bool
 }
 

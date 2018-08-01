@@ -26,7 +26,7 @@ export default class Modal extends Component {
   }
 }
 
-Modal.PropTypes = {
+Modal.propTypes = {
   onCloseRequest: PropTypes.func.isRequired,
   permanent     : PropTypes.bool,
   showClose     : PropTypes.bool,

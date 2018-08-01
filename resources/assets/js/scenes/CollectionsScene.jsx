@@ -435,7 +435,7 @@ export default class CollectionsScene extends Scene {
 }
 
 CollectionsScene
-  .PropTypes = {
+  .propTypes = {
   admin: PropTypes.bool
 }
 

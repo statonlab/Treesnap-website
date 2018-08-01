@@ -105,6 +105,6 @@ export default class LineChart extends Component {
   }
 }
 
-LineChart.PropTypes = {
+LineChart.propTypes = {
   url: PropTypes.string
 }

@@ -74,7 +74,7 @@ export default class Disclaimer extends Component {
   }
 }
 
-Disclaimer.PropTypes = {
+Disclaimer.propTypes = {
   id: PropTypes.number
 }
 

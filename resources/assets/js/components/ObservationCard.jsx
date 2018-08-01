@@ -132,12 +132,14 @@ export default class ObservationCard extends Component {
     const observation = this.props.observation
     const image       = observation.images.images ? observation.images.images[0] : '/images/placeholder.png'
     return (
-      <Map style={{height: '100%', zIndex: '0'}}
-           center={{
-             lat: observation.location.latitude,
-             lng: observation.location.longitude
-           }}
-           zoom={4}>
+      <Map
+        ref={map => this.maps = map}
+        style={{height: '100%', zIndex: '0'}}
+        center={{
+          lat: observation.location.latitude,
+          lng: observation.location.longitude
+        }}
+        zoom={4}>
         <Marker
           title={observation.observation_category}
           position={observation.location}
@@ -598,7 +600,7 @@ export default class ObservationCard extends Component {
   }
 }
 
-ObservationCard.PropTypes = {
+ObservationCard.propTypes = {
   observation            : PropTypes.object.isRequired,
   onFlagChange           : PropTypes.func,
   onCollectionCreated    : PropTypes.func,

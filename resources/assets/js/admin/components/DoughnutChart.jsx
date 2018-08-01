@@ -61,6 +61,6 @@ export default class DoughnutChart extends Component {
   }
 }
 
-DoughnutChart.PropTypes = {
+DoughnutChart.propTypes = {
   url: PropTypes.string.isRequired
 }
