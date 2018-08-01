@@ -16,6 +16,9 @@ class Provider implements Rule
 
     /**
      * Determine if the validation rule passes.
+     * If the user has signed up using a different provider (e.g, google),
+     * Let the user know they can't sign in using email and password
+     * and must use the same provider again.
      *
      * @param  string $attribute
      * @param  string $email
