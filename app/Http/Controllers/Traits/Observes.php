@@ -19,6 +19,7 @@ trait Observes
         'White Oak',
         'American Elm',
         'Florida Torreya',
+        'Eastern Larch',
         'Other',
     ];
 
