@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from './ButtonList'
 import AmericanChestnutFilters from './subcomponents/AmericanChestnutFilters'
@@ -7,6 +7,7 @@ import HemlockFilters from './subcomponents/HemlockFilters'
 import AmericanElmFilters from './subcomponents/AmericanElmFilters'
 import WhiteOakFilters from './subcomponents/WhiteOakFilters'
 import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
+import EasternLarchFilters from './subcomponents/EasternLarchFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 
@@ -27,6 +28,7 @@ export default class AdvancedFiltersModal extends Component {
       americanElm       : {},
       whiteOak          : {},
       floridaTorreya    : {},
+      easternLarch      : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -76,6 +78,7 @@ export default class AdvancedFiltersModal extends Component {
       americanElm     : this.state.americanElm,
       whiteOak        : this.state.whiteOak,
       floridaTorreya  : this.state.floridaTorreya,
+      easternLarch    : this.state.easternLarch,
       other           : this.state.other,
       address         : {
         city  : this.state.city,
@@ -134,6 +137,7 @@ export default class AdvancedFiltersModal extends Component {
       whiteOak        : filters.whiteOak,
       other           : filters.other,
       floridaTorreya  : filters.floridaTorreya,
+      easternLarch    : filters.easternLarch,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -211,6 +215,17 @@ export default class AdvancedFiltersModal extends Component {
         <h3 className="title is-4 mb-0">Florida Torreya Filters (Optional)</h3>
         <div className="bordered">
           <FloridaTorreya onChange={(floridaTorreya) => this.count({floridaTorreya})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderEasternLarchFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Eastern Larch Filters (Optional)</h3>
+        <div className="bordered">
+          <EasternLarchFilters onChange={(easternLarch) => this.count({easternLarch})}/>
         </div>
       </div>
     )

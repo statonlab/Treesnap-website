@@ -1,4 +1,4 @@
-# The trees of TreeSnap
+# The Trees of TreeSnap
 
 ## American chestnut
 
@@ -31,18 +31,17 @@ There are several different species of American ash trees, all of which are susc
  * Green ash _Fraxinus pennsylvanica_
  * Black ash _Fraxinus nigra_
  * Blue ash _Fraxinus quadrangulata_
-        
+
 
 ### Emerald ash borer
 
 An invasive insect, the emerald ash borer, is currently moving through North America and killing ash trees. The larvae of this beetle feed on the inner bark of ash trees, cutting off the tree’s flow of water and nutrients and eventually killing the tree. All American ash species are susceptible to the emerald ash borer and so far there is very little natural resistance to the insect in our trees.
-          Our hope is that this reporting app will let members of the public identify ash trees that are lingering after the emerald ash borer’s arrival and which may have some natural resistance. Partners will then collect seeds from these trees and add them to tree breeding programs to try and propagate resistant trees that are not killed by the emerald ash borer to use in forest restoration.
-        [Read more about the emerald ash borer here](http://www.hungrypests.com/the-threat/emerald-ash-borer.php).
+Our hope is that this reporting app will let members of the public identify ash trees that are lingering after the emerald ash borer’s arrival and which may have some natural resistance. Partners will then collect seeds from these trees and add them to tree breeding programs to try and propagate resistant trees that are not killed by the emerald ash borer to use in forest restoration.
+[Read more about the emerald ash borer here](http://www.hungrypests.com/the-threat/emerald-ash-borer.php).
 
 ### Partners
 
-  * [USDA Forest Service Northern Research Station 
-](https://www.fs.fed.us/nrs/tools/ash/)
+  * [USDA Forest Service Northern Research Station](https://www.fs.fed.us/nrs/tools/ash/)
 
 ## White oak
 
@@ -69,7 +68,7 @@ Our hope is that this reporting app will let members of the public identify heml
 ### Partners
 
 * [Hemlock Restoration Initiatve](http://savehemlocksnc.org/)
-*  [Forest Restoration Alliance](https://threatenedforests.com/)
+* [Forest Restoration Alliance](https://threatenedforests.com/)
 
 ## Florida Torreya
 
@@ -82,4 +81,23 @@ Florida Torreya is also known as Gopherwood, Stinking Cedar, and Florida nutmeg.
 The deadly fungus has been identified as _Fusarium torreyae_, thought to be imported from Asia, and appears to be ubiquitous in the ravines area. Root sprouts die before reaching maturity and producing fruit, so the species will go extinct in the wild without intervention. Researchers will coordinate with you to take cuttings of your trees which will be grown offsite to save the most genetic diversity possible. Of utmost importance is finding trees that do not exhibit cankers or other signs of disease stress so that genes for disease resistance can be found and used in a breeding program.
 
 ### Partners
-* [Atlanta Botanical Gardens]( atlantabg.org/learn/conservation-efforts)
+* [Atlanta Botanical Gardens](http://atlantabg.org/learn/conservation-efforts)
+
+## Eastern Larch
+
+The Eastern Larch is a deciduous conifer tree, meaning that it drops its needles every Autumn. 
+
+The Eastern Larch is one of the only gymnosperms that experience this Autumn leaf senescence, so it is important to better understand the mechanisms and patterns of this phenomenon.
+
+The process of Autumn leaf senescence in eastern larches are not well understood. Researchers are aiming to investigate this by collecting samples throughout the annual cycle of individual trees, then to study both their physical and genetic characteristics. 
+
+The needle dropping period occurs very soon after the needles change color from green-blue to golden-yellow, but the actual timing of this period is not easily predictable due to changes in temperatures and daylight patterns. Since samples will be collected during the fall needle  changes, it is important to the research that the pattern associated with needle dropping is well documented. People who visit the same eastern larches frequently can help with this work!
+
+### Read More
+
+[A Conifer That Thinks It's a Broadleaf](http://curiousnature.info/A1-Larch.htm)
+
+[Larix laricina (Tamarack, American Larch) Pinaceae](https://www.lakeforest.edu/academics/programs/environmental/courses/es204/larix_laricina.php)
+
+### Partners
+* [University of Connecnticut](https://compgenomics.lab.uconn.edu)
