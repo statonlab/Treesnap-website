@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 export default class PartnerList extends Component {
   constructor(props) {
@@ -37,9 +37,9 @@ export default class PartnerList extends Component {
           <div className="media">
             <div className="media-left">
               <a href="https://threatenedforests.com/">
-              <img src="/images/fra.png"
-                   alt="Forest Restoration Alliance logo"
-                   className="feature-icon"/>
+                <img src="/images/fra.png"
+                     alt="Forest Restoration Alliance logo"
+                     className="feature-icon"/>
               </a>
             </div>
             <div className="media-content">
@@ -55,10 +55,10 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href ="http://savehemlocksnc.org/">
-              <img src="/images/HRI.png"
-                   alt="Hemlock restoration initiative logo"
-                   className="feature-icon"/>
+              <a href="http://savehemlocksnc.org/">
+                <img src="/images/HRI.png"
+                     alt="Hemlock restoration initiative logo"
+                     className="feature-icon"/>
               </a>
             </div>
             <div className="media-content">
@@ -76,10 +76,10 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href ="https://www.acf.org/">
-              <img src="/images/ACF_logo.png" alt="American Chestnut Foundation"
-                   className="feature-icon"
-              />
+              <a href="https://www.acf.org/">
+                <img src="/images/ACF_logo.png" alt="American Chestnut Foundation"
+                     className="feature-icon"
+                />
               </a>
             </div>
             <div className="media-content">
@@ -98,11 +98,11 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-            <a href ="http://www.foresthealthcenter.org">
-              <img src="/images/FHC_small.png"
-                   alt="Forest Health Center icon"
-                   className="feature-icon"/>
-            </a>
+              <a href="http://www.foresthealthcenter.org">
+                <img src="/images/FHC_small.png"
+                     alt="Forest Health Center icon"
+                     className="feature-icon"/>
+              </a>
             </div>
             <div className="media-content">
               <p className="title">Forest Health Research and Education Center
@@ -120,10 +120,11 @@ export default class PartnerList extends Component {
             </div>
           </div>
         </div>
+
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href ="http://atlantabg.org/">
+              <a href="http://atlantabg.org/">
                 <img src="/images/ABG.png"
                      alt="Atlanta Botanical Garden icon"
                      className="feature-icon"/>
@@ -133,11 +134,33 @@ export default class PartnerList extends Component {
               <p className="title">Atlanta Botanical Garden
               </p>
               <p className="feature-text">
-               The Atlanta Botanical Garden's mission is to develop and maintain plant collections for display, education, research, conservation and enjoyment. The Garden has launched the Center for Southeastern Conservation, an expansion of the Garden’s conservation research and education. Through conservation of imperiled species and habitats in the Carolinas, Tennessee, Georgia, Florida, Alabama, Mississippi, and Louisiana, the Center protects the natural heritage of one of North America’s most biodiverse regions.
+                The Atlanta Botanical Garden's mission is to develop and maintain plant collections for display, education, research, conservation and enjoyment. The Garden has launched the Center for Southeastern Conservation, an expansion of the Garden’s conservation research and education. Through conservation of imperiled species and habitats in the Carolinas, Tennessee, Georgia, Florida, Alabama, Mississippi, and Louisiana, the Center protects the natural heritage of one of North America’s most biodiverse regions.
               </p>
             </div>
           </div>
         </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://compgenomics.lab.uconn.edu">
+                <img src="/images/uconn.png"
+                     alt="University of Connecticut"
+                     className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">University of Connecticut</p>
+              <p className="feature-text">
+                The computational genomics lab at the University of Connecticut, led by Dr Jill Wegrzyn, focuses on the computational analysis of genomic and transcriptomic sequences from non-model plant species. We do this by developing approaches to examine gene finding, gene expression, transcriptome assembly, and conserved element identification, through machine learning and computational statistics. We use these novel methods to address questions related to genome biology and population genomics.
+              </p>
+              <p className="feature-text">
+                We also develop web-based applications that integrate data across domains to facilitate the forest geneticist or ecologist's ability to analyze, share, and visualize their data. Such integration requires the implementation of semantic technologies and ontologies to connect genotype, phenotype, and environmental data.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="box">
           <div className="media">
             <div className="media-left">
@@ -154,6 +177,7 @@ export default class PartnerList extends Component {
             </div>
           </div>
         </div>
+
       </div>
     )
   }

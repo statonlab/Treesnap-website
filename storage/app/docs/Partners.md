@@ -26,7 +26,7 @@ The American Chestnut Foundation will use data on chestnuts to find trees that a
 # Forest Health Research and Education Center
  [The Forest Health Research and Education Center's](http://www.foresthealthcenter.org) mission is to advance the conservation of forested ecosystems by integrating genetics-based biological research with social science research and education and outreach on factors affecting tree health and forest restoration.
  
- 
+
 The Forest Health Research and Education Center will use data on white oak to build a breeding program.  Their goal is to be better prepared in the event that any invasive pests that target white oak are introduced in the future.
 
 # Atlanta Botanical Garden
