@@ -85,13 +85,9 @@ The deadly fungus has been identified as _Fusarium torreyae_, thought to be impo
 
 ## Eastern Larch
 
-The Eastern Larch is a deciduous conifer tree, meaning that it drops its needles every Autumn. 
+Eastern larch (Larix laricina) is common in New England, the upper Midwest, and much of Canada. It often goes by the alternative common names of Tamarack and American Larch. Eastern larch is one of the few gymnosperms that experience this Autumn leaf senescence. The process of needle senescence in Eastern larch is not well understood. Researchers are aiming to investigate this by collecting samples throughout the annual cycle of individual trees, to study both their physical and genetic characteristics.
 
-The Eastern Larch is one of the only gymnosperms that experience this Autumn leaf senescence, so it is important to better understand the mechanisms and patterns of this phenomenon.
-
-The process of Autumn leaf senescence in eastern larches are not well understood. Researchers are aiming to investigate this by collecting samples throughout the annual cycle of individual trees, then to study both their physical and genetic characteristics. 
-
-The needle dropping period occurs very soon after the needles change color from green-blue to golden-yellow, but the actual timing of this period is not easily predictable due to changes in temperatures and daylight patterns. Since samples will be collected during the fall needle  changes, it is important to the research that the pattern associated with needle dropping is well documented. People who visit the same eastern larches frequently can help with this work!
+The needle dropping period occurs very soon after the needles change color from green-blue to golden-yellow. The specific timing of this period can vary due to changes in temperatures and daylight patterns. Needle samples will be collected in the Fall for sequencing and it is important to document the color changes and needle drop to further our understanding of this phenomenon.
 
 ### Read More
 
@@ -100,4 +96,4 @@ The needle dropping period occurs very soon after the needles change color from 
 [Larix laricina (Tamarack, American Larch) Pinaceae](https://www.lakeforest.edu/academics/programs/environmental/courses/es204/larix_laricina.php)
 
 ### Partners
-* [University of Connecnticut](https://compgenomics.lab.uconn.edu)
+* [University of Connecnticut - Plant Computational Genomics Lab](https://compgenomics.lab.uconn.edu)
