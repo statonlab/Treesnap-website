@@ -9,7 +9,7 @@ export default class PartnerList extends Component {
 
   render() {
     return (
-      <div className="home-section">
+      <div>
         <h1 className="title is-3">Our Partners</h1>
         <div className="box">
           <div className="media">
@@ -30,6 +30,7 @@ export default class PartnerList extends Component {
                 time to identify “lingering” trees that survive long past others have died to
                 be used in research and breeding programs.
               </p>
+              <a className={'button is-info'} href="https://www.nrs.fs.fed.us/units/invasivescontrol/">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -49,6 +50,7 @@ export default class PartnerList extends Component {
                 landscapes in eastern America by researching and addressing invasive pest
                 threats to hemlock, firs, and other native trees.
               </p>
+              <a className={'button is-info'} href="https://threatenedforests.com/">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -70,6 +72,7 @@ export default class PartnerList extends Component {
                 will use data on hemlock to find trees that are resistant to hemlock woolly
                 adelgid.
               </p>
+              <a className={'button is-info'} href="http://savehemlocksnc.org/">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -92,6 +95,7 @@ export default class PartnerList extends Component {
                 that are resistant to chestnut blight to be added to breeding and research
                 programs.
               </p>
+              <a className={'button is-info'} href="https://www.acf.org/">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -117,6 +121,7 @@ export default class PartnerList extends Component {
                 event that any invasive pests that target white oak are introduced in the
                 future.
               </p>
+              <a className={'button is-info'} href="http://www.foresthealthcenter.org">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -136,6 +141,7 @@ export default class PartnerList extends Component {
               <p className="feature-text">
                 The Atlanta Botanical Garden's mission is to develop and maintain plant collections for display, education, research, conservation and enjoyment. The Garden has launched the Center for Southeastern Conservation, an expansion of the Garden’s conservation research and education. Through conservation of imperiled species and habitats in the Carolinas, Tennessee, Georgia, Florida, Alabama, Mississippi, and Louisiana, the Center protects the natural heritage of one of North America’s most biodiverse regions.
               </p>
+              <a className={'button is-info'} href="http://atlantabg.org/">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -144,19 +150,20 @@ export default class PartnerList extends Component {
           <div className="media">
             <div className="media-left">
               <a href="https://compgenomics.lab.uconn.edu">
-                <img src="/images/uconn.png"
+                <img src="/images/uconn_lab.png"
                      alt="University of Connecticut"
                      className="feature-icon"/>
               </a>
             </div>
             <div className="media-content">
-              <p className="title">University of Connecticut</p>
+              <p className="title">UConn Plant Computational Genomics Lab</p>
               <p className="feature-text">
                 The computational genomics lab at the University of Connecticut, led by Dr Jill Wegrzyn, focuses on the computational analysis of genomic and transcriptomic sequences from non-model plant species. We do this by developing approaches to examine gene finding, gene expression, transcriptome assembly, and conserved element identification, through machine learning and computational statistics. We use these novel methods to address questions related to genome biology and population genomics.
               </p>
               <p className="feature-text">
                 We also develop web-based applications that integrate data across domains to facilitate the forest geneticist or ecologist's ability to analyze, share, and visualize their data. Such integration requires the implementation of semantic technologies and ontologies to connect genotype, phenotype, and environmental data.
               </p>
+              <a className={'button is-info'} href="https://compgenomics.lab.uconn.edu">Visit Full Site</a>
             </div>
           </div>
         </div>
