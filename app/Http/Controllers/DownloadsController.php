@@ -82,7 +82,7 @@ class DownloadsController extends Controller
             $filtered = $this->addPrivacyClause($filtered, $user);
         }
 
-        $filtered->chunk(200, function ($observations) use ($user, $path, $extension) {
+        $filtered->chunk(800, function ($observations) use ($user, $path, $extension) {
             foreach ($observations as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
 
@@ -129,7 +129,7 @@ class DownloadsController extends Controller
         // Generate Collection
         $collection->observations()
             ->with(['latinName', 'user'])
-            ->chunk(200, function ($observations) use ($user, $path, $extension) {
+            ->chunk(800, function ($observations) use ($user, $path, $extension) {
                 foreach ($observations as $observation) {
                     $line = $this->prepObservationLine($observation, $user);
 
@@ -177,7 +177,7 @@ class DownloadsController extends Controller
 
         Storage::put($path, $this->line($header, $extension));
 
-        $this->getFilteredObservations($request)->chunk(200, function ($observations) use ($user, $path, $extension) {
+        $this->getFilteredObservations($request)->chunk(800, function ($observations) use ($user, $path, $extension) {
             foreach ($observations as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
 
