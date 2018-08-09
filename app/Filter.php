@@ -118,6 +118,22 @@ class Filter extends Model
             }
         }
 
+        if (isset($filters['date_range'])) {
+            $filters['date_range'] = (array)$filters['date_range'];
+            if (! empty($filters['date_range']['start']) || ! empty($filters['date_range']['end'])) {
+                $observations->where(function ($query) use ($filters) {
+                    /** @var \Illuminate\Database\Query\Builder $query */
+                    if (! empty($filters['date_range']['start'])) {
+                        $query->whereDate('observations.created_at', '>=', $filters['date_range']['start']);
+                    }
+
+                    if (! empty($filters['date_range']['end'])) {
+                        $query->whereDate('observations.created_at', '<=', $filters['date_range']['end']);
+                    }
+                });
+            }
+        }
+
         $observations->where(function ($DB) use ($filters) {
             // Apply per category filters.
             foreach ($filters['categories'] as $key => $category) {
@@ -158,10 +174,10 @@ class Filter extends Model
                                     continue;
                                 }
 
-                                if(in_array($filterName, static::$supportsUnits)) {
+                                if (in_array($filterName, static::$supportsUnits)) {
                                     $units = 'US';
                                     $user = auth()->user();
-                                    if($user) {
+                                    if ($user) {
                                         $units = $user->units;
                                     }
                                     // Apply the min/max filter for fields that DO support units
