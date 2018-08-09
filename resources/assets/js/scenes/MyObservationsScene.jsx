@@ -3,7 +3,7 @@ import ObservationCard from '../components/ObservationCard'
 import Spinner from '../components/Spinner'
 import Path from '../helpers/Path'
 import AccountView from '../components/AccountView'
-// import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
+import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import Dropdown from '../components/Dropdown'
 import Scene from './Scene'
 
@@ -36,8 +36,7 @@ export default class MyObservationsScene extends Scene {
       disableCollections      : false,
       disableGroups           : false,
       showAdvancedFiltersModal: false,
-      advancedFiltersRules    : {},
-      AdvancedFiltersModal    : null
+      advancedFiltersRules    : {}
     }
 
     this._advancedFilterState = null
@@ -200,9 +199,6 @@ export default class MyObservationsScene extends Scene {
   loadFilters() {
     axios.get('/web/filters').then(response => {
       this.setState({filters: response.data.data})
-      import('../components/AdvancedFiltersModal').then(AdvancedFiltersModal => {
-        this.setState({AdvancedFiltersModal: AdvancedFiltersModal.default})
-      })
     }).catch(error => {
       console.log(error)
     })
@@ -755,9 +751,7 @@ export default class MyObservationsScene extends Scene {
    * @returns {XML}
    */
   render() {
-    const total                = this.state.total
-    let {AdvancedFiltersModal} = this.state
-    
+    const total = this.state.total
     return (
       <AccountView>
         <div className="columns">
@@ -789,18 +783,16 @@ export default class MyObservationsScene extends Scene {
 
         {this._renderPageLinks()}
 
-        {AdvancedFiltersModal ?
-          <AdvancedFiltersModal
-            ref={ref => this.advancedFilterModal = ref}
-            visible={this.state.showAdvancedFiltersModal}
-            onCloseRequest={() => this.setState({showAdvancedFiltersModal: false})}
-            onCreate={this.applyAdvancedFilters.bind(this)}
-            onStateChange={this.saveFilterState.bind(this)}
-            withObservations={false}
-            resetForm={false}
-            showCount={false}
-          />
-          : null}
+        <AdvancedFiltersModal
+          ref={ref => this.advancedFilterModal = ref}
+          visible={this.state.showAdvancedFiltersModal}
+          onCloseRequest={() => this.setState({showAdvancedFiltersModal: false})}
+          onCreate={this.applyAdvancedFilters.bind(this)}
+          onStateChange={this.saveFilterState.bind(this)}
+          withObservations={false}
+          resetForm={false}
+          showCount={false}
+        />
 
         <Spinner visible={this.state.pageLoading}/>
       </AccountView>

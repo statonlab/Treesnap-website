@@ -1,5 +1,5 @@
 import 'dragscroll'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import Copyright from '../components/Copyright'
@@ -11,8 +11,8 @@ import Spinner from '../components/Spinner'
 import Disclaimer from '../components/Disclaimer'
 import MarkersFilter from '../helpers/MarkersFilter'
 import Labels from '../helpers/Labels'
-// import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
-import {Link} from 'react-router-dom'
+import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
+import { Link } from 'react-router-dom'
 import Notify from '../components/Notify'
 import CollectionForm from '../components/CollectionForm'
 import FlagForm from '../components/FlagForm'
@@ -52,8 +52,7 @@ export default class App extends Scene {
       showCollectionsForm  : false,
       showFlagForm         : false,
       ownedCollections     : [],
-      appliedAdvancedFilter: false,
-      AdvancedFiltersModal: null
+      appliedAdvancedFilter: false
     }
 
     document.title = 'Map - TreeSnap'
@@ -76,10 +75,6 @@ export default class App extends Scene {
   componentDidMount() {
     this.setState({loading: true})
     this.initSidebar()
-
-    import('../components/AdvancedFiltersModal').then(AdvancedFiltersModal => {
-      this.setState({AdvancedFiltersModal: AdvancedFiltersModal.default})
-    })
   }
 
   /**
@@ -177,13 +172,13 @@ export default class App extends Scene {
 
   updateHistory(center, zoom) {
     let lat, lng
-    if(typeof center.lat === 'function') {
+    if (typeof center.lat === 'function') {
       lat = center.lat()
     } else {
       lat = center.lat
     }
 
-    if(typeof center.lng === 'function') {
+    if (typeof center.lng === 'function') {
       lng = center.lng()
     } else {
       lng = center.lng
@@ -1239,7 +1234,6 @@ export default class App extends Scene {
    * @returns {XML}
    */
   render() {
-    let {AdvancedFiltersModal} = this.state
     return (
       <div className={this.state.showSidebar ? 'sidebar-visible' : ''}>
         <Navbar container={true}/>
@@ -1259,11 +1253,11 @@ export default class App extends Scene {
 
         <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
 
-        {AdvancedFiltersModal ? <AdvancedFiltersModal
+        <AdvancedFiltersModal
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
           onCreate={this.filterCreated.bind(this)}
-          map={true}/> : null}
+          map={true}/>
       </div>
     )
   }
