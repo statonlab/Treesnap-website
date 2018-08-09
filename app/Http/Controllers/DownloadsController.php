@@ -204,6 +204,7 @@ class DownloadsController extends Controller
             'Custom Identifier',
             'Observation Category',
             'Latin Name',
+            'Submitter',
             'Latitude',
             'Longitude',
             'Location Accuracy',
@@ -230,10 +231,12 @@ class DownloadsController extends Controller
         $latitude = $observation->fuzzy_coords['latitude'];
         $longitude = $observation->fuzzy_coords['longitude'];
         $location_accuracy = 'Fuzzy: within 8 kilometers';
+        $user_name = $user->is_anonymous ? 'Anonymous' : $user->name;
         if ($this->hasPrivilegedPermissions($user, $observation)) {
             $latitude = $observation->latitude;
             $longitude = $observation->longitude;
             $location_accuracy = "Exact: within {$observation->location_accuracy} meters";
+            $user_name = $user->name;
         } elseif ($observation->isPrivate) {
             // Ignore the observation if it is private and the user
             // does not have privileged permissions to access it
@@ -246,10 +249,11 @@ class DownloadsController extends Controller
         }
 
         $line = [
-            "{$observation->id}-{$observation->mobile_id}",
+            $observation->mobile_id,
             $observation->custom_id ?: 'NULL',
             $observation->observation_category,
             "{$observation->latinName->genus} {$observation->latinName->species}",
+            $user_name,
             $latitude,
             $longitude,
             $location_accuracy,
