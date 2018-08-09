@@ -10,6 +10,7 @@ import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
 import EasternLarchFilters from './subcomponents/EasternLarchFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
+import DatePicker from './DatePicker'
 
 export default class AdvancedFiltersModal extends Component {
   constructor(props) {
@@ -32,7 +33,9 @@ export default class AdvancedFiltersModal extends Component {
       other             : {},
       resultsCount      : 0,
       loading           : false,
-      errors            : {}
+      errors            : {},
+      startDate         : null,
+      endDate           : null
     }
   }
 
@@ -84,6 +87,10 @@ export default class AdvancedFiltersModal extends Component {
         city  : this.state.city,
         county: this.state.county,
         state : this.state.state
+      },
+      date_range      : {
+        start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
+        end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null
       },
       map             : this.props.map
     }
@@ -142,6 +149,10 @@ export default class AdvancedFiltersModal extends Component {
         city  : filters.city,
         county: filters.county,
         state : filters.state
+      },
+      date_range      : {
+        start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
+        end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null
       }
     }).then(response => {
       this.setState({
@@ -327,7 +338,31 @@ export default class AdvancedFiltersModal extends Component {
           return null
         })}
 
-        <div className="column is-6"></div>
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Submission Date Range (Optional)</label>
+            <div className="field is-horizontal">
+              <div className="field-body mr-1">
+                <div className="control">
+                  <DatePicker
+                    id={'start_date'}
+                    placeholder={'Start Date'}
+                    onDateChange={startDate => this.setState({startDate})}
+                    date={this.state.startDate}/>
+                </div>
+              </div>
+              <div className="field-body">
+                <div className="control">
+                  <DatePicker
+                    id={'end_date'}
+                    placeholder={'End Date'}
+                    onDateChange={endDate => this.setState({endDate})}
+                    date={this.state.endDate}/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {User.authenticated() ?
           <div className="column is-12">

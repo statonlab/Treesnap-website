@@ -45,7 +45,7 @@ trait FiltersObservations
         }
 
         if (! empty($request->advanced_filters)) {
-            $rules = json_decode($request->advanced_filters);
+            $rules = json_decode($request->advanced_filters, true);
             $observations = Filter::apply((array)$rules, $observations);
         }
 

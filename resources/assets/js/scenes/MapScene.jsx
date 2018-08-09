@@ -11,7 +11,7 @@ import Spinner from '../components/Spinner'
 import Disclaimer from '../components/Disclaimer'
 import MarkersFilter from '../helpers/MarkersFilter'
 import Labels from '../helpers/Labels'
-import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
+// import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import {Link} from 'react-router-dom'
 import Notify from '../components/Notify'
 import CollectionForm from '../components/CollectionForm'
@@ -52,7 +52,8 @@ export default class App extends Scene {
       showCollectionsForm  : false,
       showFlagForm         : false,
       ownedCollections     : [],
-      appliedAdvancedFilter: false
+      appliedAdvancedFilter: false,
+      AdvancedFiltersModal: null
     }
 
     document.title = 'Map - TreeSnap'
@@ -75,6 +76,10 @@ export default class App extends Scene {
   componentDidMount() {
     this.setState({loading: true})
     this.initSidebar()
+
+    import('../components/AdvancedFiltersModal').then(AdvancedFiltersModal => {
+      this.setState({AdvancedFiltersModal: AdvancedFiltersModal.default})
+    })
   }
 
   /**
@@ -1234,6 +1239,7 @@ export default class App extends Scene {
    * @returns {XML}
    */
   render() {
+    let {AdvancedFiltersModal} = this.state
     return (
       <div className={this.state.showSidebar ? 'sidebar-visible' : ''}>
         <Navbar container={true}/>
@@ -1253,11 +1259,11 @@ export default class App extends Scene {
 
         <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
 
-        <AdvancedFiltersModal
+        {AdvancedFiltersModal ? <AdvancedFiltersModal
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
           onCreate={this.filterCreated.bind(this)}
-          map={true}/>
+          map={true}/> : null}
       </div>
     )
   }
