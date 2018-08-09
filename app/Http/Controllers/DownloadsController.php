@@ -74,7 +74,7 @@ class DownloadsController extends Controller
         Storage::put($path, $this->line($header, $extension));
 
         $filtered = Filter::apply($filter->rules);
-        $filtered = $filtered->with(['latinName']);
+        $filtered = $filtered->with(['latinName', 'user']);
 
         if (! $user) {
             $filtered->where('is_private', false);
@@ -128,7 +128,7 @@ class DownloadsController extends Controller
 
         // Generate Collection
         $collection->observations()
-            ->with(['latinName'])
+            ->with(['latinName', 'user'])
             ->chunk(200, function ($observations) use ($user, $path, $extension) {
                 foreach ($observations as $observation) {
                     $line = $this->prepObservationLine($observation, $user);
