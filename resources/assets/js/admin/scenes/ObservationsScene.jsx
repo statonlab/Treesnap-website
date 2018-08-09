@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Spinner from '../../components/Spinner'
 import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
 import ObservationsFilter from '../../helpers/ObservationsFilter'
-import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
+//import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 import Notify from '../../components/Notify'
 import FiltersHelpModal from '../components/FiltersHelpModal'
 import Scene from '../../scenes/Scene'
@@ -14,17 +14,17 @@ export default class ObservationsScene extends Scene {
     super(props)
 
     this.state = {
-      loading           : true,
-      observations      : [],
-      total             : 0,
-      page              : 0,
-      perPage           : 6,
-      pages             : [],
-      collections       : [],
-      ownedCollections  : [],
-      showEmail         : false,
-      showFiltersModal  : false,
-      contact           : {
+      loading             : true,
+      observations        : [],
+      total               : 0,
+      page                : 0,
+      perPage             : 6,
+      pages               : [],
+      collections         : [],
+      ownedCollections    : [],
+      showEmail           : false,
+      showFiltersModal    : false,
+      contact             : {
         to         : {
           user_id: 0,
           email  : ''
@@ -32,15 +32,16 @@ export default class ObservationsScene extends Scene {
         from       : '',
         observation: {}
       },
-      user              : {},
-      categories        : [],
-      search            : '',
-      selectedCollection: -1,
-      selectedCategory  : '',
-      searchTermCategory: 'all',
-      advancedFilters   : [],
-      selectedFilter    : -1,
-      showHelpModal     : false
+      user                : {},
+      categories          : [],
+      search              : '',
+      selectedCollection  : -1,
+      selectedCategory    : '',
+      searchTermCategory  : 'all',
+      advancedFilters     : [],
+      selectedFilter      : -1,
+      showHelpModal       : false,
+      AdvancedFiltersModal: null
     }
 
     document.title = 'Observations (Admin) - TreeSnap'
@@ -129,6 +130,10 @@ export default class ObservationsScene extends Scene {
       this.setState({advancedFilters})
     }).catch(error => {
       console.log(error.response)
+    })
+
+    import('../../components/AdvancedFiltersModal').then(AdvancedFiltersModal => {
+      this.setState({AdvancedFiltersModal: AdvancedFiltersModal.default})
     })
   }
 
@@ -594,8 +599,9 @@ export default class ObservationsScene extends Scene {
    * @returns {XML}
    */
   render() {
-    let isLastPage  = this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1
-    let isFirstPage = this.state.page === 0
+    let isLastPage             = this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1
+    let isFirstPage            = this.state.page === 0
+    let {AdvancedFiltersModal} = this.state
 
     return (
       <div>
@@ -611,31 +617,33 @@ export default class ObservationsScene extends Scene {
           onCloseRequest={() => this.setState({showHelpModal: false})}
         />
 
-        <AdvancedFiltersModal
-          visible={this.state.showFiltersModal}
-          onCloseRequest={() => this.setState({showFiltersModal: false})}
-          onCreate={({data}) => {
-            let advancedFilters = this.state.advancedFilters
+        {AdvancedFiltersModal ?
+          <AdvancedFiltersModal
+            visible={this.state.showFiltersModal}
+            onCloseRequest={() => this.setState({showFiltersModal: false})}
+            onCreate={({data}) => {
+              let advancedFilters = this.state.advancedFilters
 
-            if (data.filter) {
-              advancedFilters.push({
-                label: data.filter.name,
-                value: data.filter.id
+              if (data.filter) {
+                advancedFilters.push({
+                  label: data.filter.name,
+                  value: data.filter.id
+                })
+
+                Notify.push(`Filter "${data.filter.name}" has been created.`)
+              } else {
+                Notify.push(`Advanced filter has been loaded but not saved.`)
+              }
+
+              this.setState({
+                showFiltersModal: false,
+                selectedFilter  : data.filter ? data.filter.id : -1,
+                advancedFilters
               })
 
-              Notify.push(`Filter "${data.filter.name}" has been created.`)
-            } else {
-              Notify.push(`Advanced filter has been loaded but not saved.`)
-            }
-
-            this.setState({
-              showFiltersModal: false,
-              selectedFilter  : data.filter ? data.filter.id : -1,
-              advancedFilters
-            })
-
-            this.loadAdvancedFilter(data.filter ? data.filter.id : -1, data.observations)
-          }}/>
+              this.loadAdvancedFilter(data.filter ? data.filter.id : -1, data.observations)
+            }}/>
+          : null}
 
         <div className="columns flex-v-center">
           <div className="column is-6">
@@ -643,12 +651,12 @@ export default class ObservationsScene extends Scene {
           </div>
           <div className="column is-6 has-text-right">
             {/*<button type="button"*/}
-                    {/*className="button is-info"*/}
-                    {/*onClick={() => this.setState({showHelpModal: true})}>*/}
-              {/*<span className="icon">*/}
-                {/*<i className="fa fa-question-circle-o"></i>*/}
-              {/*</span>*/}
-              {/*<span style={{marginTop: -2}}>Help</span>*/}
+            {/*className="button is-info"*/}
+            {/*onClick={() => this.setState({showHelpModal: true})}>*/}
+            {/*<span className="icon">*/}
+            {/*<i className="fa fa-question-circle-o"></i>*/}
+            {/*</span>*/}
+            {/*<span style={{marginTop: -2}}>Help</span>*/}
             {/*</button>*/}
           </div>
         </div>
