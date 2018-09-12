@@ -59,6 +59,10 @@ Compile aggregate data about site traffic and site interactions in order to offe
 You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all cookies. You do this through your web browser settings. Each browser is a little different, so look at your browser's Help menu to learn the correct way to modify your cookie settings.
 If you disable cookies, some features will be disabled It won't affect the users experience that make your site experience more efficient and some of our services will not function properly.
 
+### Can users delete their accounts?
+
+Yes. Please contact us to using the [contact form](/contact) to make a removal request.
+
 ### How to contact us with questions
 
 TreeSnap is still in alpha development.  If you have questions, please visit our website at www.TreeSnap.org. 
