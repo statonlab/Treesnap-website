@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DownloadStatistic;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
@@ -196,5 +197,24 @@ class AnalyticsController extends Controller
         }
 
         return $this->success($data);
+    }
+
+    /**
+     * Construct downloads data.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function downloads(Request $request) {
+        $this->validate($request, [
+            'per_page' => 'nullable|int|min:6|max:25',
+            'page' => 'nullable|int'
+        ]);
+
+        $per_page = $request->per_page ?: 10;
+
+        $downloads = DownloadStatistic::with('user')->paginate($per_page);
+
+        return $this->success($downloads);
     }
 }
