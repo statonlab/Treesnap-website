@@ -128,6 +128,7 @@ export default class FlagForm extends Component {
   renderFlagForm() {
     return (
       <form action="#" method="POST" onSubmit={this.submit.bind(this)}>
+        <p className={'mb-0'}>Alert site administrators of an issue with this observation.</p>
         <div className="field">
           <label className="label">Reason</label>
           <div className="control">
