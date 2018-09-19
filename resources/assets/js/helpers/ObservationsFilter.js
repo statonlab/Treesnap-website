@@ -78,7 +78,19 @@ export default class ObservationsFilter extends Filters {
       case 'county':
       case 'city':
         return this._searchAddress(term, observation, category)
+      case 'id':
+        return this._searchID(term, observation)
+      case 'custom':
+        return this._searchCustomID(term, observation)
     }
+  }
+
+  _searchID(term, observation) {
+    return this._contains(observation.mobile_id, term)
+  }
+
+  _searchCustomID(term, observation) {
+    return this._contains(observation.custom_id, term)
   }
 
   /**
@@ -224,6 +236,14 @@ export default class ObservationsFilter extends Filters {
     }
 
     if (this._searchAddress(term, observation)) {
+      return true
+    }
+
+    if (this._searchCustomID(term, observation)) {
+      return true
+    }
+
+    if (this._searchID(term, observation)) {
       return true
     }
 

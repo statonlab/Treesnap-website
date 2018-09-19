@@ -489,6 +489,8 @@ export default class ObservationsScene extends Scene {
                   <option value="state">State</option>
                   <option value="county">County</option>
                   <option value="city">City</option>
+                  <option value="id">Unique ID</option>
+                  <option value="custom">Custom ID</option>
                 </select>
               </span>
             </div>

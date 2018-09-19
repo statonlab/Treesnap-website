@@ -59,6 +59,8 @@ trait FiltersObservations
                 $query->where('observation_category', 'like', "%$term%");
                 $query->orWhere('data->otherLabel', 'like', "%$term%");
                 $query->orWhere('address->formatted', 'like', "%$term%");
+                $query->orWhere('mobile_id', 'like', "%$term%");
+                $query->orWhere('custom_id', 'like', "%$term%");
             });
         }
 

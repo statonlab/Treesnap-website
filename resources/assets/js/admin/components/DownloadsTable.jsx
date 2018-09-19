@@ -49,7 +49,6 @@ export default class DownloadsTable extends Component {
         }
       })
       const data     = response.data.data
-      console.log(data)
       this.setState({
         downloads     : data.data,
         total         : data.total,
