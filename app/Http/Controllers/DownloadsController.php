@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Collection;
+use App\DownloadStatistic;
 use App\File;
 use App\Filter;
 use App\Http\Controllers\Traits\CreatesDownloadableFiles;
@@ -82,6 +83,7 @@ class DownloadsController extends Controller
             $filtered = $this->addPrivacyClause($filtered, $user);
         }
 
+        $count = $this->count($filtered);
         $filtered->chunk(800, function ($observations) use ($user, $path, $extension) {
             foreach ($observations as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
@@ -94,7 +96,7 @@ class DownloadsController extends Controller
 
         $this->createAutoRemovableFile($path, $user->id);
 
-        return response()->download(storage_path('app/'.$path), $name);
+        return $this->download($path, $name, $count);
     }
 
     /**
@@ -127,21 +129,21 @@ class DownloadsController extends Controller
         Storage::put($path, $this->line($header, $extension));
 
         // Generate Collection
-        $collection->observations()
-            ->with(['latinName', 'user'])
-            ->chunk(800, function ($observations) use ($user, $path, $extension) {
-                foreach ($observations as $observation) {
-                    $line = $this->prepObservationLine($observation, $user);
+        $filtered = $collection->observations();
+        $count = $this->count($filtered);
+        $filtered->with(['latinName', 'user'])->chunk(800, function ($observations) use ($user, $path, $extension) {
+            foreach ($observations as $observation) {
+                $line = $this->prepObservationLine($observation, $user);
 
-                    if ($line !== false) {
-                        Storage::append($path, $this->line($line, $extension));
-                    }
+                if ($line !== false) {
+                    Storage::append($path, $this->line($line, $extension));
                 }
-            });
+            }
+        });
 
         $this->createAutoRemovableFile($path, $user->id);
 
-        return response()->download(storage_path('app/'.$path), $name);
+        return $this->download($path, $name, $count);
     }
 
     /**
@@ -177,7 +179,9 @@ class DownloadsController extends Controller
 
         Storage::put($path, $this->line($header, $extension));
 
-        $this->getFilteredObservations($request)->chunk(800, function ($observations) use ($user, $path, $extension) {
+        $filtered = $this->getFilteredObservations($request);
+        $count = $this->count($filtered);
+        $filtered->chunk(800, function ($observations) use ($user, $path, $extension) {
             foreach ($observations as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
 
@@ -189,7 +193,7 @@ class DownloadsController extends Controller
 
         $this->createAutoRemovableFile($path, $user->id);
 
-        return response()->download(storage_path('app/'.$path), $name);
+        return $this->download($path, $name, $count);
     }
 
     /**
@@ -341,5 +345,38 @@ class DownloadsController extends Controller
         }
 
         return $line;
+    }
+
+    /**
+     * Get the count of observations.
+     *
+     * @param \App\Observation $observations
+     * @return int
+     */
+    protected function count($observations)
+    {
+        $count = clone $observations;
+
+        return $count->count();
+    }
+
+    /**
+     * Send a download response and collect statistics.
+     *
+     * @param $path
+     * @param $name
+     * @param $count
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    protected function download($path, $name, $count)
+    {
+        $user = auth()->user();
+
+        DownloadStatistic::create([
+            'user_id' => $user->id,
+            'observations_count' => $count,
+        ]);
+
+        return response()->download(storage_path('app/'.$path), $name);
     }
 }

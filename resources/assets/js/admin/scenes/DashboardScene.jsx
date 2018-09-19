@@ -6,6 +6,7 @@ import BarChart from '../components/BarChart'
 import ObservationsByStateTable from '../components/ObservationsByStateTable'
 import {NavLink} from 'react-router-dom'
 import Scene from '../../scenes/Scene'
+import DownloadsTable from '../components/DownloadsTable'
 
 export default class DashboardScene extends Scene {
   constructor(props) {
@@ -65,6 +66,15 @@ export default class DashboardScene extends Scene {
               </div>
               <ObservationsByStateTable/>
               <p className="help">Sorted by number of observations and limited to top 10. <NavLink to={'/observations-by-state'}>View all.</NavLink></p>
+            </div>
+          </div>
+        </div>
+
+        <div className="columns">
+          <div className="column">
+            <div className="box">
+              <h4 className="title is-5">Downloads</h4>
+              <DownloadsTable/>
             </div>
           </div>
         </div>

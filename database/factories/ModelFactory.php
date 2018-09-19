@@ -198,7 +198,7 @@ $factory->define(\App\Filter::class, function (Faker\Generator $faker) {
         'user_id' => factory(\App\User::class)->create()->id,
         'notify_user' => false,
         'rules' => json_decode('{"ash": [], "map": false, "name": "Test2", "address": {"city": null, "state": null, "county": null}, "hemlock": [], "whiteOak": [], "categories": ["American Chestnut"], "americanElm": [], "americanChestnut": []}'),
-        'notifications_sent_at' => null
+        'notifications_sent_at' => null,
     ];
 });
 
@@ -222,5 +222,12 @@ $factory->define(\App\Flag::class, function (Faker\Generator $faker) {
 $factory->define(\App\SubscriptionTopic::class, function (Faker\Generator $faker) {
     return [
         'description' => $faker->sentence,
+    ];
+});
+
+$factory->define(\App\DownloadStatistic::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(\App\User::class)->create()->id,
+        'observations_count' => $faker->numberBetween(10, 5000),
     ];
 });
