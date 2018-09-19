@@ -18,6 +18,18 @@ export default class Filters {
    * @private
    */
   _contains(a, b) {
+    if (typeof a === 'number') {
+      a = a.toString()
+    }
+
+    if (typeof b === 'number') {
+      b = b.toString()
+    }
+
+    if (!a || !b) {
+      return false
+    }
+
     return a.trim().toLowerCase().indexOf(b.trim()) !== -1
   }
 }
