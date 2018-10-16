@@ -9,7 +9,7 @@ export default class PacificMadroneFilters extends Component {
 
     this.state = {
       crownAssessment   : [],
-      disease           : [],
+      madroneDisease    : [],
       standDiversity    : [],
       diameterNumericMin: '',
       diameterNumericMax: '',
@@ -41,7 +41,7 @@ export default class PacificMadroneFilters extends Component {
           <div className="field">
             <label className="label">Disease</label>
             <ButtonList list={['Wilting leaves', 'Leaf spots', 'Rust', 'Blight', 'Defoliation', 'Lesions', 'Cankers']}
-                        onChange={disease => this._update('disease', disease)}/>
+                        onChange={madroneDisease => this._update('madroneDisease', madroneDisease)}/>
           </div>
         </div>
 
