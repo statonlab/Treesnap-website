@@ -20,6 +20,7 @@ trait Observes
         'American Elm',
         'Florida Torreya',
         'Eastern Larch',
+        'Pacific Madrone',
         'Other',
     ];
 
@@ -74,6 +75,9 @@ trait Observes
         'burrs' => 'Nuts/burrs',
         'catkins' => 'Catkins',
         'comment' => 'Comment',
+        'crownAssessment' => 'Crown Damage',
+        'disease' => 'Disease',
+        'standDiversity' => 'Stand Diversity'
     ];
 
     /**
