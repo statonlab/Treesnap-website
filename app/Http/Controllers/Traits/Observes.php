@@ -76,7 +76,7 @@ trait Observes
         'catkins' => 'Catkins',
         'comment' => 'Comment',
         'crownAssessment' => 'Crown Damage',
-        'disease' => 'Disease',
+        'madroneDisease' => 'Disease',
         'standDiversity' => 'Stand Diversity'
     ];
 
