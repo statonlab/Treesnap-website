@@ -150,7 +150,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_HomeFooter__ = __webpack_require__(291);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Leaderboard__ = __webpack_require__(593);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_TwitterFeed__ = __webpack_require__(594);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_ObservationsFeed__ = __webpack_require__(705);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_ObservationsFeed__ = __webpack_require__(595);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Scene__ = __webpack_require__(277);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1702,7 +1702,7 @@ var TwitterFeed = function (_React$Component) {
 
 /***/ }),
 
-/***/ 705:
+/***/ 595:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1757,34 +1757,39 @@ var ObservationsFeed = function (_Component) {
     key: 'renderObservation',
     value: function renderObservation(observation) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { key: observation.id, className: 'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center' },
+        'a',
+        { href: 'observation/' + observation.id },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'is-flex flex-v-center' },
+          { key: observation.id,
+            className: 'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
-            { className: 'item mr-1' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: observation.thumbnail,
-              alt: observation.user.name,
-              className: 'item-thumbnail img-circle elevation-1',
-              style: { marginTop: 8 } })
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'item' },
+            { className: 'is-flex flex-v-center' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'strong',
-              null,
-              observation.observation_category
+              'div',
+              { className: 'item mr-1' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: observation.thumbnail,
+                alt: observation.observation_category + ' by ' + observation.user.name,
+                className: 'item-thumbnail img-circle elevation-1',
+                style: { marginTop: 8 } })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
-              { className: 'text-dark-muted' },
-              'Submitted by ',
-              observation.user.name,
-              ' ',
-              observation.date
+              { className: 'item' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'strong',
+                null,
+                observation.observation_category
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'text-dark-muted' },
+                'Submitted by ',
+                observation.user.name,
+                ' ',
+                observation.date
+              )
             )
           )
         )
