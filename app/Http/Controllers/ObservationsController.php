@@ -246,21 +246,23 @@ class ObservationsController extends Controller
 
     public function getObservationFeed()
     {
-        $observations = Observation::with(['user' => function($query) {
-            $query->select(['id', 'is_anonymous', 'name']);
-        }])
+        $observations = Observation::with([
+            'user' => function ($query) {
+                $query->select(['id', 'is_anonymous', 'name']);
+            },
+        ])
             ->select(['id', 'user_id', 'observation_category', 'created_at', 'thumbnail'])
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
 
-        $data = $observations->map(function($observation) {
-                if ($observation->user->is_anonymous) {
-                    $observation->user->name = 'Anonymous User';
-                }
+        $observations->map(function ($observation) {
+            if ($observation->user->is_anonymous) {
+                $observation->user->name = 'Anonymous User';
+            }
 
-                $observation->date = $observation->created_at->diffForHumans();
-            });
+            $observation->date = $observation->created_at->diffForHumans();
+        });
 
         return $this->success($observations);
     }
