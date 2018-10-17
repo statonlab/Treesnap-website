@@ -213,7 +213,7 @@ class AnalyticsController extends Controller
 
         $per_page = $request->per_page ?: 10;
 
-        $downloads = DownloadStatistic::with('user')->paginate($per_page);
+        $downloads = DownloadStatistic::orderBy('created_at', 'desc')->with('user')->paginate($per_page);
 
         return $this->success($downloads);
     }
