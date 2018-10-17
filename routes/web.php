@@ -73,6 +73,7 @@ Route::get('/web/leaderboard/{limit?}', 'LeaderboardController@index');
 // Events
 Route::get('/web/events/{limit?}', 'EventsController@index');
 
+// Observation Feed
 Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed');
 
 // Authenticated Users Only (could be admin, scientist or user)
