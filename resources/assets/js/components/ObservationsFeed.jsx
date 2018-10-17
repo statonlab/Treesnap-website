@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 export default class ObservationsFeed extends Component {
@@ -13,6 +14,8 @@ export default class ObservationsFeed extends Component {
 
   componentDidMount() {
     this.loadObservations()
+
+    setInterval(this.loadObservations.bind(this), 120000)
   }
 
   loadObservations() {
@@ -26,7 +29,7 @@ export default class ObservationsFeed extends Component {
 
   renderObservation(observation) {
     return (
-      <a href={`observation/${observation.id}`}>
+      <Link to={`observation/${observation.id}`}>
         <div key={observation.id}
              className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
           <div className="is-flex flex-v-center">
@@ -42,7 +45,7 @@ export default class ObservationsFeed extends Component {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     )
   }
 
