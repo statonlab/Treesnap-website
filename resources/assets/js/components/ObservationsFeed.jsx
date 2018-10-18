@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 export default class ObservationsFeed extends Component {
   constructor(props) {
@@ -66,11 +65,3 @@ export default class ObservationsFeed extends Component {
     )
   }
 }
-
-// ObservationsFeed.propTypes = {
-//   limit: PropTypes.number
-// }
-//
-// ObservationsFeed.defaultProps = {
-//   limit: 3
-// }
