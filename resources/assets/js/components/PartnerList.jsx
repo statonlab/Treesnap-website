@@ -171,6 +171,27 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
+              <a href="https://wsu.edu/">
+                <img src="/images/wsu-logo.png" alt="Washington State University" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">Washington State University</p>
+              <p className="feature-text">
+                The Washington State University - Puyallup Ornamental Plant Pathology program conducts
+                research relating to diseases of ornamental plants. WSU Extension is collaborating with
+                USDA Forest Service and City of Seattle Parks and Recreation to conserve and restore
+                Pacific madrone. They will use data to classify madrone tree/forest health and identify
+                a true range for the species.
+              </p>
+              <a className={'button is-info'} href="https://wsu.edu/">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
               <img src="/images/flat-icons/teamwork-3.png"
                    alt="Man Icon"
                    className="feature-icon"/>
