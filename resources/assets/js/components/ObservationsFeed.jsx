@@ -29,23 +29,24 @@ export default class ObservationsFeed extends Component {
 
   renderObservation(observation) {
     return (
-      <Link to={`observation/${observation.id}`}>
-        <div key={observation.id}
-             className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-          <div className="is-flex flex-v-center">
-            <div className="item mr-1">
+      <div key={observation.id}
+           className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
+        <div className="is-flex flex-v-center">
+          <div className="item mr-1">
+            <Link to={`observation/${observation.id}`}>
               <img src={observation.thumbnail}
                    alt={`${observation.observation_category} by ${observation.user.name}`}
                    className="item-thumbnail img-circle elevation-1"
                    style={{marginTop: 8}}/>
-            </div>
-            <div className="item">
-              <strong>{observation.observation_category}</strong>
-              <div className="text-dark-muted">Submitted by {observation.user.name} {observation.date}</div>
-            </div>
+            </Link>
+          </div>
+          <div className="item">
+            <Link to={`observation/${observation.id}`}><strong>{observation.observation_category}</strong></Link>
+            <div className="text-dark-muted">Submitted by {observation.user.name}</div>
+            <div className="text-dark-muted">{observation.date}</div>
           </div>
         </div>
-      </Link>
+      </div>
     )
   }
 
