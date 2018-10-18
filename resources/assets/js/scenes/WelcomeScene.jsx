@@ -5,7 +5,7 @@ import FeaturesList from '../components/FeaturesList'
 import HomeFooter from '../components/HomeFooter'
 import Leaderboard from '../components/Leaderboard'
 import TwitterFeed from '../components/TwitterFeed'
-import EventsList from '../components/EventsList'
+import ObservationFeed from '../components/ObservationsFeed'
 import Scene from './Scene'
 
 export default class Welcome extends Scene {
@@ -39,9 +39,9 @@ export default class Welcome extends Scene {
               </div>
               <div className="column">
                 <div className="p-1">
-                  <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Events</h3>
-                  <p className="has-text-centered text-dark-muted mb-0">Upcoming Events</p>
-                  <EventsList limit={3}/>
+                  <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Observation Feed</h3>
+                  <p className="has-text-centered text-dark-muted mb-0">Latest Observations</p>
+                  <ObservationFeed/>
                 </div>
               </div>
               <div className="column">
