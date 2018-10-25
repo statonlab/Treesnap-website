@@ -96,4 +96,19 @@ The needle dropping period occurs very soon after the needles change color from 
 [Larix laricina (Tamarack, American Larch) Pinaceae](https://www.lakeforest.edu/academics/programs/environmental/courses/es204/larix_laricina.php)
 
 ### Partners
-* [University of Connecnticut - Plant Computational Genomics Lab](https://compgenomics.lab.uconn.edu)
+* [University of Connecticut - Plant Computational Genomics Lab](https://compgenomics.lab.uconn.edu)
+
+## Pacific Madrone
+
+The Pacific madrone (Arbutus menziesii Pursh) tree is the largest member of the family Ericaceae. It is the most distinctive hardwood tree native to the West Coast of North America, ranging from southwestern British Columbia to southern California. In natural forest ecosystems, the tree is rarely dominant, but it is diagnostic of unique plant communities found on drier, lower elevation sites as well as on coastal bluffs and mountains. The tree is relatively drought tolerant and fast growing, but does not tolerate extreme temperature changes.
+
+### Read More
+
+[The Decline of Pacific Madrone](http://depts.washington.edu/hortlib/collections/madrone/ch07_el.pdf)
+
+[Fire Effects Information System](https://www.fs.fed.us/database/feis/plants/tree/arbmen/all.html)
+
+[Washington State University Extension Pacific Madrone Research](https://ppo.puyallup.wsu.edu/pmr)
+
+### Partners
+* [Washington State University](https://wsu.edu/)
