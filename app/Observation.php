@@ -141,4 +141,6 @@ class Observation extends Model
             $query->whereBetween('longitude', [$left_edge, $right_edge]);
         }
     }
+
+
 }
