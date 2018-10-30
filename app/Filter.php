@@ -119,6 +119,27 @@ class Filter extends Model
             }
         }
 
+        if (isset($filters['group']) && ! empty($filters['group'])) {
+            $group = Group::with([
+                'users' => function ($query) {
+                    $query->select('users.id');
+                },
+            ])->find($filters['group']);
+
+            if ($group && auth()->check()) {
+                /** @var \App\User $user */
+                $user = auth()->user();
+                if ($user->can('view', $group)) {
+                    $observations->whereHas('user', function ($query) use ($group) {
+                        $ids = $group->users->map(function ($user) {
+                            return $user->id;
+                        });
+                        $query->whereIn('users.id', $ids);
+                    });
+                }
+            }
+        }
+
         if (isset($filters['date_range'])) {
             $filters['date_range'] = (array)$filters['date_range'];
             if (! empty($filters['date_range']['start']) || ! empty($filters['date_range']['end'])) {

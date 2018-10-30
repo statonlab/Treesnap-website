@@ -37,7 +37,9 @@ export default class AdvancedFiltersModal extends Component {
       loading           : false,
       errors            : {},
       startDate         : null,
-      endDate           : null
+      endDate           : null,
+      groups            : [],
+      selectedGroup     : -1
     }
   }
 
@@ -62,6 +64,19 @@ export default class AdvancedFiltersModal extends Component {
     }).catch(error => {
       console.log(error)
     })
+
+    this.loadGroups()
+  }
+
+  async loadGroups() {
+    try {
+      const response = await axios.get('/web/groups')
+      this.setState({
+        groups: response.data.data
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   close() {
@@ -74,6 +89,8 @@ export default class AdvancedFiltersModal extends Component {
     e.preventDefault()
 
     this.setState({loading: true})
+    const selectedGroup = parseInt(this.state.selectedGroup)
+
     let params = {
       name            : this.state.filterName,
       categories      : this.state.selectedCategories,
@@ -86,6 +103,8 @@ export default class AdvancedFiltersModal extends Component {
       easternLarch    : this.state.easternLarch,
       pacificMadrone  : this.state.pacificMadrone,
       other           : this.state.other,
+      map             : this.props.map,
+      group           : selectedGroup === -1 ? null : selectedGroup,
       address         : {
         city  : this.state.city,
         county: this.state.county,
@@ -94,8 +113,7 @@ export default class AdvancedFiltersModal extends Component {
       date_range      : {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
         end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null
-      },
-      map             : this.props.map
+      }
     }
 
     let url = '/web/filters'
@@ -272,7 +290,7 @@ export default class AdvancedFiltersModal extends Component {
     return (
       <div className="columns is-multiline">
         {User.authenticated() ?
-          <div className="column is-12">
+          <div className="column is-6">
             <div className="field">
               <label className="label">Filter Name</label>
               <div className="control">
@@ -284,6 +302,30 @@ export default class AdvancedFiltersModal extends Component {
               </div>
               <p className="help">
                 You can save your filter settings to easily reapply later or share with others.
+              </p>
+            </div>
+          </div>
+          : null}
+
+        {User.authenticated() ?
+          <div className="column is-6">
+            <div className="field">
+              <label className="label">Group</label>
+              <div className="control">
+                <span className="select">
+                  <select
+                    placeholder="Select a Group"
+                    value={this.state.selectedGroup}
+                    onChange={({target}) => this.setState({selectedGroup: target.value})}>
+                    <option value={-1}>Select a Group</option>
+                    {this.state.groups.map(group => {
+                      return (<option key={group.id} value={group.id}>{group.name}</option>)
+                    })}
+                  </select>
+                </span>
+              </div>
+              <p className="help">
+                You can limit the results of this filter to observations uploaded by your group members.
               </p>
             </div>
           </div>
