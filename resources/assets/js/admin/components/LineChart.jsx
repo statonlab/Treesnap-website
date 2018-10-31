@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Chart from 'chart.js'
@@ -15,9 +15,9 @@ export default class LineChart extends Component {
 
   componentDidMount() {
     axios.get('/admin/web/analytics/users-over-time').then(response => {
-      let labels        = []
+      let labels = []
       // let trained_users = []
-      let users         = []
+      let users  = []
 
       console.log(response.data.data)
 
@@ -46,20 +46,21 @@ export default class LineChart extends Component {
         datasets: [{
           label                : 'All Users',
           fill                 : true,
-          lineTension          : 0.1,
-          backgroundColor      : 'rgba(42,157,143, .5)',
+          lineTension          : 0.3,
+          backgroundColor      : 'rgba(42,157,143, .1)',
           borderColor          : 'rgba(42,157,143, 1)',
           borderCapStyle       : 'butt',
           borderDash           : [],
           borderDashOffset     : 0.0,
           borderJoinStyle      : 'miter',
+          borderWidth          : 1,
           pointBorderColor     : 'rgba(42,157,143, 1)',
           pointBackgroundColor : 'rgba(42,157,143, 1)',
-          pointBorderWidth     : 3,
-          pointHoverRadius     : 8,
+          pointBorderWidth     : 2,
+          pointHoverRadius     : 4,
           pointHoverBorderWidth: 2,
-          pointRadius          : 4,
-          pointHitRadius       : 10,
+          pointRadius          : 2,
+          pointHitRadius       : 4,
           data                 : users,
           spanGaps             : false
         }]
@@ -70,10 +71,10 @@ export default class LineChart extends Component {
           display : true,
           position: 'bottom'
         },
-        tooltips: {
-          mode: 'index',
+        tooltips  : {
+          mode     : 'index',
           intersect: false
-        },
+        }
       }
     })
   }
