@@ -100,7 +100,7 @@ The needle dropping period occurs very soon after the needles change color from 
 
 ## Pacific Madrone
 
-The Pacific madrone (Arbutus menziesii Pursh) tree is the largest member of the family Ericaceae. It is the most distinctive hardwood tree native to the West Coast of North America, ranging from southwestern British Columbia to southern California. In natural forest ecosystems, the tree is rarely dominant, but it is diagnostic of unique plant communities found on drier, lower elevation sites as well as on coastal bluffs and mountains. The tree is relatively drought tolerant and fast growing, but does not tolerate extreme temperature changes.
+The Pacific madrone (*Arbutus menziesii* Pursh) tree is the largest member of the family Ericaceae. It is the most distinctive hardwood tree native to the West Coast of North America, ranging from southwestern British Columbia to southern California. In natural forest ecosystems, the tree is rarely dominant, but it is diagnostic of unique plant communities found on drier, lower elevation sites as well as on coastal bluffs and mountains. The tree is relatively drought tolerant and fast growing, but does not tolerate extreme temperature changes.
 
 ### Read More
 
