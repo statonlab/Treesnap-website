@@ -16,16 +16,18 @@ export default class LineChart extends Component {
   componentDidMount() {
     axios.get('/admin/web/analytics/users-over-time').then(response => {
       let labels        = []
-      let trained_users = []
+      // let trained_users = []
       let users         = []
+
+      console.log(response.data.data)
 
       response.data.data.map(datum => {
         labels.push(datum.date)
-        trained_users.push(datum.trained_count)
+        // trained_users.push(datum.trained_count)
         users.push(datum.users_count)
       })
 
-      this.createChart(labels, users, trained_users)
+      this.createChart(labels, users)
 
       this.setState({loading: false})
     }).catch(error => {
@@ -34,7 +36,7 @@ export default class LineChart extends Component {
     })
   }
 
-  createChart(labels, users, trained_users) {
+  createChart(labels, users) {
     let el    = ReactDOM.findDOMNode(this.refs.canvas)
     let ctx   = el.getContext('2d')
     let chart = new Chart(ctx, {
@@ -42,29 +44,10 @@ export default class LineChart extends Component {
       data   : {
         labels,
         datasets: [{
-          label                : 'Trained Users',
-          fill                 : false,
-          lineTension          : 0.1,
-          backgroundColor      : '#f39c12',
-          borderColor          : '#f39c12',
-          borderCapStyle       : 'butt',
-          borderDash           : [],
-          borderDashOffset     : 0.0,
-          borderJoinStyle      : 'miter',
-          pointBorderColor     : '#f39c12',
-          pointBackgroundColor : '#f39c12',
-          pointBorderWidth     : 3,
-          pointHoverRadius     : 8,
-          pointHoverBorderWidth: 2,
-          pointRadius          : 4,
-          pointHitRadius       : 10,
-          data                 : trained_users,
-          spanGaps             : false
-        }, {
           label                : 'All Users',
-          fill                 : false,
+          fill                 : true,
           lineTension          : 0.1,
-          backgroundColor      : 'rgba(42,157,143, 1)',
+          backgroundColor      : 'rgba(42,157,143, .5)',
           borderColor          : 'rgba(42,157,143, 1)',
           borderCapStyle       : 'butt',
           borderDash           : [],
