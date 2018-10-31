@@ -32,7 +32,7 @@ class ObservationStatistics
         $indexed = [];
 
         foreach ($observations as $observation) {
-            $date = Carbon::create($observation->year, $observation->month);
+            $date = Carbon::create($observation->year, $observation->month, 1);
             $formatted = $date->format('M, Y');
             $indexed[$formatted][$observation->observation_category] = [
                 'date' => $formatted,
