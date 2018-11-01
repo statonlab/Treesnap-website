@@ -64,6 +64,7 @@ class Filter extends Model
         'American Elm' => 'americanElm',
         'Florida Torreya' => 'floridaTorreya',
         'Eastern Larch' => 'easternLarch',
+        'Tan Oak' => 'tanOak',
         'Other' => 'other',
     ];
 

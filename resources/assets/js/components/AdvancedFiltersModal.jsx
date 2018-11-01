@@ -8,6 +8,7 @@ import AmericanElmFilters from './subcomponents/AmericanElmFilters'
 import WhiteOakFilters from './subcomponents/WhiteOakFilters'
 import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
 import EasternLarchFilters from './subcomponents/EasternLarchFilters'
+import TanOakFilters from './subcomponents/TanOakFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -30,6 +31,7 @@ export default class AdvancedFiltersModal extends Component {
       whiteOak          : {},
       floridaTorreya    : {},
       easternLarch      : {},
+      tanOak            : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -82,6 +84,7 @@ export default class AdvancedFiltersModal extends Component {
       whiteOak        : this.state.whiteOak,
       floridaTorreya  : this.state.floridaTorreya,
       easternLarch    : this.state.easternLarch,
+      tanOak          : this.state.tanOak,
       other           : this.state.other,
       address         : {
         city  : this.state.city,
@@ -145,6 +148,7 @@ export default class AdvancedFiltersModal extends Component {
       other           : filters.other,
       floridaTorreya  : filters.floridaTorreya,
       easternLarch    : filters.easternLarch,
+      tanOak          : filters.tanOak,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -237,6 +241,17 @@ export default class AdvancedFiltersModal extends Component {
         <h3 className="title is-4 mb-0">Eastern Larch Filters (Optional)</h3>
         <div className="bordered">
           <EasternLarchFilters onChange={(easternLarch) => this.count({easternLarch})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderTanOakFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Tan Oak Filters (Optional)</h3>
+        <div className="bordered">
+          <TanOakFilters onChange={(tanOak) => this.count({tanOak})}/>
         </div>
       </div>
     )
