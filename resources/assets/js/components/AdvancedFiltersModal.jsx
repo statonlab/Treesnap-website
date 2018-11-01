@@ -9,6 +9,7 @@ import WhiteOakFilters from './subcomponents/WhiteOakFilters'
 import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
 import EasternLarchFilters from './subcomponents/EasternLarchFilters'
 import TanOakFilters from './subcomponents/TanOakFilters'
+import PacificMadroneFilters from './subcomponents/PacificMadroneFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -32,12 +33,15 @@ export default class AdvancedFiltersModal extends Component {
       floridaTorreya    : {},
       easternLarch      : {},
       tanOak            : {},
+      pacificMadrone    : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
       errors            : {},
       startDate         : null,
-      endDate           : null
+      endDate           : null,
+      groups            : [],
+      selectedGroup     : -1
     }
   }
 
@@ -62,6 +66,19 @@ export default class AdvancedFiltersModal extends Component {
     }).catch(error => {
       console.log(error)
     })
+
+    this.loadGroups()
+  }
+
+  async loadGroups() {
+    try {
+      const response = await axios.get('/web/groups')
+      this.setState({
+        groups: response.data.data
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   close() {
@@ -74,6 +91,8 @@ export default class AdvancedFiltersModal extends Component {
     e.preventDefault()
 
     this.setState({loading: true})
+    const selectedGroup = parseInt(this.state.selectedGroup)
+
     let params = {
       name            : this.state.filterName,
       categories      : this.state.selectedCategories,
@@ -85,7 +104,10 @@ export default class AdvancedFiltersModal extends Component {
       floridaTorreya  : this.state.floridaTorreya,
       easternLarch    : this.state.easternLarch,
       tanOak          : this.state.tanOak,
+      pacificMadrone  : this.state.pacificMadrone,
       other           : this.state.other,
+      map             : this.props.map,
+      group           : selectedGroup === -1 ? null : selectedGroup,
       address         : {
         city  : this.state.city,
         county: this.state.county,
@@ -94,8 +116,7 @@ export default class AdvancedFiltersModal extends Component {
       date_range      : {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
         end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null
-      },
-      map             : this.props.map
+      }
     }
 
     let url = '/web/filters'
@@ -149,6 +170,7 @@ export default class AdvancedFiltersModal extends Component {
       floridaTorreya  : filters.floridaTorreya,
       easternLarch    : filters.easternLarch,
       tanOak          : filters.tanOak,
+      pacificMadrone  : filters.pacificMadrone,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -257,6 +279,17 @@ export default class AdvancedFiltersModal extends Component {
     )
   }
 
+  renderPacificMadroneFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Pacific Madrone Filters (Optional)</h3>
+        <div className="bordered">
+          <PacificMadroneFilters onChange={(pacificMadrone) => this.count({pacificMadrone})}/>
+        </div>
+      </div>
+    )
+  }
+
   renderOtherFilters() {
     return (
       <div className="column is-12">
@@ -272,7 +305,7 @@ export default class AdvancedFiltersModal extends Component {
     return (
       <div className="columns is-multiline">
         {User.authenticated() ?
-          <div className="column is-12">
+          <div className="column is-6">
             <div className="field">
               <label className="label">Filter Name</label>
               <div className="control">
@@ -284,6 +317,30 @@ export default class AdvancedFiltersModal extends Component {
               </div>
               <p className="help">
                 You can save your filter settings to easily reapply later or share with others.
+              </p>
+            </div>
+          </div>
+          : null}
+
+        {User.authenticated() ?
+          <div className="column is-6">
+            <div className="field">
+              <label className="label">Group</label>
+              <div className="control">
+                <span className="select">
+                  <select
+                    placeholder="Select a Group"
+                    value={this.state.selectedGroup}
+                    onChange={({target}) => this.setState({selectedGroup: target.value})}>
+                    <option value={-1}>Select a Group</option>
+                    {this.state.groups.map(group => {
+                      return (<option key={group.id} value={group.id}>{group.name}</option>)
+                    })}
+                  </select>
+                </span>
+              </div>
+              <p className="help">
+                You can limit the results of this filter to observations uploaded by your group members.
               </p>
             </div>
           </div>

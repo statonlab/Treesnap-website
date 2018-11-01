@@ -35,7 +35,7 @@ class UserStatistics
 
         $indexed = [];
         foreach ($users as $user) {
-            $date = Carbon::create($user->created_at_year, $user->created_at_month);
+            $date = Carbon::create($user->created_at_year, $user->created_at_month, 1);
 
             $indexed[$date->format('M, Y')] = [
                 'date' => $date,

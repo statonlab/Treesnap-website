@@ -65,6 +65,7 @@ class Filter extends Model
         'Florida Torreya' => 'floridaTorreya',
         'Eastern Larch' => 'easternLarch',
         'Tan Oak' => 'tanOak',
+        'Pacific Madrone' => 'pacificMadrone',
         'Other' => 'other',
     ];
 
@@ -116,6 +117,27 @@ class Filter extends Model
             }
             if ($nulls < 3) {
                 $observations->whereNotNull('address');
+            }
+        }
+
+        if (isset($filters['group']) && ! empty($filters['group'])) {
+            $group = Group::with([
+                'users' => function ($query) {
+                    $query->select('users.id');
+                },
+            ])->find($filters['group']);
+
+            if ($group && auth()->check()) {
+                /** @var \App\User $user */
+                $user = auth()->user();
+                if ($user->can('view', $group)) {
+                    $observations->whereHas('user', function ($query) use ($group) {
+                        $ids = $group->users->map(function ($user) {
+                            return $user->id;
+                        });
+                        $query->whereIn('users.id', $ids);
+                    });
+                }
             }
         }
 

@@ -48,6 +48,9 @@ class MetaLabels
             'torreyaFungalBlight' => 'Fungal Blight',
             'conesMaleFemale' => 'Cones',
             'deerRub' => 'Deer Rub',
+            'madroneDisease' => 'Disease',
+            'crownAssessment' => 'Tree Crown Assessment',
+            'standDiversity' => 'Stand Diversity'
         ];
     }
 

@@ -243,4 +243,27 @@ class ObservationsController extends Controller
 
         return $this->success('Observation has been deleted successfully');
     }
+
+    public function getObservationFeed()
+    {
+        $observations = Observation::with([
+            'user' => function ($query) {
+                $query->select(['id', 'is_anonymous', 'name']);
+            },
+        ])
+            ->select(['id', 'user_id', 'observation_category', 'created_at', 'thumbnail'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $observations->map(function ($observation) {
+            if ($observation->user->is_anonymous) {
+                $observation->user->name = 'Anonymous User';
+            }
+
+            $observation->date = $observation->created_at->diffForHumans();
+        });
+
+        return $this->success($observations);
+    }
 }

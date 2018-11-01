@@ -65,5 +65,5 @@ Yes. Please contact us to using the [contact form](/contact) to make a removal r
 
 ### How to contact us with questions
 
-TreeSnap is still in alpha development.  If you have questions, please visit our website at www.TreeSnap.org. 
+If you have questions, please visit our [contact form](/contact).
 

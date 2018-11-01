@@ -21,6 +21,7 @@ trait Observes
         'Florida Torreya',
         'Eastern Larch',
         'Tan Oak',
+        'Pacific Madrone',
         'Other',
     ];
 
@@ -76,6 +77,9 @@ trait Observes
         'catkins' => 'Catkins',
         'comment' => 'Comment',
         'canopyHealth' => 'Canopy Health',
+        'crownAssessment' => 'Crown Damage',
+        'madroneDisease' => 'Disease',
+        'standDiversity' => 'Stand Diversity'
     ];
 
     /**

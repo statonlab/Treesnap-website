@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Chart from 'chart.js'
@@ -15,17 +15,19 @@ export default class LineChart extends Component {
 
   componentDidMount() {
     axios.get('/admin/web/analytics/users-over-time').then(response => {
-      let labels        = []
-      let trained_users = []
-      let users         = []
+      let labels = []
+      // let trained_users = []
+      let users  = []
+
+      console.log(response.data.data)
 
       response.data.data.map(datum => {
         labels.push(datum.date)
-        trained_users.push(datum.trained_count)
+        // trained_users.push(datum.trained_count)
         users.push(datum.users_count)
       })
 
-      this.createChart(labels, users, trained_users)
+      this.createChart(labels, users)
 
       this.setState({loading: false})
     }).catch(error => {
@@ -34,7 +36,7 @@ export default class LineChart extends Component {
     })
   }
 
-  createChart(labels, users, trained_users) {
+  createChart(labels, users) {
     let el    = ReactDOM.findDOMNode(this.refs.canvas)
     let ctx   = el.getContext('2d')
     let chart = new Chart(ctx, {
@@ -42,41 +44,23 @@ export default class LineChart extends Component {
       data   : {
         labels,
         datasets: [{
-          label                : 'Trained Users',
-          fill                 : false,
-          lineTension          : 0.1,
-          backgroundColor      : '#f39c12',
-          borderColor          : '#f39c12',
-          borderCapStyle       : 'butt',
-          borderDash           : [],
-          borderDashOffset     : 0.0,
-          borderJoinStyle      : 'miter',
-          pointBorderColor     : '#f39c12',
-          pointBackgroundColor : '#f39c12',
-          pointBorderWidth     : 3,
-          pointHoverRadius     : 8,
-          pointHoverBorderWidth: 2,
-          pointRadius          : 4,
-          pointHitRadius       : 10,
-          data                 : trained_users,
-          spanGaps             : false
-        }, {
           label                : 'All Users',
-          fill                 : false,
-          lineTension          : 0.1,
-          backgroundColor      : 'rgba(42,157,143, 1)',
+          fill                 : true,
+          lineTension          : 0.3,
+          backgroundColor      : 'rgba(42,157,143, .1)',
           borderColor          : 'rgba(42,157,143, 1)',
           borderCapStyle       : 'butt',
           borderDash           : [],
           borderDashOffset     : 0.0,
           borderJoinStyle      : 'miter',
+          borderWidth          : 1,
           pointBorderColor     : 'rgba(42,157,143, 1)',
           pointBackgroundColor : 'rgba(42,157,143, 1)',
-          pointBorderWidth     : 3,
-          pointHoverRadius     : 8,
+          pointBorderWidth     : 2,
+          pointHoverRadius     : 4,
           pointHoverBorderWidth: 2,
-          pointRadius          : 4,
-          pointHitRadius       : 10,
+          pointRadius          : 2,
+          pointHitRadius       : 4,
           data                 : users,
           spanGaps             : false
         }]
@@ -87,10 +71,10 @@ export default class LineChart extends Component {
           display : true,
           position: 'bottom'
         },
-        tooltips: {
-          mode: 'index',
+        tooltips  : {
+          mode     : 'index',
           intersect: false
-        },
+        }
       }
     })
   }
