@@ -8,6 +8,7 @@ import AmericanElmFilters from './subcomponents/AmericanElmFilters'
 import WhiteOakFilters from './subcomponents/WhiteOakFilters'
 import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
 import EasternLarchFilters from './subcomponents/EasternLarchFilters'
+import TanOakFilters from './subcomponents/TanOakFilters'
 import PacificMadroneFilters from './subcomponents/PacificMadroneFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
@@ -31,6 +32,7 @@ export default class AdvancedFiltersModal extends Component {
       whiteOak          : {},
       floridaTorreya    : {},
       easternLarch      : {},
+      tanOak            : {},
       pacificMadrone    : {},
       other             : {},
       resultsCount      : 0,
@@ -101,6 +103,7 @@ export default class AdvancedFiltersModal extends Component {
       whiteOak        : this.state.whiteOak,
       floridaTorreya  : this.state.floridaTorreya,
       easternLarch    : this.state.easternLarch,
+      tanOak          : this.state.tanOak,
       pacificMadrone  : this.state.pacificMadrone,
       other           : this.state.other,
       map             : this.props.map,
@@ -166,6 +169,7 @@ export default class AdvancedFiltersModal extends Component {
       other           : filters.other,
       floridaTorreya  : filters.floridaTorreya,
       easternLarch    : filters.easternLarch,
+      tanOak          : filters.tanOak,
       pacificMadrone  : filters.pacificMadrone,
       address         : {
         city  : filters.city,
@@ -259,6 +263,17 @@ export default class AdvancedFiltersModal extends Component {
         <h3 className="title is-4 mb-0">Eastern Larch Filters (Optional)</h3>
         <div className="bordered">
           <EasternLarchFilters onChange={(easternLarch) => this.count({easternLarch})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderTanOakFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Tan Oak Filters (Optional)</h3>
+        <div className="bordered">
+          <TanOakFilters onChange={(tanOak) => this.count({tanOak})}/>
         </div>
       </div>
     )
