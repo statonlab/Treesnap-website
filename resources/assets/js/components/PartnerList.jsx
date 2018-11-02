@@ -192,6 +192,44 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
+              <a href="https://oregonstate.edu/">
+                <img src="/images/osu-logo.png" alt="Oregon State University" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">Oregon State University</p>
+              <p className="feature-text">
+                The Oregon State University is a land grant institution committed to teaching, research
+                and outreach and engagement, Oregon State University promotes economic, social, cultural
+                and environmental progress for the people of Oregon, the nation and the world.
+              </p>
+              <a className={'button is-info'} href="https://oregonstate.edu/">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://www.oregon.gov/ODF">
+                <img src="/images/odf-logo.png" alt="Oregon Department of Forestry" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">Oregon Department of Forestry</p>
+              <p className="feature-text">
+                Oregon Department of Forestry serves the people of Oregon by protecting, managing, and
+                promoting stewardship of Oregon's forests to enhance environmental, economic​, and
+                community sustainability.
+              </p>
+              <a className={'button is-info'} href="https://www.oregon.gov/ODF">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
               <img src="/images/flat-icons/teamwork-3.png"
                    alt="Man Icon"
                    className="feature-icon"/>
