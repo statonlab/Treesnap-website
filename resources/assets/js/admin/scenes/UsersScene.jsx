@@ -21,6 +21,7 @@ export default class UsersScene extends Scene {
   componentDidMount() {
     axios.get('/admin/web/users').then(response => {
       this.setState({users: response.data.data})
+      console.log(response.data)
     }).catch(error => {
       console.log(error)
     }).then(() => {
@@ -47,7 +48,7 @@ export default class UsersScene extends Scene {
         <td>{user.is_anonymous ? 'Yes' : 'No'}</td>
         <td>{user.class}</td>
         <td>{user.observations_count}</td>
-        <td>{user.role}</td>
+        <td>{user.role.name}</td>
       </tr>
     )
   }

@@ -24,17 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::withCount('observations as observations_count')->select([
-            'users.id',
-            'users.name',
-            'email',
-            'class',
-            'zipcode',
-            'is_anonymous',
-            'roles.name as role',
-            'is_admin',
-            'role_id',
-        ])->join('roles', 'roles.id', '=', 'users.role_id')->get();
+        $users = User::withCount('observations')->with('role')->get();
 
         return $this->success($users);
     }
