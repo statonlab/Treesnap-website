@@ -1,16 +1,19 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import Spinner from '../../components/Spinner'
 import Select from 'react-select'
 import ObservationCard from '../../components/ObservationCard'
 import Scene from '../../scenes/Scene'
+import EmailModal from '../components/EmailModal'
 
 export default class UserScene extends Scene {
   constructor(props) {
     super(props)
 
     this.state = {
+      id          : -1,
+      email       : '',
       name        : '',
       birth_year  : 1980,
       editing     : false,
@@ -26,7 +29,16 @@ export default class UserScene extends Scene {
         is_admin: false
       },
       role_id     : -1,
-      observations: []
+      observations: [],
+      showEmail   : false,
+      contact     : {
+        to         : {
+          user_id: -1,
+          name   : ''
+        },
+        from       : '',
+        observation: {}
+      }
     }
   }
 
@@ -62,16 +74,18 @@ export default class UserScene extends Scene {
 
       let user = this._userObject(data.user)
 
-      this.setState(Object.assign({}, user, {
+      let state = Object.assign({}, user, {
         observations: data.observations,
-        numPages    : Math.ceil(data.observations.length / this.state.perPage)
-      }))
+        numPages    : Math.ceil(data.observations.length / this.state.perPage),
+        loading     : false
+      })
+
+      this.setState(state)
 
       document.title = `${user.name} - TreeSnap`
     }).catch(error => {
-      console.log(error)
-    }).then(() => {
       this.setState({loading: false})
+      console.log(error)
     })
   }
 
@@ -98,6 +112,7 @@ export default class UserScene extends Scene {
     }))
 
     return {
+      id          : data.id,
       name        : data.name,
       email       : data.email,
       birth_year  : data.birth_year,
@@ -240,7 +255,21 @@ export default class UserScene extends Scene {
             }
             return (
               <div className="column is-6-tablet is-4-desktop" key={index}>
-                <ObservationCard observation={observation}/>
+                <ObservationCard
+                  observation={observation}
+                  onEmailRequest={() => {
+                    this.setState({
+                      showEmail: true,
+                      contact  : {
+                        to  : {
+                          user_id: this.state.id,
+                          name   : this.state.name
+                        },
+                        from: this.state.email,
+                        observation
+                      }
+                    })
+                  }}/>
               </div>
             )
           })}
@@ -566,6 +595,10 @@ export default class UserScene extends Scene {
         {this._renderPersonalInfo()}
         {this._renderObservations()}
         <Spinner visible={this.state.loading}/>
+        {this.state.showEmail ? <EmailModal visible={this.state.showEmail}
+                                            contact={this.state.contact}
+                                            observation={this.state.contact.observation}
+                                            onCloseRequest={() => this.setState({showEmail: false})}/> : null}
       </div>
     )
   }
