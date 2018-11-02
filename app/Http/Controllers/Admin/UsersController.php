@@ -24,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::select([
+        $users = User::withCount('observations as observations_count')->select([
             'users.id',
             'users.name',
             'email',
@@ -34,7 +34,6 @@ class UsersController extends Controller
             'roles.name as role',
             'is_admin',
             'role_id',
-            DB::raw('(SELECT COUNT(id) FROM observations WHERE users.id=observations.user_id) as observations_count'),
         ])->join('roles', 'roles.id', '=', 'users.role_id')->get();
 
         return $this->success($users);
@@ -49,7 +48,7 @@ class UsersController extends Controller
      */
     public function show($id, Request $request)
     {
-        $user = User::with(['groups', 'role'])->findOrFail($id);
+        $user = User::withCount('observations')->with(['groups', 'role'])->findOrFail($id);
         $admin = $request->user();
 
         $observations = Observation::with([
@@ -179,12 +178,12 @@ class UsersController extends Controller
             'users.created_at',
             'users.email',
             DB::raw('(SELECT observations.created_at FROM observations WHERE users.id=observations.user_id ORDER BY observations.id DESC LIMIT 1) AS recent_observation_date'),
-            DB::raw('(SELECT COUNT(*) FROM observations WHERE users.id=observations.user_id) AS observations_count')
+            DB::raw('(SELECT COUNT(*) FROM observations WHERE users.id=observations.user_id) AS observations_count'),
         ])->orderBy('users.id', 'desc')->get();
 
         foreach ($users as $user) {
             $recent_observation = $user->recent_observation_date;
-            if(!is_null($recent_observation)) {
+            if (! is_null($recent_observation)) {
                 $recent_observation = Carbon::createFromFormat('Y-m-d H:i:s', $recent_observation)->format('m/d/y');
             }
 
@@ -193,7 +192,7 @@ class UsersController extends Controller
                 $user->created_at->format('m/d/Y'),
                 $user->email,
                 $user->observations_count,
-                $recent_observation ?: 'Inapplicable'
+                $recent_observation ?: 'Inapplicable',
             ], $extension));
         }
 

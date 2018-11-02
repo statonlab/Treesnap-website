@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import Spinner from '../../components/Spinner'
@@ -45,7 +45,7 @@ export default class EmailModal extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.contact.to.user_id !== this.state.to.user_id) {
+    if (props.contact.to.user_id !== this.state.to.user_id || props.observation.id !== this.state.observation.id) {
       this.setState({
         to         : props.contact.to,
         from       : props.contact.from,
@@ -90,6 +90,7 @@ export default class EmailModal extends Component {
   send(event) {
     event.preventDefault()
     this.setState({loading: true})
+    console.log('SENDING!', this.state)
     axios.post('/admin/web/contact/user', {
       recipient          : this.state.to.user_id,
       from               : this.state.from,

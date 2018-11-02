@@ -19,8 +19,6 @@ export default class LineChart extends Component {
       // let trained_users = []
       let users  = []
 
-      console.log(response.data.data)
-
       response.data.data.map(datum => {
         labels.push(datum.date)
         // trained_users.push(datum.trained_count)
