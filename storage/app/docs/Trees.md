@@ -112,3 +112,21 @@ The Pacific madrone (*Arbutus menziesii* Pursh) tree is the largest member of th
 
 ### Partners
 * [Washington State University](https://wsu.edu/)
+
+## Tanoak
+
+Tanoak is a broadleaf evergreen tree most commonly found in coastal locations in southern Oregon, its range extends east to the Siskiyou and Klamath mountains. Oblong leaves are thick and leathery with a wavy-toothed border, shiny light green above, whitish beneath, 6-13 cm long, 2-6 cm wide.  Flowers are unisexual, male flowers are in catkins 5-10 cm long, white but turning rust colored, with an unpleasant odor; greenish-yellow female flowers are found at the base of catkins.  Acorns are egg-shaped, 2-3 cm long, shallow saucer-shaped cup, covered with dense bristles; mature in the second year.
+
+Tanoak is an important native hardwood species in southern Oregon, with significant ecological and cultural values.  This species is suffering significant mortality from Phytophthora ramorum, the introduced pathogen that causes Sudden Oak Death.
+
+Healthy mature tanoaks identified in this program will be assessed for acorn collection. Acorns will be grown in seedling trials to determine genetic resistance to Sudden Oak Death with the goal of propagating resistant trees to use in forest restoration. 
+
+### Read More
+
+[Notholithocarpus densiflorus](https://landscapeplants.oregonstate.edu/plants/notholithocarpus-densiflorus)
+
+[Sudden Oak Death](https://catalog.extension.oregonstate.edu/em9216)
+
+### Partners
+* [Oregon State University](https://oregonstate.edu/)
+* [Oregon Department of Forestry](https://www.oregon.gov/ODF)
