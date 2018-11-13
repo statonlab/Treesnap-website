@@ -42,4 +42,9 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT')
     ],
+
+    'scistarter' => [
+        'key' => env('SCISTARTER_KEY', ''),
+        'project_id' => env('SCISTARTER_PROJECT_ID', '')
+    ]
 ];

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\UserCreated;
 use App\Notifications\WelcomeNotification;
 use App\Role;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
@@ -81,6 +83,8 @@ class UsersController extends Controller
         }
 
         $user->notify(new WelcomeNotification());
+
+        event(new Registered($user));
 
         return $this->created([
             'user_id' => $user->id,
