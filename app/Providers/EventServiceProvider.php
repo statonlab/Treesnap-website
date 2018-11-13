@@ -8,11 +8,13 @@ use App\Events\ObservationDeleted;
 use App\Events\ObservationUpdated;
 use App\Events\UserJoinedGroup;
 use App\Listeners\AddAddressToObservation;
+use App\Listeners\AddUserToSciStarter;
 use App\Listeners\BroadcastObservationDeleted;
 use App\Listeners\BroadcastObservationUpdated;
 use App\Listeners\ClearObservationsCache;
 use App\Listeners\CreateObservationThumbnails;
 use App\Listeners\NotifyGroupLeaderOfNewUser;
+use App\Listeners\NotifySciStarterOfNewObservation;
 use App\Listeners\SendInvitation;
 use App\Listeners\SendWelcomeNotification;
 use App\Listeners\ShareCollectionsWithNewGroupMember;
@@ -32,6 +34,7 @@ class EventServiceProvider extends ServiceProvider
             AddAddressToObservation::class,
             ClearObservationsCache::class,
             CreateObservationThumbnails::class,
+            NotifySciStarterOfNewObservation::class
         ],
         ObservationUpdated::class => [
             CreateObservationThumbnails::class,
@@ -50,6 +53,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         Registered::class => [
             SendWelcomeNotification::class,
+            AddUserToSciStarter::class
         ],
     ];
 
