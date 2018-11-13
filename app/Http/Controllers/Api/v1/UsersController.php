@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Events\UserCreated;
 use App\Notifications\WelcomeNotification;
 use App\Role;
 use App\User;
