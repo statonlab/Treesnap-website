@@ -9,12 +9,11 @@ use Exception;
 
 class NotifySciStarterOfNewObservation implements ShouldQueue
 {
-    use InteractsWithQueue;
-
     /**
      * NotifySciStarterOfNewObservation constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         //
     }
 
