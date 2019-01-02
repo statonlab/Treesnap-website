@@ -30,7 +30,7 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
         $observation = $event->observation;
         $sci_starter = new SciStarterResource();
         $profile_id = $sci_starter->profile($observation->user);
-        \Log::info('PROFILE ID: '.$profile_id);
+        \Log::info('PROFILE ID: '.($profile_id ?: 'NONE! '.$observation->user->email));
 
         if ($profile_id) {
             try {
