@@ -46,6 +46,8 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
             } catch (Exception $exception) {
                 \Log::error($exception->getMessage());
             }
+        } else{
+            \Log::info("id: $profile_id (could be empty). Next is truth: " . boolval($profile_id) ? 'TRUE' : 'FALSE');
         }
     }
 }
