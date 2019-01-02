@@ -81,7 +81,6 @@ class SciStarterResource extends Resource
         }
 
         $response = $this->post('record_event?key='.$this->key, [
-                //'key' => $this->key,
                 'project_id' => $this->project_id,
                 'profile_id' => $profile_id,
                 'type' => $type,
