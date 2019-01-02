@@ -8,8 +8,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Exception;
 
-class NotifySciStarterOfNewObservation
+class NotifySciStarterOfNewObservation implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      *
@@ -41,7 +43,7 @@ class NotifySciStarterOfNewObservation
                     ])
                 ]);
             } catch (Exception $exception) {
-                // ignore for now. nothing to report to.
+                // Ignore for now. nothing to report to.
             }
         }
     }
