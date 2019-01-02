@@ -32,10 +32,11 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
     public function handle($event)
     {
         $observation = $event->observation;
-        info('Triggered!!!!!');
+
+        \Log::info('Triggered!!!!!');
         $sci_starter = new SciStarterResource();
         $profile_id = $sci_starter->profile($observation->user);
-        info('PROFILE ID: '.$profile_id);
+        \Log::info('PROFILE ID: '.$profile_id);
         if($profile_id) {
             try {
                 $response = $sci_starter->event($profile_id, 'collection', [
@@ -45,7 +46,7 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
                     ])
                 ]);
                 $message = json_encode($response, JSON_PRETTY_PRINT);
-                info($message);
+                \Log::info($message);
             } catch (Exception $exception) {
                 // Ignore for now. nothing to report to.
             }
