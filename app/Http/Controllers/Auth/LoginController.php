@@ -9,6 +9,7 @@ use App\Rules\Provider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use Illuminate\Http\Request;
+use Validator;
 
 class LoginController extends Controller
 {
@@ -80,7 +81,7 @@ class LoginController extends Controller
             session()->put('social_redirect_to', $request->redirect_to);
         }
 
-        $validator = \Validator::make(['provider' => $provider], [
+        $validator = Validator::make(['provider' => $provider], [
             'provider' => 'required|in:google',
         ]);
 
@@ -124,7 +125,7 @@ class LoginController extends Controller
     /**
      * Handle the response obtained from google.
      *
-     * @param $response
+     * @param object $response
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function handleGoogleResponse($response)
