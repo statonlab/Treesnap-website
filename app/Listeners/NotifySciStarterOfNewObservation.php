@@ -12,6 +12,13 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
     use InteractsWithQueue;
 
     /**
+     * NotifySciStarterOfNewObservation constructor.
+     */
+    public function __construct() {
+        //
+    }
+
+    /**
      * Handle the event.
      *
      * @param  \App\Events\ObservationCreated $event
@@ -19,9 +26,9 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
      */
     public function handle($event)
     {
-        $observation = $event->observation;
-
         \Log::info('Triggered!!!!!');
+
+        $observation = $event->observation;
         $sci_starter = new SciStarterResource();
         $profile_id = $sci_starter->profile($observation->user);
         \Log::info('PROFILE ID: '.$profile_id);
@@ -37,7 +44,7 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
                 $message = json_encode($response, JSON_PRETTY_PRINT);
                 \Log::info($message);
             } catch (Exception $exception) {
-                // Ignore for now. nothing to report to.
+                \Log::error($exception->getMessage());
             }
         }
     }
