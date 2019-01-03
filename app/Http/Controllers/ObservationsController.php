@@ -77,7 +77,8 @@ class ObservationsController extends Controller
             foreach ($observations as $observation) {
                 // Compile the data into a standardized response
                 // Remove the is_private value from the response
-                $data[] = array_except($this->getObservationJson($observation, $is_admin, $user), ['is_private']);
+                $data[] = array_except($this->getObservationJson($observation, $is_admin,
+                    $user), ['is_private']);
             }
         };
 
@@ -244,8 +245,19 @@ class ObservationsController extends Controller
         return $this->success('Observation has been deleted successfully');
     }
 
-    public function getObservationFeed()
+    /**
+     * Get the latest observations for the home page feed.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getObservationFeed(Request $request)
     {
+        $this->validate($request, [
+            'limit' => 'nullable|integer|min:6|max:90',
+        ]);
+
+        $limit = $request->limit ?: 10;
+
         $observations = Observation::with([
             'user' => function ($query) {
                 $query->select(['id', 'is_anonymous', 'name']);
@@ -253,7 +265,8 @@ class ObservationsController extends Controller
         ])
             ->select(['id', 'user_id', 'observation_category', 'created_at', 'thumbnail'])
             ->orderBy('created_at', 'desc')
-            ->limit(10)
+            ->where('is_private', false)
+            ->limit($limit)
             ->get();
 
         $observations->map(function ($observation) {

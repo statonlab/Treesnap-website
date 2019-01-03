@@ -39,10 +39,11 @@ trait DealsWithObservationPermissions
      * Removes private observations that don't belong to the current user
      * from the results but keep private observations that the user owns
      *
-     * NOTE: this query does not consider groups! We can add groups
-     * support by getting all friends' ids and adding a WHERE IN
+     * NOTE: this query does consider groups! Members of the same group
+     * have the ability to see each others observations if the member
+     * is sharing the observation with the user.
      *
-     * @param \Eloquent $observations
+     * @param \Illuminate\Database\Eloquent\Model $observations
      * @param \App\User $user
      * @return mixed
      */
@@ -50,8 +51,8 @@ trait DealsWithObservationPermissions
     {
         $friends = array_unique($user->friends() + [$user->id]);
 
-        // WHERE (user_id = $user->id AND is_private BETWEEN [0, 1])
-        //    OR (user_id != $user->id AND is_private = 0)
+        // WHERE (user_id IN ($user->id, FRIENDS_IDS) AND is_private BETWEEN [0, 1])
+        //    OR (user_id NOT IN ($user->id, FRIENDS_IDS) AND is_private = 0)
         return $observations->where(function ($query) use ($user, $friends) {
             $query->where(function ($query) use ($user, $friends) {
                 /** @var \Eloquent $query */
