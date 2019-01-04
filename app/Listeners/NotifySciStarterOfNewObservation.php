@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Http\Resources\SciStarterResource;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Exception;
 

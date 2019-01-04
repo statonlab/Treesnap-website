@@ -3,7 +3,6 @@ import Spinner from '../../components/Spinner'
 import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
-import ObservationsFilter from '../../helpers/ObservationsFilter'
 import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 import Notify from '../../components/Notify'
 import FiltersHelpModal from '../components/FiltersHelpModal'
@@ -14,17 +13,17 @@ export default class ObservationsScene extends Scene {
     super(props)
 
     this.state = {
-      loading           : true,
-      observations      : [],
-      total             : 0,
-      page              : 0,
-      perPage           : 6,
-      pages             : [],
-      collections       : [],
-      ownedCollections  : [],
-      showEmail         : false,
-      showFiltersModal  : false,
-      contact           : {
+      loading             : true,
+      observations        : [],
+      total               : 0,
+      page                : 0,
+      perPage             : 6,
+      pages               : [],
+      collections         : [],
+      ownedCollections    : [],
+      showEmail           : false,
+      showFiltersModal    : false,
+      contact             : {
         to         : {
           user_id: 0,
           email  : ''
@@ -32,16 +31,20 @@ export default class ObservationsScene extends Scene {
         from       : '',
         observation: {}
       },
-      user              : {},
-      categories        : [],
-      search            : '',
-      selectedCollection: -1,
-      selectedCategory  : '',
-      searchTermCategory: 'all',
-      advancedFilters   : [],
-      selectedFilter    : -1,
-      showHelpModal     : false
+      user                : {},
+      categories          : [],
+      search              : '',
+      selectedCollection  : -1,
+      selectedCategory    : '',
+      searchTermCategory  : 'all',
+      advancedFilters     : [],
+      selectedFilter      : -1,
+      showHelpModal       : false,
+      hasMorePages        : false,
+      advancedFiltersRules: null
     }
+
+    this.history = this.props.history
 
     document.title = 'Observations (Admin) - TreeSnap'
   }
@@ -50,23 +53,53 @@ export default class ObservationsScene extends Scene {
    * Get observations from server.
    */
   componentWillMount() {
-    axios.get('/web/observations').then(response => {
-      this.setState({loading: false})
-      this.allObservations = response.data.data
-      this.filter          = new ObservationsFilter(this.allObservations)
+    this.setState({loading: true})
 
-      this.paginate(response.data.data, true)
-    }).catch(error => {
-      this.setState({loading: false})
-      console.log(error)
+    this.setState(this.preLoadPage(), () => {
+      this.loadObservations()
+      this.loadCollections()
+      this.loadUser()
+      this.loadCategories()
+      this.loadFilters()
     })
 
-    this.loadCollections()
-    this.loadUser()
-    this.loadCategories()
-    this.loadFilters()
-
     this.history = this.props.history
+  }
+
+  async loadObservations(state) {
+    try {
+      const params   = this.getParams(state || this.state)
+      const response = await axios.get('/admin/web/observations', {params})
+      const data     = response.data.data
+      this.setState({
+        observations      : data.data,
+        perPage           : data.per_page,
+        selectedCollection: data.collection_id || -1,
+        selectedFilter    : data.filter_id || -1,
+        page              : data.page,
+        hasMorePages      : data.has_more_pages,
+        pages             : this.generatePages(data.total, data.per_page, data.page)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
+    this.setState({loading: false})
+  }
+
+  getParams(state) {
+    return {
+      per_page        : state.perPage,
+      page            : state.page,
+      advanced_filter : this.getSelectedID(state.selectedFilter),
+      advanced_filters: state.advancedFiltersRules ? JSON.stringify(state.advancedFilters) : null,
+      collection_id   : this.getSelectedID(state.selectedCollection),
+      category        : state.selectedCategory || null
+    }
+  }
+
+  getSelectedID(id) {
+    return id === -1 ? null : id
   }
 
   /**
@@ -133,54 +166,11 @@ export default class ObservationsScene extends Scene {
   }
 
   /**
-   * Create page links.
-   *
-   * @param observations_full
-   * @param preLoad
-   * @param collection
-   */
-  paginate(observations_full, preLoad, collection) {
-    this.allObservations   = observations_full
-    let total              = observations_full.length
-    let page               = 0
-    let perPage            = 6
-    let pages              = []
-    let selectedCollection = typeof collection !== 'undefined' ? collection : this.state.selectedCollection
-    if (typeof preLoad !== 'undefined' && preLoad !== false) {
-      let r              = this.preLoadPage(total)
-      page               = r.page
-      perPage            = r.perPage
-      pages              = r.pages
-      selectedCollection = r.selectedCollection
-    } else {
-      page    = 0
-      perPage = this.state.perPage
-      pages   = this.generatePages(total, perPage, 1)
-    }
-
-    let observations = this.getPage(page, perPage, observations_full)
-    this.setState({
-      observations,
-      total,
-      page,
-      perPage,
-      pages,
-      selectedCollection
-    })
-
-    this.goToPage(page)
-    if (typeof collection === 'undefined' && parseInt(selectedCollection) !== -1) {
-      this.collectionFilter(selectedCollection)
-    }
-  }
-
-  /**
    * Load the page based on the URL.
    *
-   * @param total
    * @returns {{page: number, perPage: number, pages: *}}
    */
-  preLoadPage(total) {
+  preLoadPage() {
     let params     = Path.parseUrl(this.history.location.search)
     let page       = 0
     let perPage    = this.state.perPage
@@ -200,19 +190,11 @@ export default class ObservationsScene extends Scene {
       }
     }
 
-    let max = Math.ceil(total / perPage)
-
     if (typeof params.page !== 'undefined') {
       page = parseInt(params.page)
 
-      if (!isNaN(page)) {
-        page = page - 1
-      } else {
-        page = 0
-      }
-
-      if (page > max || page < 0) {
-        page = 0
+      if (isNaN(page)) {
+        page = 1
       }
     }
 
@@ -224,14 +206,11 @@ export default class ObservationsScene extends Scene {
       }
     }
 
-    this.history.replace(`/observations?page=${page + 1}&view=${perPage}&collection=${collection}`)
-
-    let pages = this.generatePages(total, perPage, page + 1)
+    this.history.replace(`/observations?page=${page}&view=${perPage}&collection=${collection}`)
 
     return {
       page,
       perPage,
-      pages,
       selectedCollection: collection
     }
   }
@@ -241,6 +220,8 @@ export default class ObservationsScene extends Scene {
    *
    * @param total
    * @param perPage
+   * @param currentPage
+   *
    * @returns {Array}
    */
   generatePages(total, perPage, currentPage) {
@@ -253,7 +234,7 @@ export default class ObservationsScene extends Scene {
     }
 
     if (typeof currentPage === 'undefined') {
-      currentPage = this.state.page + 1
+      currentPage = this.state.page
     }
 
     let pages    = []
@@ -283,26 +264,11 @@ export default class ObservationsScene extends Scene {
   }
 
   /**
-   * Get the current set of observations
-   *
-   * @param page
-   * @param perPage
-   * @param observations
-   */
-  getPage(page, perPage, observations) {
-    perPage   = parseInt(perPage || this.state.perPage)
-    let start = perPage * parseInt(page)
-    let end   = parseInt(start) + perPage
-
-    return typeof observations !== 'undefined' ? observations.slice(start, end) : this.allObservations.slice(start, end)
-  }
-
-  /**
    * Navigate to next page.
    */
   nextPage() {
     // Don't flip forward if we reached the last page
-    if (this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1) {
+    if (!this.state.hasMorePage) {
       return
     }
 
@@ -329,13 +295,11 @@ export default class ObservationsScene extends Scene {
    * @param page
    */
   goToPage(page) {
-    this.setState({
-      observations: this.getPage(page),
-      pages       : this.generatePages(this.state.total, this.state.perPage, page + 1),
-      page
-    })
-
     let collection = this.state.selectedCollection
+    let state      = this.state
+    state.page     = page
+
+    this.loadObservations(state)
 
     this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}&collection=${collection}`)
 
@@ -348,10 +312,7 @@ export default class ObservationsScene extends Scene {
    * @param search
    */
   searchFilter(search) {
-    if (this.filter) {
-      this.setState({search})
-      this.paginate(this.filter.search(search))
-    }
+    this.setState({search}, this.loadObservations)
   }
 
   /**
@@ -370,38 +331,10 @@ export default class ObservationsScene extends Scene {
    * @param id
    * @param observations
    */
-  loadAdvancedFilter(id, observations) {
-    const preLoaded = typeof observations !== 'undefined'
-
+  loadAdvancedFilter(id) {
     this.setState({
-      selectedFilter: parseInt(id),
-      loading       : !preLoaded
-    })
-
-    if (typeof observations !== 'undefined') {
-      this.replaceObservations(observations)
-      return
-    }
-
-    if (parseInt(id) === -1) {
-      axios.get('/web/observations').then(response => {
-        this.replaceObservations(response.data.data)
-        this.setState({loading: false})
-      }).catch(error => {
-        console.log(error)
-        this.setState({loading: false})
-      })
-
-      return
-    }
-
-    axios.get(`/web/filter/${id}`).then(response => {
-      this.replaceObservations(response.data.data.observations)
-      this.setState({loading: false})
-    }).catch(error => {
-      console.log(error)
-      this.setState({loading: false})
-    })
+      selectedFilter: parseInt(id)
+    }, this.loadObservations)
   }
 
   /**
@@ -410,11 +343,8 @@ export default class ObservationsScene extends Scene {
    * @param selectedCollection
    */
   collectionFilter(selectedCollection) {
-    if (this.filter) {
-      this.setState({selectedCollection})
-      this.paginate(this.filter.collection(selectedCollection), false, selectedCollection)
-      this.history.push(`/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`)
-    }
+    this.setState({selectedCollection}, this.loadObservations)
+    this.history.push(`/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`)
   }
 
   /**
@@ -423,10 +353,7 @@ export default class ObservationsScene extends Scene {
    * @param selectedCategory
    */
   categoriesFilter(selectedCategory) {
-    if (this.filter) {
-      this.setState({selectedCategory})
-      this.paginate(this.filter.category(selectedCategory))
-    }
+    this.setState({selectedCategory}, this.loadObservations)
   }
 
   /**
@@ -435,10 +362,7 @@ export default class ObservationsScene extends Scene {
    * @param searchTermCategory
    */
   searchCategoryFilter(searchTermCategory) {
-    if (this.filter) {
-      this.setState({searchTermCategory})
-      this.paginate(this.filter.searchTermCategory(searchTermCategory))
-    }
+    this.setState({searchTermCategory}, this.loadObservations)
   }
 
   /**
@@ -456,7 +380,7 @@ export default class ObservationsScene extends Scene {
           <span className="mr-0">{this.state.total} Total Observations. Showing</span>
           <span className="select is-small">
             <select value={this.state.perPage}
-                    onChange={({target}) => this.changePerPage.call(this, target.value)}>
+                    onChange={({target}) => this.changePerPage(target.value)}>
               <option value="6">6</option>
               <option value="12">12</option>
               <option value="24">24</option>
@@ -578,14 +502,11 @@ export default class ObservationsScene extends Scene {
    * @param perPage
    */
   changePerPage(perPage) {
-    this.setState({
-      perPage,
-      observations: this.getPage(0, perPage),
-      page        : 0,
-      pages       : this.generatePages(this.allObservations.length, perPage, 1)
-    })
-
+    let state      = this.state
     let collection = this.state.selectedCollection
+    state.perPage  = perPage
+    state.page     = 1
+    this.loadObservations(state)
 
     this.history.replace(`/observations?page=1&view=${perPage}&collection=${collection}`)
   }
@@ -596,7 +517,7 @@ export default class ObservationsScene extends Scene {
    * @returns {XML}
    */
   render() {
-    let isLastPage  = this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1
+    let isLastPage  = this.state.hasMorePages
     let isFirstPage = this.state.page === 0
 
     return (
@@ -616,27 +537,30 @@ export default class ObservationsScene extends Scene {
         <AdvancedFiltersModal
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
-          onCreate={({data}) => {
-            let advancedFilters = this.state.advancedFilters
-
-            if (data.filter) {
-              advancedFilters.push({
-                label: data.filter.name,
-                value: data.filter.id
-              })
-
-              Notify.push(`Filter "${data.filter.name}" has been created.`)
-            } else {
-              Notify.push(`Advanced filter has been loaded but not saved.`)
-            }
-
+          onCreate={response => {
             this.setState({
-              showFiltersModal: false,
-              selectedFilter  : data.filter ? data.filter.id : -1,
-              advancedFilters
+              showAdvancedFiltersModal: false
             })
 
-            this.loadAdvancedFilter(data.filter ? data.filter.id : -1, data.observations)
+            let data = response.data
+            if (data.filter) {
+              let filters = this.state.filters
+              filters.push(data.filter)
+              this.setState({
+                filters
+              })
+
+              this.advancedFilter(data.filter.id)
+              return
+            }
+
+            let state = this.state
+
+            state.advancedFiltersRules = response.params
+            state.page                 = 1
+            this.setState({page: 1, advancedFiltersRules: state.advancedFiltersRules})
+
+            this.loadObservations(state)
           }}/>
 
         <div className="columns flex-v-center">
