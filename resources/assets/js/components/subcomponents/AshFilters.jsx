@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class AshFilters extends Component {
+export default class AshFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -32,7 +33,9 @@ export default class AshFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Ash Species</label>
-            <ButtonList list={['White Ash', 'Green Ash', 'Blue Ash', 'Black Ash', 'Uncertain']}
+            <ButtonList
+              value={this.state.species}
+              list={['White Ash', 'Green Ash', 'Blue Ash', 'Black Ash', 'Uncertain']}
                         onChange={species => this._update('species', species)}/>
           </div>
         </div>
@@ -40,7 +43,9 @@ export default class AshFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Habitat</label>
-            <ButtonList list={['Forest', 'Wetland', 'Field', 'Roadside, urban, suburban, or park']}
+            <ButtonList
+              value={this.state.locationCharacteristics}
+              list={['Forest', 'Wetland', 'Field', 'Roadside, urban, suburban, or park']}
                         onChange={locationCharacteristics => this._update('locationCharacteristics', locationCharacteristics)}/>
           </div>
         </div>
@@ -49,6 +54,7 @@ export default class AshFilters extends Component {
           <div className="field">
             <label className="label">Seeds Present</label>
             <ButtonList
+              value={this.state.seedsBinary}
               list={[
                 'Yes',
                 'No'
@@ -61,6 +67,7 @@ export default class AshFilters extends Component {
           <div className="field">
             <label className="label">Flowers Present</label>
             <ButtonList
+              value={this.state.flowersBinary}
               list={[
                 'Yes',
                 'No'
@@ -73,6 +80,7 @@ export default class AshFilters extends Component {
           <div className="field">
             <label className="label">Ash Borer</label>
             <ButtonList
+              value={this.state.emeraldAshBorer}
               list={[
                 'D-shaped adult exit holes',
                 'Bark coming off with tunneling underneath',
@@ -87,6 +95,7 @@ export default class AshFilters extends Component {
           <div className="field">
             <label className="label">Trees Nearby</label>
             <ButtonList
+              value={this.state.nearbyTrees}
               list={[
                 'Dead and/or dying',
                 'Healthy and large',
@@ -102,6 +111,7 @@ export default class AshFilters extends Component {
           <div className="field">
             <label className="label">Crown Health</label>
             <ButtonList
+              value={this.state.crownHealth}
               list={[
                 '1 - Healthy',
                 '2 - Thinning',

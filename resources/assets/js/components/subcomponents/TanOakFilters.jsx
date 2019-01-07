@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class TanOakFilters extends Component {
+export default class TanOakFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -30,6 +31,7 @@ export default class TanOakFilters extends Component {
           <div className="field">
             <label className="label">Crown Classification</label>
             <ButtonList
+              value={this.state.crownClassification}
               list={[
                 'Dominant. This tree\'s crown extends above others in the area.',
                 'Codominant. This tree\'s crown is level with or slightly below other nearby trees.',
@@ -45,6 +47,7 @@ export default class TanOakFilters extends Component {
           <div className="field">
             <label className="label">Canopy Health</label>
             <ButtonList
+              value={this.state.canopyHealth}
               list={[
                 'Healthy (no dead leaves)',
                 'Some dead leaves (less than 10%)',
@@ -60,6 +63,7 @@ export default class TanOakFilters extends Component {
           <div className="field">
             <label className="label">Acorns</label>
             <ButtonList
+              value={this.state.acorns}
               list={['None', 'Some', 'Lots', 'I\'m not sure']}
               onChange={acorns => this._update('acorns', acorns)}/>
           </div>
@@ -69,6 +73,7 @@ export default class TanOakFilters extends Component {
           <div className="field">
             <label className="label">Treated with Fungicides or Pesticides</label>
             <ButtonList
+              value={this.state.treated}
               list={['Yes', 'No', 'Don\'t know']}
               onChange={treated => this._update('treated', treated)}/>
           </div>

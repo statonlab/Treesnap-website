@@ -147,11 +147,13 @@ class Filter extends Model
                 $observations->where(function ($query) use ($filters) {
                     /** @var \Illuminate\Database\Query\Builder $query */
                     if (! empty($filters['date_range']['start'])) {
-                        $query->whereDate('observations.created_at', '>=', $filters['date_range']['start']);
+                        $query->whereDate('observations.created_at', '>=',
+                            $filters['date_range']['start']);
                     }
 
                     if (! empty($filters['date_range']['end'])) {
-                        $query->whereDate('observations.created_at', '<=', $filters['date_range']['end']);
+                        $query->whereDate('observations.created_at', '<=',
+                            $filters['date_range']['end']);
                     }
                 });
             }
@@ -167,9 +169,16 @@ class Filter extends Model
                     }
 
                     foreach ($filters[static::$filterMapper[$category]] as $filter => $value) {
+                        if (empty($value)) {
+                            continue;
+                        }
                         if (is_array($value)) {
                             $query->where(function ($q) use ($filter, $value) {
                                 foreach ($value as $index => $one) {
+                                    if (empty($one)) {
+                                        continue;
+                                    }
+
                                     // For the first filter, apply only a WHERE statement instead of an OR WHERE
                                     if ($index === 0) {
                                         $q->where("data->$filter", $one);
@@ -204,10 +213,11 @@ class Filter extends Model
                                         $units = $user->units;
                                     }
                                     // Apply the min/max filter for fields that DO support units
-                                    $query->whereBetween("data->{$filterName}_values->{$units}_value", [
-                                        intVal($value),
-                                        intval($allFilters[$filterMax]),
-                                    ]);
+                                    $query->whereBetween("data->{$filterName}_values->{$units}_value",
+                                        [
+                                            intVal($value),
+                                            intval($allFilters[$filterMax]),
+                                        ]);
                                 } else {
                                     // Apply the min/max filter for fields that do not support units
                                     $query->whereBetween("data->$filterName", [

@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class WhiteOakFilters extends Component {
+export default class WhiteOakFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -31,6 +32,7 @@ export default class WhiteOakFilters extends Component {
           <div className="field">
             <label className="label">Crown Health</label>
             <ButtonList
+              value={this.state.crownHealth}
               list={[
                 '1 - Healthy',
                 '2 - Thinning',
@@ -47,6 +49,7 @@ export default class WhiteOakFilters extends Component {
           <div className="field">
             <label className="label">Health Problems</label>
             <ButtonList
+              value={this.state.oakHealthProblems}
               list={[
                 'Dieback in canopy',
                 'Defoliation',

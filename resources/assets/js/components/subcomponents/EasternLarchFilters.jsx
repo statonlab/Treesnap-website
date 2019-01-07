@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class HemlockFilters extends Component {
+export default class HemlockFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -28,13 +29,14 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Needles Color</label>
             <ButtonList
+              value={this.state.needleColor}
               list={[
                 'Green',
                 'Green Blue',
                 'Green Yellow',
                 'Golden Yellow'
               ]}
-              onChange={needlesColor => this._update('needlesColor', needlesColor)}/>
+              onChange={needleColor => this._update('needleColor', needleColor)}/>
           </div>
         </div>
 
@@ -42,6 +44,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Amount of Needles</label>
             <ButtonList
+              value={this.state.needleAmount}
               list={[
                 'Full',
                 'Falling',

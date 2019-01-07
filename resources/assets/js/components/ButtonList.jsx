@@ -1,48 +1,27 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class ButtonList extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      selected: []
-    }
-  }
-
-  componentWillMount() {
-    if (this.props.selectedByDefault) {
-      this.setState({selected: this.props.list})
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.list !== this.props.list && this.props.selectedByDefault) {
-      this.setState({
-        selected: props.list
-      })
-    }
-  }
-
-  reset() {
-    this.setState({selected: []})
   }
 
   _setActiveSelected(item) {
-    return this.state.selected.indexOf(item) > -1 ? ' is-selected' : ''
+    return this.props.value.indexOf(item) > -1 ? ' is-selected' : ''
   }
 
   _toggleSelected(item) {
     let selected = []
-    if (this.state.selected.indexOf(item) > -1) {
-      selected = this.state.selected.filter(one => {
-        return one !== item
+    if (this.props.value.indexOf(item) > -1) {
+      selected = this.props.value.filter(term => {
+        return term !== item
       })
     } else {
-      selected = this.state.selected.concat(item)
+      selected = this.props.value.concat(item)
     }
 
-    this.setState({selected})
+    console.log(selected)
+
     this.props.onChange(selected)
   }
 
@@ -65,18 +44,10 @@ export default class ButtonList extends Component {
       </div>
     )
   }
-
-  setSelected(options) {
-    this.setState({selected: options})
-  }
 }
 
 ButtonList.propTypes = {
-  list             : PropTypes.array.isRequired,
-  onChange         : PropTypes.func.isRequired,
-  selectedByDefault: PropTypes.bool
-}
-
-ButtonList.defaultProps = {
-  selectedByDefault: false
+  list    : PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value   : PropTypes.array.isRequired
 }

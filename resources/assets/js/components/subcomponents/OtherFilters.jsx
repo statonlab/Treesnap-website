@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import FiltersBase from './FiltersBase'
 
-export default class OtherFilters extends Component {
+export default class OtherFilters extends FiltersBase {
   constructor(props) {
     super(props)
 

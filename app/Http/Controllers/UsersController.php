@@ -197,7 +197,7 @@ class UsersController extends Controller
     public function observations(Request $request)
     {
         $this->validate($request, [
-            'per_page' => 'nullable|in:6,12,24,48,96',
+            'per_page' => 'nullable|integer|in:6,12,24,48,96',
             'search' => 'nullable',
             'collection_id' => 'nullable|exists:collections,id',
             'category' => ['nullable', Rule::in($this->observation_categories)],

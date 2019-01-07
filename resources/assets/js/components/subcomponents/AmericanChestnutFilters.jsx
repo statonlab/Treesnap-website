@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class AmericanChestnutFilters extends Component {
+export default class AmericanChestnutFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -31,16 +32,20 @@ export default class AmericanChestnutFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Nuts/Burrs</label>
-            <ButtonList list={['None', 'Few', 'Many', 'Unknown']}
-                        onChange={burrs => this._update('burrs', burrs)}/>
+            <ButtonList
+              value={this.state.burrs}
+              list={['None', 'Few', 'Many', 'Unknown']}
+              onChange={burrs => this._update('burrs', burrs)}/>
           </div>
         </div>
 
         <div className="column is-6">
           <div className="field">
             <label className="label">Catkins</label>
-            <ButtonList list={['Present', 'Absent', 'Unknown']}
-                        onChange={catkins => this._update('catkins', catkins)}/>
+            <ButtonList
+              value={this.state.catkins}
+              list={['Present', 'Absent', 'Unknown']}
+              onChange={catkins => this._update('catkins', catkins)}/>
           </div>
         </div>
 
@@ -48,6 +53,7 @@ export default class AmericanChestnutFilters extends Component {
           <div className="field">
             <label className="label">Chestnut Blight</label>
             <ButtonList
+              value={this.state.chestnutBlight}
               list={[
                 'Cankers and cracked bark',
                 'Tan to orange-colored patches or pustules on bark',
@@ -62,6 +68,7 @@ export default class AmericanChestnutFilters extends Component {
           <div className="field">
             <label className="label">Crown Health</label>
             <ButtonList
+              value={this.state.crownHealth}
               list={[
                 '1 - Healthy',
                 '2 - Thinning',
@@ -135,5 +142,10 @@ export default class AmericanChestnutFilters extends Component {
 }
 
 AmericanChestnutFilters.propTypes = {
-  onChange: PropTypes.func.isRequired
+  onChange      : PropTypes.func.isRequired,
+  defaultFilters: PropTypes.object
+}
+
+AmericanChestnutFilters.defaultProps = {
+  defaultFilters: {}
 }

@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class HemlockFilters extends Component {
+export default class HemlockFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -33,7 +34,9 @@ export default class HemlockFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Seeds</label>
-            <ButtonList list={['Yes', 'No', 'I\'m not sure']}
+            <ButtonList
+              value={this.state.seedsBinary}
+              list={['Yes', 'No', 'I\'m not sure']}
                         onChange={seedsBinary => this._update('seedsBinary', seedsBinary)}/>
           </div>
         </div>
@@ -41,7 +44,9 @@ export default class HemlockFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Deer Rub</label>
-            <ButtonList list={['Present', 'Absent', 'Not sure']}
+            <ButtonList
+              value={this.state.deerRub}
+              list={['Present', 'Absent', 'Not sure']}
                         onChange={deerRub => this._update('deerRub', deerRub)}/>
           </div>
         </div>
@@ -50,6 +55,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Cones</label>
             <ButtonList
+              value={this.state.conesMaleFemale}
               list={['Absent', 'Male present', 'Female present', 'Not sure']}
               onChange={conesMaleFemale => this._update('conesMaleFemale', conesMaleFemale)}/>
           </div>
@@ -59,6 +65,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Fungal Blight</label>
             <ButtonList
+              value={this.state.torreyaFungalBlight}
               list={['Present', 'Absent', 'Not sure']}
               onChange={torreyaFungalBlight => this._update('torreyaFungalBlight', torreyaFungalBlight)}/>
           </div>
