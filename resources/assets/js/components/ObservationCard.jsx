@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Tooltip from './Tooltip'
 import moment from 'moment'
@@ -9,7 +9,7 @@ import Marker from './Marker'
 import Spinner from './Spinner'
 import Notify from './Notify'
 import ObservationDetailsModal from './ObservationDetailsModal'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import User from '../helpers/User'
 
 export default class ObservationCard extends Component {
@@ -61,6 +61,15 @@ export default class ObservationCard extends Component {
   }
 
   loadMarks() {
+    let observation = this.props.observation
+    if (typeof observation.correct_marks !== 'undefined' && typeof observation.incorrect_marks !== 'undefined') {
+      this.setState({
+        correctMarks  : observation.correct_marks,
+        incorrectMarks: observation.incorrect_marks
+      })
+      return
+    }
+
     let id = this.props.observation.observation_id
 
     axios.get(`/admin/web/confirmations/count/${id}`).then(response => {
@@ -609,7 +618,8 @@ ObservationCard.propTypes = {
   collections            : PropTypes.array,
   loading                : PropTypes.bool,
   showMarks              : PropTypes.bool,
-  owner                  : PropTypes.bool
+  owner                  : PropTypes.bool,
+  marks                  : PropTypes.object
 }
 
 ObservationCard.defaultProps = {
@@ -624,5 +634,7 @@ ObservationCard.defaultProps = {
   collections: [],
   loading    : false,
   showMarks  : false,
-  owner      : false
+  owner      : false,
+  marks      : {}
 }
+

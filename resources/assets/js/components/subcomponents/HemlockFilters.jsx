@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class HemlockFilters extends Component {
+export default class HemlockFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -33,6 +34,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Species</label>
             <ButtonList
+              value={this.state.hemlockSpecies}
               list={[
                 'Eastern hemlock (Tsuga canadensis)',
                 'Carolina hemlock (Tsuga caroliniana)',
@@ -46,15 +48,19 @@ export default class HemlockFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Woolly Adelgids</label>
-            <ButtonList list={['0%', '1-24%', '25-49%', '50-74%', '75-100%']}
-                        onChange={woollyAdesCoverage => this._update('woollyAdesCoverage', woollyAdesCoverage)}/>
+            <ButtonList
+              value={this.state.woollyAdesCoverage}
+              list={['0%', '1-24%', '25-49%', '50-74%', '75-100%']}
+              onChange={woollyAdesCoverage => this._update('woollyAdesCoverage', woollyAdesCoverage)}/>
           </div>
         </div>
 
         <div className="column is-6">
           <div className="field">
             <label className="label">Cones</label>
-            <ButtonList list={['Yes', 'No']}
+            <ButtonList
+              value={this.state.cones}
+              list={['Yes', 'No']}
                         onChange={cones => this._update('cones', cones)}/>
           </div>
         </div>
@@ -63,6 +69,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Crown Classification</label>
             <ButtonList
+              value={this.state.crownClassification}
               list={[
                 'Dominant. This tree\'s crown extends above others in the area.',
                 'Codominant. This tree\'s crown is level with or slightly below other nearby trees.',
@@ -78,6 +85,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Crown Health</label>
             <ButtonList
+              value={this.state.crownHealth}
               list={[
                 '1 - Healthy',
                 '2 - Thinning',
@@ -94,6 +102,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Habitat</label>
             <ButtonList
+              value={this.state.locationCharacteristics}
               list={[
                 'Forest',
                 'Wetland',
@@ -108,6 +117,7 @@ export default class HemlockFilters extends Component {
           <div className="field">
             <label className="label">Trees Nearby</label>
             <ButtonList
+              value={this.state.nearbyTrees}
               list={[
                 'Dead and/or dying',
                 'Healthy and large',

@@ -3,7 +3,6 @@ import Spinner from '../../components/Spinner'
 import ObservationCard from '../../components/ObservationCard'
 import Path from '../../helpers/Path'
 import EmailModal from '../components/EmailModal'
-import ObservationsFilter from '../../helpers/ObservationsFilter'
 import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 import Notify from '../../components/Notify'
 import FiltersHelpModal from '../components/FiltersHelpModal'
@@ -14,17 +13,17 @@ export default class ObservationsScene extends Scene {
     super(props)
 
     this.state = {
-      loading           : true,
-      observations      : [],
-      total             : 0,
-      page              : 0,
-      perPage           : 6,
-      pages             : [],
-      collections       : [],
-      ownedCollections  : [],
-      showEmail         : false,
-      showFiltersModal  : false,
-      contact           : {
+      loading             : true,
+      observations        : [],
+      total               : 0,
+      page                : 1,
+      perPage             : 6,
+      pages               : [],
+      collections         : [],
+      ownedCollections    : [],
+      showEmail           : false,
+      showFiltersModal    : false,
+      contact             : {
         to         : {
           user_id: 0,
           email  : ''
@@ -32,16 +31,23 @@ export default class ObservationsScene extends Scene {
         from       : '',
         observation: {}
       },
-      user              : {},
-      categories        : [],
-      search            : '',
-      selectedCollection: -1,
-      selectedCategory  : '',
-      searchTermCategory: 'all',
-      advancedFilters   : [],
-      selectedFilter    : -1,
-      showHelpModal     : false
+      user                : {},
+      categories          : [],
+      search              : '',
+      selectedCollection  : -1,
+      selectedCategory    : '',
+      searchTermCategory  : 'all',
+      advancedFilters     : [],
+      selectedFilter      : -1,
+      selectedStatus      : 0,
+      showHelpModal       : false,
+      hasMorePages        : false,
+      advancedFiltersRules: null,
+      reduceCardOpacity   : false
     }
+
+    this.history               = this.props.history
+    this._advancedFiltersState = {}
 
     document.title = 'Observations (Admin) - TreeSnap'
   }
@@ -50,23 +56,56 @@ export default class ObservationsScene extends Scene {
    * Get observations from server.
    */
   componentWillMount() {
-    axios.get('/web/observations').then(response => {
-      this.setState({loading: false})
-      this.allObservations = response.data.data
-      this.filter          = new ObservationsFilter(this.allObservations)
+    this.setState({loading: true})
 
-      this.paginate(response.data.data, true)
-    }).catch(error => {
-      this.setState({loading: false})
-      console.log(error)
+    this.setState(this.preLoadPage(), () => {
+      this.loadObservations()
+      this.loadCollections()
+      this.loadUser()
+      this.loadCategories()
+      this.loadFilters()
     })
 
-    this.loadCollections()
-    this.loadUser()
-    this.loadCategories()
-    this.loadFilters()
-
     this.history = this.props.history
+  }
+
+  async loadObservations(state) {
+    try {
+      const params   = this.getParams(state || this.state)
+      const response = await axios.get('/admin/web/observations', {params})
+      const data     = response.data.data
+      this.setState({
+        observations      : data.data,
+        perPage           : data.per_page,
+        selectedCollection: data.collection_id || -1,
+        selectedFilter    : data.filter_id || -1,
+        page              : data.current_page,
+        total             : data.total,
+        hasMorePages      : data.has_more_pages,
+        pages             : this.generatePages(data.total, data.per_page, data.page)
+      })
+    } catch (error) {
+      console.error(error)
+    }
+
+    this.setState({loading: false, reduceCardOpacity: false})
+  }
+
+  getParams(state) {
+    return {
+      search          : state.search || null,
+      per_page        : state.perPage,
+      page            : state.page,
+      advanced_filter : this.getSelectedID(state.selectedFilter),
+      advanced_filters: state.advancedFiltersRules ? JSON.stringify(state.advancedFiltersRules) : null,
+      collection_id   : this.getSelectedID(state.selectedCollection),
+      category        : state.selectedCategory || null,
+      status          : state.selectedStatus === 0 || state.selectedStatus === '0' ? null : state.selectedStatus
+    }
+  }
+
+  getSelectedID(id) {
+    return id === -1 ? null : id
   }
 
   /**
@@ -121,6 +160,7 @@ export default class ObservationsScene extends Scene {
     axios.get('/web/filters').then(response => {
       let advancedFilters = response.data.data.map(filter => {
         return {
+          rules: filter.rules,
           label: filter.name,
           value: filter.id
         }
@@ -133,56 +173,13 @@ export default class ObservationsScene extends Scene {
   }
 
   /**
-   * Create page links.
-   *
-   * @param observations_full
-   * @param preLoad
-   * @param collection
-   */
-  paginate(observations_full, preLoad, collection) {
-    this.allObservations   = observations_full
-    let total              = observations_full.length
-    let page               = 0
-    let perPage            = 6
-    let pages              = []
-    let selectedCollection = typeof collection !== 'undefined' ? collection : this.state.selectedCollection
-    if (typeof preLoad !== 'undefined' && preLoad !== false) {
-      let r              = this.preLoadPage(total)
-      page               = r.page
-      perPage            = r.perPage
-      pages              = r.pages
-      selectedCollection = r.selectedCollection
-    } else {
-      page    = 0
-      perPage = this.state.perPage
-      pages   = this.generatePages(total, perPage, 1)
-    }
-
-    let observations = this.getPage(page, perPage, observations_full)
-    this.setState({
-      observations,
-      total,
-      page,
-      perPage,
-      pages,
-      selectedCollection
-    })
-
-    this.goToPage(page)
-    if (typeof collection === 'undefined' && parseInt(selectedCollection) !== -1) {
-      this.collectionFilter(selectedCollection)
-    }
-  }
-
-  /**
    * Load the page based on the URL.
    *
-   * @param total
    * @returns {{page: number, perPage: number, pages: *}}
    */
-  preLoadPage(total) {
+  preLoadPage() {
     let params     = Path.parseUrl(this.history.location.search)
-    let page       = 0
+    let page       = 1
     let perPage    = this.state.perPage
     let collection = this.state.selectedCollection
 
@@ -200,19 +197,11 @@ export default class ObservationsScene extends Scene {
       }
     }
 
-    let max = Math.ceil(total / perPage)
-
     if (typeof params.page !== 'undefined') {
       page = parseInt(params.page)
 
-      if (!isNaN(page)) {
-        page = page - 1
-      } else {
-        page = 0
-      }
-
-      if (page > max || page < 0) {
-        page = 0
+      if (isNaN(page)) {
+        page = 1
       }
     }
 
@@ -224,14 +213,11 @@ export default class ObservationsScene extends Scene {
       }
     }
 
-    this.history.replace(`/observations?page=${page + 1}&view=${perPage}&collection=${collection}`)
-
-    let pages = this.generatePages(total, perPage, page + 1)
+    this.history.replace(`/observations?page=${page}&view=${perPage}&collection=${collection}`)
 
     return {
       page,
       perPage,
-      pages,
       selectedCollection: collection
     }
   }
@@ -241,6 +227,8 @@ export default class ObservationsScene extends Scene {
    *
    * @param total
    * @param perPage
+   * @param currentPage
+   *
    * @returns {Array}
    */
   generatePages(total, perPage, currentPage) {
@@ -253,7 +241,7 @@ export default class ObservationsScene extends Scene {
     }
 
     if (typeof currentPage === 'undefined') {
-      currentPage = this.state.page + 1
+      currentPage = this.state.page
     }
 
     let pages    = []
@@ -283,26 +271,11 @@ export default class ObservationsScene extends Scene {
   }
 
   /**
-   * Get the current set of observations
-   *
-   * @param page
-   * @param perPage
-   * @param observations
-   */
-  getPage(page, perPage, observations) {
-    perPage   = parseInt(perPage || this.state.perPage)
-    let start = perPage * parseInt(page)
-    let end   = parseInt(start) + perPage
-
-    return typeof observations !== 'undefined' ? observations.slice(start, end) : this.allObservations.slice(start, end)
-  }
-
-  /**
    * Navigate to next page.
    */
   nextPage() {
     // Don't flip forward if we reached the last page
-    if (this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1) {
+    if (!this.state.hasMorePage) {
       return
     }
 
@@ -329,15 +302,17 @@ export default class ObservationsScene extends Scene {
    * @param page
    */
   goToPage(page) {
+    let state      = this.state
+    let perPage    = state.perPage
+    let collection = state.selectedCollection
+    state.page     = page
+
     this.setState({
-      observations: this.getPage(page),
-      pages       : this.generatePages(this.state.total, this.state.perPage, page + 1),
-      page
-    })
+      page,
+      reduceCardOpacity: true
+    }, this.loadObservations)
 
-    let collection = this.state.selectedCollection
-
-    this.history.push(`/observations?page=${page + 1}&view=${this.state.perPage}&collection=${collection}`)
+    this.history.push(`/observations?page=${page}&view=${perPage}&collection=${collection}`)
 
     window.scroll(0, 0)
   }
@@ -348,60 +323,20 @@ export default class ObservationsScene extends Scene {
    * @param search
    */
   searchFilter(search) {
-    if (this.filter) {
-      this.setState({search})
-      this.paginate(this.filter.search(search))
-    }
-  }
-
-  /**
-   * Apply advanced filter by replacing observations.
-   *
-   * @param observations
-   */
-  replaceObservations(observations) {
-    this.allObservations = observations
-    this.paginate(this.filter.replace(observations), false)
+    this.setState({search, reduceCardOpacity: true}, this.loadObservations)
   }
 
   /**
    * Load and apply advanced filter.
    *
    * @param id
-   * @param observations
    */
-  loadAdvancedFilter(id, observations) {
-    const preLoaded = typeof observations !== 'undefined'
-
+  loadAdvancedFilter(id) {
+    id = parseInt(id)
     this.setState({
-      selectedFilter: parseInt(id),
-      loading       : !preLoaded
-    })
-
-    if (typeof observations !== 'undefined') {
-      this.replaceObservations(observations)
-      return
-    }
-
-    if (parseInt(id) === -1) {
-      axios.get('/web/observations').then(response => {
-        this.replaceObservations(response.data.data)
-        this.setState({loading: false})
-      }).catch(error => {
-        console.log(error)
-        this.setState({loading: false})
-      })
-
-      return
-    }
-
-    axios.get(`/web/filter/${id}`).then(response => {
-      this.replaceObservations(response.data.data.observations)
-      this.setState({loading: false})
-    }).catch(error => {
-      console.log(error)
-      this.setState({loading: false})
-    })
+      selectedFilter   : id,
+      reduceCardOpacity: true
+    }, this.loadObservations)
   }
 
   /**
@@ -410,11 +345,13 @@ export default class ObservationsScene extends Scene {
    * @param selectedCollection
    */
   collectionFilter(selectedCollection) {
-    if (this.filter) {
-      this.setState({selectedCollection})
-      this.paginate(this.filter.collection(selectedCollection), false, selectedCollection)
-      this.history.push(`/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`)
-    }
+    this.setState({
+      selectedCollection: parseInt(selectedCollection),
+      reduceCardOpacity : true
+    }, this.loadObservations)
+
+    const url = `/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`
+    this.history.push(url)
   }
 
   /**
@@ -423,10 +360,11 @@ export default class ObservationsScene extends Scene {
    * @param selectedCategory
    */
   categoriesFilter(selectedCategory) {
-    if (this.filter) {
-      this.setState({selectedCategory})
-      this.paginate(this.filter.category(selectedCategory))
-    }
+    const reduceCardOpacity = true
+    this.setState({
+      selectedCategory,
+      reduceCardOpacity
+    }, this.loadObservations)
   }
 
   /**
@@ -435,10 +373,23 @@ export default class ObservationsScene extends Scene {
    * @param searchTermCategory
    */
   searchCategoryFilter(searchTermCategory) {
-    if (this.filter) {
-      this.setState({searchTermCategory})
-      this.paginate(this.filter.searchTermCategory(searchTermCategory))
-    }
+    const reduceCardOpacity = true
+    this.setState({
+      searchTermCategory,
+      reduceCardOpacity
+    }, this.loadObservations)
+  }
+
+  /**
+   * Change the marked as status.
+   *
+   * @param status
+   */
+  changeStatus(status) {
+    this.setState({
+      selectedStatus   : status,
+      reduceCardOpacity: true
+    }, this.loadObservations)
   }
 
   /**
@@ -447,6 +398,7 @@ export default class ObservationsScene extends Scene {
    * @returns {XML}
    */
   renderFilters() {
+    let {advancedFiltersRules} = this.state
     return (
       <div className="columns is-multiline flex-v-center">
         <div className="column is-4">
@@ -456,7 +408,7 @@ export default class ObservationsScene extends Scene {
           <span className="mr-0">{this.state.total} Total Observations. Showing</span>
           <span className="select is-small">
             <select value={this.state.perPage}
-                    onChange={({target}) => this.changePerPage.call(this, target.value)}>
+                    onChange={({target}) => this.changePerPage(target.value)}>
               <option value="6">6</option>
               <option value="12">12</option>
               <option value="24">24</option>
@@ -471,29 +423,29 @@ export default class ObservationsScene extends Scene {
             <div className="control is-expanded">
               <input type="search"
                      className="input"
-                     placeholder="Search"
+                     placeholder="Search (by ID, name, address, etc)"
                      onChange={({target}) => this.searchFilter(target.value)}
                      value={this.state.search}
               />
             </div>
-            <div className="control">
-              <span className="select">
-                <select
-                  value={this.state.searchTermCategory}
-                  onChange={({target}) => this.searchCategoryFilter(target.value)}
-                >
-                  <option value="all">Any</option>
-                  <option value="user">User Name</option>
-                  <option value="category">Title</option>
-                  <option value="address">Full Address</option>
-                  <option value="state">State</option>
-                  <option value="county">County</option>
-                  <option value="city">City</option>
-                  <option value="id">Unique ID</option>
-                  <option value="custom">Custom ID</option>
-                </select>
-              </span>
-            </div>
+            {/*<div className="control">*/}
+              {/*<span className="select">*/}
+                {/*<select*/}
+                  {/*value={this.state.searchTermCategory}*/}
+                  {/*onChange={({target}) => this.searchCategoryFilter(target.value)}*/}
+                {/*>*/}
+                  {/*<option value="all">Any</option>*/}
+                  {/*<option value="user">User Name</option>*/}
+                  {/*<option value="category">Title</option>*/}
+                  {/*<option value="address">Full Address</option>*/}
+                  {/*<option value="state">State</option>*/}
+                  {/*<option value="county">County</option>*/}
+                  {/*<option value="city">City</option>*/}
+                  {/*<option value="id">Unique ID</option>*/}
+                  {/*<option value="custom">Custom ID</option>*/}
+                {/*</select>*/}
+              {/*</span>*/}
+            {/*</div>*/}
           </div>
         </div>
         {this.state.collections.length > 0 ?
@@ -539,6 +491,24 @@ export default class ObservationsScene extends Scene {
             </div>
           </div>
         </div>
+
+        <div className="column is-4">
+          <div className="field">
+            <div className="control">
+              <span className="select is-full-width">
+                <select
+                  value={this.state.selectedStatus}
+                  onChange={({target}) => this.changeStatus(target.value)}
+                >
+                  <option value={0}>Any Status</option>
+                  <option value={'marked_correct_by_anyone'}>Species marked correct by anyone</option>
+                  <option value={'marked_correct_by_me'}>Species marked correct by me</option>
+                </select>
+              </span>
+            </div>
+          </div>
+        </div>
+
         {this.state.advancedFilters.length > 0 ?
           <div className="column is-4">
             <div className="field">
@@ -564,7 +534,33 @@ export default class ObservationsScene extends Scene {
         <div className="column is-4">
           <div className="field">
             <div className="control">
-              <a onClick={() => this.setState({showFiltersModal: true})}>Advanced Filters</a>
+              <button
+                onClick={() => {
+                  this.setState({showFiltersModal: true})
+                  if (this.advancedFiltersModal) {
+                    this.advancedFiltersModal.reapplyState(this._advancedFiltersState)
+                  }
+                }}
+                className={`button is-primary`}
+                type={'button'}>Advanced Filters
+              </button>
+              {advancedFiltersRules && Object.keys(advancedFiltersRules).length > 0 ?
+                <button
+                  onClick={() => {
+                    this.setState({
+                      advancedFiltersRules: null,
+                      reduceCardOpacity   : false
+                    }, this.loadObservations)
+                    this._advancedFiltersState = {}
+                  }}
+                  className={`ml-1 button is-danger is-outlined`}
+                  type={'button'}>
+                  <span className="icon is-small">
+                    <i className="fa fa-times-circle"></i>
+                  </span>
+                  <span>Clear Filters</span>
+                </button>
+                : null}
             </div>
           </div>
         </div>
@@ -578,16 +574,32 @@ export default class ObservationsScene extends Scene {
    * @param perPage
    */
   changePerPage(perPage) {
-    this.setState({
-      perPage,
-      observations: this.getPage(0, perPage),
-      page        : 0,
-      pages       : this.generatePages(this.allObservations.length, perPage, 1)
-    })
-
+    let state      = this.state
     let collection = this.state.selectedCollection
+    state.perPage  = perPage
+    state.page     = 1
+
+    this.setState({
+      page: 1,
+      perPage
+    }, this.loadObservations)
 
     this.history.replace(`/observations?page=1&view=${perPage}&collection=${collection}`)
+  }
+
+  advancedFilter(filter_id) {
+    this.setState({
+      advanced_filter: filter_id,
+      page           : 1
+    }, this.loadObservations)
+  }
+
+  /**
+   * Save the current state to make sure it gets reapplied later.
+   * @param state
+   */
+  saveFilterState(state) {
+    this._advancedFiltersState = state
   }
 
   /**
@@ -596,8 +608,8 @@ export default class ObservationsScene extends Scene {
    * @returns {XML}
    */
   render() {
-    let isLastPage  = this.state.page >= Math.ceil(this.state.total / this.state.perPage) - 1
-    let isFirstPage = this.state.page === 0
+    let isLastPage  = !this.state.hasMorePages
+    let isFirstPage = parseInt(this.state.page) <= 1
 
     return (
       <div>
@@ -614,30 +626,34 @@ export default class ObservationsScene extends Scene {
         />
 
         <AdvancedFiltersModal
+          ref={ref => this.advancedFiltersModal = ref}
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
-          onCreate={({data}) => {
-            let advancedFilters = this.state.advancedFilters
+          onCreate={response => {
+            this.setState({
+              showFiltersModal: false
+            })
 
+            let data = response.data
             if (data.filter) {
-              advancedFilters.push({
-                label: data.filter.name,
-                value: data.filter.id
+              let filters = this.state.filters
+              filters.push(data.filter)
+              this.setState({
+                filters
               })
 
-              Notify.push(`Filter "${data.filter.name}" has been created.`)
-            } else {
-              Notify.push(`Advanced filter has been loaded but not saved.`)
+              this.advancedFilter(data.filter.id)
+              return
             }
 
             this.setState({
-              showFiltersModal: false,
-              selectedFilter  : data.filter ? data.filter.id : -1,
-              advancedFilters
-            })
-
-            this.loadAdvancedFilter(data.filter ? data.filter.id : -1, data.observations)
-          }}/>
+              page                : 1,
+              advancedFiltersRules: response.params,
+              showFiltersModal    : false
+            }, this.loadObservations)
+          }}
+          onStateChange={this.saveFilterState.bind(this)}
+        />
 
         <div className="columns flex-v-center">
           <div className="column is-6">
@@ -665,8 +681,10 @@ export default class ObservationsScene extends Scene {
               <div key={observation.observation_id}
                    className="column is-4-widescreen is-6-desktop is-6-tablet">
                 <ObservationCard
+                  loading={this.state.reduceCardOpacity}
                   observation={observation}
                   collections={this.state.ownedCollections}
+                  showMarks={true}
                   onEmailRequest={(observation) => {
                     this.setState({
                       showEmail: true,
@@ -736,7 +754,9 @@ export default class ObservationsScene extends Scene {
                onClick={this.previousPage.bind(this)}>
               Previous
             </a>
-            <a className="pagination-next" disabled={isLastPage} onClick={this.nextPage.bind(this)}>
+            <a className="pagination-next"
+               disabled={isLastPage}
+               onClick={this.nextPage.bind(this)}>
               Next page
             </a>
             <ul className="pagination-list">
@@ -750,10 +770,10 @@ export default class ObservationsScene extends Scene {
                 }
                 return (
                   <li key={`page_${page}`}>
-                    <a className={`pagination-link${this.state.page === page - 1 ? ' is-current' : ''}`}
+                    <a className={`pagination-link${this.state.page === page ? ' is-current' : ''}`}
                        onClick={() => {
-                         if (this.state.page !== page - 1) {
-                           this.goToPage.call(this, page - 1)
+                         if (this.state.page !== page) {
+                           this.goToPage.call(this, page)
                          }
                        }}>
                       {page}

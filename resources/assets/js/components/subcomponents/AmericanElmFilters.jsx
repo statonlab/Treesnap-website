@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class AmericanElmFilters extends Component {
+export default class AmericanElmFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -32,6 +33,7 @@ export default class AmericanElmFilters extends Component {
           <div className="field">
             <label className="label">Crown Health</label>
             <ButtonList
+              value={this.state.crownHealth}
               list={[
                 '1 - Healthy',
                 '2 - Thinning',
@@ -48,6 +50,7 @@ export default class AmericanElmFilters extends Component {
           <div className="field">
             <label className="label">Habitat</label>
             <ButtonList
+              value={this.state.locationCharacteristics}
               list={[
                 'Forest',
                 'Wetland',
@@ -62,6 +65,7 @@ export default class AmericanElmFilters extends Component {
           <div className="field">
             <label className="label">Trees Nearby</label>
             <ButtonList
+              value={this.state.nearbyTrees}
               list={[
                 'Dead and/or dying',
                 'Healthy and large',

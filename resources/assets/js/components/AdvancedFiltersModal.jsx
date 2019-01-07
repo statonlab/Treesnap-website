@@ -54,7 +54,6 @@ export default class AdvancedFiltersModal extends Component {
       filterName        : '',
       resultsCount      : 0
     })
-    this.refs.speciesButtonList.reset()
   }
 
   componentWillMount() {
@@ -196,7 +195,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">American Chestnut Filters (Optional)</h3>
         <div className="bordered">
-          <AmericanChestnutFilters onChange={(americanChestnut) => this.count({americanChestnut})}/>
+          <AmericanChestnutFilters
+            defaultFilters={this.state.americanChestnut}
+            onChange={(americanChestnut) => this.count({americanChestnut})}/>
         </div>
       </div>
     )
@@ -207,7 +208,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">American Elm Filters (Optional)</h3>
         <div className="bordered">
-          <AmericanElmFilters onChange={(americanElm) => this.count({americanElm})}/>
+          <AmericanElmFilters
+            defaultFilters={this.state.americanElm}
+            onChange={(americanElm) => this.count({americanElm})}/>
         </div>
       </div>
     )
@@ -218,7 +221,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">White Oak Filters (Optional)</h3>
         <div className="bordered">
-          <WhiteOakFilters onChange={(whiteOak) => this.count({whiteOak})}/>
+          <WhiteOakFilters
+            defaultFilters={this.state.whiteOak}
+            onChange={(whiteOak) => this.count({whiteOak})}/>
         </div>
       </div>
     )
@@ -229,7 +234,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Ash Filters (Optional)</h3>
         <div className="bordered">
-          <AshFilters onChange={(ash) => this.count({ash})}/>
+          <AshFilters
+            defaultFilters={this.state.ash}
+            onChange={(ash) => this.count({ash})}/>
         </div>
       </div>
     )
@@ -240,7 +247,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Hemlock Filters (Optional)</h3>
         <div className="bordered">
-          <HemlockFilters onChange={(hemlock) => this.count({hemlock})}/>
+          <HemlockFilters
+            defaultFilters={this.state.hemlock}
+            onChange={(hemlock) => this.count({hemlock})}/>
         </div>
       </div>
     )
@@ -251,7 +260,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Florida Torreya Filters (Optional)</h3>
         <div className="bordered">
-          <FloridaTorreya onChange={(floridaTorreya) => this.count({floridaTorreya})}/>
+          <FloridaTorreya
+            defaultFilters={this.state.floridaTorreya}
+            onChange={(floridaTorreya) => this.count({floridaTorreya})}/>
         </div>
       </div>
     )
@@ -262,7 +273,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Eastern Larch Filters (Optional)</h3>
         <div className="bordered">
-          <EasternLarchFilters onChange={(easternLarch) => this.count({easternLarch})}/>
+          <EasternLarchFilters
+            defaultFilters={this.state.easternLarch}
+            onChange={(easternLarch) => this.count({easternLarch})}/>
         </div>
       </div>
     )
@@ -273,7 +286,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Tan Oak Filters (Optional)</h3>
         <div className="bordered">
-          <TanOakFilters onChange={(tanOak) => this.count({tanOak})}/>
+          <TanOakFilters
+            defaultFilters={this.state.tanOak}
+            onChange={(tanOak) => this.count({tanOak})}/>
         </div>
       </div>
     )
@@ -284,7 +299,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Pacific Madrone Filters (Optional)</h3>
         <div className="bordered">
-          <PacificMadroneFilters onChange={(pacificMadrone) => this.count({pacificMadrone})}/>
+          <PacificMadroneFilters
+            defaultFilters={this.state.pacificMadrone}
+            onChange={(pacificMadrone) => this.count({pacificMadrone})}/>
         </div>
       </div>
     )
@@ -295,7 +312,9 @@ export default class AdvancedFiltersModal extends Component {
       <div className="column is-12">
         <h3 className="title is-4 mb-0">Other Trees Filters (Optional)</h3>
         <div className="bordered">
-          <OtherFilters onChange={(other) => this.count({other})}/>
+          <OtherFilters
+            defaultFilters={this.state.other}
+            onChange={(other) => this.count({other})}/>
         </div>
       </div>
     )
@@ -353,6 +372,7 @@ export default class AdvancedFiltersModal extends Component {
               Begin by selecting the species you are interested in.
             </p>
             <ButtonList ref="speciesButtonList"
+                        value={this.state.selectedCategories}
                         list={this.state.categories}
                         onChange={selectedCategories => this.count({selectedCategories})}
             />
@@ -514,9 +534,6 @@ export default class AdvancedFiltersModal extends Component {
 
   reapplyState(state) {
     this.setState(state)
-    if (state.selectedCategories) {
-      this.refs.speciesButtonList.setSelected(state.selectedCategories)
-    }
   }
 }
 

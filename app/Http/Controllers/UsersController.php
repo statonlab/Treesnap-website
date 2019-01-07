@@ -146,7 +146,10 @@ class UsersController extends Controller
             'new_password' => 'required|min:6|confirmed',
         ]);
 
-        if (auth()->attempt(['email' => $user->email, 'password' => $request->old_password])) {
+        if (auth()->attempt([
+            'email' => $user->email,
+            'password' => $request->old_password,
+        ])) {
             $user->password = bcrypt($request->new_password);
 
             return $this->success('Password updated successfully.');
@@ -194,18 +197,20 @@ class UsersController extends Controller
     public function observations(Request $request)
     {
         $this->validate($request, [
-            'per_page' => 'nullable|in:6,12,24,48,96',
+            'per_page' => 'nullable|integer|in:6,12,24,48,96',
             'search' => 'nullable',
             'collection_id' => 'nullable|exists:collections,id',
             'category' => ['nullable', Rule::in($this->observation_categories)],
             'group_id' => 'nullable|exists:groups,id',
-            'advanced_filter' => 'nullable|json',
+            'advanced_filters' => 'nullable|json',
+            'advanced_filter' => 'nullable|exists:filters,id',
         ]);
 
         $user = $request->user();
         $admin = User::hasRole(['scientist', 'admin'], $user);
 
-        $observations = $this->getFilteredObservations($request)->paginate($request->per_page);
+        $observations = $this->getFilteredObservations($request)
+            ->paginate($request->per_page);
 
         $data = [];
         foreach ($observations as $observation) {
@@ -215,7 +220,7 @@ class UsersController extends Controller
         return $this->success(array_merge($observations->toArray(), [
             'data' => $data,
             'per_page' => $request->per_page,
-            'count' => $observations->count(),
+            'count' => $observations->total(),
             'has_more_pages' => $observations->hasMorePages(),
             'collection_id' => $request->collection_id,
             'group_id' => $request->group_id,

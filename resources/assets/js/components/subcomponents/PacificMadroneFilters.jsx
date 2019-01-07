@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
+import FiltersBase from './FiltersBase'
 
-export default class PacificMadroneFilters extends Component {
+export default class PacificMadroneFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -32,6 +33,7 @@ export default class PacificMadroneFilters extends Component {
           <div className="field">
             <label className="label">Crown Damage</label>
             <ButtonList
+              value={this.state.crownAssessment}
               list={['< 10%', '10% to 20%', '20% to 50%', '50% to 75%', '> 75%']}
               onChange={crownAssessment => this._update('crownAssessment', crownAssessment)}/>
           </div>
@@ -40,7 +42,9 @@ export default class PacificMadroneFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Disease</label>
-            <ButtonList list={['Wilting leaves', 'Leaf spots', 'Rust', 'Blight', 'Defoliation', 'Lesions', 'Cankers']}
+            <ButtonList
+              value={this.state.madroneDisease}
+              list={['Wilting leaves', 'Leaf spots', 'Rust', 'Blight', 'Defoliation', 'Lesions', 'Cankers']}
                         onChange={madroneDisease => this._update('madroneDisease', madroneDisease)}/>
           </div>
         </div>
@@ -48,7 +52,9 @@ export default class PacificMadroneFilters extends Component {
         <div className="column is-6">
           <div className="field">
             <label className="label">Stand Diversity</label>
-            <ButtonList list={['Pure stand of this species', 'Mixed stand (this species and others)', 'Tree is standing alone', 'Not sure']}
+            <ButtonList
+              value={this.state.standDiversity}
+              list={['Pure stand of this species', 'Mixed stand (this species and others)', 'Tree is standing alone', 'Not sure']}
                         onChange={standDiversity => this._update('standDiversity', standDiversity)}/>
           </div>
         </div>

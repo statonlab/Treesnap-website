@@ -36,10 +36,15 @@ trait FiltersObservations
         ];
 
         if (! empty($request->collection_id)) {
-            $observations = $user->collections()->findOrFail($request->collection_id)->observations();
+            $observations = $user->collections()
+                ->findOrFail($request->collection_id)
+                ->observations();
             $observations = $observations->with($with);
         } elseif (! empty($request->group_id)) {
-            $observations = $user->groups()->findOrFail($request->group_id)->observations()->with($with);
+            $observations = $user->groups()
+                ->findOrFail($request->group_id)
+                ->observations()
+                ->with($with);
         } else {
             $observations = Observation::with($with)->where('user_id', $user->id);
         }
@@ -62,6 +67,26 @@ trait FiltersObservations
                 $query->orWhere('mobile_id', 'like', "%$term%");
                 $query->orWhere('custom_id', 'like', "%$term%");
             });
+
+            if ($is_admin) {
+                $observations->orWhereHas('user', function ($query) use ($term) {
+                    $query->where('users.name', 'like', "%$term%");
+                });
+            }
+        }
+
+        $status = $request->status;
+        if (! empty($status)) {
+            $user = $request->user();
+
+            $observations->whereHas('confirmations',
+                function ($query) use ($status, $user) {
+                    if ($status === 'marked_correct_by_me') {
+                        /** @var $query \Illuminate\Database\Query\Builder */
+                        $query->where('confirmations.user_id', $user->id);
+                    }
+                    $query->where('confirmations.correct', true);
+                });
         }
 
         if (! empty($request->advanced_filter)) {

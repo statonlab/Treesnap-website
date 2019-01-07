@@ -202,6 +202,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     Route::get('/web/confirmations/count/{id}', 'ConfirmationsController@count');
     Route::delete('/web/confirmation/{id}', 'ConfirmationsController@delete');
 
+    // Observations
+    Route::get('/web/observations', 'ObservationsController@index');
+
     // Curations Controller
     Route::get('/web/curate/observations/{limit?}', 'CurationsController@index');
 
