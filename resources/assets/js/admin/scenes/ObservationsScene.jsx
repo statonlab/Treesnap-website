@@ -497,7 +497,7 @@ export default class ObservationsScene extends Scene {
                   <select
                     value={this.state.selectedCollection}
                     onChange={({target}) => this.collectionFilter(target.value)}>
-                    <option value="-1">All Collections</option>
+                    <option value="-1">Select a Collection</option>
                     {this.state.collections.map(collection => {
                       return (
                         <option key={collection.value}
