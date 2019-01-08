@@ -35,6 +35,7 @@ trait FiltersObservations
             'latinName',
         ];
 
+        // Cannot mix group and collection, must be either or
         if (! empty($request->collection_id)) {
             $observations = $user->collections()
                 ->findOrFail($request->collection_id)
@@ -46,18 +47,24 @@ trait FiltersObservations
                 ->observations()
                 ->with($with);
         } else {
-            $observations = Observation::with($with)->where('user_id', $user->id);
+            $observations = Observation::with($with);
+            if (! $request->view_type || ! $is_admin) {
+                $observations->where('user_id', $user->id);
+            }
         }
 
+        // Handle manual filters entry (ie, unsaved filters)
         if (! empty($request->advanced_filters)) {
             $rules = json_decode($request->advanced_filters, true);
             $observations = Filter::apply((array)$rules, $observations);
         }
 
+        // Handle the species
         if (! empty($request->category)) {
             $observations->where('observation_category', $request->category);
         }
 
+        // Handle keyword search
         if (! empty($request->search)) {
             $term = $request->search;
             $observations->where(function ($query) use ($term) {
@@ -75,6 +82,7 @@ trait FiltersObservations
             }
         }
 
+        // Handle confirmation status
         $status = $request->status;
         if (! empty($status)) {
             $user = $request->user();
@@ -89,10 +97,12 @@ trait FiltersObservations
                 });
         }
 
+        // Apply any advanced filter. This makes sure the user has access to the filter.
         if (! empty($request->advanced_filter)) {
             $observations = $this->applyAdvancedFilter($request, $observations);
         }
 
+        // Add the privacy class if the user is not a scientist or an admin
         if (! $is_admin) {
             $observations = $this->addPrivacyClause($observations, $user);
         }

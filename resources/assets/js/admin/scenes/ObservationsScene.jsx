@@ -7,6 +7,7 @@ import AdvancedFiltersModal from '../../components/AdvancedFiltersModal'
 import Notify from '../../components/Notify'
 import FiltersHelpModal from '../components/FiltersHelpModal'
 import Scene from '../../scenes/Scene'
+import Dropdown from '../../components/Dropdown'
 
 export default class ObservationsScene extends Scene {
   constructor(props) {
@@ -23,6 +24,7 @@ export default class ObservationsScene extends Scene {
       ownedCollections    : [],
       showEmail           : false,
       showFiltersModal    : false,
+      downloadParams      : '',
       contact             : {
         to         : {
           user_id: 0,
@@ -83,7 +85,7 @@ export default class ObservationsScene extends Scene {
         total             : data.total,
         hasMorePages      : data.has_more_pages,
         pages             : this.generatePages(data.total, data.per_page, data.page)
-      })
+      }, this.makeDownloadLink)
     } catch (error) {
       console.error(error)
     }
@@ -100,7 +102,8 @@ export default class ObservationsScene extends Scene {
       advanced_filters: state.advancedFiltersRules ? JSON.stringify(state.advancedFiltersRules) : null,
       collection_id   : this.getSelectedID(state.selectedCollection),
       category        : state.selectedCategory || null,
-      status          : state.selectedStatus === 0 || state.selectedStatus === '0' ? null : state.selectedStatus
+      status          : state.selectedStatus === 0 || state.selectedStatus === '0' ? null : state.selectedStatus,
+      view_type : 'full'
     }
   }
 
@@ -170,6 +173,44 @@ export default class ObservationsScene extends Scene {
     }).catch(error => {
       console.log(error.response)
     })
+  }
+
+  /**
+   * Creates the download params string from the current state.
+   */
+  makeDownloadLink() {
+    const {
+            selectedCollection,
+            search,
+            advancedFiltersRules,
+            selectedFilter,
+            selectedCategory,
+            selectedStatus
+          } = this.state
+
+    const params = {
+      collection_id   : selectedCollection,
+      search          : search,
+      advanced_filters: advancedFiltersRules ? JSON.stringify(advancedFiltersRules) : null,
+      category        : selectedCategory,
+      advanced_filter : this.getSelectedID(selectedFilter),
+      view_type : 'full',
+      status          : selectedStatus === 0 || selectedStatus === '0' ? null : selectedStatus
+    }
+
+    let downloadParams = this.makeUrlQueryFromObject(params)
+
+    this.setState({downloadParams})
+  }
+
+  makeUrlQueryFromObject(object) {
+    let link = Object.keys(object).filter(key => {
+      return object[key] && object[key].length > 0
+    }).map(key => {
+      return `${key}=${object[key]}`
+    })
+
+    return link.join('&')
   }
 
   /**
@@ -429,22 +470,22 @@ export default class ObservationsScene extends Scene {
               />
             </div>
             {/*<div className="control">*/}
-              {/*<span className="select">*/}
-                {/*<select*/}
-                  {/*value={this.state.searchTermCategory}*/}
-                  {/*onChange={({target}) => this.searchCategoryFilter(target.value)}*/}
-                {/*>*/}
-                  {/*<option value="all">Any</option>*/}
-                  {/*<option value="user">User Name</option>*/}
-                  {/*<option value="category">Title</option>*/}
-                  {/*<option value="address">Full Address</option>*/}
-                  {/*<option value="state">State</option>*/}
-                  {/*<option value="county">County</option>*/}
-                  {/*<option value="city">City</option>*/}
-                  {/*<option value="id">Unique ID</option>*/}
-                  {/*<option value="custom">Custom ID</option>*/}
-                {/*</select>*/}
-              {/*</span>*/}
+            {/*<span className="select">*/}
+            {/*<select*/}
+            {/*value={this.state.searchTermCategory}*/}
+            {/*onChange={({target}) => this.searchCategoryFilter(target.value)}*/}
+            {/*>*/}
+            {/*<option value="all">Any</option>*/}
+            {/*<option value="user">User Name</option>*/}
+            {/*<option value="category">Title</option>*/}
+            {/*<option value="address">Full Address</option>*/}
+            {/*<option value="state">State</option>*/}
+            {/*<option value="county">County</option>*/}
+            {/*<option value="city">City</option>*/}
+            {/*<option value="id">Unique ID</option>*/}
+            {/*<option value="custom">Custom ID</option>*/}
+            {/*</select>*/}
+            {/*</span>*/}
             {/*</div>*/}
           </div>
         </div>
@@ -561,6 +602,31 @@ export default class ObservationsScene extends Scene {
                   <span>Clear Filters</span>
                 </button>
                 : null}
+
+              <Dropdown right={true}
+                        isBlock={false}
+                        trigger={(
+                          <button className="button ml-1" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span className="icon is-small">
+                              <i className="fa fa-download"></i>
+                            </span>
+                            <span>Download</span>
+                            <span className="icon is-small">
+                              <i className="fa fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        )}>
+                <a href={`/services/download/observations/tsv?${this.state.downloadParams}`}
+                   target={'_blank'}
+                   className="dropdown-item">
+                  TSV Format
+                </a>
+                <a href={`/services/download/observations/csv?${this.state.downloadParams}`}
+                   target={'_blank'}
+                   className="dropdown-item">
+                  CSV Format
+                </a>
+              </Dropdown>
             </div>
           </div>
         </div>

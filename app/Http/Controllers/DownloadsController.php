@@ -107,8 +107,11 @@ class DownloadsController extends Controller
      * @param string $extension
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function collection(Collection $collection, Request $request, $extension = 'tsv')
-    {
+    public function collection(
+        Collection $collection,
+        Request $request,
+        $extension = 'tsv'
+    ) {
         /** @var \App\User $user */
         $user = $request->user();
         if (! $collection->users->contains('id', $user->id)) {
@@ -131,15 +134,16 @@ class DownloadsController extends Controller
         // Generate Collection
         $filtered = $collection->observations();
         $count = $this->count($filtered);
-        $filtered->with(['latinName', 'user'])->chunk(800, function ($observations) use ($user, $path, $extension) {
-            foreach ($observations as $observation) {
-                $line = $this->prepObservationLine($observation, $user);
+        $filtered->with(['latinName', 'user'])
+            ->chunk(800, function ($observations) use ($user, $path, $extension) {
+                foreach ($observations as $observation) {
+                    $line = $this->prepObservationLine($observation, $user);
 
-                if ($line !== false) {
-                    Storage::append($path, $this->line($line, $extension));
+                    if ($line !== false) {
+                        Storage::append($path, $this->line($line, $extension));
+                    }
                 }
-            }
-        });
+            });
 
         $this->createAutoRemovableFile($path, $user->id);
 
@@ -162,7 +166,9 @@ class DownloadsController extends Controller
             'collection_id' => 'nullable|exists:collections,id',
             'category' => ['nullable', Rule::in($this->observation_categories)],
             'group_id' => 'nullable|exists:groups,id',
-            'advanced_filter' => 'nullable|json',
+            'advanced_filter' => 'nullable|integer|exists:filters,id',
+            'advanced_filters' => 'nullable|json',
+            'status' => 'nullable|in:marked_correct_by_anyone,marked_correct_by_me',
         ]);
 
         $user = $request->user();
