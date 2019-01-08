@@ -316,7 +316,7 @@ export default class ObservationsScene extends Scene {
    */
   nextPage() {
     // Don't flip forward if we reached the last page
-    if (!this.state.hasMorePage) {
+    if (!this.state.hasMorePages) {
       return
     }
 
