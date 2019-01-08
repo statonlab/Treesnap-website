@@ -30,8 +30,8 @@ class ObservationsController extends Controller
             'group_id' => 'nullable|exists:groups,id',
             'advanced_filters' => 'nullable|json',
             'advanced_filter' => 'nullable|integer|exists:filters,id',
-            'status',
-            'nullable|in:marked_correct_by_anyone,marked_correct_by_me',
+            'status' => 'nullable|in:marked_correct_by_anyone,marked_correct_by_me',
+            'view_type' => 'nullable|in:full,partial',
         ]);
 
         $limit = $request->per_page ?: 6;
