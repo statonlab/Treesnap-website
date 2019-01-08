@@ -223,3 +223,12 @@
     padding-bottom: 1rem;
   }
 }
+
+a.sortable-th {
+  color: #444;
+  @include align-items(center);
+
+  &:hover {
+    color: $primary;
+  }
+}

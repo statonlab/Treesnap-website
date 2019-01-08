@@ -20,13 +20,72 @@ class UsersController extends Controller
     /**
      * Get all users.
      *
+     * @param Request $request The request.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::withCount('observations')->with('role')->get();
+        $this->validate($request, [
+            'per_page',
+            'nullable|integer|min:6|max:100',
+            'search' => 'nullable',
+            'sort_by' => 'nullable|in:users.name,users.email,observations_count,roles.name',
+            'sort_dir' => 'nullable|in:desc,asc',
+        ]);
 
-        return $this->success($users);
+        $users = User::join('roles', 'roles.id', 'users.role_id')->select([
+                'users.name',
+                'users.email',
+                'users.id',
+                'roles.name as role_name',
+                'roles.id as role_id',
+                DB::raw('(SELECT COUNT(*) FROM observations WHERE observations.user_id = users.id) AS observations_count'),
+            ]);
+
+        if (! empty($request->search)) {
+            $term = $request->search;
+            $users->where(function ($query) use ($term) {
+                /** @var \Illuminate\Database\Eloquent\Builder $query */
+                $query->where('users.name', 'like', "%$term%");
+                $query->orWhere('users.email', 'like', "%$term%");
+                $query->orWhere('roles.name', 'like', "%$term%");
+            });
+        }
+
+        $order_by = $request->sort_by ?: 'users.name';
+        $order_dir = $request->sort_dir ?: 'asc';
+
+        $users->orderBy($order_by, $order_dir);
+
+        if($order_by !== 'users.name') {
+            $users->orderBy('users.name', 'asc');
+        }
+
+        $users = $users->paginate($request->per_page ?: 25);
+
+        foreach ($users as $user) {
+            $data[] = $this->constructUserObject($user);
+        }
+
+        return $this->success(array_merge($users->toArray(), ['data' => $data]));
+    }
+
+    /**
+     * @param object $record
+     * @return array
+     */
+    protected function constructUserObject(object $record)
+    {
+        return [
+            'name' => $record->name,
+            'email' => $record->email,
+            'role' => [
+                'id' => $record->role_id,
+                'name' => $record->role_name,
+            ],
+            'observations_count' => $record->observations_count,
+        ];
     }
 
     /**
@@ -38,7 +97,9 @@ class UsersController extends Controller
      */
     public function show($id, Request $request)
     {
-        $user = User::withCount('observations')->with(['groups', 'role'])->findOrFail($id);
+        $user = User::withCount('observations')
+            ->with(['groups', 'role'])
+            ->findOrFail($id);
         $admin = $request->user();
 
         $observations = Observation::with([
@@ -60,7 +121,8 @@ class UsersController extends Controller
 
         $all = [];
         foreach ($observations as $observation) {
-            $all[] = array_merge(array_except($this->getObservationJson($observation, true, $user), ['is_private']), [
+            $all[] = array_merge(array_except($this->getObservationJson($observation,
+                true, $user), ['is_private']), [
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -174,7 +236,8 @@ class UsersController extends Controller
         foreach ($users as $user) {
             $recent_observation = $user->recent_observation_date;
             if (! is_null($recent_observation)) {
-                $recent_observation = Carbon::createFromFormat('Y-m-d H:i:s', $recent_observation)->format('m/d/y');
+                $recent_observation = Carbon::createFromFormat('Y-m-d H:i:s',
+                    $recent_observation)->format('m/d/y');
             }
 
             \Storage::append($path, $this->line([
