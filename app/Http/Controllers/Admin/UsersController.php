@@ -36,7 +36,6 @@ class UsersController extends Controller
 
         $users = User::join('roles', 'roles.id', 'users.role_id')->select([
             'users.name',
-            'users.name',
             'users.email',
             'users.id',
             'roles.name as role_name',
@@ -79,6 +78,7 @@ class UsersController extends Controller
     protected function constructUserObject(object $record)
     {
         return [
+            'id' => $record->id,
             'name' => $record->name,
             'email' => $record->email,
             'role' => [
