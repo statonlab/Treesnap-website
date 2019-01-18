@@ -35,13 +35,14 @@ class UsersController extends Controller
         ]);
 
         $users = User::join('roles', 'roles.id', 'users.role_id')->select([
-                'users.name',
-                'users.email',
-                'users.id',
-                'roles.name as role_name',
-                'roles.id as role_id',
-                DB::raw('(SELECT COUNT(*) FROM observations WHERE observations.user_id = users.id) AS observations_count'),
-            ]);
+            'users.name',
+            'users.name',
+            'users.email',
+            'users.id',
+            'roles.name as role_name',
+            'roles.id as role_id',
+            DB::raw('(SELECT COUNT(*) FROM observations WHERE observations.user_id = users.id) AS observations_count'),
+        ]);
 
         if (! empty($request->search)) {
             $term = $request->search;
@@ -58,7 +59,7 @@ class UsersController extends Controller
 
         $users->orderBy($order_by, $order_dir);
 
-        if($order_by !== 'users.name') {
+        if ($order_by !== 'users.name') {
             $users->orderBy('users.name', 'asc');
         }
 
