@@ -605,6 +605,7 @@ export default class ObservationsScene extends Scene {
 
               <Dropdown right={true}
                         isBlock={false}
+                        timeout={220}
                         trigger={(
                           <button className="button ml-1" aria-haspopup="true" aria-controls="dropdown-menu">
                             <span className="icon is-small">

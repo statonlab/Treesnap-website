@@ -17,7 +17,7 @@ export default class Dropdown extends Component {
   hide() {
     setTimeout(() => {
       this.setState({show: false})
-    }, 100)
+    }, this.props.timeout)
   }
 
   toggle() {
@@ -51,10 +51,12 @@ export default class Dropdown extends Component {
 Dropdown.propTypes = {
   trigger: PropTypes.object.isRequired,
   right  : PropTypes.bool,
-  isBlock: PropTypes.bool
+  isBlock: PropTypes.bool,
+  timeout: PropTypes.number
 }
 
 Dropdown.defaultProps = {
   right  : false,
-  isBlock: false
+  isBlock: false,
+  timeout: 110
 }
