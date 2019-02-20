@@ -20,7 +20,7 @@ trait Observes
         'American Elm',
         'Florida Torreya',
         'Eastern Larch',
-        'Tan Oak',
+        'Tanoak',
         'Pacific Madrone',
         'Other',
     ];
@@ -45,41 +45,6 @@ trait Observes
         'observations.is_private',
         'observations.mobile_id',
         'observations.thumbnail',
-    ];
-
-    /**
-     * Map form elements to human readable labels.
-     *
-     * @var array
-     */
-    protected $labels_map = [
-        'ashSpecies' => 'Species',
-        'seedsBinary' => 'Seeds',
-        'flowersBinary' => 'Flowers',
-        'emeraldAshBorer' => 'Ash borer',
-        'woollyAdesCoverage' => 'Woolly adelgids',
-        'chestnutBlightSigns' => 'Chestnut blight',
-        'acorns' => 'Acorns',
-        'cones' => 'Cones',
-        'heightFirstBranch' => 'Height of first branch',
-        'oakHealthProblems' => 'Health problems',
-        'diameterNumeric' => 'Tree diameter',
-        'crownHealth' => 'Crown health',
-        'crownClassification' => 'Crown classification',
-        'otherLabel' => 'Tree type',
-        'locationCharacteristics' => 'Habitat',
-        'nearbyTrees' => 'Trees nearby',
-        'nearByHemlock' => 'Nearby hemlocks',
-        'treated' => 'Treated',
-        'partOfStudy' => 'Study',
-        'heightNumeric' => 'Tree height',
-        'burrs' => 'Nuts/burrs',
-        'catkins' => 'Catkins',
-        'comment' => 'Comment',
-        'canopyHealth' => 'Canopy Health',
-        'crownAssessment' => 'Crown Damage',
-        'madroneDisease' => 'Disease',
-        'standDiversity' => 'Stand Diversity'
     ];
 
     /**
