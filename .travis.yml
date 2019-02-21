@@ -26,8 +26,6 @@ before_install:
 before_script:
   - cp .env.travis .env
   - composer install --no-interaction
-  - npm -g i npm
-  - npm ci
   - php artisan key:generate
   - php artisan storage:link
 
@@ -37,5 +35,4 @@ script:
   - php artisan db:seed
   - php artisan passport:install
   # Run tests
-  - npm run production
   - ./vendor/bin/phpunit
