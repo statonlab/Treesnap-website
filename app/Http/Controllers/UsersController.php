@@ -151,7 +151,7 @@ class UsersController extends Controller
             'password' => $request->old_password,
         ])) {
             $user->password = bcrypt($request->new_password);
-
+            $user->save();
             return $this->success('Password updated successfully.');
         }
 
