@@ -28,6 +28,11 @@ class AddUserToSciStarter implements ShouldQueue
      */
     public function handle($event)
     {
+        // Don't run this code in tests
+        if(app()->environment() === 'testing') {
+            return;
+        }
+
         /** @var \App\User $user */
         $user = $event->user;
         $sci_starter = new SciStarterResource();

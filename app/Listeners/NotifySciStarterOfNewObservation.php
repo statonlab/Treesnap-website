@@ -24,6 +24,11 @@ class NotifySciStarterOfNewObservation implements ShouldQueue
      */
     public function handle($event)
     {
+        // Don't run this code in tests
+        if(app()->environment() === 'testing') {
+            return;
+        }
+
         $observation = $event->observation;
         $sci_starter = new SciStarterResource();
         $profile_id = $sci_starter->profile($observation->user);

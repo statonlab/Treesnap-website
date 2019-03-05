@@ -28,7 +28,7 @@
                                        type="email"
                                        class="input{{ $errors->has('email') ? ' is-danger' : '' }}"
                                        name="email"
-                                       value="{{ $email or old('email') }}"
+                                       value="{{ $email ?? old('email') }}"
                                        required
                                        autofocus>
 
