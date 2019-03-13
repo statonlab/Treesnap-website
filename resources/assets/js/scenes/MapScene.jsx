@@ -355,7 +355,7 @@ export default class App extends Scene {
            })
            this.openSidebar()
            let zoom = this.refs.maps.getZoom()
-           this.goToSubmission(marker, zoom)
+           this.goToSubmission(marker, zoom > 8 ? zoom : 8)
            if (marker.ref !== null) {
              marker.ref.openCallout()
            }
