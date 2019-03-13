@@ -101,8 +101,7 @@ export default class ObservationCard extends Component {
       this.slowCloseSlideContent()
 
       return
-    }
-    else if (slide) {
+    } else if (slide) {
       this.setState({
         slideContent: label
       })
@@ -304,8 +303,7 @@ export default class ObservationCard extends Component {
         this.setState({
           correctMarks: this.state.correctMarks - 1
         })
-      }
-      else {
+      } else {
         this.setState({
           incorrectMarks: this.state.incorrectMarks - 1
         })
@@ -323,8 +321,7 @@ export default class ObservationCard extends Component {
     if (this.state.confirmation.id !== -1) {
       if (this.state.confirmation.correct) {
         this.setState({correctMarks: this.state.correctMarks - 1})
-      }
-      else {
+      } else {
         this.setState({incorrectMarks: this.state.incorrectMarks - 1})
       }
     }
@@ -341,8 +338,7 @@ export default class ObservationCard extends Component {
         this.setState({
           correctMarks: this.state.correctMarks + 1
         })
-      }
-      else {
+      } else {
         this.setState({
           incorrectMarks: this.state.incorrectMarks + 1
         })
@@ -473,11 +469,22 @@ export default class ObservationCard extends Component {
           </header>
           <div className="relative-block">
             <Spinner visible={this.state.loading}/>
-            <div className="has-bg-image relative-block">
-              <div className="card-image"
-                   style={{
-                     backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`
+            <div className="has-bg-image relative-block is-positioned-relatively">
+              <div
+                className="card-image img-bg-zoom"
+                style={{
+                  backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`
+                }}>
+                <a href="javascript:;"
+                   className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column z-10"
+                   onClick={() => {
+                     this.setState({showDetailsModal: true})
                    }}>
+                  <i className="fa fa-photo"></i>
+                  <div className="has-text-centered">
+                    Click for More Details
+                  </div>
+                </a>
               </div>
             </div>
 
