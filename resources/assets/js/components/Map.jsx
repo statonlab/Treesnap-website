@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Marker from './Marker'
 import EventEmitter from '../helpers/EventEmitter'
@@ -146,8 +146,15 @@ export default class Map extends Component {
   }
 
   render() {
+    let {
+          center,
+          zoom,
+          onBoundsChange,
+          onLoad,
+          ...props
+        } = this.props
     return (
-      <div ref="mapContainer" {..._.omit(this.props, [Object.keys(Map.propTypes)])}>
+      <div ref="mapContainer" {...props}>
         {this.renderChildren()}
       </div>
     )

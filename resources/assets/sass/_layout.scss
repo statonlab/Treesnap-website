@@ -303,3 +303,7 @@ a.box {
 .align-items-end {
   @include align-items(flex-end)
 }
+
+.has-no-shadow {
+  box-shadow: none !important;
+}

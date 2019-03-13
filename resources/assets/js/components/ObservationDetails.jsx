@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Map from './Map'
 import Marker from './Marker'
@@ -12,7 +12,7 @@ import Labels from '../helpers/Labels'
 import Utils from '../helpers/Utils'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import EmailModal from '../admin/components/EmailModal'
 
 export default class ObservationDetails extends Component {
@@ -20,6 +20,7 @@ export default class ObservationDetails extends Component {
     super(props)
 
     this.state = {
+      activeTab          : 'photos',
       markers            : [],
       center             : {
         lat: 40.354388,
@@ -159,14 +160,7 @@ export default class ObservationDetails extends Component {
     )
   }
 
-  /**
-   * Render the images modal
-   */
-  _renderImagesModal() {
-    if (!this.state.showModal || this.observation.images.images.length === 0) {
-      return null
-    }
-
+  getImages() {
     let images       = []
     let imagesObject = this.observation.images
 
@@ -177,6 +171,19 @@ export default class ObservationDetails extends Component {
         })
       })
     })
+
+    return images
+  }
+
+  /**
+   * Render the images modal
+   */
+  _renderImagesModal() {
+    if (!this.state.showModal || this.observation.images.images.length === 0) {
+      return null
+    }
+
+    let images = this.getImages()
 
     return (
       <Modal onCloseRequest={() => this.setState({showModal: false})}>
@@ -317,6 +324,12 @@ export default class ObservationDetails extends Component {
       }
     }
 
+    if (typeof data.trim === 'function') {
+      if (data.trim().length === 0) {
+        return null
+      }
+    }
+
     return (
       <tr key={key}>
         <th>{label}</th>
@@ -393,6 +406,19 @@ export default class ObservationDetails extends Component {
     )
   }
 
+  /**
+   * Get tab link classes
+   * @param tab
+   * @return {string}
+   */
+  getTabClass(tab) {
+    if (tab === this.state.activeTab) {
+      return 'is-active'
+    }
+
+    return ''
+  }
+
   render() {
 
     if (this.state.deleted) {
@@ -458,6 +484,7 @@ export default class ObservationDetails extends Component {
                   if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
                     return null
                   }
+
                   let unit    = null
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
                   let val     = data[key]
@@ -503,34 +530,62 @@ export default class ObservationDetails extends Component {
           </div>
 
           <div className="column">
-            <div style={{height: '300px', width: '100%', position: 'relative'}}>
-              <Map
-                ref={ref => this.map = ref}
-                style={{height: '300px'}}
-                center={this.state.center}
-                zoom={this.state.zoom}
-              >
-                {this.state.markers.map((marker, index) => {
-                  return (
-                    <Marker
-                      owner_id={marker.user_id}
-                      key={index}
-                      position={marker.position}
-                      show={true}
-                    >
-                      {marker.image !== '' ?
-                        <div className="callout">
-                          <img src={marker.image} alt={marker.title} style={{
-                            width : 'auto',
-                            height: 100
-                          }}/>
-                        </div>
-                        : null}
-                    </Marker>
-                  )
-                })}
-              </Map>
+            <div className="tabs has-no-shadow">
+              <ul>
+                <li className={this.getTabClass('photos')}>
+                  <a onClick={() => this.setState({activeTab: 'photos'})}>Photos</a>
+                </li>
+                <li className={this.getTabClass('map')}>
+                  <a onClick={() => this.setState({activeTab: 'map'})}>
+                    Map
+                  </a>
+                </li>
+              </ul>
             </div>
+
+            {this.state.activeTab === 'map' ?
+              <div style={{height: '300px', width: '100%', position: 'relative'}}>
+                <Map
+                  ref={ref => this.map = ref}
+                  style={{height: '300px'}}
+                  center={this.state.center}
+                  zoom={this.state.zoom}
+                >
+                  {this.state.markers.map((marker, index) => {
+                    return (
+                      <Marker
+                        owner_id={marker.user_id}
+                        key={index}
+                        position={marker.position}
+                        show={true}
+                      >
+                        {marker.image !== '' ?
+                          <div className="callout">
+                            <img src={marker.image} alt={marker.title} style={{
+                              width : 'auto',
+                              height: 100
+                            }}/>
+                          </div>
+                          : null}
+                      </Marker>
+                    )
+                  })}
+                </Map>
+              </div>
+              : null}
+
+            {this.state.activeTab === 'photos' ?
+              <div style={{height: '300px', width: '100%', position: 'relative'}}>
+                <ImageGallery
+                  items={this.getImages()}
+                  slideInterval={2000}
+                  showThumbnails={false}
+                  showFullscreenButton={false}
+                  showPlayButton={false}
+                  renderItem={this._renderImage.bind(this)}
+                />
+              </div>
+              : null}
           </div>
         </div>
         {this._renderImagesModal()}
