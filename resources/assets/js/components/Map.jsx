@@ -50,7 +50,7 @@ export default class Map extends Component {
 
     this.cluster = new MarkerClusterer(this.maps, [], {
       imagePath: '/images/map/m',
-      maxZoom  : 7
+      maxZoom  : 8
     })
 
     google.maps.event.addListenerOnce(this.maps, 'idle', this.props.onLoad)
