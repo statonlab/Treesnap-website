@@ -32,7 +32,7 @@
 .reset-map-button,
 .filters-button {
   position: absolute;
-  top: $navbar-height + 1em;
+  top: $navbar-height + 1rem;
   left: 10px;
   background: #fff;
   border-radius: $radius;
@@ -62,7 +62,7 @@
 }
 
 .reset-map-button {
-  top: $navbar-height + 4em;
+  top: $navbar-height + 4rem;
 }
 
 .sidebar-filters {

@@ -50,6 +50,10 @@ body,
   @include justify-content(space-between);
 }
 
+.flex-wrap {
+  @include flex-wrap(wrap);
+}
+
 .button.is-full {
   width: 100%;
   justify-content: flex-start;

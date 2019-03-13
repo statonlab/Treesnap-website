@@ -61,8 +61,8 @@ export default class Leaderboard extends React.Component {
   renderLeader(leader, key) {
     const num = key + 1
     return (
-      <div key={key} className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-        <div className="is-flex flex-v-center">
+      <div key={key} className="item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center flex-wrap">
+        <div className="is-flex flex-v-center flex-wrap">
           {leader.thumbnail.src.length > 0 ?
             <div className="item mr-1">
               <img src={leader.thumbnail.src}

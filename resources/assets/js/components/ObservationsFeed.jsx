@@ -30,7 +30,7 @@ export default class ObservationsFeed extends Component {
     return (
       <div key={observation.id}
            className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-        <div className="is-flex flex-v-center">
+        <div className="is-flex flex-v-center flex-wrap">
           <div className="item mr-1">
             <Link to={`observation/${observation.id}`}>
               <img src={observation.thumbnail}
