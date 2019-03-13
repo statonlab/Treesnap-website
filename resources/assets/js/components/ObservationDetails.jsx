@@ -575,7 +575,7 @@ export default class ObservationDetails extends Component {
               : null}
 
             {this.state.activeTab === 'photos' ?
-              <div style={{height: '300px', width: '100%', position: 'relative'}}>
+              <div style={{width: '100%', position: 'relative'}}>
                 <ImageGallery
                   items={this.getImages()}
                   slideInterval={2000}
