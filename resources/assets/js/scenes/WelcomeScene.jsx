@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Navbar from '../components/Navbar'
 import HomeJumbotron from '../components/HomeJumbotron'
 import FeaturesList from '../components/FeaturesList'

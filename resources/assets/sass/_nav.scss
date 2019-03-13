@@ -13,7 +13,7 @@
   background-color: $primary;
 
   > .container {
-    @extend .navbar;
+    //@extend .navbar;
     box-shadow: none;
   }
 
@@ -67,7 +67,7 @@
 
   @include tablet-only() {
     > .container {
-      width: 100%;
+      //width: 100%;
     }
   }
 
