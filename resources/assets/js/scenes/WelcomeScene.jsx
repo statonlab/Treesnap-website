@@ -31,25 +31,19 @@ export default class Welcome extends Scene {
           <div className="container">
             <div className="columns">
               <div className="column">
-                <div className="p-1">
-                  <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Leaderboard</h3>
-                  <p className="has-text-centered text-dark-muted mb-0">Top Submitters of All Time</p>
-                  <Leaderboard limit={5}/>
-                </div>
+                <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Leaderboard</h3>
+                <p className="has-text-centered text-dark-muted mb-0">Top Submitters of All Time</p>
+                <Leaderboard limit={5}/>
               </div>
               <div className="column">
-                <div className="p-1">
-                  <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Observation Feed</h3>
-                  <p className="has-text-centered text-dark-muted mb-0">Latest Observations</p>
-                  <ObservationFeed/>
-                </div>
+                <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Observation Feed</h3>
+                <p className="has-text-centered text-dark-muted mb-0">Latest Observations</p>
+                <ObservationFeed/>
               </div>
               <div className="column">
-                <div className="p-1">
-                  <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Tweets</h3>
-                  <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>
-                  <TwitterFeed/>
-                </div>
+                <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Tweets</h3>
+                <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>
+                <TwitterFeed/>
               </div>
             </div>
           </div>
