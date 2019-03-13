@@ -152,6 +152,10 @@ export default class App extends Scene {
    * Open the sidebar and reset the map size.
    */
   openSidebar() {
+    if (this.state.showSidebar) {
+      return
+    }
+
     this.setState({
       showSidebar: true
     })
@@ -351,7 +355,7 @@ export default class App extends Scene {
            })
            this.openSidebar()
            let zoom = this.refs.maps.getZoom()
-           this.goToSubmission(marker, zoom > 10 ? zoom : 13)
+           this.goToSubmission(marker, zoom)
            if (marker.ref !== null) {
              marker.ref.openCallout()
            }
@@ -818,6 +822,8 @@ export default class App extends Scene {
             showCollectionsForm: false,
             showFlagForm       : false
           })
+        } else if (!this.state.showFilters) {
+          this.setState({showFilters: true})
         } else {
           this.closeSidebar()
         }
@@ -1158,14 +1164,10 @@ export default class App extends Scene {
          onClick={() => {
            this.setState({
              selectedMarker: null,
-             showFilters   : !this.state.showFilters
+             showFilters   : true
            })
 
-           if (this.state.showFilters) {
-             this.closeSidebar()
-           } else {
-             this.openSidebar()
-           }
+           this.openSidebar()
          }}>
         <span className="icon">
           <i className="fa fa-filter"></i>
