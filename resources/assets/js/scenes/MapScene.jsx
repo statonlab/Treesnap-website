@@ -680,13 +680,13 @@ export default class App extends Scene {
         </p>
         <div className="field">
           <label className="label">Filters</label>
-          <p className="control has-icon has-icon-right">
+          <p className="control has-icons-right">
             <input className="input"
                    type="search"
                    placeholder="Search visible area on map"
                    value={this.state.searchTerm}
                    onChange={({target}) => this.search(target.value)}/>
-            <span className="icon is-small">
+            <span className="icon is-small is-right">
               <i className="fa fa-search"></i>
             </span>
           </p>
