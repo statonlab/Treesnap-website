@@ -11,16 +11,6 @@ use Exception;
 class AddUserToSciStarter implements ShouldQueue
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param  \Illuminate\Auth\Events\Registered $event
@@ -29,7 +19,7 @@ class AddUserToSciStarter implements ShouldQueue
     public function handle($event)
     {
         // Don't run this code in tests
-        if(app()->environment() === 'testing') {
+        if (app()->environment() === 'testing') {
             return;
         }
 
