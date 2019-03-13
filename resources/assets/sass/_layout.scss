@@ -79,6 +79,7 @@ a.box {
   text-decoration: underline;
   background: rgba(255, 255, 255, .8);
   padding: 0 3px;
+
   &,
   > a {
     color: #777;
@@ -93,6 +94,7 @@ a.box {
 
 .image-slider {
   overflow: hidden;
+
   img {
     width: 100%;
     height: auto;
@@ -103,11 +105,18 @@ a.box {
 .image-gallery-image {
   margin: 0 auto;
   text-align: center;
+
   img {
     max-height: 100vh;
     max-width: 100%;
     width: auto !important;
     height: auto !important;
+  }
+
+  &.max-h-90vh {
+    img {
+      max-width: 90vh !important;
+    }
   }
 }
 
@@ -134,6 +143,7 @@ a.box {
   .sidebar {
     transform: translate(0, 0);
   }
+
   #map2,
   .horizontal-bar {
     left: $sidebar-width;
@@ -165,6 +175,7 @@ a.box {
 
 .home {
   background: $primary url('/images/bg4-compressed.jpg') repeat center center;
+
   &,
   .title {
     color: #fff;
@@ -235,6 +246,7 @@ a.box {
   background: $dark;
   color: #eee;
   padding: 2rem 0;
+
   img {
     max-height: 100px;
   }
@@ -245,6 +257,7 @@ a.box {
 
   a {
     color: #ddd;
+
     &:hover {
       color: #fff;
       text-decoration: underline;
@@ -258,6 +271,7 @@ a.box {
   position: relative;
   border-bottom: 2px solid #dbdbdb;
   padding-bottom: 8px;
+
   &:before {
     position: absolute;
     content: ' ';

@@ -148,9 +148,13 @@ export default class ObservationDetails extends Component {
   /**
    * Render each image for the image gallery.
    */
-  _renderImage(item) {
+  _renderImage(item, inline) {
+    if (typeof inline === 'undefined') {
+      inline = false
+    }
+
     return (
-      <div className='image-gallery-image'
+      <div className={'image-gallery-image' + (inline ? ' max-h-90vh' : '')}
            style={{backgroundColor: this.observation.images.images.length > 1 ? '#222' : 'transparent'}}>
         <img
           src={item.original}
