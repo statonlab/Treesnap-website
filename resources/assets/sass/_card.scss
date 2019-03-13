@@ -135,3 +135,14 @@ a.card-header-title {
     margin-top: auto;
   }
 }
+
+.img-bg-zoom {
+  transition: background-size 250ms linear;
+  &:hover {
+    background-size: 110%;
+  }
+}
+
+.z-10 {
+  z-index: 10!important;
+}
