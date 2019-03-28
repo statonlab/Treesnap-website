@@ -64,6 +64,7 @@ class UsersController extends Controller
 
         $users = $users->paginate($request->per_page ?: 25);
 
+        $data = [];
         foreach ($users as $user) {
             $data[] = $this->constructUserObject($user);
         }

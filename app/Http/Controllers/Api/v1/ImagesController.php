@@ -25,7 +25,7 @@ class ImagesController extends Controller
         /** @var Observation $observation */
         $observation = Observation::findOrFail($id);
 
-        if($observation->user_id !== $request->user()->id) {
+        if ($observation->user_id !== $request->user()->id) {
             return $this->unauthorized();
         }
 
