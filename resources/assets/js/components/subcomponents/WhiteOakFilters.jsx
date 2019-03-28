@@ -14,7 +14,6 @@ export default class WhiteOakFilters extends FiltersBase {
       heightFirstBranchMax: '',
       oakHealthProblems   : [],
       crownHealth         : [],
-      nearbyTrees         : [],
       diameterNumericMin  : '',
       diameterNumericMax  : ''
     }
@@ -48,22 +47,6 @@ export default class WhiteOakFilters extends FiltersBase {
 
         <div className="column is-6">
           <div className="field">
-            <label className="label">Trees Nearby</label>
-            <ButtonList
-              value={this.state.nearbyTrees}
-              list={[
-                'Dead and/or dying',
-                'Healthy and large',
-                'Healthy and small',
-                'No trees of this species nearby',
-                'Not sure'
-              ]}
-              onChange={nearbyTrees => this._update('nearbyTrees', nearbyTrees)}/>
-          </div>
-        </div>
-
-        <div className="column is-6">
-          <div className="field">
             <label className="label">Health Problems</label>
             <ButtonList
               value={this.state.oakHealthProblems}
@@ -83,7 +66,6 @@ export default class WhiteOakFilters extends FiltersBase {
           <div className="field">
             <label className="label">Acorns</label>
             <ButtonList
-              value={this.state.acorns}
               list={['None', 'Some', 'Lots', 'I\'m not sure']}
               onChange={acorns => this._update('acorns', acorns)}/>
           </div>
