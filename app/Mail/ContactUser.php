@@ -13,6 +13,8 @@ class ContactUser extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $queue = 'contact';
+
     /**
      * Contact request.
      *
@@ -72,7 +74,7 @@ class ContactUser extends Mailable implements ShouldQueue
             $observation = $contact->observation;
 
             $category = $observation->observation_category;
-            if ($category === 'Other') {
+            if ($category === 'Other' && isset($observation->data['otherLabel'])) {
                 $category .= " ({$observation->data['otherLabel']})";
             }
             $this->table['Category'] = $category;
