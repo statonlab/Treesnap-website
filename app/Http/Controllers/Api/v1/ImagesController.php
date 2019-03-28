@@ -36,10 +36,10 @@ class ImagesController extends Controller
         ]);
 
         // Determine whether a thumbnail job should be dispatched
-        //$should_create_thumbnail = false;
-        //if (empty($observation->images)) {
-        //    $should_create_thumbnail = true;
-        //}
+        $should_create_thumbnail = false;
+        if (empty($observation->images)) {
+            $should_create_thumbnail = true;
+        }
 
         // Upload and add image to observation
         $key = $request->key ?: 'images';
@@ -47,9 +47,9 @@ class ImagesController extends Controller
         $observation = $this->mergeImageToObservation($observation, $key, $image);
 
         // Create a thumbnail if needed
-        //if ($should_create_thumbnail) {
-        $this->dispatch(new CreateObservationThumbnailJob($observation));
-        //}
+        if ($should_create_thumbnail) {
+            $this->dispatch(new CreateObservationThumbnailJob($observation));
+        }
 
         return $this->created('Image has been saved successfully');
     }
