@@ -159,6 +159,10 @@ class Filter extends Model
             }
         }
 
+        if (! isset($filters['categories'])) {
+            return $observations;
+        }
+
         $observations->where(function ($DB) use ($filters) {
             // Apply per category filters.
             foreach ($filters['categories'] as $key => $category) {
