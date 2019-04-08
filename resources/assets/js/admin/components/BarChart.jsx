@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Chart from 'chart.js'
 import Spinner from '../../components/Spinner'
+import randomColor from 'randomcolor'
 
 export default class BarChart extends Component {
   constructor(props) {
@@ -12,58 +13,14 @@ export default class BarChart extends Component {
       loading: true
     }
   }
-
-//   [{
-//     label          : 'American Chestnut',
-//     stack          : '1',
-//     borderWidth    : 0,
-//     data           : [65, 59, 8, 81]
-//   }, {
-//   stack          : '1',
-//   label          : 'Hemlock',
-//   backgroundColor: '#f39c12',
-//   borderWidth    : 0,
-//   data           : [98, 56, 45, 32]
-// }, {
-//   stack          : '1',
-//     label          : 'Ash',
-//     backgroundColor: '#4d7ec8',
-//     borderWidth    : 0,
-//     data           : [11, 76, 22, 54]
-// }, {
-//   stack          : '1',
-//     label          : 'Other',
-//     backgroundColor: '#bf5329',
-//     borderWidth    : 0,
-//     data           : [34, 12, 34, 12]
-// }, {
-//   stack          : '1',
-//     label          : 'White Oak',
-//     borderWidth    : 0,
-//     backgroundColor: 'rgb(220, 220, 220)',
-//     data           : [5, 59, 67, 4]
-// }]
   componentDidMount() {
-    let colors = [
-      '#2A9D8F',
-      '#f39c12',
-      '#4d7ec8',
-      '#bf5329',
-      '#FFE0B5',
-      '#dcdcdc',
-      '#F37021',
-      '#2F2F2F',
-      '#EAC435',
-      '#345995'
-    ]
-
     axios.get('/admin/web/analytics/observations-over-time').then(response => {
       let aggregated = response.data.data
       let matrix     = {}
       let labels     = []
       let categories = []
 
-      aggregated.forEach(row => {
+      aggregated.forEach((row, index) => {
         labels.push(row.label)
         matrix[row.label] = {}
         row.data.forEach(column => {
@@ -72,12 +29,24 @@ export default class BarChart extends Component {
         categories = Object.keys(matrix[row.label])
       })
 
+     let colors = categories.map((cat, index) => {
+        return randomColor({seed: index, hue: 'random',luminosity: 'random'})
+      })
+
+      let allColors = [
+        '#2A9D8F',
+        '#4d7ec8',
+        '#f39c12',
+        '#bf5329',
+        '#FFE0B5'
+      ].concat(colors.slice(0, categories.length - 5))
+
       let dataset = []
       categories.forEach((category, index) => {
         let data = {
           stack          : '1',
           label          : category,
-          backgroundColor: colors[index] || '#dcdcdc',
+          backgroundColor: allColors[index] || '#dcdcdc',
           data           : []
         }
 
