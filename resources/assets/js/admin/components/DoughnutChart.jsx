@@ -30,7 +30,7 @@ export default class DoughnutChart extends Component {
     let ctx = el.getContext('2d')
 
     let colors = labels.map((label, index) => {
-      return randomColor({seed: index, luminosity: 'dark'})
+      return randomColor({seed: index, hue: 'random', luminosity: 'random'})
     })
 
     colors = [

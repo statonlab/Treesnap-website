@@ -19,7 +19,6 @@ export default class BarChart extends Component {
       let matrix     = {}
       let labels     = []
       let categories = []
-      let colors =[]
 
       aggregated.forEach((row, index) => {
         labels.push(row.label)
@@ -28,23 +27,26 @@ export default class BarChart extends Component {
           matrix[row.label][column.observation_category] = column.observations_count
         })
         categories = Object.keys(matrix[row.label])
-        colors.push(randomColor({seed: index * index, luminosity: 'dark'}))
       })
 
-      // let allColors = [
-      //   '#2A9D8F',
-      //   '#4d7ec8',
-      //   '#f39c12',
-      //   '#bf5329',
-      //   '#FFE0B5'
-      // ].concat(colors.slice(0, categories.length - 5))
+     let colors = categories.map((cat, index) => {
+        return randomColor({seed: index, hue: 'random',luminosity: 'random'})
+      })
+
+      let allColors = [
+        '#2A9D8F',
+        '#4d7ec8',
+        '#f39c12',
+        '#bf5329',
+        '#FFE0B5'
+      ].concat(colors.slice(0, categories.length - 5))
 
       let dataset = []
       categories.forEach((category, index) => {
         let data = {
           stack          : '1',
           label          : category,
-          backgroundColor: colors[index] || '#dcdcdc',
+          backgroundColor: allColors[index] || '#dcdcdc',
           data           : []
         }
 
