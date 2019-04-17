@@ -30,7 +30,8 @@ export default class PartnerList extends Component {
                 time to identify “lingering” trees that survive long past others have died to
                 be used in research and breeding programs.
               </p>
-              <a className={'button is-info'} href="https://www.nrs.fs.fed.us/units/invasivescontrol/">Visit Full Site</a>
+              <a className={'button is-info'}
+                 href="https://www.nrs.fs.fed.us/units/invasivescontrol/">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -142,6 +143,27 @@ export default class PartnerList extends Component {
                 The Atlanta Botanical Garden's mission is to develop and maintain plant collections for display, education, research, conservation and enjoyment. The Garden has launched the Center for Southeastern Conservation, an expansion of the Garden’s conservation research and education. Through conservation of imperiled species and habitats in the Carolinas, Tennessee, Georgia, Florida, Alabama, Mississippi, and Louisiana, the Center protects the natural heritage of one of North America’s most biodiverse regions.
               </p>
               <a className={'button is-info'} href="http://atlantabg.org/">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://www.fnps.org/">
+                <img src="/images/fnps.png"
+                     alt="Florida Native Plant Society icon"
+                     className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">
+                Florida Native Plant Society
+              </p>
+              <p className="feature-text">
+                The Mission of the Florida Native Plant Society is to promote the preservation, conservation, and restoration of the native plants and native plant communities of Florida. The FNPS TorreyaKeepers Project is dedicated to saving the Florida Torreya (Torreya taxifolia) in its native habitat. One of the most endangered conifers in the world, the Florida Torreya has a limited native range in Florida and Georgia and only a few hundred remaining individuals in the wild. Data collected from TreeSnap will be used to find remaining trees and track their health.
+              </p>
+              <a className={'button is-info'} href="https://www.fnps.org/">Visit Full Site</a>
             </div>
           </div>
         </div>

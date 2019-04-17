@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Chart from 'chart.js'
@@ -13,6 +13,7 @@ export default class BarChart extends Component {
       loading: true
     }
   }
+
   componentDidMount() {
     axios.get('/admin/web/analytics/observations-over-time').then(response => {
       let aggregated = response.data.data
@@ -29,24 +30,24 @@ export default class BarChart extends Component {
         categories = Object.keys(matrix[row.label])
       })
 
-     let colors = categories.map((cat, index) => {
-        return randomColor({seed: index, hue: 'random',luminosity: 'random'})
+      let colors = categories.map((cat, index) => {
+        return randomColor({seed: index, hue: 'random', luminosity: 'random'})
       })
 
-      let allColors = [
-        '#2A9D8F',
-        '#4d7ec8',
-        '#f39c12',
-        '#bf5329',
-        '#FFE0B5'
-      ].concat(colors.slice(0, categories.length - 5))
+      // let allColors = [
+      //   '#2A9D8F',
+      //   '#4d7ec8',
+      //   '#f39c12',
+      //   '#bf5329',
+      //   '#FFE0B5'
+      // ].concat(colors.slice(0, categories.length - 5))
 
       let dataset = []
       categories.forEach((category, index) => {
         let data = {
           stack          : '1',
           label          : category,
-          backgroundColor: allColors[index] || '#dcdcdc',
+          backgroundColor: colors[index] || '#dcdcdc',
           data           : []
         }
 
@@ -65,7 +66,6 @@ export default class BarChart extends Component {
       console.warn(error)
     })
   }
-
 
   createChart(labels, datasets) {
     let el  = ReactDOM.findDOMNode(this.refs.canvas)

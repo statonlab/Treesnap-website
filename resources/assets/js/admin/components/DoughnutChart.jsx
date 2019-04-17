@@ -33,13 +33,13 @@ export default class DoughnutChart extends Component {
       return randomColor({seed: index, hue: 'random', luminosity: 'random'})
     })
 
-    colors = [
-      '#2A9D8F',
-      '#4d7ec8',
-      '#f39c12',
-      '#bf5329',
-      '#FFE0B5'
-    ].concat(colors.slice(0, labels.length - 5))
+    // colors = [
+    //   '#2A9D8F',
+    //   '#4d7ec8',
+    //   '#f39c12',
+    //   '#bf5329',
+    //   '#FFE0B5'
+    // ].concat(colors.slice(0, labels.length - 5))
 
     new Chart(ctx, {
       type   : 'doughnut',
