@@ -14,6 +14,7 @@ export default class WhiteOakFilters extends FiltersBase {
       heightFirstBranchMax: '',
       oakHealthProblems   : [],
       crownHealth         : [],
+      standTagging        : [],
       nearbyTrees         : [],
       diameterNumericMin  : '',
       diameterNumericMax  : ''
@@ -76,6 +77,16 @@ export default class WhiteOakFilters extends FiltersBase {
                 'Other'
               ]}
               onChange={oakHealthProblems => this._update('oakHealthProblems', oakHealthProblems)}/>
+          </div>
+        </div>
+
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Stand Tagging</label>
+            <ButtonList
+              value={this.state.standTagging}
+              list={['Yes', 'No']}
+              onChange={standTagging => this._update('standTagging', standTagging)}/>
           </div>
         </div>
 
