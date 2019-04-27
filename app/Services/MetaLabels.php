@@ -50,7 +50,9 @@ class MetaLabels
             'deerRub' => 'Deer Rub',
             'madroneDisease' => 'Disease',
             'crownAssessment' => 'Tree Crown Assessment',
-            'standDiversity' => 'Stand Diversity'
+            'standDiversity' => 'Stand Diversity',
+            'standTagging' => 'Stand Tagging',
+            'plantedWild' => 'Planted vs. Wild',
         ];
     }
 

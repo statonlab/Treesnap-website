@@ -11,6 +11,7 @@ export default class AmericanChestnutFilters extends FiltersBase {
     this.state = {
       burrs             : [],
       catkins           : [],
+      plantedWild       : [],
       chestnutBlight    : [],
       crownHealth       : [],
       diameterNumericMin: '',
@@ -61,6 +62,16 @@ export default class AmericanChestnutFilters extends FiltersBase {
                 'Stump sprouting'
               ]}
               onChange={chestnutBlight => this._update('chestnutBlight', chestnutBlight)}/>
+          </div>
+        </div>
+
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Planted vs. Wild</label>
+            <ButtonList
+              value={this.state.plantedWild}
+              list={['Planted', 'Wild']}
+              onChange={plantedWild => this._update('plantedWild', plantedWild)}/>
           </div>
         </div>
 
