@@ -13,7 +13,12 @@ class ObservationSharingTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function shareLinkFailsForNonOwner()
+    /**
+     * Test share link returns forbidden for non-owners.
+     *
+     * @test
+     */
+    public function testShareLinkFailsForNonOwner()
     {
         $user = factory(User::class)->create();
         $owner = factory(User::class)->create();
@@ -24,12 +29,17 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get('/share/observation/' . $observation->id);
+        $response = $this->get('/web/share/observation/' . $observation->id);
 
         $response->assertStatus(403);
     }
 
-    public function shareLinkSucceedsForOwner()
+    /**
+     * Test share link returns successful for owner.
+     *
+     * @test
+     */
+    public function testShareLinkSucceedsForOwner()
     {
         $user = factory(User::class)->create();
 
@@ -39,7 +49,7 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get('/share/observation/' . $observation->id);
+        $response = $this->get('/web/share/observation/' . $observation->id);
 
         $response->assertStatus(200);
     }
