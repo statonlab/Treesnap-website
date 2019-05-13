@@ -5,23 +5,26 @@ namespace App\Http\Controllers;
 use App\Observation;
 use App\ShareToken;
 use App\User;
+use App\Http\Controllers\Traits\Responds;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ShareTokensController extends Controller
 {
-    public function newShareToken(Request $request)
+    use Responds;
+
+    public function share($id, Request $request)
     {
         $user = $request->user();
-        $observation = Observation::findOrFail($request->observation_id);
+
+        $observation = Observation::findOrFail($id);
 
         if ($observation->user_id !== $user->id) {
             return $this->unauthorized();
         }
 
-        // User may create an invitation.
-        $share_token = $this->createToken($user, $observation, $request);
+        $share_token = $this->createShareToken($user, $observation, $request);
 
         return $this->success(
             "https://treesnap.org/observation/$observation?token=$share_token->value"

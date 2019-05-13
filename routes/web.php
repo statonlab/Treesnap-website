@@ -46,9 +46,6 @@ Route::get('/web/observation/{id}', 'ObservationsController@show');
 // Pre-fetched observation view to support FB open graph and twitter cards
 Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
 
-// Shareable Links
-Route::get('/web/share/observations/{id}', 'ObservationController@show');
-
 // Map
 Route::get('/web/map', 'MapController@index');
 Route::get('/web/map/count', 'MapController@countObservations');
@@ -83,6 +80,9 @@ Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed'
 Route::group(['middleware' => ['auth']], function () {
     // Observations
     Route::delete('/web/observation/{id}', 'ObservationsController@delete');
+
+    // Shareable Links
+    Route::get('/web/share/observation/{id}', 'ShareTokensController@share');
 
     // Filters
     Route::delete('/web/filter/{id}', 'FiltersController@delete');

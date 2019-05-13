@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Observation;
 use App\User;
+use App\Role;
 use App\ShareToken;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -31,7 +32,7 @@ class ObservationSharingTest extends TestCase
 
         $response = $this->get('/web/share/observation/' . $observation->id);
 
-        $response->assertStatus(403);
+        $response->assertStatus(401);
     }
 
     /**
@@ -61,7 +62,10 @@ class ObservationSharingTest extends TestCase
      */
     public function testInvalidTokenShowsInaccurateLocation()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
         $owner = factory(User::class)->create();
         $observation = factory(Observation::class)->create([
             'user_id' => $owner->id,
@@ -73,11 +77,8 @@ class ObservationSharingTest extends TestCase
 
         $json = $response->json();
 
-        $this->assertEquals($json['data']['location']['longitude'], $observation->longitude);
-        $this->assertEquals($json['data']['location']['latitude'], $observation->latitude);
-
-        //$this->assertEquals($json['data']['location']['longitude'], $observation->fuzzy_coords['longitude']);
-        //$this->assertEquals($json['data']['location']['latitude'], $observation->fuzzy_coords['latitude']);
+        $this->assertEquals($json['data']['location']['longitude'], $observation->fuzzy_coords['longitude']);
+        $this->assertEquals($json['data']['location']['latitude'], $observation->fuzzy_coords['latitude']);
 
         $response->assertStatus(200);
     }
@@ -89,7 +90,10 @@ class ObservationSharingTest extends TestCase
      */
     public function testValidTokenShowsAccurateLocation()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
         $observation = factory(Observation::class)->create([
             'user_id' => $user->id,
         ]);
@@ -104,9 +108,9 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/web/observation/$observation->id?token=$token->value")->json();
+        $response = $this->get("/web/observation/$observation->id?token=$token->value");
 
-        $json = $response->get();
+        $json = $response->json();
 
         $this->assertEquals($json['data']['location']['longitude'], $observation->longitude);
         $this->assertEquals($json['data']['location']['latitude'], $observation->latitude);
