@@ -14,7 +14,7 @@ class ShareToken extends Model
     protected $fillable = [
         'user_id',
         'observation_id',
-        'expires_at',
+        'expired_at',
         'value',
     ];
 
@@ -24,7 +24,7 @@ class ShareToken extends Model
      * @var array
      */
     protected $casts = [
-        'expires_at' => 'date',
+        'expired_at' => 'date',
     ];
 
     /**

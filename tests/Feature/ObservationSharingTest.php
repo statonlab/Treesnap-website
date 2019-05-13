@@ -62,24 +62,22 @@ class ObservationSharingTest extends TestCase
     public function testInvalidTokenShowsInaccurateLocation()
     {
         $user = factory(User::class)->create();
+        $owner = factory(User::class)->create();
         $observation = factory(Observation::class)->create([
-            'user_id' => $user->id,
-        ]);
-
-        $token_value = Str::random(60);
-
-        $token = factory(ShareToken::class)->create([
-            'user_id' => $user->id,
-            'observation_id' => $observation->id,
-            'value' => $token_value,
+            'user_id' => $owner->id,
         ]);
 
         $this->actingAs($user);
 
-        $response = $this->get("/web/observation/$observation->id?token=$token->value");
+        $response = $this->get("/web/observation/$observation->id");
 
-        $this->assertNotEquals($response->longitude, $observation->longitude);
-        $this->assertNotEquals($response->latitude, $observation->latitude);
+        $json = $response->json();
+
+        $this->assertEquals($json['data']['location']['longitude'], $observation->longitude);
+        $this->assertEquals($json['data']['location']['latitude'], $observation->latitude);
+
+        //$this->assertEquals($json['data']['location']['longitude'], $observation->fuzzy_coords['longitude']);
+        //$this->assertEquals($json['data']['location']['latitude'], $observation->fuzzy_coords['latitude']);
 
         $response->assertStatus(200);
     }
@@ -106,11 +104,13 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/web/observation/$observation->id?token=$token->value");
+        $response = $this->get("/web/observation/$observation->id?token=$token->value")->json();
 
-        $response->assertJson([
-            'longitude' => $observation->longitude,
-            'latitude' => $observation->latitude,
-        ])->assertStatus(200);
+        $json = $response->get();
+
+        $this->assertEquals($json['data']['location']['longitude'], $observation->longitude);
+        $this->assertEquals($json['data']['location']['latitude'], $observation->latitude);
+
+        $response->assertStatus(200);
     }
 }
