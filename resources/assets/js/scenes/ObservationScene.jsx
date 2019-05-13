@@ -27,7 +27,6 @@ export default class ObservationScene extends Scene {
     }
   }
 
-
   componentDidMount() {
     let id = this.props.match.params.id
     this.loadObservation(id)

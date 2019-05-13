@@ -92,6 +92,7 @@ class App extends Component {
           <Route exact={true} path={'/account/groups'} component={GroupsScene}/>
           <Route exact={true} path={'/account/group/:id'} component={GroupScene}/>
           <Route path={'/observation/:id'} component={ObservationScene}/>
+          <Route path={'/share/observation/:id'} component={ObservationScene}/>
           <Route path={'/map'} component={MapScene}/>
           <Route path={'/contact'} component={ContactUsScene}/>
           <Route path={'/developer'} component={DeveloperScene}/>

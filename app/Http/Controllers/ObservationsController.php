@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\Observes;
 use App\Observation;
 use App\Services\MetaLabels;
 use App\User;
+use App\ShareToken;
 use Illuminate\Http\Request;
 use App\Events\ObservationDeleted;
 use Storage;
@@ -140,7 +141,23 @@ class ObservationsController extends Controller
             ]);
         }
 
-        return $this->success($this->getObservationJson($observation, $is_admin, $user));
+        $info = $this->getObservationJson($observation, $is_admin, $user);
+        $token = $request->token;
+
+        if ($token)
+        {
+            $share_token = ShareToken::where('value', $token)
+                ->where('observation_id', $id)
+                ->first();
+
+            if ($share_token)
+            {
+                $info['location']['latitude'] = $observation->latitude;
+                $info['location']['longitude'] = $observation->longitude;
+            }
+        }
+
+        return $this->success($info);
     }
 
     /**
