@@ -14,6 +14,13 @@ class ShareTokensController extends Controller
 {
     use Responds;
 
+    /**
+     * Attempts to create a share link if the user is authorized to do so.
+     *
+     * @param $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function share($id, Request $request)
     {
         $user = $request->user();
@@ -31,6 +38,14 @@ class ShareTokensController extends Controller
         );
     }
 
+    /**
+     * Creates a token for the share URL.
+     *
+     * @param $user
+     * @param $observation
+     * @param $request
+     * @return mixed
+     */
     protected function createShareToken($user, $observation, $request)
     {
         $rand = Str::random(60);
