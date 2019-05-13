@@ -13,8 +13,6 @@ class ContactUser extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $queue = 'contact';
-
     /**
      * Contact request.
      *
@@ -61,6 +59,8 @@ class ContactUser extends Mailable implements ShouldQueue
      */
     public function __construct(Contact $contact, $subject, $message, $_to = null)
     {
+        // Set the queue
+        $this->queue = 'contact';
         $this->contact = $contact;
 
         $receiver = $contact->recipient;
