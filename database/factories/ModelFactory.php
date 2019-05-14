@@ -218,6 +218,15 @@ $factory->define(\App\Flag::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(\App\ShareToken::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => factory(\App\User::class)->create()->id,
+        'observation_id' => factory(\App\Observation::class)->create()->id,
+        'value' => str_random(60),
+        'expired_at' => \Carbon\Carbon::now()->addYear(),
+    ];
+});
+
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(\App\SubscriptionTopic::class, function (Faker\Generator $faker) {
     return [

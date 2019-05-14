@@ -81,6 +81,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Observations
     Route::delete('/web/observation/{id}', 'ObservationsController@delete');
 
+    // Shareable Links
+    Route::get('/web/share/observation/{id}', 'ShareTokensController@share');
+
     // Filters
     Route::delete('/web/filter/{id}', 'FiltersController@delete');
     Route::get('/web/filter/{id}', 'FiltersController@show');
