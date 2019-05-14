@@ -9,6 +9,7 @@ use App\Observation;
 use App\Services\MetaLabels;
 use App\User;
 use App\ShareToken;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Events\ObservationDeleted;
 use Storage;
@@ -150,7 +151,7 @@ class ObservationsController extends Controller
                 ->where('observation_id', $id)
                 ->first();
 
-            if ($share_token)
+            if ($share_token && $share_token->expired_at >= Carbon::now())
             {
                 $info['location']['latitude'] = $observation->latitude;
                 $info['location']['longitude'] = $observation->longitude;

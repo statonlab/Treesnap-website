@@ -9,6 +9,7 @@ use App\ShareToken;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class ObservationSharingTest extends TestCase
 {
@@ -78,7 +79,7 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/web/observation/$observation->id");
+        $response = $this->get("/web/observation/$observation->id?token=123");
 
         $json = $response->json();
 
@@ -121,6 +122,43 @@ class ObservationSharingTest extends TestCase
 
         $this->assertEquals($json['data']['location']['longitude'], $observation->longitude);
         $this->assertEquals($json['data']['location']['latitude'], $observation->latitude);
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Test expired token returns inaccurate location.
+     *
+     * @test
+     */
+    public function testExpiredTokenShowsInaccurateLocation()
+    {
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $owner = factory(User::class)->create();
+        $observation = factory(Observation::class)->create([
+            'user_id' => $owner->id,
+        ]);
+
+        $token_value = Str::random(60);
+
+        $token = factory(ShareToken::class)->create([
+            'user_id' => $owner->id,
+            'observation_id' => $observation->id,
+            'value' => $token_value,
+            'expired_at' => Carbon::now(),
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get("/web/observation/$observation->id?token=$token->value");
+
+        $json = $response->json();
+
+        $this->assertEquals($json['data']['location']['longitude'], $observation->fuzzy_coords['longitude']);
+        $this->assertEquals($json['data']['location']['latitude'], $observation->fuzzy_coords['latitude']);
 
         $response->assertStatus(200);
     }
