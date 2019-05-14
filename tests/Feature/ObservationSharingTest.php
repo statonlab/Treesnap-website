@@ -52,6 +52,11 @@ class ObservationSharingTest extends TestCase
 
         $response = $this->get('/web/share/observation/' . $observation->id);
 
+        $token = ShareToken::where('user_id', $user->id)
+            ->where('observation_id', $observation->id)
+            ->first();
+
+        $response->assertSee($token->value);
         $response->assertStatus(200);
     }
 
@@ -84,24 +89,26 @@ class ObservationSharingTest extends TestCase
     }
 
     /**
-     * Test valid token returns correct location.
+     * Test valid token returns correct location for non-owners.
      *
      * @test
      */
-    public function testValidTokenShowsAccurateLocation()
+    public function testValidTokenShowsAccurateLocationToNonOwner()
     {
+        $owner = factory(User::class)->create();
+
         $user = factory(User::class)->create([
             'role_id' => Role::where('name', 'User')->first()->id,
         ]);
 
         $observation = factory(Observation::class)->create([
-            'user_id' => $user->id,
+            'user_id' => $owner->id,
         ]);
 
         $token_value = Str::random(60);
 
         $token = factory(ShareToken::class)->create([
-            'user_id' => $user->id,
+            'user_id' => $owner->id,
             'observation_id' => $observation->id,
             'value' => $token_value,
         ]);
