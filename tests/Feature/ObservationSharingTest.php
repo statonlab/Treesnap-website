@@ -148,7 +148,7 @@ class ObservationSharingTest extends TestCase
             'user_id' => $owner->id,
             'observation_id' => $observation->id,
             'value' => $token_value,
-            'expired_at' => Carbon::now(),
+            'expired_at' => Carbon::now()->subDays(2),
         ]);
 
         $this->actingAs($user);
