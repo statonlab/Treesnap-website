@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/statonlab/Treesnap-website.svg?branch=master)](https://travis-ci.org/statonlab/Treesnap-website)
+[![DOI](https://zenodo.org/badge/85752471.svg)](https://zenodo.org/badge/latestdoi/85752471) [![Build Status](https://travis-ci.org/statonlab/Treesnap-website.svg?branch=master)](https://travis-ci.org/statonlab/Treesnap-website)
 
 This repository hosts the TreeSnap website code.
 If you're looking for TreeSnap, please visit https://treesnap.org
