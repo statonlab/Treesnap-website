@@ -14,6 +14,8 @@ import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
 import { Link } from 'react-router-dom'
 import EmailModal from '../admin/components/EmailModal'
+import ShareLinkModal from './ShareLinkModal'
+import ObservationDetailsModal from './ObservationDetailsModal'
 
 export default class ObservationDetails extends Component {
   constructor(props) {
@@ -28,6 +30,7 @@ export default class ObservationDetails extends Component {
       },
       zoom               : 4,
       showControlModal   : false,
+      showShareLinkModal : false,
       controlModalContent: '',
       collections        : [],
       showModal          : false,
@@ -222,12 +225,14 @@ export default class ObservationDetails extends Component {
             </span>
             <span>Add to Collection</span>
           </a>
-          {/*<a className="button is-outlined">
-                     <span className="icon is-small">
-                     <i className="fa fa-share text-success"></i>
-                     </span>
-                     <span>Share Link</span>
-                     </a>*/}
+          {User.owns(this.observation) ?
+            <a className="button is-outlined"
+               onClick={() => this.setState({showShareLinkModal: true})}>
+              <span className="icon is-small">
+                <i className="fa fa-share text-success"></i>
+              </span>
+              <span>Share Link</span>
+            </a> : null}
           {this.observation.flags.length === 0 ?
             <a className="button is-outlined"
                onClick={() => this.setState({controlModalContent: 'flag', showControlModal: true})}>
@@ -249,6 +254,7 @@ export default class ObservationDetails extends Component {
         </div>
 
         {this._renderControlModal()}
+
       </div>
     )
   }
@@ -594,6 +600,11 @@ export default class ObservationDetails extends Component {
         </div>
         {this._renderImagesModal()}
         {this.renderEmailModal()}
+        {this.state.showShareLinkModal ?
+          <ShareLinkModal observationID={this.props.observation.observation_id}
+                          onCloseRequest={() => this.setState({showShareLinkModal: false})}
+                          visible={true}/>
+          : null}
       </div>
     )
   }
