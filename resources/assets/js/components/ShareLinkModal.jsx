@@ -31,8 +31,8 @@ export default class ShareLinkModal extends Component {
           <header className="modal-card-head">
             <p className="modal-card-title">Shareable Link</p>
           </header>
-          <section className="modal-card-body" id="filters-card-body">
-            <div className="select">
+          <section className="modal-card-body">
+            <div className="select content">
               <select
                 onChange={(e) => this.setState({shareLocation: e.target.value})}
                 defaultValue="not exact">
@@ -40,17 +40,20 @@ export default class ShareLinkModal extends Component {
                 <option value="exact"> Share with exact location</option>
               </select>
             </div>
-            <p className="modal-card-body">
+            <div className="content">
+              <input type="text"
+                     readOnly={true}
+                     className="input"
+                     style={{width:"300px"}}
+                     value={this.state.shareLocation === 'exact' ?
+                       this.state.shareLinkExact : this.state.shareLink}
+              />
+            </div>
+            <p>
               {this.state.shareLocation === 'exact' ?
                 'People with this link will be able to see the exact location of your observation.' :
                 'People with this link will not be able to see the exact location of your observation.'}
             </p>
-            <input type="text"
-                   readOnly={true}
-                   className="input"
-                   value={this.state.shareLocation === 'exact' ?
-                     this.state.shareLinkExact : this.state.shareLink}
-            />
           </section>
         </div>
         <button className="modal-close" onClick={this.close.bind(this)}/>
