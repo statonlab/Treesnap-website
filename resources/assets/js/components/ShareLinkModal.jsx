@@ -6,9 +6,9 @@ export default class ShareLinkModal extends Component {
     super(props)
 
     this.state = {
-      shareLocation : 'not exact',
+      shareLocation : 'exact',
       shareLink     : '',
-      shareLinkExact: ''
+      shareLinkExact: '',
     }
   }
 
@@ -27,33 +27,43 @@ export default class ShareLinkModal extends Component {
     return (
       <div className={`modal${this.props.visible ? ' is-active' : ''}`}>
         <div className="modal-background" onClick={this.close.bind(this)}/>
-        <div className="modal-content modal-card-lg">
+        <div className="modal-content">
           <header className="modal-card-head">
             <p className="modal-card-title">Shareable Link</p>
           </header>
           <section className="modal-card-body">
-            <div className="select content">
-              <select
-                onChange={(e) => this.setState({shareLocation: e.target.value})}
-                defaultValue="not exact">
-                <option value="not exact">Share without exact location</option>
-                <option value="exact"> Share with exact location</option>
-              </select>
+            <div className="field">
+              <div className="control">
+                <label className="label">Privacy Settings</label>
+                <div className="select">
+                  <select
+                    onChange={(e) => this.setState({shareLocation: e.target.value})}
+                    value={this.state.shareLocation}>
+                    <option value="not exact">Share without exact location</option>
+                    <option value="exact"> Share with exact location</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div className="content">
-              <input type="text"
-                     readOnly={true}
-                     className="input"
-                     style={{width:"300px"}}
-                     value={this.state.shareLocation === 'exact' ?
-                       this.state.shareLinkExact : this.state.shareLink}
-              />
+            <div className="field">
+              <label className="label">Copy the Following Link to Share this Obsevation</label>
+              <div className="control">
+                <input type="text"
+                       readOnly={true}
+                       className="input"
+                       style={{maxWidth: '400px'}}
+                       value={this.state.shareLocation === 'exact' ?
+                         this.state.shareLinkExact : this.state.shareLink}
+                />
+              </div>
             </div>
-            <p>
-              {this.state.shareLocation === 'exact' ?
-                'People with this link will be able to see the exact location of your observation.' :
-                'People with this link will not be able to see the exact location of your observation.'}
-            </p>
+            {this.state.shareLocation === 'exact' ?
+              <p>People with this link <b>will be able</b> to see the exact location of your observation. You may change the privacy settings above.
+              </p>
+              :
+              <p>People with this link will <b>NOT</b> be able to see the exact location of your observation. You may change the privacy settings above.
+              </p>
+            }
           </section>
         </div>
         <button className="modal-close" onClick={this.close.bind(this)}/>
@@ -77,7 +87,7 @@ export default class ShareLinkModal extends Component {
     axios.get(`/web/share/observation/${id}`).then(response => {
       const data = response.data.data
       this.setState({
-        shareLinkExact: data
+        shareLinkExact: data,
       })
     }).catch(error => {
       console.log(error)
@@ -91,5 +101,5 @@ export default class ShareLinkModal extends Component {
 
 ShareLinkModal.propTypes = {
   visible       : PropTypes.bool.isRequired,
-  onCloseRequest: PropTypes.func.isRequired
+  onCloseRequest: PropTypes.func.isRequired,
 }
