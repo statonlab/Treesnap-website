@@ -34,7 +34,7 @@ class ShareTokensController extends Controller
         $share_token = $this->createShareToken($user, $observation, $request);
 
         return $this->success(
-            "https://treesnap.org/observation/$observation->id?token=$share_token->value"
+            "https://treesnap.org/observation/{$observation->id}?token=$share_token->value"
         );
     }
 
