@@ -122,9 +122,11 @@ class Observation extends Model
     public function scopeBounds($query, $bounds)
     {
         if ($bounds->southWest->lat < $bounds->northEast->lat) {
-            $query->whereBetween('latitude', [$bounds->southWest->lat, $bounds->northEast->lat]);
+            $query->whereBetween('latitude',
+                [$bounds->southWest->lat, $bounds->northEast->lat]);
         } else {
-            $query->whereBetween('latitude', [$bounds->northEast->lat, $bounds->southWest->lat]);
+            $query->whereBetween('latitude',
+                [$bounds->northEast->lat, $bounds->southWest->lat]);
         }
 
         $left_edge = $bounds->southWest->lng;
@@ -142,5 +144,13 @@ class Observation extends Model
         }
     }
 
-
+    /**
+     * Get all custom identifiers.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function customIdentifiers()
+    {
+        return $this->hasMany(CustomIdentifier::class);
+    }
 }

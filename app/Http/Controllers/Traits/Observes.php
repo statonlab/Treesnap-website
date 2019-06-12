@@ -70,7 +70,8 @@ trait Observes
 
         // In case fuzzified coordinates were not generated for this observation
         if (empty($observation->fuzzy_coords)) {
-            $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
+            $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude,
+                $observation->longitude);
         }
 
         $isOwner = false;
@@ -113,6 +114,7 @@ trait Observes
             'user' => $this->getUserDetails($observation, $user, $inGroup, $admin),
             'has_private_comments' => $observation->has_private_comments,
             'custom_id' => $observation->custom_id,
+            'identifiers' => $observation->relationLoaded('customIdentifiers') ? $observation->customIdentifiers : [],
         ];
     }
 
@@ -185,7 +187,8 @@ trait Observes
             }
 
             if (empty($observation->fuzzy_coords)) {
-                $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude, $observation->longitude);
+                $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude,
+                    $observation->longitude);
             }
 
             $inGroup = false;
@@ -209,7 +212,8 @@ trait Observes
                 $data = array_except($observation->data, ['comment']);
             }
 
-            $owner = $this->getUserDetails($observation, $authenticated_user, $inGroup, $isAdmin);
+            $owner = $this->getUserDetails($observation, $authenticated_user, $inGroup,
+                $isAdmin);
 
             $all[] = [
                 'id' => $observation->id,
