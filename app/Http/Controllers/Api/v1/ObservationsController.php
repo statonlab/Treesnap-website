@@ -53,6 +53,7 @@ class ObservationsController extends Controller
     public function show($id, Request $request)
     {
         $user = $request->user();
+        /** @var Observation $observation */
         $observation = Observation::where('id', $id)->first();
 
         if (! $observation) {
@@ -154,7 +155,8 @@ class ObservationsController extends Controller
             $observation = $fixer->attach($observation);
             $observation->save();
         } catch (UnitConversionException $exception) {
-            \Log::error('UnitConversionException: '.$exception->getMessage(), $exception->getTrace());
+            \Log::error('UnitConversionException: '.$exception->getMessage(),
+                $exception->getTrace());
         }
 
         // Fire event
@@ -227,7 +229,8 @@ class ObservationsController extends Controller
             $observation = $fixer->attach($observation);
             $observation->save();
         } catch (UnitConversionException $exception) {
-            \Log::error('UnitConversionException: '.$exception->getMessage(), $exception->getTrace());
+            \Log::error('UnitConversionException: '.$exception->getMessage(),
+                $exception->getTrace());
         }
 
         // Delete all old images

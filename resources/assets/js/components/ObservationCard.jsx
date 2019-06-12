@@ -27,7 +27,7 @@ export default class ObservationCard extends Component {
       loading           : false,
       confirmation      : {
         id     : -1,
-        correct: null
+        correct: null,
       },
       correctMarks      : 0,
       incorrectMarks    : 0,
@@ -47,13 +47,13 @@ export default class ObservationCard extends Component {
     if (observation.flags.length > 0) {
       this.setState({
         flagged: true,
-        flag_id: observation.flags[0].id
+        flag_id: observation.flags[0].id,
       })
     }
 
     if (observation.confirmations.length > 0) {
       this.setState({
-        confirmation: observation.confirmations[0]
+        confirmation: observation.confirmations[0],
       })
     }
 
@@ -67,7 +67,7 @@ export default class ObservationCard extends Component {
     if (typeof observation.correct_marks !== 'undefined' && typeof observation.incorrect_marks !== 'undefined') {
       this.setState({
         correctMarks  : observation.correct_marks,
-        incorrectMarks: observation.incorrect_marks
+        incorrectMarks: observation.incorrect_marks,
       })
       return
     }
@@ -78,7 +78,7 @@ export default class ObservationCard extends Component {
       let data = response.data.data
       this.setState({
         correctMarks  : data.correct,
-        incorrectMarks: data.incorrect
+        incorrectMarks: data.incorrect,
       })
     }).catch(error => {
       console.log(error)
@@ -105,7 +105,7 @@ export default class ObservationCard extends Component {
       return
     } else if (slide) {
       this.setState({
-        slideContent: label
+        slideContent: label,
       })
 
       return
@@ -113,7 +113,7 @@ export default class ObservationCard extends Component {
 
     this.setState({
       slide       : !slide,
-      slideContent: label
+      slideContent: label,
     })
   }
 
@@ -122,13 +122,13 @@ export default class ObservationCard extends Component {
    */
   slowCloseSlideContent() {
     this.setState({
-      slide: false
+      slide: false,
     })
 
     this.timeoutWatcher = setTimeout(() => {
       // Clear content
       this.setState({
-        slideContent: ''
+        slideContent: '',
       })
     }, 500)
   }
@@ -147,7 +147,7 @@ export default class ObservationCard extends Component {
         style={{height: '100%', zIndex: '0'}}
         center={{
           lat: observation.location.latitude,
-          lng: observation.location.longitude
+          lng: observation.location.longitude,
         }}
         zoom={4}>
         <Marker
@@ -161,7 +161,7 @@ export default class ObservationCard extends Component {
                    alt={observation.observation_category}
                    style={{
                      width : 50,
-                     height: 'auto'
+                     height: 'auto',
                    }}/>
             </div>
             <div className="media-content">
@@ -187,8 +187,8 @@ export default class ObservationCard extends Component {
     axios.delete('/web/collection/detach', {
       params: {
         collection_id : collection.id,
-        observation_id: observation.observation_id
-      }
+        observation_id: observation.observation_id,
+      },
     }).then(response => {
       this.setState({loading: false})
       this.props.onRemovedFromCollection(collection)
@@ -303,11 +303,11 @@ export default class ObservationCard extends Component {
       Notify.push('Unmarked observation', 'warning')
       if (correct) {
         this.setState({
-          correctMarks: this.state.correctMarks - 1
+          correctMarks: this.state.correctMarks - 1,
         })
       } else {
         this.setState({
-          incorrectMarks: this.state.incorrectMarks - 1
+          incorrectMarks: this.state.incorrectMarks - 1,
         })
       }
       return
@@ -316,8 +316,8 @@ export default class ObservationCard extends Component {
     this.setState({
       confirmation: {
         id: 0,
-        correct
-      }
+        correct,
+      },
     })
 
     if (this.state.confirmation.id !== -1) {
@@ -330,7 +330,7 @@ export default class ObservationCard extends Component {
 
     axios.post('/admin/web/confirmations', {
       observation_id: observation.observation_id,
-      correct
+      correct,
     }).then(response => {
       let confirmation = response.data.data
       this.setState({confirmation})
@@ -338,11 +338,11 @@ export default class ObservationCard extends Component {
       Notify.push(`Marked observation as ${correct} species`, confirmation.correct ? 'success' : 'danger')
       if (confirmation.correct) {
         this.setState({
-          correctMarks: this.state.correctMarks + 1
+          correctMarks: this.state.correctMarks + 1,
         })
       } else {
         this.setState({
-          incorrectMarks: this.state.incorrectMarks + 1
+          incorrectMarks: this.state.incorrectMarks + 1,
         })
       }
     }).catch(error => {
@@ -363,8 +363,8 @@ export default class ObservationCard extends Component {
     this.setState({
       confirmation: {
         id     : -1,
-        correct: null
-      }
+        correct: null,
+      },
     })
 
     axios.delete(`/admin/web/confirmation/${confirmation.id}`).then(response => {
@@ -404,7 +404,7 @@ export default class ObservationCard extends Component {
     let defaultObject = {
       addressLine1: '',
       addressLine2: '',
-      address     : ''
+      address     : '',
     }
     if (typeof address !== 'object') {
       return defaultObject
@@ -424,7 +424,7 @@ export default class ObservationCard extends Component {
     return {
       addressLine1: address.shift(),
       addressLine2: address.join(','),
-      address
+      address,
     }
   }
 
@@ -471,24 +471,24 @@ export default class ObservationCard extends Component {
           </header>
           <div className="relative-block">
             <Spinner visible={this.state.loading}/>
-            <div className="has-bg-image relative-block is-positioned-relatively">
-              <div
-                className="card-image img-bg-zoom"
-                style={{
-                  backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`
-                }}>
-                <a href="javascript:;"
-                   className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column z-10"
-                   onClick={() => {
-                     this.setState({showDetailsModal: true})
-                   }}>
-                  <i className="fa fa-photo"></i>
-                  <div className="has-text-centered">
-                    Click for More Details
-                  </div>
-                </a>
+              <div className="has-bg-image relative-block is-positioned-relatively">
+                <div
+                  className="card-image img-bg-zoom"
+                  style={{
+                    backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`,
+                  }}>
+                  <a href="javascript:;"
+                     className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column z-10"
+                     onClick={() => {
+                       this.setState({showDetailsModal: true})
+                     }}>
+                    <i className="fa fa-photo"></i>
+                    <div className="has-text-centered">
+                      Click for More Details
+                    </div>
+                  </a>
+                </div>
               </div>
-            </div>
 
             {this._renderMarks()}
 
@@ -634,7 +634,7 @@ ObservationCard.propTypes = {
   loading                : PropTypes.bool,
   showMarks              : PropTypes.bool,
   owner                  : PropTypes.bool,
-  marks                  : PropTypes.object
+  marks                  : PropTypes.object,
 }
 
 ObservationCard.defaultProps = {
@@ -650,6 +650,6 @@ ObservationCard.defaultProps = {
   loading    : false,
   showMarks  : false,
   owner      : false,
-  marks      : {}
+  marks      : {},
 }
 
