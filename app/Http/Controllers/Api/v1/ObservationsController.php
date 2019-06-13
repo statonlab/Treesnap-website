@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\CustomIdentifier;
 use App\Events\ObservationCreated;
 use App\Events\ObservationDeleted;
 use App\Events\ObservationUpdated;
@@ -146,6 +147,15 @@ class ObservationsController extends Controller
             'custom_id' => $request->custom_id,
         ]);
 
+        if ($request->has('other_identifiers') && ! empty($request->other_identifiers)) {
+            foreach ($request->other_identifiers as $identifier) {
+                CustomIdentifier::create([
+                    'observation_id' => $observation->id,
+                    'identifier' => $identifier,
+                ]);
+            }
+        }
+
         if (! $observation) {
             return $this->error('Request could not be completed', 100);
         }
@@ -224,6 +234,15 @@ class ObservationsController extends Controller
             return $this->error('Request could not be completed', 101);
         }
 
+        if ($request->has('other_identifiers') && ! empty($request->other_identifiers)) {
+            foreach ($request->other_identifiers as $identifier) {
+                CustomIdentifier::firstOrCreate([
+                    'observation_id' => $observation->id,
+                    'identifier' => $identifier,
+                ]);
+            }
+        }
+
         try {
             $fixer = new AttachUnits();
             $observation = $fixer->attach($observation);
@@ -264,6 +283,7 @@ class ObservationsController extends Controller
             'mobile_id' => 'required|numeric',
             'has_private_comments' => 'nullable|boolean',
             'custom_id' => 'nullable|max:250',
+            'other_identifiers' => 'nullable|array',
         ];
     }
 }
