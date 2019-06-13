@@ -172,10 +172,7 @@ class ObservationsAPITest extends TestCase
             'date' => '03-23-2017 20:00:00',
             'is_private' => true,
             'mobile_id' => 1234,
-            'other_identifiers' => [
-                'some_id',
-                'some_id2',
-            ],
+            'other_identifiers' => 'some_id,some_id2',
         ]);
 
         $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
@@ -243,9 +240,7 @@ class ObservationsAPITest extends TestCase
             ],
             'is_private' => true,
             'mobile_id' => 4021,
-            'other_identifiers' => [
-                'unique_identifier',
-            ],
+            'other_identifiers' => 'unique_identifier',
         ]);
 
         $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
