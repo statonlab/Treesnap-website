@@ -172,9 +172,18 @@ class ObservationsAPITest extends TestCase
             'date' => '03-23-2017 20:00:00',
             'is_private' => true,
             'mobile_id' => 1234,
+            'other_identifiers' => [
+                'some_id',
+                'some_id2',
+            ],
         ]);
 
         $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
+        $data = $response->json()['data'];
+        $observation = Observation::find($data['observation_id']);
+        $this->assertNotEmpty($observation);
+        $this->assertTrue(in_array('some_id',
+            $observation->customIdentifiers->pluck('identifier')->toArray()));
     }
 
     /**
@@ -234,9 +243,18 @@ class ObservationsAPITest extends TestCase
             ],
             'is_private' => true,
             'mobile_id' => 4021,
+            'other_identifiers' => [
+                'unique_identifier',
+            ],
         ]);
 
         $response->assertJsonStructure(['data' => ['observation_id']])->assertStatus(201);
+
+        $data = $response->json()['data'];
+        $observation = Observation::find($data['observation_id']);
+        $this->assertNotEmpty($observation);
+        $this->assertTrue(in_array('unique_identifier',
+            $observation->customIdentifiers->pluck('identifier')->toArray()));
     }
 
     /**
