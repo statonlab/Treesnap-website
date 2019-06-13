@@ -19,7 +19,7 @@ class CustomIdentifier extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function observations()
+    public function observation()
     {
         return $this->belongsTo(Observation::class);
     }

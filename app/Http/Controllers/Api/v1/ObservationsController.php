@@ -34,7 +34,7 @@ class ObservationsController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $observations = $user->observations;
+        $observations = $user->observations()->with('customIdentifiers')->get();
         $data = [];
 
         foreach ($observations as $observation) {
@@ -148,10 +148,11 @@ class ObservationsController extends Controller
         ]);
 
         if ($request->has('other_identifiers') && ! empty($request->other_identifiers)) {
-            foreach ($request->other_identifiers as $identifier) {
+            $identifiers = explode(',', $request->other_identifiers);
+            foreach ($identifiers as $identifier) {
                 CustomIdentifier::create([
                     'observation_id' => $observation->id,
-                    'identifier' => $identifier,
+                    'identifier' => trim($identifier),
                 ]);
             }
         }
@@ -234,11 +235,14 @@ class ObservationsController extends Controller
             return $this->error('Request could not be completed', 101);
         }
 
+        CustomIdentifier::where('observation_id', $observation->id)->delete();
+
         if ($request->has('other_identifiers') && ! empty($request->other_identifiers)) {
-            foreach ($request->other_identifiers as $identifier) {
-                CustomIdentifier::firstOrCreate([
+            $identifiers = explode(',', $request->other_identifiers);
+            foreach ($identifiers as $identifier) {
+                CustomIdentifier::create([
                     'observation_id' => $observation->id,
-                    'identifier' => $identifier,
+                    'identifier' => trim($identifier),
                 ]);
             }
         }
@@ -283,7 +287,7 @@ class ObservationsController extends Controller
             'mobile_id' => 'required|numeric',
             'has_private_comments' => 'nullable|boolean',
             'custom_id' => 'nullable|max:250',
-            'other_identifiers' => 'nullable|array',
+            'other_identifiers' => 'nullable|max:255',
         ];
     }
 }
