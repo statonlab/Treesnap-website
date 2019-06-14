@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Controllers\Controller;
 use App\Observation;
 use App\ShareToken;
 use App\Http\Controllers\Traits\Responds;
