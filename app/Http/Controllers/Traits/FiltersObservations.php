@@ -67,19 +67,18 @@ trait FiltersObservations
         // Handle keyword search
         if (! empty($request->search)) {
             $term = $request->search;
-            $observations->where(function ($query) use ($term) {
+            $observations->where(function ($query) use ($term, $is_admin) {
                 $query->where('observation_category', 'like', "%$term%");
                 $query->orWhere('data->otherLabel', 'like', "%$term%");
                 $query->orWhere('address->formatted', 'like', "%$term%");
                 $query->orWhere('mobile_id', 'like', "%$term%");
                 $query->orWhere('custom_id', 'like', "%$term%");
+                if ($is_admin) {
+                    $query->orWhereHas('user', function ($query) use ($term) {
+                        $query->where('users.name', 'like', "%$term%");
+                    });
+                }
             });
-
-            if ($is_admin) {
-                $observations->orWhereHas('user', function ($query) use ($term) {
-                    $query->where('users.name', 'like', "%$term%");
-                });
-            }
         }
 
         // Handle confirmation status

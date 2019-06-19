@@ -20,8 +20,6 @@ export default class ButtonList extends Component {
       selected = this.props.value.concat(item)
     }
 
-    console.log(selected)
-
     this.props.onChange(selected)
   }
 
