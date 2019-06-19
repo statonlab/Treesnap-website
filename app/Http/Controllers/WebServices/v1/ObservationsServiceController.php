@@ -99,4 +99,28 @@ class ObservationsServiceController extends Controller
 
         return $paginated;
     }
+
+    public function show($id, Request $request) {
+        $user = $request->user();
+
+        $observations = Observation::with([
+            'user' => function ($query) {
+                $query->select(['users.id', 'users.name', 'is_anonymous']);
+            },
+            'latinName',
+        ]);
+
+        if(User::hasRole(['User'], $user)) {
+            $this->addPrivacyClause($observations, $user);
+        }
+
+        $observation =$observations->where('id', $id)->first();
+
+        if(!$observation) {
+            return abort(404);
+        }
+
+        $formatter = new ObservationResponse($user);
+        return $this->success($formatter->format($observation));
+    }
 }
