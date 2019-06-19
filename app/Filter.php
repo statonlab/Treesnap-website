@@ -64,7 +64,7 @@ class Filter extends Model
         'American Elm' => 'americanElm',
         'Florida Torreya' => 'floridaTorreya',
         'Eastern Larch' => 'easternLarch',
-        'Tan Oak' => 'tanOak',
+        'Tanoak' => 'tanOak',
         'Pacific Madrone' => 'pacificMadrone',
         'Other' => 'other',
     ];
@@ -168,7 +168,7 @@ class Filter extends Model
             foreach ($filters['categories'] as $key => $category) {
                 $where = function ($query) use ($category, $filters) {
                     $query->where('observation_category', $category);
-                    if (! isset($filters[static::$filterMapper[$category]])) {
+                    if (!isset(static::$filterMapper[$category]) || ! isset($filters[static::$filterMapper[$category]])) {
                         return;
                     }
 
