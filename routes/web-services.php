@@ -19,6 +19,7 @@ Route::group([
 ], function () {
     Route::get('/observations', 'ObservationsServiceController@observations');
     Route::get('/my-observations', 'ObservationsServiceController@myObservations');
+    Route::get('/observation/{id}', 'ObservationsServiceController@show');
 
     // Refresh OAuth Tokens
     Route::post('/refresh-tokens', 'TokensController@refreshTokens');

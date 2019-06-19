@@ -5,11 +5,18 @@ namespace Tests\Feature;
 use App\Observation;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class ObservationsWebServiceTest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withHeader('Accept', 'application/json');
+    }
 
     public function testMyObservationsService()
     {
@@ -51,6 +58,21 @@ class ObservationsWebServiceTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure($this->getPaginatedObservationResponseStructure());
+    }
+
+    public function testGettingAnObservation()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        /** @var Observation $observation */
+        $observation = factory(Observation::class)->create(['user_id' => $user->id]);
+
+        $token = $user->createToken(uniqid());
+
+        $response = $this->withHeader('Authorization', 'Bearer '.$token->accessToken)
+            ->get('/web-services/v1/observation/'.$observation->id);
+        $response->assertSuccessful();
     }
 
     protected function getPaginatedObservationResponseStructure()
