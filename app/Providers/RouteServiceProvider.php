@@ -25,6 +25,41 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::pattern('limit', '[0-9]+');
 
+        $routes = [
+            'account',
+            'account/observations',
+            'account/collections',
+            'account/groups',
+            'account/group/([0-9]+)',
+            'account/filters',
+            'observation/([0-9]+)',
+            'map',
+            'contact',
+            'developer',
+            'about',
+            'privacy-policy',
+            'terms-of-use',
+            'faq',
+            'trees',
+            'partners',
+            'events',
+            'users',
+            'user/([0-9]+)',
+            'filters',
+            'groups',
+            'group/([0-9]+)',
+            'collections',
+            'observations',
+            'curate',
+            'notifications',
+            'flags',
+            'observations-by-state',
+            '404',
+            '500',
+        ];
+        $pattern = implode('|', $routes);
+        Route::pattern('react', "$pattern");
+
         parent::boot();
     }
 
@@ -52,8 +87,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
@@ -66,9 +101,9 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
     }
 
     /**
