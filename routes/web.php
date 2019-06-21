@@ -96,7 +96,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/web/user/observations', 'UsersController@observations');
 
     // Allow only authenticated users to access Account Page
-    Route::get('/account/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
+    Route::get('/account/{any?}', 'HomeController@index')->where(['any' => '(.*)']);
 
     // Collections
     Route::get('/web/collection/{id}/users', 'CollectionsController@users');
@@ -224,9 +224,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     Route::get('/web/analytics/observations-over-time', 'AnalyticsController@observationsOverTime');
 
     // All other react routes
-    Route::get('/{react?}', 'AdminController@index')->where(['react' => '(.*)']);
+    Route::get('/{react?}', 'AdminController@index');
 });
 
 // Other React Routes
 // (All react routes go to the index method of the Home Controller)
-Route::get('/{react?}', 'HomeController@index')->where(['react' => '(.*)']);
+Route::get('/{react?}', 'HomeController@index');
