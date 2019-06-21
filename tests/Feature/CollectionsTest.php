@@ -37,12 +37,14 @@ class CollectionsTest extends TestCase
      *
      * @group collection
      */
-
     public function testGettingSpecificCollection()
     {
         $user = factory(User::class)->create();
+        $collection = factory(Collection::class)->create([
+            'user_id' => $user->id,
+        ]);
         $this->actingAs($user);
-        $response = $this->get('/collection/{id}');
+        $response = $this->get('/collection/'.$collection->id);
         $response->assertStatus(200);
     }
 
