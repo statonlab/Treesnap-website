@@ -39,12 +39,14 @@ class CollectionsTest extends TestCase
      */
     public function testGettingSpecificCollection()
     {
+        $this->withHeader('Accept', 'application/json');
         $user = factory(User::class)->create();
         $collection = factory(Collection::class)->create([
             'user_id' => $user->id,
         ]);
+        $user->collections()->attach($collection->id);
         $this->actingAs($user);
-        $response = $this->get('/collection/'.$collection->id);
+        $response = $this->get('/web/collection/'.$collection->id);
         $response->assertStatus(200);
     }
 
