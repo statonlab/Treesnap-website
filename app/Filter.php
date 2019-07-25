@@ -209,7 +209,7 @@ class Filter extends Model
                                 $query->where($column, $operator, intval($value));
                             } else {
                                 // It's not max/min filter, so let's check for exact value
-                                $query->where("data->$filter", intval($value));
+                                $query->where("data->$filter", $value);
                             }
                         }
                     }
