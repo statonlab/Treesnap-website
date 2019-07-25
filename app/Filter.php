@@ -168,7 +168,7 @@ class Filter extends Model
             foreach ($filters['categories'] as $key => $category) {
                 $where = function ($query) use ($category, $filters) {
                     $query->where('observation_category', $category);
-                    if (!isset(static::$filterMapper[$category]) || ! isset($filters[static::$filterMapper[$category]])) {
+                    if (! isset(static::$filterMapper[$category]) || ! isset($filters[static::$filterMapper[$category]])) {
                         return;
                     }
 
@@ -195,20 +195,22 @@ class Filter extends Model
                             // Check if this is a max/min situation
                             $sub = substr($filter, -3);
                             if ($sub === 'Min' || $sub === 'Max') {
+                                $column = "data->$filter";
+                                $operator = $sub === 'Min' ? '>=' : '<=';
                                 // Ignore max
-                                if ($sub === 'Max') {
-                                    continue;
-                                }
+                                //if ($sub === 'Max') {
+                                //    continue;
+                                //}
 
                                 // Extract the filter name
                                 $filterName = substr($filter, 0, strlen($filter) - 3);
-                                $filterMax = "{$filterName}Max";
-                                $allFilters = (array)$filters[static::$filterMapper[$category]];
-
-                                // If the filter is not complete, ignore it
-                                if (! isset($allFilters[$filterMax])) {
-                                    continue;
-                                }
+                                //$filterMax = "{$filterName}Max";
+                                //$allFilters = (array)$filters[static::$filterMapper[$category]];
+                                //
+                                //// If the filter is not complete, ignore it
+                                //if (! isset($allFilters[$filterMax])) {
+                                //    continue;
+                                //}
 
                                 if (in_array($filterName, static::$supportsUnits)) {
                                     $units = 'US';
@@ -216,19 +218,22 @@ class Filter extends Model
                                     if ($user) {
                                         $units = $user->units;
                                     }
+
+                                    $column = "data->{$filterName}_values->{$units}_value";
                                     // Apply the min/max filter for fields that DO support units
-                                    $query->whereBetween("data->{$filterName}_values->{$units}_value",
-                                        [
-                                            intVal($value),
-                                            intval($allFilters[$filterMax]),
-                                        ]);
-                                } else {
-                                    // Apply the min/max filter for fields that do not support units
-                                    $query->whereBetween("data->$filterName", [
-                                        intVal($value),
-                                        intval($allFilters[$filterMax]),
-                                    ]);
+                                    //$query->whereBetween("data->{$filterName}_values->{$units}_value",
+                                    //    [
+                                    //        intVal($value),
+                                    //        intval($allFilters[$filterMax]),
+                                    //    ]);
                                 }
+                                // Apply the min/max filter for fields that do not support units
+                                //$query->whereBetween("data->$filterName", [
+                                //    intVal($value),
+                                //    intval($allFilters[$filterMax]),
+                                //]);
+
+                                $query->where($column, $operator, $value);
                             } else {
                                 // It's not max/min filter, so let's check for exact value
                                 $query->where("data->$filter", $value);
