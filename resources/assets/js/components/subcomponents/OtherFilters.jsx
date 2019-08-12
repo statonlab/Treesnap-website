@@ -26,7 +26,7 @@ export default class OtherFilters extends FiltersBase {
             <div className="control">
               <input value={this.state.otherLabel}
                      className={'input'}
-                     onChange={label => this._update('otherLabel', label)}
+                     onChange={e => this._update('otherLabel', e.target.value)}
                      placeholder="E.g, Silver Maple"/>
             </div>
           </div>
