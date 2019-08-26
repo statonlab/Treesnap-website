@@ -95,7 +95,7 @@ class GroupPermissionsTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function testAdminCanSeePrivateObservations()
+    public function testAdminCanSeePrivateGroups()
     {
         $group = factory(Group::class)->create([
             'is_private' => true,
@@ -113,7 +113,7 @@ class GroupPermissionsTest extends TestCase
         $response->assertJsonFragment(['id' => $group->id]);
     }
 
-    public function testUserCannotSeePrivateObservations()
+    public function testUserCannotSeePrivateGroups()
     {
         $group = factory(Group::class)->create([
             'is_private' => true,
