@@ -94,4 +94,40 @@ class GroupPermissionsTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    public function testAdminCanSeePrivateGroups()
+    {
+        $group = factory(Group::class)->create([
+            'is_private' => true,
+        ]);
+
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('is_admin', true)->first()->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/web/groups/search');
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['id' => $group->id]);
+    }
+
+    public function testUserCannotSeePrivateGroups()
+    {
+        $group = factory(Group::class)->create([
+            'is_private' => true,
+        ]);
+
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/web/groups/search');
+
+        $response->assertStatus(200);
+        $response->assertJsonMissing(['id' => $group->id]);
+    }
 }
