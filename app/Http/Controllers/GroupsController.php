@@ -456,6 +456,11 @@ class GroupsController extends Controller
         ]);
 
         $user = $request->user();
+        $is_admin = false;
+
+        if ($user) {
+            $is_admin = User::hasRole(['admin'], $user);
+        }
 
         $groups = Group::withCount('users')->with([
             'groupRequests' => function ($query) use ($user) {
@@ -463,7 +468,11 @@ class GroupsController extends Controller
             },
         ])->whereDoesntHave('users', function ($query) use ($user) {
             $query->where('users.id', $user->id);
-        })->where('groups.is_private', false);
+        });
+
+        if (! $is_admin) {
+            $groups = $groups->where('groups.is_private', false);
+        }
 
         if (! empty($request->term)) {
             $groups = $groups->where('groups.name', 'like', "%{$request->term}%");
