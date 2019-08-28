@@ -237,6 +237,32 @@ export default class Group extends Component {
     })
   }
 
+  _handlePromote(user) {
+    let confirm = window.confirm(`Are you sure you want to promote ${user.name} to leader of this group?`)
+    if (!confirm) {
+      return
+    }
+
+    axios.put(`/web/group/${this.props.match.params.id}/promote`, {
+      user_id: user.id
+    }).then(response => {
+      this.loadGroup()
+      EventEmitter.emit('user.groups.updated')
+      Notify.push(response.data.data)
+    }).catch(error => {
+      const response = error.response
+      if (response && response.status === 422) {
+        const data = response.data
+
+        if (typeof data === 'object') {
+          alert(data.user[0])
+        } else {
+          alert(data)
+        }
+      }
+    })
+  }
+
   /**
    * Exit current group.
    * This method is available to members who don't own the group.
@@ -277,6 +303,13 @@ export default class Group extends Component {
         <tr>
           <th>Name</th>
           <th>Observations Shared</th>
+
+          {this.state.isOwner ?
+            <th>Promote to Leader</th>
+            :
+            null
+          }
+
           {this.state.isOwner ?
             <th className="has-text-right">Remove from Group</th>
             :
@@ -296,6 +329,17 @@ export default class Group extends Component {
               <td>
                 {user.observations_count}
               </td>
+              {this.state.isOwner ?
+                <td>
+                  {this.state.leader.id !== user.id ?
+                    <button className="button is-small"
+                            onClick={() => this._handlePromote.call(this, user)}>
+                      <i className="fa fa-level-up"></i></button>
+                    : null}
+                </td>
+                :
+                null
+              }
               {this.state.isOwner ?
                 <td className="has-text-right">
                   {this.state.leader.id !== user.id ?
