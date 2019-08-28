@@ -238,7 +238,7 @@ export default class Group extends Component {
   }
 
   _handlePromote(user) {
-    let confirm = window.confirm(`Are you sure you want to promote ${user.name} to leader of this group?`)
+    let confirm = window.confirm(`Are you sure you want to transfer leadership of the group to ${user.name}?`)
     if (!confirm) {
       return
     }
@@ -305,7 +305,7 @@ export default class Group extends Component {
           <th>Observations Shared</th>
 
           {this.state.isOwner ?
-            <th>Promote to Leader</th>
+            <th>Transfer Group Leadership</th>
             :
             null
           }
@@ -332,9 +332,9 @@ export default class Group extends Component {
               {this.state.isOwner ?
                 <td>
                   {this.state.leader.id !== user.id ?
-                    <button className="button is-small"
+                    <button className="button is-small is-danger"
                             onClick={() => this._handlePromote.call(this, user)}>
-                      <i className="fa fa-level-up"></i></button>
+                      <tbody>Transfer</tbody></button>
                     : null}
                 </td>
                 :
