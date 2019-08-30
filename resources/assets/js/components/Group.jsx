@@ -238,7 +238,7 @@ export default class Group extends Component {
   }
 
   _handlePromote(user) {
-    let confirm = window.confirm(`Are you sure you want to transfer leadership of the group to ${user.name}?`)
+    let confirm = window.confirm(`Are you sure you want to transfer leadership of the group to ${user.name}? This action is only reversible by the new leader!`)
     if (!confirm) {
       return
     }
