@@ -297,7 +297,6 @@ class GroupsController extends Controller
         ]);
 
         $user = $request->user();
-        $group = Group::findOrFail($id);
 
         if ($group->user_id !== $user->id) {
             return $this->unauthorized();
