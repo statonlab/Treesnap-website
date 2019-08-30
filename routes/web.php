@@ -129,6 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/web/group/detach', 'GroupsController@detach');
     Route::delete('/web/group/{id}', 'GroupsController@delete');
     Route::post('/web/group/attach', 'GroupsController@attach');
+    Route::put('/web/group/{group}/promote', 'GroupsController@promote');
     Route::patch('/web/group/{group}/sharing', 'GroupsController@changeSharing');
     Route::patch('/web/group/{group}/discoverability', 'GroupsController@toggleDiscoverability');
 

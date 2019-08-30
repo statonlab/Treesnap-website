@@ -284,6 +284,36 @@ class GroupsController extends Controller
     }
 
     /**
+     * Promotes a user to leader of a group.
+     *
+     * @param integer
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function promote(Group $group, Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+        ]);
+
+        $user = $request->user();
+
+        if ($group->user_id !== $user->id) {
+            return $this->unauthorized();
+        }
+
+        if ($group->user_id === intval($request->user_id)) {
+            return $this->validationError([
+                'user' => ['The group leader cannot be promoted to leader'],
+            ]);
+        }
+
+        $group->update(['user_id' => $request->user_id]);
+
+        return $this->success('User promoted successfully.');
+    }
+
+    /**
      * Delete a group and detach any associated records.
      *
      * @param $id

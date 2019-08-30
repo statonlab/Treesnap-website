@@ -130,4 +130,58 @@ class GroupPermissionsTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonMissing(['id' => $group->id]);
     }
+
+    public function testLeaderCanPromoteMember()
+    {
+        $leader = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $user = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $group = factory(Group::class)->create([
+            'user_id' => $leader->id
+        ]);
+
+        $this->actingAs($leader);
+
+        $response = $this->put("web/group/$group->id/promote", [
+            'user_id' => $user->id
+        ]);
+
+        $response->assertStatus(200);
+        
+        // Verify that the leader has been changed
+        $group = $group->fresh();
+        $this->assertEquals($user->id, $group->user_id);
+    }
+
+    public function testNonLeaderCannotPromoteMember()
+    {
+        $leader = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $user1 = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $user2 = factory(User::class)->create([
+            'role_id' => Role::where('name', 'User')->first()->id,
+        ]);
+
+        $group = factory(Group::class)->create([
+            'user_id' => $leader->id
+        ]);
+
+        $this->actingAs($user1);
+
+        $response = $this->put("web/group/$group->id/promote", [
+            'user_id' => $user2->id
+        ]);
+
+        $response->assertStatus(401);
+    }
 }
