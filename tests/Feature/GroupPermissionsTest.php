@@ -154,7 +154,7 @@ class GroupPermissionsTest extends TestCase
         $response->assertStatus(200);
         
         // Verify that the leader has been changed
-        $group->fresh();
+        $group = $group->fresh();
         $this->assertEquals($user->id, $group->user_id);
     }
 
