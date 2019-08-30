@@ -333,7 +333,7 @@ export default class Group extends Component {
                 <td>
                   {this.state.leader.id !== user.id ?
                     <button className="button is-small is-danger"
-                            onClick={() => this._handlePromote.call(this, user)}>
+                            onClick={() => this._handlePromote(user)}>
                       <tbody>Transfer</tbody></button>
                     : null}
                 </td>
