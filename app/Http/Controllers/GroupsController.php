@@ -290,7 +290,7 @@ class GroupsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function promote($id, Request $request)
+    public function promote(Group $group, Request $request)
     {
         $this->validate($request, [
             'user_id' => 'required|integer',
