@@ -155,7 +155,7 @@ class GroupPermissionsTest extends TestCase
         
         // Verify that the leader has been changed
         $group->fresh();
-        $this->assertEqual($user->id, $group->user_id);
+        $this->assertEquals($user->id, $group->user_id);
     }
 
     public function testNonLeaderCannotPromoteMember()
