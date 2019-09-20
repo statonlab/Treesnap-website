@@ -35,6 +35,29 @@ export default class PartnerList extends Component {
             </div>
           </div>
         </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://www.fs.usda.gov/detail/r6/landmanagement/resourcemanagement/?cid=stelprdb5279775">
+                <img src="/images/FS_green.png" alt="US forest service" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">USDA Forest Service Dorena Genetic Resource Center (DGRC)</p>
+              <p className="feature-text">
+                DGRC is a regional facility that specializes in working with genetic resistance to 
+                diseases and insects, as well as gene conservation and genetic variation studies. 
+                As a TreeSnap partner, they (and cooperators) will use data on ash to find trees that 
+                are resistant to the emerald ash borer, to learn basic information on the genetic variation
+                in the species and to initiate ex situ gene conservation using some of the seed.                
+              </p>
+              <a className={'button is-info'}
+                 href="https://www.fs.usda.gov/detail/r6/landmanagement/resourcemanagement/?cid=stelprdb5279775">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
         <div className="box">
           <div className="media">
             <div className="media-left">
