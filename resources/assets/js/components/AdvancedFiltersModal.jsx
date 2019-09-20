@@ -10,6 +10,7 @@ import FloridaTorreya from './subcomponents/FloridaTorreyaFilters'
 import EasternLarchFilters from './subcomponents/EasternLarchFilters'
 import TanOakFilters from './subcomponents/TanOakFilters'
 import PacificMadroneFilters from './subcomponents/PacificMadroneFilters'
+import OregonAshFilters from './subcomponents/OregonAshFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -34,6 +35,7 @@ export default class AdvancedFiltersModal extends Component {
       easternLarch      : {},
       tanOak            : {},
       pacificMadrone    : {},
+      oregonAsh         : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -104,6 +106,7 @@ export default class AdvancedFiltersModal extends Component {
       easternLarch    : this.state.easternLarch,
       tanOak          : this.state.tanOak,
       pacificMadrone  : this.state.pacificMadrone,
+      oregonAsh       : this.state.oregonAsh,
       other           : this.state.other,
       map             : this.props.map,
       group           : selectedGroup === -1 ? null : selectedGroup,
@@ -170,6 +173,7 @@ export default class AdvancedFiltersModal extends Component {
       easternLarch    : filters.easternLarch,
       tanOak          : filters.tanOak,
       pacificMadrone  : filters.pacificMadrone,
+      oregonAsh       : filters.oregonAsh,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -302,6 +306,19 @@ export default class AdvancedFiltersModal extends Component {
           <PacificMadroneFilters
             defaultFilters={this.state.pacificMadrone}
             onChange={(pacificMadrone) => this.count({pacificMadrone})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderOregonAshFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Oregon Ash Filters (Optional)</h3>
+        <div className="bordered">
+          <OregonAshFilters
+            defaultFilters={this.state.oregonAsh}
+            onChange={(oregonAsh) => this.count({oregonAsh})}/>
         </div>
       </div>
     )

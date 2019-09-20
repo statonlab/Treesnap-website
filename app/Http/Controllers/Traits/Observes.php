@@ -22,6 +22,7 @@ trait Observes
         'Eastern Larch',
         'Tanoak',
         'Pacific Madrone',
+        'Oregon Ash',
         'Other',
     ];
 
