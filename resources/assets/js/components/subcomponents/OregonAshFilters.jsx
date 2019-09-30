@@ -11,6 +11,8 @@ export default class OregonAshFilters extends FiltersBase {
     this.state = {
       crownPortion      : [],
       ashFrequency      : [],
+      oregonAshHealth   : [],
+      seedCollected     : [],
       diameterNumericMin: '',
       diameterNumericMax: '',
       heightNumericMin  : '',
@@ -42,8 +44,28 @@ export default class OregonAshFilters extends FiltersBase {
             <label className="label">Ash Frequency</label>
             <ButtonList
               value={this.state.ashFrequency}
-              list={['Not Often', 'Somewhat Often', 'Fairly Often', 'Very Often']}
+              list={['0', '1-5', '6-10', '>10']}
               onChange={ashFrequency => this._update('ashFrequency', ashFrequency)}/>
+          </div>
+        </div>
+
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Oregon Ash Health</label>
+            <ButtonList
+              value={this.state.oregonAshHealth}
+              list={['Good', 'Fair']}
+              onChange={oregonAshHealth => this._update('oregonAshHealth', oregonAshHealth)}/>
+          </div>
+        </div>
+
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Seed Collected</label>
+            <ButtonList
+              value={this.state.seedCollected}
+              list={['Yes', 'No']}
+              onChange={seedCollected => this._update('seedCollected', seedCollected)}/>
           </div>
         </div>
 
