@@ -18,7 +18,9 @@ class MetaLabels
     {
         $this->labels = [
             'ashSpecies' => 'Species',
+            'ashFrequency' => 'Ash Frequency',
             'seedsBinary' => 'Seeds',
+            'seedsCollected' => 'Seeds Collected',
             'flowersBinary' => 'Flowers',
             'emeraldAshBorer' => 'Ash Borer',
             'woollyAdesCoverage' => 'Woolly Adelgids',
@@ -27,8 +29,10 @@ class MetaLabels
             'cones' => 'Cones',
             'heightFirstBranch' => 'Height of First Branch',
             'oakHealthProblems' => 'Health Problems',
+            'oregonAshHealth' => 'Oregon Ash Health',
             'diameterNumeric' => 'Tree Diameter',
             'crownHealth' => 'Crown Health',
+            'crownPortion' => 'Crown Portion',
             'crownClassification' => 'Crown Classification',
             'otherLabel' => 'Tree Type',
             'locationCharacteristics' => 'Habitat',
