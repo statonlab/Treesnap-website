@@ -31,7 +31,7 @@ export default class OregonAshFilters extends FiltersBase {
       <div className="columns is-multiline">
         <div className="column is-6">
           <div className="field">
-            <label className="label">Seed Crown Portion</label>
+            <label className="label">Collected Seed Location</label>
             <ButtonList
               value={this.state.crownPortion}
               list={['Top Third', 'Middle Third', 'Bottom Third', 'Throughout Crown']}
@@ -54,7 +54,7 @@ export default class OregonAshFilters extends FiltersBase {
             <label className="label">Oregon Ash Health</label>
             <ButtonList
               value={this.state.oregonAshHealth}
-              list={['Good', 'Fair']}
+              list={['Good', 'Fair', 'Poor']}
               onChange={oregonAshHealth => this._update('oregonAshHealth', oregonAshHealth)}/>
           </div>
         </div>
