@@ -32,7 +32,7 @@ class MetaLabels
             'oregonAshHealth' => 'Oregon Ash Health',
             'diameterNumeric' => 'Tree Diameter',
             'crownHealth' => 'Crown Health',
-            'crownPortion' => 'Crown Portion',
+            'crownPortion' => 'Collected Seed Location',
             'crownClassification' => 'Crown Classification',
             'otherLabel' => 'Tree Type',
             'locationCharacteristics' => 'Habitat',

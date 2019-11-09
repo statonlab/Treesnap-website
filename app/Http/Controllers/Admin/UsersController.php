@@ -242,13 +242,13 @@ class UsersController extends Controller
                     $recent_observation)->format('m/d/y');
             }
 
-            \Storage::append($path, $this->line([
+            \Storage::append($path, trim($this->line([
                 $user->name,
                 $user->created_at->format('m/d/Y'),
                 $user->email,
                 $user->observations_count,
                 $recent_observation ?: 'Inapplicable',
-            ], $extension));
+            ], $extension)));
         }
 
         return response()->download(storage_path("app/$path"), $filename);

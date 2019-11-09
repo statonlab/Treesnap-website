@@ -89,7 +89,7 @@ class DownloadsController extends Controller
                 $line = $this->prepObservationLine($observation, $user);
 
                 if ($line !== false) {
-                    Storage::append($path, $this->line($line, $extension));
+                    Storage::append($path, trim($this->line($line, $extension)));
                 }
             }
         });
@@ -140,7 +140,7 @@ class DownloadsController extends Controller
                     $line = $this->prepObservationLine($observation, $user);
 
                     if ($line !== false) {
-                        Storage::append($path, $this->line($line, $extension));
+                        Storage::append($path, trim($this->line($line, $extension)));
                     }
                 }
             });
@@ -192,7 +192,7 @@ class DownloadsController extends Controller
                 $line = $this->prepObservationLine($observation, $user);
 
                 if ($line !== false) {
-                    Storage::append($path, $this->line($line, $extension));
+                    Storage::append($path, trim($this->line($line, $extension)));
                 }
             }
         });
