@@ -107,11 +107,16 @@ class ExportObservations extends Command
      */
     protected function printCsv(Observation $observation)
     {
+        $species = $observation->observation_category;
+        if ($species === 'Other') {
+            $species = $observation->data['otherLabel'] ?? 'Other';
+        }
+
         $data = [
             $observation->custom_id ?? 'undefined',
             $observation->user->name,
             $observation->user->email,
-            $observation->observation_category === 'Other' ? $observation->data['otherLabel'] : $observation->observation_category,
+            $species,
             $observation->collection_date->toDateTimeString(),
             $observation->latitude,
             $observation->longitude,
