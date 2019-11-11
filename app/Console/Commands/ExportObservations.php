@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Group;
 use App\Observation;
+use App\Services\Archive;
 use Illuminate\Console\Command;
 
 class ExportObservations extends Command
@@ -26,6 +27,11 @@ class ExportObservations extends Command
      * @var resource
      */
     protected $file;
+
+    /**
+     * @var array
+     */
+    protected $images = [];
 
     /**
      * Create a new command instance.
@@ -86,6 +92,9 @@ class ExportObservations extends Command
 
         fclose($this->file);
 
+        $archive = new Archive($this->images);
+        $archive->zip('images.zip');
+
         $this->info('Done!');
     }
 
@@ -129,5 +138,22 @@ class ExportObservations extends Command
         ];
 
         fputcsv($this->file, $data);
+
+        $this->extractImages($observation->images);
+    }
+
+    /**
+     * @param array $images
+     */
+    protected function extractImages(array $images)
+    {
+        foreach ($images as $data) {
+            foreach ($data as $image) {
+                $i = storage_path('app/public/images/'.basename($image));
+                if (file_exists($i)) {
+                    $this->images[] = $i;
+                }
+            }
+        }
     }
 }
