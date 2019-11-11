@@ -77,6 +77,7 @@ class ExportObservations extends Command
             'Diameter Unit',
             'Address',
             'Comments',
+            'Images JSON',
         ]);
 
         $observations->get()->map(function (Observation $observation) {
@@ -88,6 +89,10 @@ class ExportObservations extends Command
         $this->info('Done!');
     }
 
+    /**
+     * @param $value
+     * @return |null
+     */
     protected function optional($value)
     {
         if ($value == -1) {
@@ -115,6 +120,7 @@ class ExportObservations extends Command
             $observation->data['diameterNumeric_units'] ?? 'IN',
             $observation->address['formatted'] ?? '',
             $observation->data['comment'] ?? '',
+            json_encode($observation->images),
         ];
 
         fputcsv($this->file, $data);
