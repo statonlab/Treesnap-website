@@ -8,7 +8,7 @@ export default class DropdownItem extends Component {
 
   render() {
     let props = {
-      href   : this.props.href || 'javascript:;',
+      href   : this.props.href || null,
       onClick: this.props.onClick !== null ? this.props.onClick : null
     }
     return (

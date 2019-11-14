@@ -477,7 +477,7 @@ export default class ObservationCard extends Component {
                   style={{
                     backgroundImage: `url(${observation.thumbnail || '/images/placeholder.png'})`,
                   }}>
-                  <a href="javascript:;"
+                  <a
                      className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column z-10"
                      onClick={() => {
                        this.setState({showDetailsModal: true})
@@ -496,7 +496,7 @@ export default class ObservationCard extends Component {
               <div className="content">
                 {this.props.owner ? null :
                   <span>By {observation.user.name}<br/></span>}
-                <a href="javascript:;" onClick={(e) => {
+                <a  onClick={(e) => {
                   e.preventDefault()
                   this.setState({showDetailsModal: true})
                 }}>
@@ -530,7 +530,7 @@ export default class ObservationCard extends Component {
             </div>
             <div className={`card-slide-content${this.state.slide ? ' show' : ''}`}>
               <div className="p-1 relative-block">
-                <button href="javascript:;"
+                <button
                         className="close button"
                         type="button"
                         onClick={this.slowCloseSlideContent.bind(this)}>
@@ -540,7 +540,7 @@ export default class ObservationCard extends Component {
             </div>
           </div>
           <footer className="card-footer card-footer-z-index">
-            <a href="javascript:;"
+            <a
                className="card-footer-item is-paddingless"
                onClick={() => this.shouldSlide('addToCollection')}>
               <Tooltip label="Add to Collection" style={{padding: '0.75rem'}}>
@@ -550,7 +550,7 @@ export default class ObservationCard extends Component {
               </Tooltip>
             </a>
 
-            <a href="javascript:;"
+            <a
                className="card-footer-item is-paddingless"
                onClick={() => this.shouldSlide('map')}>
               <Tooltip label="Show on Map" style={{padding: '0.75rem'}}>
@@ -561,7 +561,7 @@ export default class ObservationCard extends Component {
             </a>
 
             {User.can('contact users') && !this.props.owner ?
-              <a href="javascript:;"
+              <a
                  className="card-footer-item is-paddingless"
                  onClick={() => {
                    this.props.onEmailRequest(observation)
@@ -575,7 +575,7 @@ export default class ObservationCard extends Component {
               </a> : null}
 
             {this.props.owner ? null :
-              <a href="javascript:;"
+              <a
                  className="card-footer-item is-paddingless"
                  onClick={() => this.shouldSlide('flag')}>
                 <Tooltip label="Flag as Inappropriate"
@@ -588,7 +588,7 @@ export default class ObservationCard extends Component {
             }
 
             {!this.props.owner ? null :
-              <a href="javascript:;"
+              <a
                  className="card-footer-item is-paddingless"
                  onClick={() => this.setState({showShareLinkModal: true})}>
                 <Tooltip label="Share" style={{padding: '0.75rem'}}>

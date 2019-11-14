@@ -158,7 +158,7 @@ export default class FlagsScene extends Scene {
                     </span>
                     <span>Visit Observation</span>
                   </a>
-                  <a href="javascript:;"
+                  <a
                      onClick={() => {
                        this.clearFlag(flag)
                      }}

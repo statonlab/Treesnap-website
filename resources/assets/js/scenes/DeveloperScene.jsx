@@ -91,7 +91,7 @@ export default class DeveloperScene extends Scene {
                 {token.show ?
                   <div>
                     <textarea className="textarea" readOnly={true}>{token.access_token}</textarea>
-                    <a href="javascript:;"
+                    <a
                        style={{marginLeft: 3}}
                        onClick={() => this.toggleToken(token)}>
                       hide
@@ -106,7 +106,7 @@ export default class DeveloperScene extends Scene {
                         </small>
                       )
                     })}
-                    <a href="javascript:;"
+                    <a
                        style={{marginLeft: 3}}
                        onClick={() => this.toggleToken(token)}>
                       show

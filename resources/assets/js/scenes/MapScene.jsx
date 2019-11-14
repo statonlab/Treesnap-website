@@ -343,7 +343,7 @@ export default class App extends Scene {
       title = title.substr(0, 30) + '...'
     }
     return (
-      <a href="javascript:;"
+      <a
          role="button"
          className="bar-item"
          style={{backgroundImage: `url(${marker.thumbnail})`}}
@@ -594,7 +594,7 @@ export default class App extends Scene {
   _renderBottomBar() {
     return (
       <div className="horizontal-bar" id="horizontal-bar-container">
-        <a href="javascript:;" className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
+        <a  className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
           <i className="fa fa-chevron-left"></i>
         </a>
         <div className="bar-items-container dragscroll"
@@ -608,7 +608,7 @@ export default class App extends Scene {
             <p className="ml-1 mt-1 has-text-white">No results found. Try zooming out or moving the map to cover the locations you are interested in.</p>
             : null}
         </div>
-        <a href="javascript:;" className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
+        <a  className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
           <i className="fa fa-chevron-right"></i>
         </a>
       </div>
@@ -783,7 +783,7 @@ export default class App extends Scene {
 
         <p className="mt-1 has-text-centered">
           {this.state.appliedAdvancedFilter || this.state.selectedFilter !== 0 ?
-            <a href="javascript:;"
+            <a
                className="button is-danger"
                onClick={() => {
                  this.setState({appliedAdvancedFilter: false, loading: true, selectedFilter: 0})
@@ -792,7 +792,7 @@ export default class App extends Scene {
               Clear Advanced Filters
             </a>
             :
-            <a href="javascript:;"
+            <a
                className="button is-primary"
                onClick={() => this.setState({showFiltersModal: true})}>
               More Advanced Filters
@@ -832,7 +832,7 @@ export default class App extends Scene {
 
         {this.state.showCollectionsForm || this.state.showFlagForm ?
           <div className="sidebar-bottom-bar">
-            <a href="javascript:;" onClick={() => {
+            <a  onClick={() => {
               this.setState({
                 showCollectionsForm: false,
                 showFlagForm       : false
@@ -1034,7 +1034,7 @@ export default class App extends Scene {
       <div>
         <div className="sidebar-img"
              style={{backgroundImage: `url(${marker.thumbnail})`}}>
-          <a href="javascript:;"
+          <a
              className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
              onClick={() => {
                this.setState({galleryImages: marker.images, showModal: true})
@@ -1047,7 +1047,7 @@ export default class App extends Scene {
         </div>
         <div className="sidebar-icons-container">
           <div className="card-footer">
-            <a href="javascript:;"
+            <a
                className="flex-column"
                onClick={() => {
                  this.setState({galleryImages: marker.images, showModal: true})
@@ -1055,13 +1055,13 @@ export default class App extends Scene {
               <i className="fa fa-picture-o"></i>
               <span className="help">Images</span>
             </a>
-            <a href="javascript:;"
+            <a
                className={`flex-column${marker.collections.length > 0 ? ' is-success' : ''}`}
                onClick={this.showCollectionsForm.bind(this)}>
               <i className="fa fa-star"></i>
               <span className="help">Save</span>
             </a>
-            <a href="javascript:;"
+            <a
                className={`flex-column${marker.flags.length > 0 ? ' is-danger' : ''}`}
                onClick={this.showFlagForm.bind(this)}>
               <i className="fa fa-flag"></i>
@@ -1159,7 +1159,7 @@ export default class App extends Scene {
    */
   _renderFilterButton() {
     return (
-      <a href="javascript:;"
+      <a
          className="button filters-button"
          onClick={() => {
            this.setState({

@@ -298,11 +298,11 @@ export default class UserScene extends Scene {
 
     return (
       <nav className="pagination is-centered">
-        <a href="javascript:;" className="pagination-previous"
+        <a  className="pagination-previous"
            onClick={this._prevPage.bind(this)} {...this.state.offset === 0 && {disabled: 'disabled'}}>
           Previous
         </a>
-        <a href="javascript:;" className="pagination-next"
+        <a  className="pagination-next"
            onClick={this._nextPage.bind(this)}
            {...this.state.offset === this.state.numPages - 1 && {disabled: 'disabled'}}
         >
@@ -312,7 +312,7 @@ export default class UserScene extends Scene {
           {links.map((link, index) => {
             return (
               <li key={index}>
-                <a href="javascript:;"
+                <a
                    className={`pagination-link ${this.state.offset === link - 1 && 'is-current'}`}
                    onClick={e => this._page.call(this, e, link)}
                    {...this.state.offset === link - 1 && {disabled: 'disabled'}}

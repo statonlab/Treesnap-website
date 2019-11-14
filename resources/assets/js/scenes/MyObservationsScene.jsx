@@ -339,7 +339,7 @@ export default class MyObservationsScene extends Scene {
   _renderPageLinks() {
     return (
       <nav className="pagination is-centered">
-        <a href="javascript:;"
+        <a
            className="pagination-previous"
            onClick={this.prevPage.bind(this)}
            disabled={this.state.page === 1}>
@@ -358,7 +358,7 @@ export default class MyObservationsScene extends Scene {
             </li>
           </ul>
           : null}
-        <a href="javascript:;"
+        <a
            className="pagination-next"
            onClick={this.nextPage.bind(this)}
            disabled={!this.state.hasMorePages}>

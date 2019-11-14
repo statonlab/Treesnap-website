@@ -342,7 +342,7 @@ export default class CollectionsScene extends Scene {
         <td>{collection.observations_count}</td>
         <td>
           {collection.users_count > 1 && collection.is_owner ?
-            <a href="javascript:;" onClick={() => this.setState({
+            <a  onClick={() => this.setState({
               showUnshareModal  : true,
               selectedCollection: collection
             })}>

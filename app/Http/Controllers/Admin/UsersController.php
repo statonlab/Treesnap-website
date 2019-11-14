@@ -30,18 +30,17 @@ class UsersController extends Controller
             'per_page',
             'nullable|integer|min:6|max:100',
             'search' => 'nullable',
-            'sort_by' => 'nullable|in:users.name,users.email,observations_count,roles.name',
+            'sort_by' => 'nullable|in:users.name,users.email',
             'sort_dir' => 'nullable|in:desc,asc',
         ]);
 
-        $users = User::join('roles', 'roles.id', 'users.role_id')->select([
+        $users = User::select([
             'users.name',
             'users.email',
             'users.id',
-            'roles.name as role_name',
-            'roles.id as role_id',
-            DB::raw('(SELECT COUNT(*) FROM observations WHERE observations.user_id = users.id) AS observations_count'),
-        ]);
+        ])->with([
+            'role',
+        ])->withCount(['observations']);
 
         if (! empty($request->search)) {
             $term = $request->search;
@@ -49,7 +48,9 @@ class UsersController extends Controller
                 /** @var \Illuminate\Database\Eloquent\Builder $query */
                 $query->where('users.name', 'like', "%$term%");
                 $query->orWhere('users.email', 'like', "%$term%");
-                $query->orWhere('roles.name', 'like', "%$term%");
+                $query->orWhereHas('role', function ($query) use ($term) {
+                    $query->where('roles.name', 'like', "%$term%");
+                });
             });
         }
 
@@ -64,30 +65,7 @@ class UsersController extends Controller
 
         $users = $users->paginate($request->per_page ?: 25);
 
-        $data = [];
-        foreach ($users as $user) {
-            $data[] = $this->constructUserObject($user);
-        }
-
-        return $this->success(array_merge($users->toArray(), ['data' => $data]));
-    }
-
-    /**
-     * @param object $record
-     * @return array
-     */
-    protected function constructUserObject(object $record)
-    {
-        return [
-            'id' => $record->id,
-            'name' => $record->name,
-            'email' => $record->email,
-            'role' => [
-                'id' => $record->role_id,
-                'name' => $record->role_name,
-            ],
-            'observations_count' => $record->observations_count,
-        ];
+        return $this->success($users);
     }
 
     /**
