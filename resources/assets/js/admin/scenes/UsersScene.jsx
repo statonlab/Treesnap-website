@@ -19,7 +19,7 @@ export default class UsersScene extends Scene {
       sortBy       : 'users.name',
       sortDirection: 'asc',
       pages        : [],
-      loadingUsers : true
+      loadingUsers : true,
     }
 
     document.title = 'Users - TreeSnap'
@@ -36,7 +36,7 @@ export default class UsersScene extends Scene {
       page    : state.page,
       search  : state.search,
       sort_by : state.sortBy,
-      sort_dir: state.sortDirection
+      sort_dir: state.sortDirection,
     }
   }
 
@@ -107,7 +107,7 @@ export default class UsersScene extends Scene {
         showingTo  : data.to,
         last_page  : data.last_page === data.page,
         total      : data.total,
-        pages      : this.generatePages(data.total, data.per_page, data.current_page)
+        pages      : this.generatePages(data.total, data.per_page, data.current_page),
       })
     } catch (error) {
       console.log(error)
@@ -135,14 +135,14 @@ export default class UsersScene extends Scene {
   renderSortIcon(field) {
     if (this.state.sortBy === field) {
       if (this.state.sortDirection === 'desc') {
-        return (<i className={'fa fa-sort-desc'}></i>)
+        return (<i className={'fa fa-sort-desc'}/>)
       }
 
-      return (<i className={'fa fa-sort-asc'}></i>)
+      return (<i className={'fa fa-sort-asc'}/>)
     }
 
     return (
-      <i className={'fa fa-sort'}></i>
+      <i className={'fa fa-sort'}/>
     )
   }
 
@@ -188,10 +188,20 @@ export default class UsersScene extends Scene {
             </a>
           </th>
           <th>
+            <a
+              onClick={() => this.sort('observations_count')}
+              className={'sortable-th flex-space-between is-flex'}>
               Observations
+              {this.renderSortIcon('observations_count')}
+            </a>
           </th>
           <th>
+            <a
+              onClick={() => this.sort('roles.name')}
+              className={'sortable-th flex-space-between is-flex'}>
               Role
+              {this.renderSortIcon('roles.name')}
+            </a>
           </th>
         </tr>
         </thead>

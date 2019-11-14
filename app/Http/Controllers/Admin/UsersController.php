@@ -17,24 +17,24 @@ class UsersController extends Controller
 {
     use Responds, Observes, CreatesDownloadableFiles;
 
-    /**
-     * Get all users.
-     *
-     * @param Request $request The request.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index(Request $request)
     {
         $this->validate($request, [
             'per_page',
             'nullable|integer|min:6|max:100',
             'search' => 'nullable',
-            'sort_by' => 'nullable|in:users.name,users.email',
+            'sort_by' => 'nullable|in:users.name,users.email,observations_count,roles.name',
             'sort_dir' => 'nullable|in:desc,asc',
         ]);
 
-        $users = User::with(['role'])->withCount(['observations']);
+        $users = User::join('roles', 'roles.id', 'users.role_id')->select([
+            'users.name',
+            'users.email',
+            'users.id',
+            'roles.name as role_name',
+            'roles.id as role_id',
+            DB::raw('(SELECT COUNT(*) FROM observations WHERE observations.user_id = users.id) AS observations_count'),
+        ]);
 
         if (! empty($request->search)) {
             $term = $request->search;
@@ -42,34 +42,40 @@ class UsersController extends Controller
                 /** @var \Illuminate\Database\Eloquent\Builder $query */
                 $query->where('users.name', 'like', "%$term%");
                 $query->orWhere('users.email', 'like', "%$term%");
-                $query->orWhereHas('role', function ($query) use ($term) {
-                    $query->where('roles.name', 'like', "%$term%");
-                });
+                $query->orWhere('roles.name', 'like', "%$term%");
             });
         }
-
         $order_by = $request->sort_by ?: 'users.name';
         $order_dir = $request->sort_dir ?: 'asc';
-
         $users->orderBy($order_by, $order_dir);
-
-        // Add secondary sort column
         if ($order_by !== 'users.name') {
             $users->orderBy('users.name', 'asc');
         }
-
         $users = $users->paginate($request->per_page ?: 25);
+        $data = [];
+        foreach ($users as $user) {
+            $data[] = $this->constructUserObject($user);
+        }
 
-        $users->getCollection()->transform(function($user) {
-            return $user->only([
-                'id',
-                'name',
-                'role',
-                'observations_count',
-                'email'
-            ]);
-        });
+        return $this->success(array_merge($users->toArray(), ['data' => $data]));
+    }
 
+    /**
+     * @param object $record
+     * @return array
+     */
+    protected function constructUserObject(object $record)
+    {
+        return [
+            'id' => $record->id,
+            'name' => $record->name,
+            'email' => $record->email,
+            'role' => [
+                'id' => $record->role_id,
+                'name' => $record->role_name,
+            ],
+            'observations_count' => $record->observations_count,
+        ];
 
         return $this->success($users);
     }
