@@ -34,13 +34,7 @@ class UsersController extends Controller
             'sort_dir' => 'nullable|in:desc,asc',
         ]);
 
-        $users = User::select([
-            'users.name',
-            'users.email',
-            'users.id',
-        ])->with([
-            'role',
-        ])->withCount(['observations']);
+        $users = User::with(['role'])->withCount(['observations']);
 
         if (! empty($request->search)) {
             $term = $request->search;
@@ -59,11 +53,23 @@ class UsersController extends Controller
 
         $users->orderBy($order_by, $order_dir);
 
+        // Add secondary sort column
         if ($order_by !== 'users.name') {
             $users->orderBy('users.name', 'asc');
         }
 
         $users = $users->paginate($request->per_page ?: 25);
+
+        $users->getCollection()->transform(function($user) {
+            return $user->only([
+                'id',
+                'name',
+                'role',
+                'observations_count',
+                'email'
+            ]);
+        });
+
 
         return $this->success($users);
     }

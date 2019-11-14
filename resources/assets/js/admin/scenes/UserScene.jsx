@@ -26,7 +26,7 @@ export default class UserScene extends Scene {
       errors      : null,
       role        : {
         name    : '',
-        is_admin: false
+        is_admin: false,
       },
       role_id     : -1,
       observations: [],
@@ -34,11 +34,12 @@ export default class UserScene extends Scene {
       contact     : {
         to         : {
           user_id: -1,
-          name   : ''
+          name   : '',
         },
         from       : '',
-        observation: {}
-      }
+        observation: {},
+      },
+      observationsCount: 0
     }
   }
 
@@ -77,7 +78,7 @@ export default class UserScene extends Scene {
       let state = Object.assign({}, user, {
         observations: data.observations,
         numPages    : Math.ceil(data.observations.length / this.state.perPage),
-        loading     : false
+        loading     : false,
       })
 
       this.setState(state)
@@ -104,25 +105,24 @@ export default class UserScene extends Scene {
   }
 
   _userObject(data) {
-    let groups = []
-
-    data.groups.map(group => groups.push({
+    let groups = data.groups.map(group => ({
       label: group.name,
-      value: group.id
+      value: group.id,
     }))
 
     return {
-      id          : data.id,
-      name        : data.name,
-      email       : data.email,
-      birth_year  : data.birth_year,
-      role        : data.role,
-      role_id     : data.role.id,
-      class       : data.class,
-      is_anonymous: data.is_anonymous,
-      zipcode     : data.zipcode,
-      user_groups : groups,
-      created_at  : data.created_at
+      id                : data.id,
+      name              : data.name,
+      email             : data.email,
+      birth_year        : data.birth_year,
+      role              : data.role,
+      role_id           : data.role.id,
+      class             : data.class,
+      is_anonymous      : data.is_anonymous,
+      zipcode           : data.zipcode,
+      user_groups       : groups,
+      created_at        : data.created_at,
+      observations_count: data.observations_count || 0,
     }
   }
 
@@ -137,7 +137,7 @@ export default class UserScene extends Scene {
 
       data.map(group => groups.push({
         label: group.name,
-        value: group.id
+        value: group.id,
       }))
 
       return {options: groups}
@@ -193,7 +193,7 @@ export default class UserScene extends Scene {
             </tr>
             <tr>
               <th>Number of Observations</th>
-              <td>{this.state.observations.length}</td>
+              <td>{this.state.observations_count}</td>
             </tr>
             <tr>
               <th>Birth Year</th>
@@ -263,11 +263,11 @@ export default class UserScene extends Scene {
                       contact  : {
                         to  : {
                           user_id: this.state.id,
-                          name   : this.state.name
+                          name   : this.state.name,
                         },
                         from: this.state.email,
-                        observation
-                      }
+                        observation,
+                      },
                     })
                   }}/>
               </div>
@@ -298,11 +298,11 @@ export default class UserScene extends Scene {
 
     return (
       <nav className="pagination is-centered">
-        <a  className="pagination-previous"
+        <a className="pagination-previous"
            onClick={this._prevPage.bind(this)} {...this.state.offset === 0 && {disabled: 'disabled'}}>
           Previous
         </a>
-        <a  className="pagination-next"
+        <a className="pagination-next"
            onClick={this._nextPage.bind(this)}
            {...this.state.offset === this.state.numPages - 1 && {disabled: 'disabled'}}
         >
@@ -313,9 +313,9 @@ export default class UserScene extends Scene {
             return (
               <li key={index}>
                 <a
-                   className={`pagination-link ${this.state.offset === link - 1 && 'is-current'}`}
-                   onClick={e => this._page.call(this, e, link)}
-                   {...this.state.offset === link - 1 && {disabled: 'disabled'}}
+                  className={`pagination-link ${this.state.offset === link - 1 && 'is-current'}`}
+                  onClick={e => this._page.call(this, e, link)}
+                  {...this.state.offset === link - 1 && {disabled: 'disabled'}}
                 >
                   {link}
                 </a>
@@ -574,7 +574,7 @@ export default class UserScene extends Scene {
       groups      : groups,
       is_anonymous: this.state.is_anonymous,
       birth_year  : this.state.birth_year,
-      zipcode     : this.state.zipcode
+      zipcode     : this.state.zipcode,
     }).then(response => {
       let user = this._userObject(response.data.data)
       this.setState(Object.assign({}, user, {editing: false, errors: null}))
@@ -605,5 +605,5 @@ export default class UserScene extends Scene {
 }
 
 UserScene.propTypes = {
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
 }
