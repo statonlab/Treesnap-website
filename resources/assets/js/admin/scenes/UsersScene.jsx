@@ -117,12 +117,13 @@ export default class UsersScene extends Scene {
   }
 
   _renderRow(user, index) {
+    console.log(user)
     return (
       <tr key={index}>
         <td><Link to={`/user/${user.id}`}>{user.name}</Link></td>
         <td>{user.email}</td>
         <td>{user.observations_count}</td>
-        <td>{user.role ? user.role.name : 'here'}</td>
+        <td>{user.role ? user.role.name : 'NULL'}</td>
       </tr>
     )
   }
