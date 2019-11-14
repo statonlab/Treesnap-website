@@ -526,7 +526,7 @@ export default class ObservationDetails extends Component {
                   <tr>
                     <th>Photos</th>
                     <td>
-                      <a href="javascript:;" onClick={() => this.setState({showModal: true})}>
+                      <a  onClick={() => this.setState({showModal: true})}>
                         See All Photos
                       </a>
                     </td>

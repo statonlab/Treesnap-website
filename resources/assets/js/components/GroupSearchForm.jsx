@@ -148,7 +148,7 @@ export default class GroupSearchForm extends Component {
           </tbody>
         </table>
         {this.state.groups.length > 4 ?
-          <a href="javascript:;"
+          <a
              className="is-block has-text-centered"
              onClick={() => this.setState({seeMore: !this.state.seeMore})}>
             {this.state.seeMore ? 'See Less' : 'See More'}

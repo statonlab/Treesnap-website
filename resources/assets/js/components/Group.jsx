@@ -627,7 +627,7 @@ export default class Group extends Component {
 
     return (
       <nav className="pagination is-centered">
-        <a href="javascript:;"
+        <a
            className="pagination-previous"
            onClick={this.prevPage.bind(this)}
            disabled={this.state.page === 1}>
@@ -646,7 +646,7 @@ export default class Group extends Component {
             </li>
           </ul>
           : null}
-        <a href="javascript:;"
+        <a
            className="pagination-next"
            onClick={this.nextPage.bind(this)}
            disabled={!this.state.hasMorePages}>
@@ -824,7 +824,7 @@ export default class Group extends Component {
             {this.state.updatingName ? this.renderNameForm() : this.renderName()}
           </div>
           <div className="column has-text-right">
-            <a href="javascript:;"
+            <a
                className="button is-default"
                onClick={() => this.setState({showPrivacyModal: true})}>
               <span className="icon is-small">

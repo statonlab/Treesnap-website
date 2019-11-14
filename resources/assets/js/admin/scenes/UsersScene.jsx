@@ -122,7 +122,7 @@ export default class UsersScene extends Scene {
         <td><Link to={`/user/${user.id}`}>{user.name}</Link></td>
         <td>{user.email}</td>
         <td>{user.observations_count}</td>
-        <td>{user.role.name}</td>
+        <td>{user.role ? user.role.name : 'here'}</td>
       </tr>
     )
   }
@@ -174,7 +174,6 @@ export default class UsersScene extends Scene {
         <tr>
           <th>
             <a
-              href={'javascript:;'}
               onClick={() => this.sort('users.name')}
               className={'sortable-th flex-space-between is-flex'}>
               Name {this.renderSortIcon('users.name')}
@@ -183,26 +182,15 @@ export default class UsersScene extends Scene {
           <th>
             <a
               onClick={() => this.sort('users.email')}
-              href={'javascript:;'}
               className={'sortable-th flex-space-between is-flex'}>
               Email {this.renderSortIcon('users.email')}
             </a>
           </th>
           <th>
-            <a
-              onClick={() => this.sort('observations_count')}
-              href={'javascript:;'}
-              className={'sortable-th flex-space-between is-flex'}>
-              Observations {this.renderSortIcon('observations_count')}
-            </a>
+              Observations
           </th>
           <th>
-            <a
-              onClick={() => this.sort('roles.name')}
-              href={'javascript:;'}
-              className={'sortable-th flex-space-between is-flex'}>
-              Role {this.renderSortIcon('roles.name')}
-            </a>
+              Role
           </th>
         </tr>
         </thead>
