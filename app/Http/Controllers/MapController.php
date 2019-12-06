@@ -34,17 +34,7 @@ class MapController extends Controller
 
         $observations = $this->getObservationsFromDB($user, $isAdmin, $request->bounds);
 
-        $total = 0;
-
-        if ($request->bounds) {
-            $bounds = json_decode($request->bounds);
-            
-            $total = Observation::bounds($bounds)->count();
-        } else {
-            $total = Observation::count();
-        }
-
-        return $this->success(['observations' => $observations, 'total' => $total]);
+        return $this->success($observations);
     }
 
     /**
@@ -99,7 +89,7 @@ class MapController extends Controller
             $observations = $this->addPrivacyClause($observations, $user);
         }
 
-        $observations = $observations->orderBy('observations.id', 'desc')->limit(500)->get();
+        $observations = $observations->orderBy('observations.id', 'desc')->get();
 
         if ($user) {
             $collections = $user->collections->map(function ($collection) {
