@@ -28,7 +28,7 @@ export default class Map extends Component {
         lng: this.props.center.lng
       },
       zoom                 : this.props.zoom,
-      minZoom              : 2,
+      minZoom              : 4,
       mapTypeControlOptions: {
         style   : google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
         position: google.maps.ControlPosition.TOP_CENTER

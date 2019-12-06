@@ -209,14 +209,10 @@ export default class App extends Scene {
       this.initialLoad = false
 
       // Setup the observations to be rendered into markers
-      let markers = response.data.data
+      let markers = response.data.data.observations
+      let total = response.data.data.total
 
-      if (markers.length > 500) {
-        markers = markers.slice(0, 500)
-        this.setState({showMarkersNotification: true})
-      } else {
-        this.setState({showMarkersNotification: false})
-      }
+      total !== markers.length ? this.setState({showMarkersNotification: true}) : this.setState({showMarkersNotification: false})
 
       // Add the markers to the state
       if (!User.admin() && !User.scientist()) {
