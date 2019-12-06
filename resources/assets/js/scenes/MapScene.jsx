@@ -31,28 +31,29 @@ export default class App extends Scene {
     this.initialLoad = true
 
     this.state = {
-      markers              : [],
-      categories           : [],
-      selectedCategories   : [],
-      selectedConfirmation : 0,
-      center               : this.defaultMapPosition.center,
-      zoom                 : this.defaultMapPosition.zoom,
-      selectedMarker       : null,
-      galleryImages        : [],
-      showSidebar          : false,
-      loading              : false,
-      showFilters          : false,
-      searchTerm           : '',
-      collections          : [],
-      selectedCollection   : 0,
-      filters              : [],
-      selectedFilter       : 0,
-      showFiltersModal     : false,
-      total                : 0,
-      showCollectionsForm  : false,
-      showFlagForm         : false,
-      ownedCollections     : [],
-      appliedAdvancedFilter: false
+      markers                : [],
+      categories             : [],
+      selectedCategories     : [],
+      selectedConfirmation   : 0,
+      center                 : this.defaultMapPosition.center,
+      zoom                   : this.defaultMapPosition.zoom,
+      selectedMarker         : null,
+      galleryImages          : [],
+      showSidebar            : false,
+      loading                : false,
+      showFilters            : false,
+      searchTerm             : '',
+      collections            : [],
+      selectedCollection     : 0,
+      filters                : [],
+      selectedFilter         : 0,
+      showFiltersModal       : false,
+      total                  : 0,
+      showCollectionsForm    : false,
+      showFlagForm           : false,
+      ownedCollections       : [],
+      appliedAdvancedFilter  : false,
+      showMarkersNotification: false
     }
 
     document.title = 'Map - TreeSnap'
@@ -209,6 +210,13 @@ export default class App extends Scene {
 
       // Setup the observations to be rendered into markers
       let markers = response.data.data
+
+      if (markers.length > 500) {
+        markers = markers.slice(0, 500)
+        this.setState({showMarkersNotification: true})
+      } else {
+        this.setState({showMarkersNotification: false})
+      }
 
       // Add the markers to the state
       if (!User.admin() && !User.scientist()) {
@@ -675,9 +683,14 @@ export default class App extends Scene {
   _renderFilters() {
     return (
       <div className="sidebar-filters">
+        {this.state.showMarkersNotification ? 
+        <div class="notification is-warning">
+            Showing 500 of {this.state.total}. Zoom in to see more.
+        </div>
+        :
         <p className="mb-0" style={{marginTop: -10}}>
-          Showing {this.state.markers.length} out of {this.state.total}
-        </p>
+            Showing {this.state.markers.length} out of {this.state.total}
+        </p>}
         <div className="field">
           <label className="label">Filters</label>
           <p className="control has-icons-right">
