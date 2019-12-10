@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import DeveloperTokensForm from '../components/DeveloperTokensForm'
 import Spinner from '../components/Spinner'
 import Navbar from '../components/Navbar'
@@ -13,7 +13,7 @@ export default class DeveloperScene extends Scene {
 
     this.state = {
       tokens : [],
-      loading: false
+      loading: false,
     }
   }
 
@@ -27,7 +27,7 @@ export default class DeveloperScene extends Scene {
     axios.get('/web/oauth/personal-tokens').then(({data}) => {
       this.setState({
         loading: false,
-        tokens : data.data.map(this.setUpToken)
+        tokens : data.data.map(this.setUpToken),
       })
     }).catch(error => {
       this.setState({loading: false})
@@ -47,7 +47,7 @@ export default class DeveloperScene extends Scene {
           t.show = !token.show
         }
         return t
-      })
+      }),
     })
   }
 
@@ -59,7 +59,7 @@ export default class DeveloperScene extends Scene {
     axios.delete(`/web/oauth/personal-token/${token.id}`).then(response => {
       Notify.push(`Token ${token.name} was deleted successfully`)
       this.setState({
-        tokens: this.state.tokens.filter(t => t.id !== token.id)
+        tokens: this.state.tokens.filter(t => t.id !== token.id),
       })
     }).catch(error => {
       Notify.push('An error occurred while deleting the token. Please try again later.', 'danger')
@@ -92,8 +92,8 @@ export default class DeveloperScene extends Scene {
                   <div>
                     <textarea className="textarea" readOnly={true}>{token.access_token}</textarea>
                     <a
-                       style={{marginLeft: 3}}
-                       onClick={() => this.toggleToken(token)}>
+                      style={{marginLeft: 3}}
+                      onClick={() => this.toggleToken(token)}>
                       hide
                     </a>
                   </div>
@@ -107,8 +107,8 @@ export default class DeveloperScene extends Scene {
                       )
                     })}
                     <a
-                       style={{marginLeft: 3}}
-                       onClick={() => this.toggleToken(token)}>
+                      style={{marginLeft: 3}}
+                      onClick={() => this.toggleToken(token)}>
                       show
                     </a>
                   </div>
@@ -176,7 +176,12 @@ export default class DeveloperScene extends Scene {
           <div className="container">
             <div className="columns">
               <div className="column is-12">
-                <h1 className="title is-3">Developer Dashboard</h1>
+                <h1 className="title is-4">Developer Dashboard</h1>
+
+                <p className={'mb-1'}>
+                  For API documentation, please visit our <a href={'https://github.com/statonlab/Treesnap-website/wiki/Public-API-Documentation'}>Github Wiki</a>.
+                </p>
+
                 {User.authenticated() ? this.renderAuthenticated() : this.renderUnauthenticated()}
               </div>
             </div>
