@@ -14,7 +14,7 @@ class ExportObservations extends Command
      *
      * @var string
      */
-    protected $signature = 'observations:export {--group_id=-1} {--user_id=-1} {file : The name of the output file}';
+    protected $signature = 'observations:export {--group_id=-1} {--user_id=-1} {--collection_id=-1} {file : The name of the output file}';
 
     /**
      * The console command description.
@@ -52,6 +52,8 @@ class ExportObservations extends Command
     {
         $group_id = $this->optional($this->option('group_id'));
         $user_id = $this->optional($this->option('user_id'));
+        $collection_id = $this->optional($this->option('collection_id'));
+
         $file = $this->argument('file');
 
         $this->file = fopen($file, 'w');
@@ -68,6 +70,11 @@ class ExportObservations extends Command
                 Group::findOrFail($group_id)->users->pluck('id'));
         } elseif ($user_id) {
             $observations->where('user_id', $user_id);
+        } elseif ($collection_id) {
+            $observations->whereHas('collections',
+                function ($query) use ($collection_id) {
+                    $query->where('collections.id', $collection_id);
+                });
         }
 
         fputcsv($this->file, [
@@ -100,7 +107,7 @@ class ExportObservations extends Command
 
     /**
      * @param $value
-     * @return |null
+     * @return null
      */
     protected function optional($value)
     {
