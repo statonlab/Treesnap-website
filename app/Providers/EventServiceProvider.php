@@ -39,6 +39,7 @@ class EventServiceProvider extends ServiceProvider
         ObservationUpdated::class => [
             CreateObservationThumbnails::class,
             BroadcastObservationUpdated::class,
+            AddAddressToObservation::class,
         ],
         ObservationDeleted::class => [
             ClearObservationsCache::class,
