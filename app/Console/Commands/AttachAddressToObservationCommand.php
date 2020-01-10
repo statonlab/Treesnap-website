@@ -51,7 +51,7 @@ class AttachAddressToObservationCommand extends Command
             ->where('location_accuracy', -2)
             ->chunk(10, function ($observations) {
                 foreach ($observations as $observation) {
-                    $this->fixObservation($observations);
+                    $this->fixObservation($observation);
                 }
 
                 // Sleep every 10 requests to make sure the API doesn't throttle us
