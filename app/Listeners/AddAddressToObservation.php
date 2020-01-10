@@ -24,10 +24,10 @@ class AddAddressToObservation implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  ObservationCreated $event
+     * @param ObservationCreated|\App\Events\ObservationUpdated $event
      * @return void
      */
-    public function handle(ObservationCreated $event)
+    public function handle($event)
     {
         $observation = $event->observation;
         $address = Geocoder::address($observation->latitude, $observation->longitude);
