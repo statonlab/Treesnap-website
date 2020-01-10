@@ -26,7 +26,7 @@ export default class ObservationDetails extends Component {
       markers            : [],
       center             : {
         lat: 40.354388,
-        lng: -95.998237
+        lng: -95.998237,
       },
       zoom               : 4,
       showControlModal   : false,
@@ -39,11 +39,11 @@ export default class ObservationDetails extends Component {
       contact            : {
         to  : {
           user_id: 0,
-          name   : ''
+          name   : '',
         },
-        from: ''
+        from: '',
       },
-      selectedUnit       : window.TreeSnap.units || 'US'
+      selectedUnit       : window.TreeSnap.units || 'US',
     }
 
     this.observation = {}
@@ -63,8 +63,8 @@ export default class ObservationDetails extends Component {
           from: user.email,
           to  : {
             user_id: observation.user.id,
-            name   : observation.user.name
-          }
+            name   : observation.user.name,
+          },
         }
         this.setState({contact})
       }).catch(error => {
@@ -124,16 +124,16 @@ export default class ObservationDetails extends Component {
         image   : observation.images.images ? observation.images.images[0] : '',
         position: {
           latitude : observation.latitude,
-          longitude: observation.longitude
-        }
+          longitude: observation.longitude,
+        },
       }],
       center     : {
         lat: observation.latitude,
-        lng: observation.longitude
+        lng: observation.longitude,
       },
       zoom       : 4,
       loading    : false,
-      collections: this.state.collections
+      collections: this.state.collections,
     }))
 
     setTimeout(() => {
@@ -143,7 +143,7 @@ export default class ObservationDetails extends Component {
 
       this.map.goTo({
         lat: observation.latitude,
-        lng: observation.longitude
+        lng: observation.longitude,
       }, 4)
     }, 500)
   }
@@ -174,7 +174,7 @@ export default class ObservationDetails extends Component {
     Object.keys(imagesObject).map(key => {
       imagesObject[key].map(image => {
         images.push({
-          original: image
+          original: image,
         })
       })
     })
@@ -506,6 +506,13 @@ export default class ObservationDetails extends Component {
                   return this._renderMetaData(label, val, key, unit)
                 })}
 
+                {this.observation.location.address && this.observation.location.address.formatted ?
+                  <tr>
+                    <th>Address</th>
+                    <td>{this.observation.location.address.formatted}</td>
+                  </tr>
+                  : null}
+
                 <tr>
                   <th>Coordinates</th>
                   <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
@@ -526,7 +533,7 @@ export default class ObservationDetails extends Component {
                   <tr>
                     <th>Photos</th>
                     <td>
-                      <a  onClick={() => this.setState({showModal: true})}>
+                      <a onClick={() => this.setState({showModal: true})}>
                         See All Photos
                       </a>
                     </td>
@@ -573,7 +580,7 @@ export default class ObservationDetails extends Component {
                           <div className="callout">
                             <img src={marker.image} alt={marker.title} style={{
                               width : 'auto',
-                              height: 100
+                              height: 100,
                             }}/>
                           </div>
                           : null}
@@ -614,7 +621,7 @@ ObservationDetails.propTypes = {
   observation        : PropTypes.object.isRequired,
   showControls       : PropTypes.bool,
   onAddedToCollection: PropTypes.func,
-  onFlagCreated      : PropTypes.func
+  onFlagCreated      : PropTypes.func,
 }
 
 ObservationDetails.defaultProps = {
@@ -622,5 +629,5 @@ ObservationDetails.defaultProps = {
   onFlagCreated(flag) {
   },
   onAddedToCollection(collection) {
-  }
+  },
 }
