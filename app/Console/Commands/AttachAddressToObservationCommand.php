@@ -13,7 +13,7 @@ class AttachAddressToObservationCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'observation:add-address {observation_id}';
+    protected $signature = 'observation:add-address {observation_id=-1}';
 
     /**
      * The console command description.
@@ -41,8 +41,32 @@ class AttachAddressToObservationCommand extends Command
     {
         $observation_id = $this->argument('observation_id');
 
-        $observation = Observation::findOrFail($observation_id);
+        if ($observation_id != -1) {
+            $observation = Observation::findOrFail($observation_id);
 
+            return $this->fixObservation($observation);
+        }
+
+        Observation::whereColumn('created_at', '!=', 'updated_at')
+            ->where('location_accuracy', -2)
+            ->chunk(10, function ($observations) {
+                foreach ($observations as $observation) {
+                    $this->fixObservation($observations);
+                }
+
+                // Sleep every 10 requests to make sure the API doesn't throttle us
+                sleep(.5);
+            });
+
+        return 1;
+    }
+
+    /**
+     * @param \App\Observation $observation
+     * @return int
+     */
+    protected function fixObservation(Observation $observation)
+    {
         $address = Geocoder::address($observation->latitude, $observation->longitude);
         if (! $address) {
             $this->error('Unable to update address.');
