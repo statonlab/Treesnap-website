@@ -429,6 +429,18 @@ export default class ObservationDetails extends Component {
     return ''
   }
 
+  getAccuracy() {
+    if (parseInt(this.observation.location.accuracy) === -2) {
+      return 'Entered manually by the user'
+    }
+
+    if (User.can('view accurate location') || User.owns(this.observation)) {
+      return 'Within ' + this.observation.location.accuracy + ' meters radius'
+    }
+
+    return 'Within 5 miles radius'
+  }
+
   render() {
 
     if (this.state.deleted) {
@@ -521,7 +533,7 @@ export default class ObservationDetails extends Component {
                 {this.observation.location.accuracy ?
                   <tr>
                     <th>Location Accuracy</th>
-                    <td>{User.can('view accurate location') || User.owns(this.observation) ? 'Within ' + this.observation.location.accuracy + ' meters radius' : 'Within 5 miles radius'}</td>
+                    <td>{this.getAccuracy()}</td>
                   </tr>
                   : null}
 
