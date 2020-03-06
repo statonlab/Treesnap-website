@@ -27,6 +27,7 @@ export default class App extends Scene {
 
     this.initPosition()
 
+    this._request = null
 
     this.initialLoad = true
 
@@ -52,7 +53,7 @@ export default class App extends Scene {
       showCollectionsForm  : false,
       showFlagForm         : false,
       ownedCollections     : [],
-      appliedAdvancedFilter: false
+      appliedAdvancedFilter: false,
     }
 
     document.title = 'Map - TreeSnap'
@@ -84,9 +85,9 @@ export default class App extends Scene {
     this.defaultMapPosition = {
       center: {
         lat: 40.354388,
-        lng: -95.998237
+        lng: -95.998237,
       },
-      zoom  : 5
+      zoom  : 12,
     }
 
     try {
@@ -127,7 +128,7 @@ export default class App extends Scene {
   loadCount() {
     axios.get('/web/map/count').then(response => {
       this.setState({
-        total: response.data.data.count
+        total: response.data.data.count,
       })
     }).catch(error => {
       console.log(error.response)
@@ -142,7 +143,7 @@ export default class App extends Scene {
     if (window.outerWidth > 797) {
       this.setState({
         showSidebar: true,
-        showFilters: true
+        showFilters: true,
       })
       this.refs.maps.resize()
     }
@@ -157,7 +158,7 @@ export default class App extends Scene {
     }
 
     this.setState({
-      showSidebar: true
+      showSidebar: true,
     })
     this.refs.maps.resize()
   }
@@ -169,7 +170,7 @@ export default class App extends Scene {
     this.setState({
       showSidebar        : false,
       showCollectionsForm: false,
-      showFlagForm       : false
+      showFlagForm       : false,
     })
     this.refs.maps.resize()
   }
@@ -195,15 +196,20 @@ export default class App extends Scene {
    * Gets observations from the API and parses them into markers.
    */
   loadObservations() {
+    if (this._request) {
+      this._request()
+    }
+
     let bounds = this.refs.maps.getBounds()
 
     axios.get('/web/map', {
-      params: {
+      params     : {
         bounds: {
           southWest: bounds.getSouthWest().toJSON(),
-          northEast: bounds.getNorthEast().toJSON()
-        }
-      }
+          northEast: bounds.getNorthEast().toJSON(),
+        },
+      },
+      cancelToken: new axios.CancelToken(c => this._request = c),
     }).then(response => {
       this.initialLoad = false
 
@@ -239,7 +245,7 @@ export default class App extends Scene {
       let categories = response.data.data
       this.setState({
         categories        : categories,
-        selectedCategories: categories
+        selectedCategories: categories,
       })
 
       if (this.filter) {
@@ -295,7 +301,7 @@ export default class App extends Scene {
       let filters = response.data.data.map(filter => {
         return {
           label: filter.name,
-          value: filter.id
+          value: filter.id,
         }
       })
 
@@ -323,7 +329,7 @@ export default class App extends Scene {
 
     const center = {
       lat: marker.position.latitude,
-      lng: marker.position.longitude
+      lng: marker.position.longitude,
     }
 
     this.refs.maps.goTo(new google.maps.LatLng(center), zoom)
@@ -344,22 +350,22 @@ export default class App extends Scene {
     }
     return (
       <a
-         role="button"
-         className="bar-item"
-         style={{backgroundImage: `url(${marker.thumbnail})`}}
-         key={`marker_${marker.id}`}
-         onClick={() => {
-           this.setState({
-             selectedMarker: marker,
-             showFilters   : false
-           })
-           this.openSidebar()
-           let zoom = this.refs.maps.getZoom()
-           this.goToSubmission(marker, zoom > 8 ? zoom : 8)
-           if (marker.ref !== null) {
-             marker.ref.openCallout()
-           }
-         }}>
+        role="button"
+        className="bar-item"
+        style={{backgroundImage: `url(${marker.thumbnail})`}}
+        key={`marker_${marker.id}`}
+        onClick={() => {
+          this.setState({
+            selectedMarker: marker,
+            showFilters   : false,
+          })
+          this.openSidebar()
+          let zoom = this.refs.maps.getZoom()
+          this.goToSubmission(marker, zoom > 8 ? zoom : 8)
+          if (marker.ref !== null) {
+            marker.ref.openCallout()
+          }
+        }}>
         <div className="bar-item-field">
           <strong style={{color: '#fff'}}>{title}</strong>
           <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
@@ -442,15 +448,15 @@ export default class App extends Scene {
     this.setState({loading: true})
     axios.get(`/web/filter/${selectedFilter}`, {
       params: {
-        map: 1
-      }
+        map: 1,
+      },
     }).then(response => {
       let {observations, filter} = response.data.data
       let markers                = this.filter.replace(observations)
       this.setState({
         markers,
         loading: false,
-        total  : observations.length
+        total  : observations.length,
       })
       if (filter) {
         Notify.push(`Filter "${filter.name}" has been applied.`)
@@ -471,13 +477,13 @@ export default class App extends Scene {
     if (data.filter) {
       let filters        = this.state.filters.concat({
         label: data.filter.name,
-        value: data.filter.id
+        value: data.filter.id,
       })
       let selectedFilter = data.filter.id
 
       this.setState({
         filters,
-        selectedFilter
+        selectedFilter,
       })
 
       Notify.push(`Filter "${data.filter.name}" has been created and applied.`)
@@ -555,7 +561,7 @@ export default class App extends Scene {
                         selectedMarker     : marker,
                         showFilters        : false,
                         showCollectionsForm: false,
-                        showFlagForm       : false
+                        showFlagForm       : false,
                       })
 
                       if (window.innerWidth > 797) {
@@ -569,7 +575,7 @@ export default class App extends Scene {
                        alt={marker.title}
                        style={{
                          width : 50,
-                         height: 'auto'
+                         height: 'auto',
                        }}/>
                 </div>
                 <div className="media-content">
@@ -594,7 +600,7 @@ export default class App extends Scene {
   _renderBottomBar() {
     return (
       <div className="horizontal-bar" id="horizontal-bar-container">
-        <a  className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
+        <a className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
           <i className="fa fa-chevron-left"></i>
         </a>
         <div className="bar-items-container dragscroll"
@@ -608,7 +614,7 @@ export default class App extends Scene {
             <p className="ml-1 mt-1 has-text-white">No results found. Try zooming out or moving the map to cover the locations you are interested in.</p>
             : null}
         </div>
-        <a  className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
+        <a className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
           <i className="fa fa-chevron-right"></i>
         </a>
       </div>
@@ -784,17 +790,17 @@ export default class App extends Scene {
         <p className="mt-1 has-text-centered">
           {this.state.appliedAdvancedFilter || this.state.selectedFilter !== 0 ?
             <a
-               className="button is-danger"
-               onClick={() => {
-                 this.setState({appliedAdvancedFilter: false, loading: true, selectedFilter: 0})
-                 this.loadObservations()
-               }}>
+              className="button is-danger"
+              onClick={() => {
+                this.setState({appliedAdvancedFilter: false, loading: true, selectedFilter: 0})
+                this.loadObservations()
+              }}>
               Clear Advanced Filters
             </a>
             :
             <a
-               className="button is-primary"
-               onClick={() => this.setState({showFiltersModal: true})}>
+              className="button is-primary"
+              onClick={() => this.setState({showFiltersModal: true})}>
               More Advanced Filters
             </a>
           }
@@ -820,7 +826,7 @@ export default class App extends Scene {
         if (this.state.showCollectionsForm || this.state.showFlagForm) {
           this.setState({
             showCollectionsForm: false,
-            showFlagForm       : false
+            showFlagForm       : false,
           })
         } else if (!this.state.showFilters) {
           this.setState({showFilters: true})
@@ -832,10 +838,10 @@ export default class App extends Scene {
 
         {this.state.showCollectionsForm || this.state.showFlagForm ?
           <div className="sidebar-bottom-bar">
-            <a  onClick={() => {
+            <a onClick={() => {
               this.setState({
                 showCollectionsForm: false,
-                showFlagForm       : false
+                showFlagForm       : false,
               })
             }}>
               <span className="icon is-small">
@@ -881,7 +887,7 @@ export default class App extends Scene {
     this.setState({
       showFilters        : false,
       showFlagForm       : false,
-      showCollectionsForm: true
+      showCollectionsForm: true,
     })
   }
 
@@ -893,7 +899,7 @@ export default class App extends Scene {
     this.setState({
       showFilters        : false,
       showFlagForm       : true,
-      showCollectionsForm: false
+      showCollectionsForm: false,
     })
   }
 
@@ -925,16 +931,16 @@ export default class App extends Scene {
 
             collections.push({
               label: collection.label,
-              value: collection.id
+              value: collection.id,
             })
 
             this.setState({
               collections,
               ownedCollections: this.state.ownedCollections.concat({
                 label: collection.label,
-                value: collection.id
+                value: collection.id,
               }),
-              selectedMarker  : this.filter.newCollection(this.state.selectedMarker, collection)
+              selectedMarker  : this.filter.newCollection(this.state.selectedMarker, collection),
             })
           }}
         />
@@ -975,8 +981,8 @@ export default class App extends Scene {
     axios.delete('/web/collection/detach', {
       params: {
         observation_id: marker.id,
-        collection_id : collection.id
-      }
+        collection_id : collection.id,
+      },
     }).then(response => {
       this.setState({selectedMarker: this.filter.removeCollection(marker, parseInt(collection.id))})
       Notify.push('Observation removed from collection successfully')
@@ -1035,10 +1041,10 @@ export default class App extends Scene {
         <div className="sidebar-img"
              style={{backgroundImage: `url(${marker.thumbnail})`}}>
           <a
-             className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
-             onClick={() => {
-               this.setState({galleryImages: marker.images, showModal: true})
-             }}>
+            className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
+            onClick={() => {
+              this.setState({galleryImages: marker.images, showModal: true})
+            }}>
             <i className="fa fa-photo"></i>
             <div className="has-text-centered">
               Click to Enlarge
@@ -1048,22 +1054,22 @@ export default class App extends Scene {
         <div className="sidebar-icons-container">
           <div className="card-footer">
             <a
-               className="flex-column"
-               onClick={() => {
-                 this.setState({galleryImages: marker.images, showModal: true})
-               }}>
+              className="flex-column"
+              onClick={() => {
+                this.setState({galleryImages: marker.images, showModal: true})
+              }}>
               <i className="fa fa-picture-o"></i>
               <span className="help">Images</span>
             </a>
             <a
-               className={`flex-column${marker.collections.length > 0 ? ' is-success' : ''}`}
-               onClick={this.showCollectionsForm.bind(this)}>
+              className={`flex-column${marker.collections.length > 0 ? ' is-success' : ''}`}
+              onClick={this.showCollectionsForm.bind(this)}>
               <i className="fa fa-star"></i>
               <span className="help">Save</span>
             </a>
             <a
-               className={`flex-column${marker.flags.length > 0 ? ' is-danger' : ''}`}
-               onClick={this.showFlagForm.bind(this)}>
+              className={`flex-column${marker.flags.length > 0 ? ' is-danger' : ''}`}
+              onClick={this.showFlagForm.bind(this)}>
               <i className="fa fa-flag"></i>
               <span className="help">Flag</span>
             </a>
@@ -1160,15 +1166,15 @@ export default class App extends Scene {
   _renderFilterButton() {
     return (
       <a
-         className="button filters-button"
-         onClick={() => {
-           this.setState({
-             selectedMarker: null,
-             showFilters   : true
-           })
+        className="button filters-button"
+        onClick={() => {
+          this.setState({
+            selectedMarker: null,
+            showFilters   : true,
+          })
 
-           this.openSidebar()
-         }}>
+          this.openSidebar()
+        }}>
         <span className="icon">
           <i className="fa fa-filter"></i>
         </span>
@@ -1213,7 +1219,7 @@ export default class App extends Scene {
 
     this.state.galleryImages.map(image => {
       images.push({
-        original: image
+        original: image,
       })
     })
 
