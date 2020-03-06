@@ -84,10 +84,10 @@ export default class App extends Scene {
   initPosition() {
     this.defaultMapPosition = {
       center: {
-        lat: 40.354388,
-        lng: -95.998237,
+        lat:38.053920597121056,
+        lng: -84.53594932993265,
       },
-      zoom  : 12,
+      zoom  : 8,
     }
 
     try {
