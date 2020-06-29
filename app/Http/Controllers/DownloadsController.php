@@ -50,7 +50,7 @@ class DownloadsController extends Controller
      * @param int $id
      * @param \Illuminate\Http\Request $request
      * @param string $extension
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function filter($id, Request $request, $extension = 'tsv')
@@ -72,8 +72,6 @@ class DownloadsController extends Controller
 
         $header = $this->prepHeader();
 
-        Storage::put($path, $this->line($header, $extension));
-
         $filtered = Filter::apply($filter->rules);
         $filtered = $filtered->with(['latinName', 'user']);
 
@@ -84,19 +82,20 @@ class DownloadsController extends Controller
         }
 
         $count = $this->count($filtered);
-        $filtered->chunk(800, function ($observations) use ($user, $path, $extension) {
-            foreach ($observations as $observation) {
+
+        $this->download($path, $name, $count);
+
+        return response()->streamDownload(function () use ($filtered, $user, $extension, $header) {
+            echo $this->line($header, $extension);
+
+            foreach ($filtered->cursor() as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
 
                 if ($line !== false) {
-                    Storage::append($path, trim($this->line($line, $extension)));
+                    echo $this->line($line, $extension);
                 }
             }
-        });
-
-        $this->createAutoRemovableFile($path, $user->id);
-
-        return $this->download($path, $name, $count);
+        }, $name);
     }
 
     /**
@@ -105,13 +104,10 @@ class DownloadsController extends Controller
      * @param \App\Collection $collection
      * @param \Illuminate\Http\Request $request
      * @param string $extension
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function collection(
-        Collection $collection,
-        Request $request,
-        $extension = 'tsv'
-    ) {
+    public function collection(Collection $collection, Request $request, $extension = 'tsv')
+    {
         /** @var \App\User $user */
         $user = $request->user();
         if (! $collection->users->contains('id', $user->id)) {
@@ -129,25 +125,25 @@ class DownloadsController extends Controller
 
         $header = $this->prepHeader();
 
-        Storage::put($path, $this->line($header, $extension));
-
         // Generate Collection
         $filtered = $collection->observations();
         $count = $this->count($filtered);
-        $filtered->with(['latinName', 'user'])
-            ->chunk(800, function ($observations) use ($user, $path, $extension) {
-                foreach ($observations as $observation) {
-                    $line = $this->prepObservationLine($observation, $user);
+        $this->download($path, $name, $count);
 
-                    if ($line !== false) {
-                        Storage::append($path, trim($this->line($line, $extension)));
-                    }
+        $filtered->with(['latinName', 'user']);
+
+        return response()->streamDownload(function () use ($filtered, $user, $path, $extension, $header) {
+            echo $this->line($header, $extension);
+
+            foreach ($filtered->cursor() as $observation) {
+                $line = $this->prepObservationLine($observation, $user);
+
+                if ($line !== false) {
+                    echo $this->line($line, $extension);
                 }
-            });
-
-        $this->createAutoRemovableFile($path, $user->id);
-
-        return $this->download($path, $name, $count);
+            }
+        }, $name);
+        //$this->createAutoRemovableFile($path, $user->id);
     }
 
     /**
@@ -155,7 +151,7 @@ class DownloadsController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param string $extension
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -181,25 +177,22 @@ class DownloadsController extends Controller
         $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
         $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
 
-        $header = $this->prepHeader();
-
-        Storage::put($path, $this->line($header, $extension));
-
         $filtered = $this->getFilteredObservations($request);
         $count = $this->count($filtered);
-        $filtered->chunk(800, function ($observations) use ($user, $path, $extension) {
-            foreach ($observations as $observation) {
+        $this->download($path, $name, $count);
+
+        return response()->streamDownload(function () use ($filtered, $user, $extension) {
+            $header = $this->prepHeader();
+            echo $this->line($header, $extension);
+
+            foreach ($filtered->cursor() as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
 
                 if ($line !== false) {
-                    Storage::append($path, trim($this->line($line, $extension)));
+                    echo $this->line($line, $extension);
                 }
             }
-        });
-
-        $this->createAutoRemovableFile($path, $user->id);
-
-        return $this->download($path, $name, $count);
+        }, $name);
     }
 
     /**
@@ -382,7 +375,6 @@ class DownloadsController extends Controller
             'user_id' => $user->id,
             'observations_count' => $count,
         ]);
-
-        return response()->download(storage_path('app/'.$path), $name);
+        //return response()->download(storage_path('app/'.$path), $name);
     }
 }
