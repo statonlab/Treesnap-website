@@ -90,6 +90,9 @@ class DownloadsController extends Controller
             'confirmations as incorrect_marks' => function ($query) {
                 $query->where('correct', false);
             },
+            'confirmations as correct_marks' => function ($query) {
+                $query->where('correct', true);
+            },
         ]);
 
         $this->download($path, $name, $count);
@@ -147,6 +150,9 @@ class DownloadsController extends Controller
             'confirmations as incorrect_marks' => function ($query) {
                 $query->where('correct', false);
             },
+            'confirmations as correct_marks' => function ($query) {
+                $query->where('correct', true);
+            },
         ]);
 
         return response()->streamDownload(function () use ($filtered, $user, $path, $extension, $header) {
@@ -202,6 +208,9 @@ class DownloadsController extends Controller
             'confirmations as incorrect_marks' => function ($query) {
                 $query->where('correct', false);
             },
+            'confirmations as correct_marks' => function ($query) {
+                $query->where('correct', true);
+            },
         ]);
         $count = $this->count($filtered);
         $this->download($path, $name, $count);
@@ -240,6 +249,7 @@ class DownloadsController extends Controller
             'Address',
             'Collection Date',
             'Flagged as Incorrect Species',
+            'Marked as Correct Species',
         ];
 
         // Add meta labels to header
@@ -290,6 +300,7 @@ class DownloadsController extends Controller
             $observation->address['formatted'],
             $observation->collection_date->toDateString(),
             (($observation->incorrect_marks ?? 0) + ($observation->flags_count ?? 0)).' times',
+            "$observation->correct_marks times",
         ];
 
         return array_merge($line, $this->extractMetaData($observation));
