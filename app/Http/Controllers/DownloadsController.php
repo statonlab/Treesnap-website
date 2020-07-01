@@ -83,6 +83,15 @@ class DownloadsController extends Controller
 
         $count = $this->count($filtered);
 
+        $filtered->withCount([
+            'flags' => function ($query) {
+                $query->where('reason', 'This tree is the wrong species');
+            },
+            'confirmations as incorrect_marks' => function ($query) {
+                $query->where('correct', false);
+            },
+        ]);
+
         $this->download($path, $name, $count);
 
         return response()->streamDownload(function () use ($filtered, $user, $extension, $header) {
@@ -131,6 +140,14 @@ class DownloadsController extends Controller
         $this->download($path, $name, $count);
 
         $filtered->with(['latinName', 'user']);
+        $filtered->withCount([
+            'flags' => function ($query) {
+                $query->where('reason', 'This tree is the wrong species');
+            },
+            'confirmations as incorrect_marks' => function ($query) {
+                $query->where('correct', false);
+            },
+        ]);
 
         return response()->streamDownload(function () use ($filtered, $user, $path, $extension, $header) {
             echo $this->line($header, $extension);
@@ -153,7 +170,7 @@ class DownloadsController extends Controller
      * @param string $extension
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Illuminate\Auth\Access\AuthorizationException|\Illuminate\Validation\ValidationException
      */
     public function myObservations(Request $request, $extension = 'tsv')
     {
@@ -178,6 +195,14 @@ class DownloadsController extends Controller
         $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
 
         $filtered = $this->getFilteredObservations($request);
+        $filtered->withCount([
+            'flags' => function ($query) {
+                $query->where('reason', 'This tree is the wrong species');
+            },
+            'confirmations as incorrect_marks' => function ($query) {
+                $query->where('correct', false);
+            },
+        ]);
         $count = $this->count($filtered);
         $this->download($path, $name, $count);
 
@@ -214,6 +239,7 @@ class DownloadsController extends Controller
             'Comments',
             'Address',
             'Collection Date',
+            'Flagged as Incorrect Species',
         ];
 
         // Add meta labels to header
@@ -263,6 +289,7 @@ class DownloadsController extends Controller
             $comment,
             $observation->address['formatted'],
             $observation->collection_date->toDateString(),
+            (($observation->incorrect_marks ?? 0) + ($observation->flags_count ?? 0)).' times',
         ];
 
         return array_merge($line, $this->extractMetaData($observation));
@@ -323,6 +350,7 @@ class DownloadsController extends Controller
      * Extract meta data as a line from observation.
      *
      * @param Observation $observation
+     * @return array
      */
     protected function extractMetaData($observation)
     {
@@ -365,7 +393,7 @@ class DownloadsController extends Controller
      * @param $path
      * @param $name
      * @param $count
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return void
      */
     protected function download($path, $name, $count)
     {
