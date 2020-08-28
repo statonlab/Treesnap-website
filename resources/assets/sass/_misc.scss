@@ -54,12 +54,12 @@
 }
 
 @each $name, $color in $theme-colors {
-  .bg-#{$name} {
+  .bg-#{("" + $name)} {
     background-color: $color;
     color: color-yiq($color);
   }
 
-  .text-#{$name} {
+  .text-#{("" + $name)} {
     color: $color;
   }
 }

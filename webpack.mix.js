@@ -19,7 +19,7 @@ mix.browserSync({
     'resources/assets/sass/**/*.scss',
     'resources/assets/js/**/*.js',
     'app/**/*.php',
-  ]
+  ],
 })
 
 // Webpack code splitting config
@@ -27,14 +27,17 @@ mix.webpackConfig({
   output: {
     publicPath   : '/',
     // chunkFilename: 'js/[name].[chunkhash].js',
-    chunkFilename: `js/[name]${mix.inProduction() ? '.[chunkhash].js' : '.js'}`
-  }
+    chunkFilename: `js/[name]${mix.inProduction() ? '.[chunkhash].js' : '.js'}`,
+  },
 })
 
 // JS and CSS configuration
 mix.react('resources/assets/js/app.jsx', 'public/js')
   .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
   .sass('resources/assets/sass/app.scss', 'public/css')
+  .options({
+    processCssUrls: false,
+  })
   .extract(['react', 'lodash', 'axios', 'moment'])
 
 if (mix.inProduction()) {

@@ -1,13 +1,15 @@
 {
     "private": true,
     "scripts": {
-        "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch-poll": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --watch-poll --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "production": "rm -f public/js/*.js && cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@babel/preset-react": "^7.10.4",
         "axios": "^0.19.0",
         "babel-plugin-syntax-dynamic-import": "^6.18.0",
         "babel-preset-react": "^6.24.0",
@@ -18,7 +20,10 @@
         "cross-env": "^3.2.3",
         "jquery": "^3.3.1",
         "laravel-mix": "^2.1.14",
-        "lodash": "^4.17.13"
+        "lodash": "^4.17.13",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^0.5.0",
+        "sass-loader": "^7.3.1"
     },
     "dependencies": {
         "amdefine": "^1.0.1",
@@ -42,6 +47,7 @@
         "merge-descriptors": "^1.0.1",
         "methods": "^1.1.2",
         "moment": "^2.24.0",
+        "moment-locales-webpack-plugin": "^1.2.0",
         "path-to-regexp": "^1.7.0",
         "prop-types": "^15.7.2",
         "proxy-addr": "^1.1.5",

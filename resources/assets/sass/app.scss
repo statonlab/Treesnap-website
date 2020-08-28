@@ -8,7 +8,7 @@
 @import "flex-mixins";
 
 // Bulma
-@import "node_modules/bulma/bulma";
+@import "~bulma/bulma";
 
 // Functions
 @import "functions";
@@ -42,5 +42,5 @@
 @import "misc";
 
 // Plugins
-@import "node_modules/react-image-gallery/styles/scss/image-gallery.scss";
+@import "~react-image-gallery/styles/scss/image-gallery.scss";
 

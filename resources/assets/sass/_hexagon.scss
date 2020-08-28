@@ -44,7 +44,7 @@
 }
 
 @each $name, $color in $theme-colors {
-  .hexagon.is-#{$name} {
+  .hexagon.is-#{("" + $name)} {
     background-color: $color;
     color: color-yiq($color);
 
