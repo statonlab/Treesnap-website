@@ -275,6 +275,57 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
+              <a href="https://www.nature.org/en-us">
+                <img src="/images/tnc-logo.jpg" alt="The Nature Conservancy" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">The Nature Conservancy</p>
+              <p className="feature-text">
+                Our mission is to conserve the lands and waters on which all live depends
+              </p>
+              <a className={'button is-info'} href="https://www.nature.org/en-us">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://www.nmsu.edu">
+                <img src="/images/nmsu-logo.jpg" alt="New Mexico State University" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">New Mexico State University</p>
+              <p className="feature-text">
+                The John T. Harrington Forestry Research Center with New Mexico State University is the only research program in the southwestern US that focuses on forest nursery technologies, tree improvement, and eco-physiology of young forest trees to facilitate ecological restoration and/or commercial reforestation. These research interests are critical for establishing future forests in the region.
+              </p>
+              <a className={'button is-info'} href="https://www.nmsu.edu">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://www.nmhu.edu">
+                <img src="/images/nmhu-logo.jpg" alt="New Mexico Highlands University" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">New Mexico Highlands University</p>
+              <p className="feature-text">
+                The mission of the New Mexico Highlands University Department of Forestry is to engage in teaching, research, and service in forestry to promote the sustainable management of forest resources. The Forestry teaching program seeks to enhance the competency and excellence of the forestry profession. The undergraduate Forestry degree program is designed to educate well-rounded, technologically proficient, and ecologically aware forest managers, providing them with a background sufficient to enable them to support the continued health, integrity, and use of forests for the benefit of society. Being part of a Hispanic Serving Institution (HSI), the Forestry program seeks to address the needs of underrepresented students in the forestry profession.
+              </p>
+              <a className={'button is-info'} href="https://www.nmhu.edu">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
               <img src="/images/flat-icons/teamwork-3.png"
                    alt="Man Icon"
                    className="feature-icon"/>

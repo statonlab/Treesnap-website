@@ -67,6 +67,8 @@ class Filter extends Model
         'Tanoak' => 'tanOak',
         'Pacific Madrone' => 'pacificMadrone',
         'Oregon Ash' => 'oregonAsh',
+        'Butternut' => 'butternut',
+        'Pinyon Pine' => 'pinyonPine',
         'Other' => 'other',
     ];
 

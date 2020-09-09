@@ -130,3 +130,33 @@ Healthy mature tanoaks identified in this program will be assessed for acorn col
 ### Partners
 * [Oregon State University](https://oregonstate.edu/)
 * [Oregon Department of Forestry](https://www.oregon.gov/ODF)
+
+## Butternut
+
+Butternut belongs to the same genus as black walnut and has a compound leaf with 9-17 leaflets per leaf. Bark of a mature tree is platy and ash-gray with dark gray fissures between the platy ridges. On small twigs, lenticels are round (hybrids are elongated); leaf scar is not notched (hybrids may have a notch on the ‘forehead’ of the ‘monkey face’); leaves are glossy (hybrids tend to be hairy); nuts have sharp ridges (hybrids tend to be smoother and have a prominent suture along its center). See Farlee et al 2010 for tips on identifying butternuts, walnuts, and hybrids.
+
+Butternut is disappearing from a pathogen known as Ophiognomonia clavigignenti-juglandacearum (Oc-j). We are interested in the location of survivor trees for future seed collection and grafting. 
+
+### Read More
+
+[Butternut Canker (Forest Service)](https://www.fs.fed.us/research/invasive-species/plant-pathogens/butternut-canker-disease.php)
+
+[Butternut Canker (Invasive Species)](https://www.invasivespeciesinfo.gov/terrestrial/pathogens-and-diseases/butternut-canker)
+
+[Butternut Canker (Forest Invasives)](https://forestinvasives.ca/Meet-the-Species/Pathogens/Butternut-Canker-Disease)
+
+[Butternut Canker (Natural Resources Canada)](https://www.nrcan.gc.ca/our-natural-resources/forests-forestry/wildland-fires-insects-disturban/top-forest-insects-diseases-cana/butternut-canker/13375)
+
+## Pinyon Pine (Piñon Pine)
+
+Pinyon pine is a short bushy evergreentree with two needles in a sheath or bundle. The needles are a half inch to two inches long. It often grows with juniper in lower elevation mountain foothills environments.
+
+A significant limitation to reforesting the Las Conchas Fire area is the lack of good local seed. It is critical to find and collect tree seeds for the purpose of growing seedlings from them in a forest nursery and then planting them to restore these post-fire landscapes. Pinyon pine cone and seed crops vary by year and by place, with good crops of seeds only available every 3-7 years. This makes it hard to count on collecting seeds in a particular location, so extensive seed scouting is necessary to support collection efforts.
+
+### Read More
+[Botanical and Ecological Characteristics](https://www.fs.fed.us/database/feis/plants/tree/pinedu/all.html#BOTANICAL%20AND%20ECOLOGICAL%20CHARACTERISTICS)
+
+### Partners
+* [The Nature Conservancy](https://www.nature.org/en-us/)
+* [New Mexico State University](https://www.nmsu.edu/)
+* [New Mexico Highlands University](https://www.nmhu.edu/) 
