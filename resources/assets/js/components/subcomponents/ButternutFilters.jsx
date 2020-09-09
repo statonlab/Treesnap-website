@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Utils from '../../helpers/Utils'
 import FiltersBase from './FiltersBase'
+import OregonAshFilters from './OregonAshFilters'
 
 export default class ButternutFilters extends FiltersBase {
   constructor(props) {
@@ -24,6 +25,35 @@ export default class ButternutFilters extends FiltersBase {
   render() {
     return (
       <div className="columns is-multiline">
+
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Tree Diameter ({Utils.unit('inches')})</label>
+            <div className="field is-horizontal">
+              <div className="field-body">
+                <div className="field">
+                  <div className="control">
+                    <input type="number"
+                           className="input"
+                           placeholder="Min."
+                           value={this.state.diameterNumericMin}
+                           onChange={({target}) => this._update('diameterNumericMin', target.value)}/>
+                  </div>
+                </div>
+                <div className="field">
+                  <div className="control">
+                    <input type="number"
+                           className="input"
+                           placeholder="Max."
+                           value={this.state.diameterNumericMax}
+                           onChange={({target}) => this._update('diameterNumericMax', target.value)}/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="column is-6">
           <div className="field">
             <label className="label">Tree Height ({Utils.unit('feet')})</label>
@@ -56,6 +86,11 @@ export default class ButternutFilters extends FiltersBase {
   }
 }
 
-butternut.propTypes = {
-  onChange: PropTypes.func.isRequired
+ButternutFilters.propTypes = {
+  onChange      : PropTypes.func.isRequired,
+  defaultFilters: PropTypes.object
+}
+
+ButternutFilters.defaultProps = {
+  defaultFilters: {}
 }
