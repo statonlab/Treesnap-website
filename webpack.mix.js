@@ -35,6 +35,9 @@ mix.webpackConfig({
 mix.react('resources/assets/js/app.jsx', 'public/js')
   .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
   .sass('resources/assets/sass/app.scss', 'public/css')
+  .options({
+    processCssUrls: false
+  })
   .extract(['react', 'lodash', 'axios', 'moment'])
 
 if (mix.inProduction()) {
