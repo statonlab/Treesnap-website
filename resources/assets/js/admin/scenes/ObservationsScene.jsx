@@ -656,7 +656,7 @@ export default class ObservationsScene extends Scene {
 
   advancedFilter(filter_id) {
     this.setState({
-      advanced_filter: filter_id,
+      selectedFilter: filter_id,
       page           : 1
     }, this.loadObservations)
   }
@@ -703,12 +703,13 @@ export default class ObservationsScene extends Scene {
 
             let data = response.data
             if (data.filter) {
-              let filters = this.state.filters
-              filters.push(data.filter)
               this.setState({
-                filters
+                advancedFilters: this.state.advancedFilters.concat([{
+                  rules: data.filter.rules,
+                  label: data.filter.name,
+                  value: data.filter.id
+                }])
               })
-
               this.advancedFilter(data.filter.id)
               return
             }
