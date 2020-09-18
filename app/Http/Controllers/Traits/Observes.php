@@ -23,6 +23,8 @@ trait Observes
         'Tanoak',
         'Pacific Madrone',
         'Oregon Ash',
+        'Butternut',
+        'Pinyon Pine',
         'Other',
     ];
 

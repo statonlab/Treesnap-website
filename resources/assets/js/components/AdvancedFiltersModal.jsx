@@ -11,6 +11,8 @@ import EasternLarchFilters from './subcomponents/EasternLarchFilters'
 import TanOakFilters from './subcomponents/TanOakFilters'
 import PacificMadroneFilters from './subcomponents/PacificMadroneFilters'
 import OregonAshFilters from './subcomponents/OregonAshFilters'
+import ButternutFilters from './subcomponents/ButternutFilters'
+import PinyonPineFilters from './subcomponents/PinyonPineFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -36,6 +38,8 @@ export default class AdvancedFiltersModal extends Component {
       tanOak            : {},
       pacificMadrone    : {},
       oregonAsh         : {},
+      butternut         : {},
+      pinyonPine        : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -107,6 +111,8 @@ export default class AdvancedFiltersModal extends Component {
       tanOak          : this.state.tanOak,
       pacificMadrone  : this.state.pacificMadrone,
       oregonAsh       : this.state.oregonAsh,
+      butternut       : this.state.butternut,
+      pinyonPine      : this.state.pinyonPine,
       other           : this.state.other,
       map             : this.props.map,
       group           : selectedGroup === -1 ? null : selectedGroup,
@@ -174,6 +180,8 @@ export default class AdvancedFiltersModal extends Component {
       tanOak          : filters.tanOak,
       pacificMadrone  : filters.pacificMadrone,
       oregonAsh       : filters.oregonAsh,
+      butternut       : filters.butternut,
+      pinyonPine      : filters.pinyonPine,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -319,6 +327,32 @@ export default class AdvancedFiltersModal extends Component {
           <OregonAshFilters
             defaultFilters={this.state.oregonAsh}
             onChange={(oregonAsh) => this.count({oregonAsh})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderButternutFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Butternut Filters (Optional)</h3>
+        <div className="bordered">
+          <ButternutFilters
+            defaultFilters={this.state.butternut}
+            onChange={(butternut) => this.count({butternut})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderPinyonPineFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Pinyon Pine Filters (Optional)</h3>
+        <div className="bordered">
+          <PinyonPineFilters
+            defaultFilters={this.state.pinyonPine}
+            onChange={(pinyonPine) => this.count({pinyonPine})}/>
         </div>
       </div>
     )
