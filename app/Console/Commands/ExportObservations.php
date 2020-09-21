@@ -103,6 +103,8 @@ class ExportObservations extends Command
         $archive->zip('images.zip');
 
         $this->info('Done!');
+
+        return 0;
     }
 
     /**

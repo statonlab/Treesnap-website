@@ -54,7 +54,8 @@ class SendFilterNotifications extends Command
 
                 // make sure we didn't recently notify the user
                 // of new observations (once every 2 days)
-                if ($filter->notifications_sent_at->addDays(2)->greaterThan(Carbon::now())) {
+                if ($filter->notifications_sent_at->addDays(2)
+                    ->greaterThan(Carbon::now())) {
                     $date = $filter->notifications_sent_at->diffForHumans();
                     $this->say("Ignoring '{$filter->name}' because a notification was sent {$date}");
                     continue;
@@ -63,6 +64,8 @@ class SendFilterNotifications extends Command
                 $this->send($filter);
             }
         });
+
+        return 0;
     }
 
     /**

@@ -51,5 +51,7 @@ class DeleteOldDownloadableFiles extends Command
                 $file->delete();
             }
         }
+
+        return 0;
     }
 }

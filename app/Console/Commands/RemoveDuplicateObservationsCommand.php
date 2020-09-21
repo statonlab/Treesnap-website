@@ -83,6 +83,8 @@ class RemoveDuplicateObservationsCommand extends Command
         }
 
         $this->info("Deleted $deleted duplicate observation(s)");
+
+        return 0;
     }
 
     /**

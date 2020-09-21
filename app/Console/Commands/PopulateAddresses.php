@@ -49,6 +49,8 @@ class PopulateAddresses extends Command
             $this->line($observation->id . ' ' . $observation->observation_category);
             $this->getAddress($observation);
         }
+
+        return 0;
     }
 
     /**
