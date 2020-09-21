@@ -48,5 +48,7 @@ class CreateObservationThumbnails extends Command
         });
 
         $this->info('Thumbnails created successfully');
+
+        return 0;
     }
 }
