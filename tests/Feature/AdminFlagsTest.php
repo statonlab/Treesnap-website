@@ -6,6 +6,7 @@ use App\Flag;
 use App\Notifications\FlagCreatedNotification;
 use App\Observation;
 use App\Role;
+use App\SubscriptionTopic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -55,30 +56,6 @@ class AdminFlagsTest extends TestCase
                 ],
             ],
         ]);
-    }
-
-    /** @test */
-    public function testNotificationIsSentWhenFlagIsCreated()
-    {
-        Notification::fake();
-
-        $user = factory(User::class)->create();
-        $observation = factory(Observation::class)->create();
-
-        $this->actingAs($user);
-
-        $response = $this->post('/web/flag', [
-            'reason' => $this->faker->sentence,
-            'comments' => $this->faker->sentence,
-            'observation_id' => $observation->id,
-        ]);
-        $response->assertSuccessful();
-
-        $users = User::whereHas('subscriptionTopics', function ($query) {
-            $query->where('key', 'flags');
-        })->get();
-
-        Notification::assertSentTo($users, FlagCreatedNotification::class);
     }
 
     /** @test */
