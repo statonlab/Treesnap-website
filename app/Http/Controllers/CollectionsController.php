@@ -461,11 +461,13 @@ class CollectionsController extends Controller
      * @param integer $id Collection id
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function delete($id, Request $request)
     {
-        $id = intval($id);
         $collection = Collection::findOrFail($id);
+
+        info($request->user()->id.' === '.$collection->user_id);
 
         if ($request->user()->id !== $collection->user_id) {
             return $this->unauthorized();
