@@ -144,6 +144,21 @@ class LoginController extends Controller
     {
         $role = Role::where('name', 'User')->first();
 
+        if (! empty($response->getEmail())) {
+            $user = User::where('email', $response->getEmail())->first();
+            if ($user) {
+                if ($user->provider !== 'apple') {
+                    $provider = $user->provider === 'treesnap' ? 'your email and password.' : $user->provider.'.';
+
+                    return redirect()->to('/login')->withErrors([
+                        'provider' => [
+                            'Invalid provider. Please sign in using '.$provider,
+                        ],
+                    ]);
+                }
+            }
+        }
+
         $user = User::firstOrCreate([
             'provider' => 'apple',
             'provider_id' => $response->getId(),
