@@ -71,6 +71,12 @@
                 </span>
                 <span>Google</span>
             </a>
+
+            <a href="/login/apple"
+               style="display: block; font-family='SF Pro Text'; text-align: center; width: 100%; background-color: #000; border: none; padding: .5em 1em; border-radius: 2px; color: #fff;"
+               id="sign-in-with-apple">
+                 Sign in with Apple
+            </a>
         </div>
     @endif
 </div>

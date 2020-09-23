@@ -3,14 +3,11 @@
 namespace Tests\Feature;
 
 use App\Flag;
-use App\Notifications\FlagCreatedNotification;
 use App\Observation;
 use App\Role;
-use App\SubscriptionTopic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class AdminFlagsTest extends TestCase

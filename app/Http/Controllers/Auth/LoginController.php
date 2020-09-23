@@ -52,7 +52,7 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return void
      */
     protected function validateLogin(Request $request)
@@ -82,7 +82,7 @@ class LoginController extends Controller
         }
 
         $validator = Validator::make(['provider' => $provider], [
-            'provider' => 'required|in:google',
+            'provider' => 'required|in:google,apple',
         ]);
 
         if ($validator->fails()) {
@@ -92,6 +92,11 @@ class LoginController extends Controller
         $scopes = [];
         if ($provider === 'google') {
             $scopes = ['email', 'profile'];
+        }
+
+        if ($provider === 'apple') {
+            $provider = 'sign-in-with-apple';
+            $scopes = ['email', 'name'];
         }
 
         return Socialite::driver($provider)->setScopes($scopes)->redirect();
@@ -106,17 +111,20 @@ class LoginController extends Controller
     public function handleSocialProviderCallback($provider)
     {
         $validator = \Validator::make(['provider' => $provider], [
-            'provider' => 'required|in:google',
+            'provider' => 'required|in:google,apple',
         ]);
 
         if ($validator->fails()) {
             return abort(404);
         }
 
-        $response = Socialite::driver($provider)->user();
-
         if ($provider === 'google') {
+            $response = Socialite::driver($provider)->user();
+
             return $this->handleGoogleResponse($response);
+        } elseif ($provider === 'apple') {
+            // get abstract user object, not persisted
+            $user = Socialite::driver("sign-in-with-apple")->user();
         }
 
         return abort(404);
@@ -128,9 +136,42 @@ class LoginController extends Controller
      * @param object $response
      * @return \Illuminate\Http\RedirectResponse
      */
+    protected function handleAppleResponse($response)
+    {
+        $role = Role::where('name', 'User')->first();
+
+        $user = User::firstOrCreate([
+            'provider' => 'apple',
+            'provider_id' => $response->getId(),
+        ], [
+            'email' => $response->getEmail(),
+            'name' => $response->getName(),
+            'api_token' => $this->generateAPIToken(),
+            'birth_year' => 0,
+            'is_private' => false,
+            'is_anonymous' => false,
+            'role_id' => $role->id,
+            'avatar' => isset($response->avatar) ? $response->avatar : null,
+            'units' => 'US',
+        ]);
+
+        auth()->login($user, true);
+
+        $this->setRedirectPath($user);
+
+        return $this->redirect($this->redirectTo);
+    }
+
+    /**
+     * Handle the response obtained from google.
+     *
+     * @param object $response
+     * @return \Illuminate\Http\RedirectResponse
+     */
     protected function handleGoogleResponse($response)
     {
-        $birth_year = isset($response->user['birthday']) ? intval(explode('-', $response->user['birthday'])[0]) : 0;
+        $birth_year = isset($response->user['birthday']) ? intval(explode('-',
+            $response->user['birthday'])[0]) : 0;
 
         $user = $this->findOrCreateUser([
             'email' => $response->getEmail(),
