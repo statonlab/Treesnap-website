@@ -49,6 +49,7 @@ class Filter extends Model
         'heightFirstBranch',
         'diameterNumeric',
         'heightNumeric',
+        'breastNumeric',
     ];
 
     /**
