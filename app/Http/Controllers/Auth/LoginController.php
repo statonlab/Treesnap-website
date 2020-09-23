@@ -106,9 +106,9 @@ class LoginController extends Controller
      * Handles the response from the authentication service.
      *
      * @param string $provider
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function handleSocialProviderCallback($provider)
+    public function handleSocialProviderCallback(string $provider)
     {
         $validator = \Validator::make(['provider' => $provider], [
             'provider' => 'required|in:google,apple',
@@ -125,6 +125,8 @@ class LoginController extends Controller
         } elseif ($provider === 'apple') {
             // get abstract user object, not persisted
             $user = Socialite::driver("sign-in-with-apple")->user();
+
+            return $this->handleAppleResponse($user);
         }
 
         return abort(404);
