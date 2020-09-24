@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\CreatesUsers;
 use App\Http\Controllers\Traits\HandlesMobileSchemes;
+use App\Role;
 use App\Rules\Provider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use Illuminate\Http\Request;
@@ -52,7 +54,7 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return void
      */
     protected function validateLogin(Request $request)
@@ -82,7 +84,7 @@ class LoginController extends Controller
         }
 
         $validator = Validator::make(['provider' => $provider], [
-            'provider' => 'required|in:google',
+            'provider' => 'required|in:google,apple',
         ]);
 
         if ($validator->fails()) {
@@ -94,6 +96,11 @@ class LoginController extends Controller
             $scopes = ['email', 'profile'];
         }
 
+        if ($provider === 'apple') {
+            $provider = 'sign-in-with-apple';
+            $scopes = ['email', 'name'];
+        }
+
         return Socialite::driver($provider)->setScopes($scopes)->redirect();
     }
 
@@ -101,22 +108,27 @@ class LoginController extends Controller
      * Handles the response from the authentication service.
      *
      * @param string $provider
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function handleSocialProviderCallback($provider)
+    public function handleSocialProviderCallback(string $provider)
     {
         $validator = \Validator::make(['provider' => $provider], [
-            'provider' => 'required|in:google',
+            'provider' => 'required|in:google,apple',
         ]);
 
         if ($validator->fails()) {
             return abort(404);
         }
 
-        $response = Socialite::driver($provider)->user();
-
         if ($provider === 'google') {
+            $response = Socialite::driver($provider)->user();
+
             return $this->handleGoogleResponse($response);
+        } elseif ($provider === 'apple') {
+            // get abstract user object, not persisted
+            $user = Socialite::driver("sign-in-with-apple")->user();
+
+            return $this->handleAppleResponse($user);
         }
 
         return abort(404);
@@ -128,9 +140,57 @@ class LoginController extends Controller
      * @param object $response
      * @return \Illuminate\Http\RedirectResponse
      */
+    protected function handleAppleResponse($response)
+    {
+        $role = Role::where('name', 'User')->first();
+
+        if (! empty($response->getEmail())) {
+            $user = User::where('email', $response->getEmail())->first();
+            if ($user) {
+                if ($user->provider !== 'apple') {
+                    $provider = $user->provider === 'treesnap' ? 'your email and password.' : $user->provider.'.';
+
+                    return redirect()->to('/login')->withErrors([
+                        'provider' => [
+                            'Invalid provider. Please sign in using '.$provider,
+                        ],
+                    ]);
+                }
+            }
+        }
+
+        $user = User::firstOrCreate([
+            'provider' => 'apple',
+            'provider_id' => $response->getId(),
+        ], [
+            'email' => $response->getEmail(),
+            'name' => $response->getName(),
+            'api_token' => $this->generateAPIToken(),
+            'birth_year' => 0,
+            'is_private' => false,
+            'is_anonymous' => false,
+            'role_id' => $role->id,
+            'avatar' => isset($response->avatar) ? $response->avatar : null,
+            'units' => 'US',
+        ]);
+
+        auth()->login($user, true);
+
+        $this->setRedirectPath($user);
+
+        return $this->redirect($this->redirectTo);
+    }
+
+    /**
+     * Handle the response obtained from google.
+     *
+     * @param object $response
+     * @return \Illuminate\Http\RedirectResponse
+     */
     protected function handleGoogleResponse($response)
     {
-        $birth_year = isset($response->user['birthday']) ? intval(explode('-', $response->user['birthday'])[0]) : 0;
+        $birth_year = isset($response->user['birthday']) ? intval(explode('-',
+            $response->user['birthday'])[0]) : 0;
 
         $user = $this->findOrCreateUser([
             'email' => $response->getEmail(),

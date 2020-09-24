@@ -48,6 +48,7 @@ class ImageFixOrientation extends Command
         });
 
         $this->info("Corrected $corrected images!");
+        return 0;
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
-
+namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
-class EventsTableSeeder extends Seeder
+class ThousandsObservationsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Event::class, 2)->create();
+        factory(App\Observation::class, 3000)->create();
     }
 }

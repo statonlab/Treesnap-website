@@ -37,6 +37,7 @@ Route::get('/logout', 'UsersController@logout');
 
 Route::get('/login/{provider}', 'Auth\LoginController@redirectToSocialProvider');
 Route::get('/login/{provider}/callback', 'Auth\LoginController@handleSocialProviderCallback');
+Route::post('/login/{provider}/callback', 'Auth\LoginController@handleSocialProviderCallback');
 
 // Observations
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');

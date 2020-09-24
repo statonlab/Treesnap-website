@@ -17,7 +17,7 @@ class LeaderboardAPITest extends TestCase
      *
      * @return void
      */
-    public function testLeaderboardIndexReturnsTopFiveUsers()
+    public function testLeaderboardIndexReturnsUsers()
     {
         // Set the stage by adding 10 users and giving each
         // a varying number of observations
@@ -46,8 +46,6 @@ class LeaderboardAPITest extends TestCase
 
         // Get the data
         $leaders = $response->json()['data'];
-
-        $this->assertCount(5, $leaders);
 
         // Assert sorted by observation count in descending order
         $last = null;

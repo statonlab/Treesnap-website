@@ -83,6 +83,8 @@ class CollectionPermissionsTest extends TestCase
 
         $collection = factory(Collection::class)->create();
 
+        info('Deleting '.$collection->user_id.' by '.$user->id);
+
         $collection->users()->attach($user->id);
 
         $response = $this->delete("/web/collection/{$collection->id}");
