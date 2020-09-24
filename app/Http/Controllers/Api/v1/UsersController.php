@@ -341,4 +341,8 @@ class UsersController extends Controller
 
         return false;
     }
+
+    public function apple(Request $request) {
+        info(json_encode($request->all()));
+    }
 }
