@@ -45,4 +45,6 @@ Route::group([
 ], function () {
     Route::post('/users', 'UsersController@create');
     Route::post('/user/login', 'UsersController@login');
+
+    Route::post('/apple', 'UsersController@apple');
 });
