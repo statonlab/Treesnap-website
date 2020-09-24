@@ -344,5 +344,9 @@ class UsersController extends Controller
 
     public function apple(Request $request) {
         info(json_encode($request->all()));
+
+        $response = $request->input('response');
+        $token = Socialite::driver('sign-in-with-apple')->getAccessToken($response->authorizationCode);
+        info('TOKEN: -- '.serialize($token));
     }
 }
