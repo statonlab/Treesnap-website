@@ -57,6 +57,15 @@ class MetaLabels
             'standDiversity' => 'Stand Diversity',
             'standTagging' => 'Stand Tagging',
             'plantedWild' => 'Planted vs. Wild',
+            'bearingFruit' => 'Bearing Fruit',
+            'crownDieback' => 'Crown Dieback',
+            'hybridAttributes' => 'Hybrid Attributes',
+            'hybridTraits' => 'Hybrid Traits',
+            'canopyCones' => 'Canopy Cones',
+            'conesOpenClosed' => 'Tree Cones',
+            'neighborCones' => 'Neighbor Cones',
+            'neighborHealth' => 'Neighbor Health',
+            'breastNumeric' => 'Tree Diameter',
         ];
     }
 
