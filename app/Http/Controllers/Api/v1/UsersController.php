@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
+use Laravel\Socialite\Facades\Socialite;
 use Validator;
 
 class UsersController extends Controller
@@ -343,10 +344,12 @@ class UsersController extends Controller
     }
 
     public function apple(Request $request) {
+        //dump($request->all());
         info(json_encode($request->all()));
 
-        $response = $request->input('response');
-        $token = Socialite::driver('sign-in-with-apple')->getAccessToken($response->authorizationCode);
-        info('TOKEN: -- '.serialize($token));
+        //$response = $request->input('response');
+        //$token = Socialite::driver('sign-in-with-apple')->getAccessToken($response['authorizationCode']);
+        //info('TOKEN: -- '.serialize($token));
+        //dump($token);
     }
 }
