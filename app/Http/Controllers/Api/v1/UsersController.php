@@ -381,9 +381,7 @@ class UsersController extends Controller
             return $this->error('Invalid login');
         }
 
-        info(json_encode($data));
-
-        if ($provider_id === $data['user']) {
+        if ($provider_id === $data['sub']) {
             // Find or create the user and sign them in
             $user = User::where([
                 'provider' => 'apple',
