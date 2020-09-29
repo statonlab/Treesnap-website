@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api\v1;
 use App\Notifications\WelcomeNotification;
 use App\Role;
 use App\User;
+use Firebase\JWT\JWK;
+use Firebase\JWT\JWT;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 
@@ -161,7 +164,10 @@ class UsersController extends Controller
             return $this->validationError($validator->errors());
         }
 
-        if (! auth('web')->once(['email' => $user->email, 'password' => $request->old_password])) {
+        if (! auth('web')->once([
+            'email' => $user->email,
+            'password' => $request->old_password,
+        ])) {
             return $this->validationError(['old_password' => ['Password does not match our records']]);
         }
 
@@ -199,7 +205,10 @@ class UsersController extends Controller
         }
 
         // Authenticate the user using email and password
-        if (! auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (! auth()->attempt([
+            'email' => $request->email,
+            'password' => $request->password,
+        ])) {
             return $this->error('Invalid Credentials', 200);
         }
 
@@ -310,7 +319,7 @@ class UsersController extends Controller
     {
         // Make sure the random string is 100% unique to our database
         $str = str_random(60);
-        while (! User::where('api_token', $str)->get()->isEmpty()) {
+        while (User::where('api_token', $str)->exists()) {
             $str = str_random(60);
         }
 
@@ -343,13 +352,68 @@ class UsersController extends Controller
         return false;
     }
 
-    public function apple(Request $request) {
-        //dump($request->all());
-        info(json_encode($request->all()));
+    public function apple(Request $request)
+    {
+        $this->validate($request, [
+            'response' => 'required|array',
+            'response.identityToken' => 'required',
+        ]);
 
-        //$response = $request->input('response');
-        //$token = Socialite::driver('sign-in-with-apple')->getAccessToken($response['authorizationCode']);
-        //info('TOKEN: -- '.serialize($token));
-        //dump($token);
+        $response = Http::get('https://appleid.apple.com/auth/keys');
+        $auth = $request->input('response');
+
+        $keys = JWK::parseKeySet($response->json());
+        $token = $auth['identityToken'];
+        $provider_id = $auth['user'];
+        $data = ['user' => null];
+        $success = false;
+        foreach ($keys as $key) {
+            try {
+                $data = JWT::decode($token, $key, ['RS256']);
+                $success = true;
+                break;
+            } catch (\Exception $exception) {
+
+            }
+        }
+
+        if (! $success) {
+            return $this->error('Invalid login');
+        }
+
+        if ($provider_id === $data['user']) {
+            // Find or create the user and sign them in
+            $user = User::where([
+                'provider' => 'apple',
+                'provider_id' => $provider_id,
+            ])->first();
+
+            if ($user) {
+                $user->fill(['api_token' => $this->generateAPIToken()])->save();
+            } else {
+                if (! $auth['email']) {
+                    return $this->error('User not found');
+                }
+
+                $role = Role::where('name', 'User')->first();
+                $user = User::create([
+                    'api_token' => $this->generateAPIToken(),
+                    'email' => $auth['email'],
+                    'provider_id' => $provider_id,
+                    'provider' => 'apple',
+                    'name' => $auth['fullName']['givenName'].' '.$auth['fullName']['familyName'],
+                    'birth_year' => 0,
+                    'is_private' => false,
+                    'is_anonymous' => false,
+                    'role_id' => $role->id,
+                    'avatar' => null,
+                    'units' => 'US',
+                ]);
+            }
+
+            return $this->success($user);
+        }
+
+        return $this->error('Unable to verify user');
     }
 }
