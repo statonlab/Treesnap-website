@@ -15,6 +15,7 @@
         "doctrine/dbal": "^2.9",
         "facade/ignition": "^2.0",
         "fideloper/proxy": "~4.0",
+        "firebase/php-jwt": "^5.2",
         "fruitcake/laravel-cors": "^2.0",
         "genealabs/laravel-sign-in-with-apple": "^0.5.0",
         "google/recaptcha": "~1.2",
