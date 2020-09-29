@@ -369,7 +369,7 @@ class UsersController extends Controller
         $success = false;
         foreach ($keys as $key) {
             try {
-                $data = JWT::decode($token, $key, ['RS256']);
+                $data = (array)JWT::decode($token, $key, ['RS256']);
                 $success = true;
                 break;
             } catch (\Exception $exception) {
