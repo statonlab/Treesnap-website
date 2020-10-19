@@ -79,7 +79,7 @@ export default class ButternutFilters extends FiltersBase {
             <label className="label">Hybrid Attributes</label>
             <ButtonList
               value={this.state.hybridAttributes}
-              list={['Has apparent hybrid attributes', 'No hybrid attributes']}
+              list={['Has apparent hybrid attributes', 'No hybrid attributes', 'Not sure']}
               onChange={hybridAttributes => this._update('hybridAttributes', hybridAttributes)}/>
           </div>
         </div>
