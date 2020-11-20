@@ -517,7 +517,7 @@ export default class ObservationCard extends Component {
                   </small>
                   : null}
 
-                <small>{moment(observation.date.date).format('MMM, D YYYY H:m A Z')}</small>
+                <small>{moment(observation.date).format('MMM, D YYYY H:m A Z')}</small>
                 {address !== '' ?
                   <div className="text-ellipsis" title={address}>
                     <small><b>Near</b> {addressLine1}</small>

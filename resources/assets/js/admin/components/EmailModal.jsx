@@ -309,7 +309,7 @@ export default class EmailModal extends Component {
               : null}
             <tr>
               <th>Date Collected</th>
-              <td>{moment(observation.date.date).format('LL')}</td>
+              <td>{moment(observation.date).format('LL')}</td>
             </tr>
             <tr>
               <th colSpan={2}>

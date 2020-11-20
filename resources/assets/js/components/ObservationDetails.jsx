@@ -113,7 +113,7 @@ export default class ObservationDetails extends Component {
     if (typeof observation.location !== 'undefined') {
       observation.latitude        = observation.location.latitude
       observation.longitude       = observation.location.longitude
-      observation.collection_date = moment(observation.date.date).format('LLL')
+      observation.collection_date = moment(observation.date).format('LLL')
     }
 
     this.observation = observation
