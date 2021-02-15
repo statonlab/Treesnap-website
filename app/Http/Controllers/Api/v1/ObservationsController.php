@@ -114,6 +114,8 @@ class ObservationsController extends Controller
 
         $validator = Validator::make($request->all(), $this->validationRules());
         if ($validator->fails()) {
+            info($validator->errors()->toJson());
+            
             return $this->error($validator->errors(), 200);
         }
 
