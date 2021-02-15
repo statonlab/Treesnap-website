@@ -111,11 +111,12 @@ class ObservationsController extends Controller
     public function create(Request $request)
     {
         $user = $request->user();
+        info('User is attempting to upload observation: '.$user->name."<$user->email>");
 
         $validator = Validator::make($request->all(), $this->validationRules());
         if ($validator->fails()) {
             info($validator->errors()->toJson());
-            
+
             return $this->error($validator->errors(), 200);
         }
 
