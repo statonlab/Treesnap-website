@@ -134,6 +134,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/web/group/{group}/sharing', 'GroupsController@changeSharing');
     Route::patch('/web/group/{group}/discoverability', 'GroupsController@toggleDiscoverability');
 
+    // Sampling Projects
+    Route::post('/web/sampling-projects', 'SamplingProjectController@create');
+    Route::put('/web/sampling-projects/{project}', 'SamplingProjectController@update');
+    Route::delete('/web/sampling-projects/{project}', 'SamplingProjectController@delete');
+
     // Flags
     Route::post('/web/flag', 'FlagsController@create');
     Route::delete('/web/flag/{id}', 'FlagsController@delete');
