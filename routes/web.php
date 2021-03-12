@@ -135,9 +135,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/web/group/{group}/discoverability', 'GroupsController@toggleDiscoverability');
 
     // Sampling Projects
-    Route::post('/web/sampling-projects', 'SamplingProjectController@create');
-    Route::put('/web/sampling-projects/{project}', 'SamplingProjectController@update');
-    Route::delete('/web/sampling-projects/{project}', 'SamplingProjectController@delete');
+    Route::get('/web/sampling-project', 'SamplingProjectController@index');
+    Route::get('/web/sampling-project/{project}', 'SamplingProjectController@show');
+    Route::post('/web/sampling-project', 'SamplingProjectController@create');
+    Route::put('/web/sampling-project/{project}', 'SamplingProjectController@update');
+    Route::delete('/web/sampling-project/{project}', 'SamplingProjectController@delete');
 
     // Flags
     Route::post('/web/flag', 'FlagsController@create');

@@ -18,7 +18,7 @@ class CreateSamplingProjectsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name');
             $table->boolean('has_public_coordinates')->default(false);
-            $table->text('traits');
+            $table->json('traits');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

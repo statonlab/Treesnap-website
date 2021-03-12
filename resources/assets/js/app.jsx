@@ -84,6 +84,11 @@ const ScientificSamplingScene = Loadable({
   loading: PageLoader
 })
 
+const SamplingProjectScene = Loadable({
+  loader: () => import('./scenes/SamplingProjectScene'),
+  loading: PageLoader
+})
+
 class App extends Component {
   render() {
     return (
@@ -92,6 +97,7 @@ class App extends Component {
           <Route exact={true} path={'/'} component={WelcomeScene}/>
           <Route exact={true} path={'/account'} component={AccountScene}/>
           <Route exact={true} path={'/scientific-sampling'} component={ScientificSamplingScene}/>
+          <Route exact={true} path={'/scientific-sampling/:id'} component={SamplingProjectScene}/>
           <Route exact={true} path={'/account/observations'} component={MyObservationsScene}/>
           <Route exact={true} path={'/account/collections'} component={AccountCollectionsScene}/>
           <Route exact={true} path={'/account/filters'} component={AccountFiltersScene}/>

@@ -25,6 +25,7 @@ class SamplingProject extends Model
      */
     protected $casts = [
         'has_public_coordinates' => 'bool',
+        'traits' => 'array',
     ];
 
     /**

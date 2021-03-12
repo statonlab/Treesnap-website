@@ -15,11 +15,23 @@ class SamplingProjectController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = SamplingProject::paginate(20);
+        $projects = SamplingProject::with('owner')
+            ->withCount('users');
 
-        return $this->success($projects);
+        return $this->success($projects->get());
+    }
+
+    /**
+     * Show a sampling project record.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\SamplingProject $project
+     */
+    public function show(Request $request, SamplingProject $project)
+    {
+        return $this->success($project);
     }
 
     /**
@@ -37,9 +49,7 @@ class SamplingProjectController extends Controller
         $this->validate($request, [
            'has_public_coordinates' => 'required|bool',
            'name' => 'required|max:255',
-           'traits' => 'required',
-           'users' => 'required|array',
-           'users.*' => 'exists:users,id',
+           'traits' => 'required|array',
         ]);
 
         $project = SamplingProject::create([
@@ -48,10 +58,6 @@ class SamplingProjectController extends Controller
             'name' => $request->name,
             'traits' => $request->traits,
         ]);
-
-        foreach ($request->users as $user) {
-            $project->users()->attach($user);
-        }
 
         return $this->created($project);
     }
