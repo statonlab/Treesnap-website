@@ -15,6 +15,7 @@ export default class ScientificSamplingScene extends Scene {
       traits                : [''],
       loading               : false,
       projects              : [],
+      errors                : {}
     }
   }
 
@@ -28,23 +29,44 @@ export default class ScientificSamplingScene extends Scene {
       let data = response.data.data
       this.setState({projects : data})
     }).catch(error => {
-      console.log(error)
+      console.error(error)
     })
     this.setState({loading: false})
   }
 
-  createSamplingProject() {
+  createSamplingProject(e) {
+    e.preventDefault()
+    this.setState({errors: {}})
+
     axios.post(`/web/sampling-project`, {
       has_public_coordinates  : this.state.hasPublicCoordinates,
       name                    : this.state.name,
       traits                  : this.state.traits,
     }).then(() => {
       this.loadProjects()
-    }).then(() => {
       this.setState({
         showFormModal: false,
       })
+    }).catch(error => {
+      let response = error.response
+      if(response && response.status === 422) {
+        let errors = response.data
+        let traits = Object.keys(errors).filter(key => {
+          return key.indexOf('traits') > -1
+        }).length > 0
+        this.setState({
+          errors: {
+            name  : errors.name ? errors.name[0] : [],
+            traits,
+          }
+        })
+      }
+      else {
+        // Any other errors than 422 including 500
+        alert("Error! Please try again!")
+      }
     })
+    console.error(error)
   }
 
   _renderProjectsTable() {
@@ -98,16 +120,26 @@ export default class ScientificSamplingScene extends Scene {
           <div className="field">
             <label className="label">Name</label>
             <input type="text"
-                   className="input limit-width"
+                  className={`input${typeof(this.state.errors.name) !== 'undefined' ? ' is-danger' : ''}`}
+                   //className="input limit-width"
                    onChange={(e) => this.setState({name: e.target.value})}/>
+            {typeof(this.state.errors.name) !== 'undefined' ? 
+            <p className="help is-danger">{this.state.errors.name}</p> 
+            : null}
           </div>
+
+          {typeof(this.state.errors.traits) !== 'undefined' && this.state.errors.traits ? 
+                    <div className="notification is-danger">
+                    Error. All traits need to be filled.
+                  </div>
+                    : null}
 
           {this.state.traits.map((value, index) => {
               return (
-                <div className="field">
+                <div className="field" key={index}>
                   <div className="field">
                     <label className="label">Traits</label>
-                    <textarea className="textarea"
+                    <textarea className={`textarea`}
                               onChange={(e) => this.handleChange(e.target.value, index)}/>
                   </div>
                 </div>
@@ -122,7 +154,7 @@ export default class ScientificSamplingScene extends Scene {
             </button>
           </div>
 
-          <button type="submit" className="button is-primary">
+          <button type="submit" className="button is-primary" onClick={this.createSamplingProject.bind(this)}>
             Submit
           </button>
         </form>
