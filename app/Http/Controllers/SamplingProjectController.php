@@ -49,7 +49,8 @@ class SamplingProjectController extends Controller
         $this->validate($request, [
            'has_public_coordinates' => 'required|bool',
            'name' => 'required|max:255',
-           'traits.*' => 'required|array',
+           'traits' => 'required|array',
+           'traits.*' => 'required',
         ]);
 
         $project = SamplingProject::create([

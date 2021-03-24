@@ -29,7 +29,7 @@ export default class ScientificSamplingScene extends Scene {
       let data = response.data.data
       this.setState({projects : data})
     }).catch(error => {
-      console.log(error)
+      console.error(error)
     })
     this.setState({loading: false})
   }
@@ -51,37 +51,22 @@ export default class ScientificSamplingScene extends Scene {
       let response = error.response
       if(response && response.status === 422) {
         let errors = response.data
+        let traits = Object.keys(errors).filter(key => {
+          return key.indexOf('traits') > -1
+        }).length > 0
         this.setState({
           errors: {
             name  : errors.name ? errors.name[0] : [],
+            traits,
           }
         })
-        var key_list = Object.keys(errors)
-        if (key_list.length > 1)
-        // Check key list to see if there are errors in the (arbitrarily many) traits fields
-        {
-          var x;
-          var traits_list = []
-          for (x in key_list)
-          {
-            if (key_list[x].includes("traits"))
-            {
-              traits_list.push(errors[key_list[x]][0])
-            }
-          }
-          this.setState({
-            errors: {
-              name  : errors.name ? errors.name[0] : [],
-              traits: traits_list ? traits_list : []
-            }
-          })
-        }
       }
       else {
         // Any other errors than 422 including 500
         alert("Error! Please try again!")
       }
     })
+    console.error(error)
   }
 
   _renderProjectsTable() {
@@ -143,16 +128,19 @@ export default class ScientificSamplingScene extends Scene {
             : null}
           </div>
 
+          {typeof(this.state.errors.traits) !== 'undefined' && this.state.errors.traits ? 
+                    <div className="notification is-danger">
+                    Error. All traits need to be filled.
+                  </div>
+                    : null}
+
           {this.state.traits.map((value, index) => {
               return (
                 <div className="field" key={index}>
                   <div className="field">
                     <label className="label">Traits</label>
-                    <textarea className={`textarea${typeof(this.state.errors.traits) !== 'undefined' ? ' is-danger' : ''}`}
+                    <textarea className={`textarea`}
                               onChange={(e) => this.handleChange(e.target.value, index)}/>
-                    {typeof(this.state.errors.traits) !== 'undefined' ? 
-                    <p className="help is-danger">{this.state.errors.traits[index]}</p> 
-                    : null}
                   </div>
                 </div>
               )
