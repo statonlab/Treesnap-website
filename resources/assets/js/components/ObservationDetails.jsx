@@ -156,6 +156,12 @@ export default class ObservationDetails extends Component {
       inline = false
     }
 
+    const keyMap = {
+      images: 'General Photo',
+      seeds: 'Seed Photo',
+      flowers: 'Flower Photo'
+    }
+
     return (
       <div className={'image-gallery-image' + (inline ? ' max-h-90vh' : '')}
            style={{
