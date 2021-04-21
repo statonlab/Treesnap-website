@@ -65,30 +65,35 @@ export default class Navbar extends Component {
                 About
               </NavLink>
               {User.authenticated() ?
-                <div className="navbar-item has-dropdown is-hoverable">
-                  <NavLink to="/account" className={`navbar-link`} activeClassName={'is-active'}>
-                    Account
+                <div className="navbar-item">
+                  <NavLink to="/scientific-sampling" className={`navbar-item`} activeClassName={'is-active'}>
+                    Scientific Sampling
                   </NavLink>
-                  <div className="navbar-dropdown">
-                    <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
-                      My Observations
+                  <div className="has-dropdown is-hoverable">
+                    <NavLink to="/account" className={`navbar-link`} activeClassName={'is-active'}>
+                      Account
                     </NavLink>
-                    <NavLink to="/account/groups" className={`navbar-item`} activeClassName={'is-active'}>
-                      Groups
-                    </NavLink>
-                    <NavLink to="/account/collections" className={`navbar-item`} activeClassName={'is-active'}>
-                      Collections
-                    </NavLink>
-                    <NavLink to="/account/filters" className={`navbar-item`} activeClassName={'is-active'}>
-                      Filters
-                    </NavLink>
-                    <hr className="navbar-divider"/>
-                    <NavLink to="/account" className={`navbar-item`} activeClassName={'is-active'}>
-                      Settings
-                    </NavLink>
-                    <a href="/logout" className="navbar-item">
-                      Logout
-                    </a>
+                    <div className="navbar-dropdown">
+                      <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
+                        My Observations
+                      </NavLink>
+                      <NavLink to="/account/groups" className={`navbar-item`} activeClassName={'is-active'}>
+                        Groups
+                      </NavLink>
+                      <NavLink to="/account/collections" className={`navbar-item`} activeClassName={'is-active'}>
+                        Collections
+                      </NavLink>
+                      <NavLink to="/account/filters" className={`navbar-item`} activeClassName={'is-active'}>
+                        Filters
+                      </NavLink>
+                      <hr className="navbar-divider"/>
+                      <NavLink to="/account" className={`navbar-item`} activeClassName={'is-active'}>
+                        Settings
+                      </NavLink>
+                      <a href="/logout" className="navbar-item">
+                        Logout
+                      </a>
+                    </div>
                   </div>
                 </div>
                 : null}
