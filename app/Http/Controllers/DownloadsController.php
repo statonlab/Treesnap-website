@@ -303,7 +303,7 @@ class DownloadsController extends Controller
             "$observation->correct_marks times",
         ];
 
-        $url = [url("observation/$observation->id"];
+        $url = [url("observation/$observation->id")];
 
         return array_merge($line, $this->extractMetaData($observation), $url);
     }
