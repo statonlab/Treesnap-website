@@ -253,7 +253,7 @@ class DownloadsController extends Controller
         ];
 
         // Add meta labels to header
-        return array_merge($header, $this->getMetaHeader());
+        return array_merge($header, $this->getMetaHeader()) + ['URL'];
     }
 
     /**
@@ -303,7 +303,8 @@ class DownloadsController extends Controller
             "$observation->correct_marks times",
         ];
 
-        return array_merge($line, $this->extractMetaData($observation));
+        return array_merge($line,
+                $this->extractMetaData($observation)) + [url("observation/$observation->id")];
     }
 
     /**
