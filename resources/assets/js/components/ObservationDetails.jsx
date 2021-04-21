@@ -158,11 +158,24 @@ export default class ObservationDetails extends Component {
 
     return (
       <div className={'image-gallery-image' + (inline ? ' max-h-90vh' : '')}
-           style={{backgroundColor: this.observation.images.images.length > 1 ? '#222' : 'transparent'}}>
+           style={{
+             backgroundColor: this.observation.images.images.length > 1 ? '#222' : 'transparent',
+             position       : 'relative',
+           }}>
         <img
           src={item.original}
           alt="Plant Image"
         />
+        <div style={{
+          position       : 'absolute',
+          bottom         : 0,
+          left           : 0,
+          right          : 0,
+          backgroundColor: 'rgba(0,0,0,.1)',
+          color          : '#fff',
+          textAlign      : 'center',
+          padding        : '10px',
+        }}>{item.key}</div>
       </div>
     )
   }
@@ -175,6 +188,7 @@ export default class ObservationDetails extends Component {
       imagesObject[key].map(image => {
         images.push({
           original: image,
+          key,
         })
       })
     })
