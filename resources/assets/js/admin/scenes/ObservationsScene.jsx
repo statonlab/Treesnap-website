@@ -77,7 +77,7 @@ export default class ObservationsScene extends Scene {
       const response = await axios.get('/admin/web/observations', {params})
       const data     = response.data.data
 
-      if (state.page > 1 && data.data.length === 0) {
+      if (data.current_page > 1 && data.data.length === 0) {
         return this.loadObservations({...this.state, page: 1})
       } else {
         this.setState({
