@@ -78,7 +78,7 @@ export default class ObservationsScene extends Scene {
       const data     = response.data.data
 
       if (data.current_page > 1 && data.data.length === 0) {
-        return this.loadObservations({...this.state, page: 1})
+        return this.goToPage(1)
       } else {
         this.setState({
           observations      : data.data,
@@ -93,6 +93,7 @@ export default class ObservationsScene extends Scene {
       }
     } catch (error) {
       console.error(error)
+      alert('Unable to process your request. Please try refreshing the page or contact us.')
     }
 
     this.setState({loading: false, reduceCardOpacity: false})
