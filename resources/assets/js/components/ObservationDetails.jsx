@@ -157,9 +157,9 @@ export default class ObservationDetails extends Component {
     }
 
     const keyMap = {
-      images: 'General Photo',
-      seeds: 'Seed Photo',
-      flowers: 'Flower Photo'
+      images : 'General Photo',
+      seeds  : 'Seed Photo',
+      flowers: 'Flower Photo',
     }
 
     return (
@@ -177,11 +177,13 @@ export default class ObservationDetails extends Component {
           bottom         : 0,
           left           : 0,
           right          : 0,
-          backgroundColor: 'rgba(0,0,0,.1)',
+          backgroundColor: 'rgba(0,0,0,.5)',
           color          : '#fff',
           textAlign      : 'center',
           padding        : '10px',
-        }}>{item.key}</div>
+        }}>
+          {typeof keyMap[item.key] !== 'undefined' ? item.key : keyMap[item.key]}
+        </div>
       </div>
     )
   }
