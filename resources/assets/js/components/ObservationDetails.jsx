@@ -173,14 +173,15 @@ export default class ObservationDetails extends Component {
           alt="Plant Image"
         />
         <div style={{
-          position       : 'absolute',
-          bottom         : 0,
-          left           : 0,
-          right          : 0,
-          backgroundColor: 'rgba(0,0,0,.5)',
-          color          : '#fff',
-          textAlign      : 'center',
-          padding        : '10px',
+          position: 'absolute',
+          bottom  : 0,
+          left    : 0,
+          right   : 0,
+          // backgroundColor: 'rgba(0,0,0,.5)',
+          color     : '#fff',
+          textAlign : 'center',
+          padding   : '20px',
+          background: 'linear-gradient(rgba(0,0,0,0), #000)',
         }}>
           {typeof keyMap[item.key] !== 'undefined' ? keyMap[item.key] : item.key}
         </div>
