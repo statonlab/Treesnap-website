@@ -13,13 +13,11 @@ use App\LatinName;
 use App\Observation;
 use App\Services\AttachUnits;
 use Carbon\Carbon;
-use Doctrine\DBAL\Types\ConversionException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
 use Illuminate\Validation\Rule;
 use Validator;
-use Storage;
 
 class ObservationsController extends Controller
 {
@@ -111,12 +109,9 @@ class ObservationsController extends Controller
     public function create(Request $request)
     {
         $user = $request->user();
-        info('User is attempting to upload observation: '.$user->name."<$user->email>");
 
         $validator = Validator::make($request->all(), $this->validationRules());
         if ($validator->fails()) {
-            info($validator->errors()->toJson());
-
             return $this->error($validator->errors(), 200);
         }
 

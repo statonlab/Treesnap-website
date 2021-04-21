@@ -61,7 +61,7 @@ export default class ObservationScene extends Scene {
 
       if (error.response && error.response.status === 404) {
         console.log('Not Found')
-        window.location.replace('/no-match')
+        alert('Not Found')
       }
     })
   }

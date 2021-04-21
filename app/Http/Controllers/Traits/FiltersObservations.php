@@ -39,8 +39,8 @@ trait FiltersObservations
         if (! empty($request->collection_id)) {
             $observations = $user->collections()
                 ->findOrFail($request->collection_id)
-                ->observations();
-            $observations = $observations->with($with);
+                ->observations()
+                ->with($with);
         } elseif (! empty($request->group_id)) {
             $observations = $user->groups()
                 ->findOrFail($request->group_id)
@@ -73,6 +73,7 @@ trait FiltersObservations
                 $query->orWhere('address->formatted', 'like', "%$term%");
                 $query->orWhere('mobile_id', 'like', "%$term%");
                 $query->orWhere('custom_id', 'like', "%$term%");
+
                 if ($is_admin) {
                     $query->orWhereHas('user', function ($query) use ($term) {
                         $query->where('users.name', 'like', "%$term%");

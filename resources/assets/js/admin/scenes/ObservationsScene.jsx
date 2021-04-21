@@ -28,10 +28,10 @@ export default class ObservationsScene extends Scene {
       contact             : {
         to         : {
           user_id: 0,
-          email  : ''
+          email  : '',
         },
         from       : '',
-        observation: {}
+        observation: {},
       },
       user                : {},
       categories          : [],
@@ -45,7 +45,7 @@ export default class ObservationsScene extends Scene {
       showHelpModal       : false,
       hasMorePages        : false,
       advancedFiltersRules: null,
-      reduceCardOpacity   : false
+      reduceCardOpacity   : false,
     }
 
     this.history               = this.props.history
@@ -76,16 +76,21 @@ export default class ObservationsScene extends Scene {
       const params   = this.getParams(state || this.state)
       const response = await axios.get('/admin/web/observations', {params})
       const data     = response.data.data
-      this.setState({
-        observations      : data.data,
-        perPage           : data.per_page,
-        selectedCollection: data.collection_id || -1,
-        selectedFilter    : data.filter_id || -1,
-        page              : data.current_page,
-        total             : data.total,
-        hasMorePages      : data.has_more_pages,
-        pages             : this.generatePages(data.total, data.per_page, data.page)
-      }, this.makeDownloadLink)
+
+      if (state.page > 1 && data.data.length === 0) {
+        return this.loadObservations({...this.state, page: 1})
+      } else {
+        this.setState({
+          observations      : data.data,
+          perPage           : data.per_page,
+          selectedCollection: data.collection_id || -1,
+          selectedFilter    : data.filter_id || -1,
+          page              : data.current_page,
+          total             : data.total,
+          hasMorePages      : data.has_more_pages,
+          pages             : this.generatePages(data.total, data.per_page, data.page),
+        }, this.makeDownloadLink)
+      }
     } catch (error) {
       console.error(error)
     }
@@ -103,7 +108,7 @@ export default class ObservationsScene extends Scene {
       collection_id   : this.getSelectedID(state.selectedCollection),
       category        : state.selectedCategory || null,
       status          : state.selectedStatus === 0 || state.selectedStatus === '0' ? null : state.selectedStatus,
-      view_type : 'full'
+      view_type       : 'full',
     }
   }
 
@@ -147,7 +152,7 @@ export default class ObservationsScene extends Scene {
       let categories = response.data.data.map(category => {
         return {
           label: category,
-          value: category
+          value: category,
         }
       })
       this.setState({categories})
@@ -165,7 +170,7 @@ export default class ObservationsScene extends Scene {
         return {
           rules: filter.rules,
           label: filter.name,
-          value: filter.id
+          value: filter.id,
         }
       })
 
@@ -185,7 +190,7 @@ export default class ObservationsScene extends Scene {
             advancedFiltersRules,
             selectedFilter,
             selectedCategory,
-            selectedStatus
+            selectedStatus,
           } = this.state
 
     const params = {
@@ -194,8 +199,8 @@ export default class ObservationsScene extends Scene {
       advanced_filters: advancedFiltersRules ? JSON.stringify(advancedFiltersRules) : null,
       category        : selectedCategory,
       advanced_filter : this.getSelectedID(selectedFilter),
-      view_type : 'full',
-      status          : selectedStatus === 0 || selectedStatus === '0' ? null : selectedStatus
+      view_type       : 'full',
+      status          : selectedStatus === 0 || selectedStatus === '0' ? null : selectedStatus,
     }
 
     let downloadParams = this.makeUrlQueryFromObject(params)
@@ -259,7 +264,7 @@ export default class ObservationsScene extends Scene {
     return {
       page,
       perPage,
-      selectedCollection: collection
+      selectedCollection: collection,
     }
   }
 
@@ -350,7 +355,7 @@ export default class ObservationsScene extends Scene {
 
     this.setState({
       page,
-      reduceCardOpacity: true
+      reduceCardOpacity: true,
     }, this.loadObservations)
 
     this.history.push(`/observations?page=${page}&view=${perPage}&collection=${collection}`)
@@ -376,7 +381,7 @@ export default class ObservationsScene extends Scene {
     id = parseInt(id)
     this.setState({
       selectedFilter   : id,
-      reduceCardOpacity: true
+      reduceCardOpacity: true,
     }, this.loadObservations)
   }
 
@@ -388,7 +393,7 @@ export default class ObservationsScene extends Scene {
   collectionFilter(selectedCollection) {
     this.setState({
       selectedCollection: parseInt(selectedCollection),
-      reduceCardOpacity : true
+      reduceCardOpacity : true,
     }, this.loadObservations)
 
     const url = `/observations?page=1&view=${this.state.perPage}&collection=${selectedCollection}`
@@ -404,7 +409,7 @@ export default class ObservationsScene extends Scene {
     const reduceCardOpacity = true
     this.setState({
       selectedCategory,
-      reduceCardOpacity
+      reduceCardOpacity,
     }, this.loadObservations)
   }
 
@@ -417,7 +422,7 @@ export default class ObservationsScene extends Scene {
     const reduceCardOpacity = true
     this.setState({
       searchTermCategory,
-      reduceCardOpacity
+      reduceCardOpacity,
     }, this.loadObservations)
   }
 
@@ -429,7 +434,7 @@ export default class ObservationsScene extends Scene {
   changeStatus(status) {
     this.setState({
       selectedStatus   : status,
-      reduceCardOpacity: true
+      reduceCardOpacity: true,
     }, this.loadObservations)
   }
 
@@ -590,7 +595,7 @@ export default class ObservationsScene extends Scene {
                   onClick={() => {
                     this.setState({
                       advancedFiltersRules: null,
-                      reduceCardOpacity   : false
+                      reduceCardOpacity   : false,
                     }, this.loadObservations)
                     this._advancedFiltersState = {}
                   }}
@@ -648,7 +653,7 @@ export default class ObservationsScene extends Scene {
 
     this.setState({
       page: 1,
-      perPage
+      perPage,
     }, this.loadObservations)
 
     this.history.replace(`/observations?page=1&view=${perPage}&collection=${collection}`)
@@ -657,7 +662,7 @@ export default class ObservationsScene extends Scene {
   advancedFilter(filter_id) {
     this.setState({
       selectedFilter: filter_id,
-      page           : 1
+      page          : 1,
     }, this.loadObservations)
   }
 
@@ -698,7 +703,7 @@ export default class ObservationsScene extends Scene {
           onCloseRequest={() => this.setState({showFiltersModal: false})}
           onCreate={response => {
             this.setState({
-              showFiltersModal: false
+              showFiltersModal: false,
             })
 
             let data = response.data
@@ -707,8 +712,8 @@ export default class ObservationsScene extends Scene {
                 advancedFilters: this.state.advancedFilters.concat([{
                   rules: data.filter.rules,
                   label: data.filter.name,
-                  value: data.filter.id
-                }])
+                  value: data.filter.id,
+                }]),
               })
               this.advancedFilter(data.filter.id)
               return
@@ -717,7 +722,7 @@ export default class ObservationsScene extends Scene {
             this.setState({
               page                : 1,
               advancedFiltersRules: response.params,
-              showFiltersModal    : false
+              showFiltersModal    : false,
             }, this.loadObservations)
           }}
           onStateChange={this.saveFilterState.bind(this)}
@@ -759,11 +764,11 @@ export default class ObservationsScene extends Scene {
                       contact  : {
                         to  : {
                           user_id: observation.user.id,
-                          name   : observation.user.name
+                          name   : observation.user.name,
                         },
                         from: this.state.user.email,
-                        observation
-                      }
+                        observation,
+                      },
                     })
                   }}
                   onFlagChange={(event, data) => {
@@ -791,14 +796,14 @@ export default class ObservationsScene extends Scene {
                     if (!found) {
                       ownedCollections.push({
                         label: data.label,
-                        value: data.id
+                        value: data.id,
                       })
                     }
 
                     observation.collections.push({
                       id         : data.id,
                       label      : data.label,
-                      description: data.description
+                      description: data.description,
                     })
                     this.setState({ownedCollections})
                     this.forceUpdate()

@@ -47,7 +47,7 @@ trait DealsWithObservationPermissions
      * @param \App\User $user
      * @return mixed
      */
-    protected function addPrivacyClause(&$observations, User $user)
+    protected function addPrivacyClause($observations, User $user)
     {
         $friends = array_unique($user->friends() + [$user->id]);
 
