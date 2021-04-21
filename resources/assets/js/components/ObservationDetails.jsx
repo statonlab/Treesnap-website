@@ -182,7 +182,7 @@ export default class ObservationDetails extends Component {
           textAlign      : 'center',
           padding        : '10px',
         }}>
-          {typeof keyMap[item.key] !== 'undefined' ? item.key : keyMap[item.key]}
+          {typeof keyMap[item.key] !== 'undefined' ? keyMap[item.key] : item.key}
         </div>
       </div>
     )
