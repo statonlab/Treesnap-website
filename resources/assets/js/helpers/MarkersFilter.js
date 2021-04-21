@@ -131,6 +131,14 @@ export default class MarkersFilter extends Filters {
       return true
     }
 
+    if (this._contains(marker.custom_id, this._searchTerm)) {
+      return true
+    }
+
+    if (this._contains(marker.mobile_id, this._searchTerm)) {
+      return true
+    }
+
     return false
   }
 
