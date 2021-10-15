@@ -28,7 +28,7 @@ class SciStarterResource extends Resource
     {
         parent::__construct();
 
-        $this->setBaseUrl('https://scistarter.com/api');
+        $this->setBaseUrl('https://scistarter.org/api');
         $this->key = config('services.scistarter.key');
         $this->project_id = config('services.scistarter.project_id');
     }

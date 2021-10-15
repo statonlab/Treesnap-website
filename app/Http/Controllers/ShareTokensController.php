@@ -6,6 +6,7 @@ use App\Observation;
 use App\ShareToken;
 use App\Http\Controllers\Traits\Responds;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -16,11 +17,11 @@ class ShareTokensController extends Controller
     /**
      * Attempts to create a share link if the user is authorized to do so.
      *
-     * @param $id
+     * @param \App\Observation $observation
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function share(Observation $observation, Request $request)
+    public function share(Observation $observation, Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -31,7 +32,7 @@ class ShareTokensController extends Controller
         $share_token = $this->createShareToken($user, $observation, $request);
 
         return $this->success(
-            "https://treesnap.org/observation/{$observation->id}?token=$share_token->value"
+            "https://treesnap.org/observation/$observation->id?token=$share_token->value"
         );
     }
 
@@ -41,7 +42,7 @@ class ShareTokensController extends Controller
      * @param $user
      * @param $observation
      * @param $request
-     * @return mixed
+     * @return \App\ShareToken|\Illuminate\Database\Eloquent\Model
      */
     protected function createShareToken($user, $observation, $request)
     {
