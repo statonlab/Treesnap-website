@@ -15,6 +15,13 @@ class ObservationSharingTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withHeader('Accept', 'application/json');
+    }
+
     /**
      * Test share link returns forbidden for non-owners.
      *
@@ -31,7 +38,7 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get('/web/share/observation/' . $observation->id);
+        $response = $this->get('/web/share/observation/'.$observation->id);
 
         $response->assertStatus(401);
     }
@@ -51,8 +58,8 @@ class ObservationSharingTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get('/web/share/observation/' . $observation->id);
-
+        $response = $this->get('/web/share/observation/'.$observation->id);
+        $response->dump();
         $token = ShareToken::where('user_id', $user->id)
             ->where('observation_id', $observation->id)
             ->first();
@@ -83,8 +90,10 @@ class ObservationSharingTest extends TestCase
 
         $json = $response->json();
 
-        $this->assertEquals($json['data']['location']['longitude'], $observation->fuzzy_coords['longitude']);
-        $this->assertEquals($json['data']['location']['latitude'], $observation->fuzzy_coords['latitude']);
+        $this->assertEquals($json['data']['location']['longitude'],
+            $observation->fuzzy_coords['longitude']);
+        $this->assertEquals($json['data']['location']['latitude'],
+            $observation->fuzzy_coords['latitude']);
 
         $response->assertStatus(200);
     }
@@ -120,8 +129,10 @@ class ObservationSharingTest extends TestCase
 
         $json = $response->json();
 
-        $this->assertEquals($json['data']['location']['longitude'], $observation->longitude);
-        $this->assertEquals($json['data']['location']['latitude'], $observation->latitude);
+        $this->assertEquals($json['data']['location']['longitude'],
+            $observation->longitude);
+        $this->assertEquals($json['data']['location']['latitude'],
+            $observation->latitude);
 
         $response->assertStatus(200);
     }
@@ -157,8 +168,10 @@ class ObservationSharingTest extends TestCase
 
         $json = $response->json();
 
-        $this->assertEquals($json['data']['location']['longitude'], $observation->fuzzy_coords['longitude']);
-        $this->assertEquals($json['data']['location']['latitude'], $observation->fuzzy_coords['latitude']);
+        $this->assertEquals($json['data']['location']['longitude'],
+            $observation->fuzzy_coords['longitude']);
+        $this->assertEquals($json['data']['location']['latitude'],
+            $observation->fuzzy_coords['latitude']);
 
         $response->assertStatus(200);
     }

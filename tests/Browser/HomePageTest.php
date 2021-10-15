@@ -39,7 +39,7 @@ class HomePageTest extends DuskTestCase
     public function testHomePageHasAuthenticatedUserLinks()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::first())
+            $browser->loginAs(factory(User::class)->create())
                 ->visit(new HomePage())
                 ->assertDontSee('Login')
                 ->assertDontSee('Register')

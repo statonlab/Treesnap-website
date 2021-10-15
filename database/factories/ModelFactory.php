@@ -160,18 +160,21 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 $factory->define(App\Group::class, function (Faker\Generator $faker) {
     $is_private = [true, false];
 
+    $user = factory(\App\User::class)->create();
+
     return [
         'name' => $faker->company,
-        'user_id' => \App\User::inRandomOrder()->first()->id,
+        'user_id' => $user->id,
         'is_private' => $is_private[rand() % 2],
     ];
 });
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Collection::class, function (Faker\Generator $faker) {
+    $user = factory(\App\User::class)->create();
     return [
         'label' => $faker->city,
-        'user_id' => \App\User::inRandomOrder()->first()->id,
+        'user_id' => $user->id,
         'description' => $faker->realText(),
     ];
 });

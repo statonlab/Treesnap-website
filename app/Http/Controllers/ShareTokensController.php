@@ -20,11 +20,9 @@ class ShareTokensController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function share($id, Request $request)
+    public function share(Observation $observation, Request $request)
     {
         $user = $request->user();
-
-        $observation = Observation::findOrFail($id);
 
         if ($observation->user_id !== $user->id) {
             return $this->unauthorized();
@@ -58,7 +56,7 @@ class ShareTokensController extends Controller
             'email' => $request->email,
             'observation_id' => $observation->id,
             'value' => $rand,
-            'expires_at' => Carbon::now()->addYear(),
+            'expired_at' => Carbon::now()->addYear(),
         ]);
     }
 }

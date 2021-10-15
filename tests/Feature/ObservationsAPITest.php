@@ -20,7 +20,8 @@ class ObservationsAPITest extends TestCase
      */
     public function testGettingRecords()
     {
-        $user = User::has('observations')->first();
+        $user = factory(User::class)->create();
+        factory(Observation::class, 10)->create(['user_id' => $user->id]);
         $this->actingAs($user);
 
         $response = $this->get('/api/v1/observations');
@@ -129,8 +130,7 @@ class ObservationsAPITest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
-
-        $observation = Observation::where('user_id', '!=', $user->id)->first();
+        $observation = factory(Observation::class)->create();
 
         $response = $this->get("/api/v1/observation/{$observation->id}");
 
@@ -142,7 +142,7 @@ class ObservationsAPITest extends TestCase
      */
     public function testGettingARecordThatDoesNotExist()
     {
-        $user = User::first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         // Make up a weird id
@@ -219,7 +219,10 @@ class ObservationsAPITest extends TestCase
      */
     public function testUpdatingARecord()
     {
-        $user = User::has('observations')->first();
+        $user = factory(User::class)->create();
+        factory(Observation::class, 10)->create([
+            'user_id' => $user->id,
+        ]);
         $this->actingAs($user);
         $observation = $user->observations()->orderby('id', 'desc')->first();
 

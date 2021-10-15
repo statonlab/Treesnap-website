@@ -3,18 +3,13 @@
 namespace Tests\Feature;
 
 use App\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-
-use App\Observation;
 use App\User;
-use DB;
 use Tests\TestCase;
 
 class CollectionsTest extends TestCase
 {
-    use WithoutMiddleware, DatabaseTransactions;
+    use DatabaseTransactions;
 
     /**
      * Test adding observations to a collection
@@ -82,7 +77,7 @@ class CollectionsTest extends TestCase
 
     public function testCreateCollection()
     {
-        $user = User::first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $response = $this->post("/web/collections", [
@@ -109,7 +104,7 @@ class CollectionsTest extends TestCase
      */
     public function testGettingACollectionThatDoesNotExist()
     {
-        $user = User::first();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         // Make up a weird id
