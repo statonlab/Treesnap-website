@@ -66,14 +66,14 @@ export default class Navbar extends Component {
               </NavLink>
               {User.authenticated() ?
                 <div className="navbar-item">
-                  <NavLink to="/scientific-sampling" className={`navbar-item`} activeClassName={'is-active'}>
-                    Scientific Sampling
-                  </NavLink>
-                  <div className="has-dropdown is-hoverable">
-                    <NavLink to="/account" className={`navbar-link`} activeClassName={'is-active'}>
+                  {/*<NavLink to="/scientific-sampling" className={`navbar-item`} activeClassName={'is-active'}>*/}
+                  {/*  Scientific Sampling*/}
+                  {/*</NavLink>*/}
+                  <div className="dropdown has-dropdown is-hoverable">
+                    <NavLink to="/account" className={`navbar-link dropdown-trigger`} activeClassName={'is-active'}>
                       Account
                     </NavLink>
-                    <div className="navbar-dropdown">
+                    <div className="navbar-dropdown dropdown-menu">
                       <NavLink to="/account/observations" className={`navbar-item`} activeClassName={'is-active'}>
                         My Observations
                       </NavLink>

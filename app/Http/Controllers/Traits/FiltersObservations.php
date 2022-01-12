@@ -69,7 +69,7 @@ trait FiltersObservations
             $term = $request->search;
             $observations->where(function ($query) use ($term, $is_admin) {
                 $query->where('observation_category', 'like', "%$term%");
-                $query->orWhere('data->otherLabel', 'like', "%$term%");
+                $query->orWhereRaw('data->"$.otherLabel" like ?', '%'.strtolower($term).'%');
                 $query->orWhere('address->formatted', 'like', "%$term%");
                 $query->orWhere('mobile_id', 'like', "%$term%");
                 $query->orWhere('custom_id', 'like', "%$term%");
