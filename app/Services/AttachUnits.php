@@ -51,7 +51,7 @@ class AttachUnits
                 $data['breastNumeric_units'] = 'Inches';
             }
 
-            $data['breastNumeric_values'] = $this->createValues($data['heightNumeric'], $data['heightNumeric_units']);
+            $data['breastNumeric_values'] = $this->createValues($data['breastNumeric'], $data['breastNumeric_units']);
         }
 
         $observation->data = $data;

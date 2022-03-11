@@ -25,6 +25,7 @@ trait Observes
         'Oregon Ash',
         'Butternut',
         'Pinyon Pine',
+        'Sassafras',
         'Other',
     ];
 
