@@ -62,7 +62,7 @@ export default class App extends Scene {
   /**
    * Set the maps and load observations into the state.
    */
-  componentWillMount() {
+  componentDidMount() {
     this.loadCategories()
     this.loadCollections()
     this.loadFilters()

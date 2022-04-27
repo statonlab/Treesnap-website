@@ -36,7 +36,7 @@ export default class CollectionsScene extends Scene {
     document.title = 'Saved Collections - TreeSnap'
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadCollections()
     this.loadGroups()
   }

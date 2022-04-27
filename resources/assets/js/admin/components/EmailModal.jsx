@@ -34,7 +34,7 @@ export default class EmailModal extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       visible    : this.props.visible,
       to         : this.props.contact.to,

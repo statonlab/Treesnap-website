@@ -14,7 +14,7 @@ export default class UnshareCollectionModal extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let id = this.props.collection.id
 
     axios.get(`/web/collection/${id}/users`).then(response => {

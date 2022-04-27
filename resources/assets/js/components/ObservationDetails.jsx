@@ -52,7 +52,7 @@ export default class ObservationDetails extends Component {
   /**
    * Set up the observation state.
    */
-  componentWillMount() {
+  componentDidMount() {
     const observation = this.props.observation
     this._setup(observation)
 

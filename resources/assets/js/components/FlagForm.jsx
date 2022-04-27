@@ -28,7 +28,7 @@ export default class FlagForm extends Component {
     ]
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       flagged: this.props.flagged,
       flag_id: this.props.flagId

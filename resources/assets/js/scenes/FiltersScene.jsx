@@ -19,7 +19,7 @@ export default class UsersScene extends Scene {
     document.title = 'Saved Filters - TreeSnap'
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios.get('/web/filters').then(response => {
       this.setState({
         loading: false,

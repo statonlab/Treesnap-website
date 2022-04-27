@@ -31,7 +31,7 @@ export default class Groups extends Component {
   /**
    * Get groups from server.
    */
-  componentWillMount() {
+  componentDidMount() {
     this.setState({loading: true})
     axios.get('/web/groups').then(response => {
       let data = response.data.data

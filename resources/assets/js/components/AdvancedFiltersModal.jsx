@@ -62,7 +62,7 @@ export default class AdvancedFiltersModal extends Component {
     })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios.get('/web/observations/categories').then(response => {
       this.setState({
         categories: response.data.data

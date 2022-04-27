@@ -17,7 +17,7 @@ export default class GroupSearchForm extends Component {
   /**
    * Perform an initial search
    */
-  componentWillMount() {
+  componentDidMount() {
     this.search()
   }
 

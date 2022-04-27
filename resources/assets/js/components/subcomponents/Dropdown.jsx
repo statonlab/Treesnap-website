@@ -13,7 +13,7 @@ export default class Dropdown extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let items = []
     let other = null
     React.Children.map(this.props.children, child => {

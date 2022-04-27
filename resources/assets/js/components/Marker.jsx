@@ -29,7 +29,7 @@ export default class Marker extends Component {
   /**
    * Creates the marker and adds it to the map.
    */
-  componentWillMount() {
+  componentDidMount() {
     // Create a marker
     this.marker = new google.maps.Marker({
       title   : this.props.title,

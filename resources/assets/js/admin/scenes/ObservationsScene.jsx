@@ -57,7 +57,7 @@ export default class ObservationsScene extends Scene {
   /**
    * Get observations from server.
    */
-  componentWillMount() {
+  componentDidMount() {
     this.setState({loading: true})
 
     this.setState(this.preLoadPage(), () => {

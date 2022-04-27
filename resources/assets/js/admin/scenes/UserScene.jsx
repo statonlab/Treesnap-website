@@ -46,7 +46,7 @@ export default class UserScene extends Scene {
   /**
    * Get the user's data from the server
    */
-  componentWillMount() {
+  componentDidMount() {
     this.getUser()
     this.getRoles()
 

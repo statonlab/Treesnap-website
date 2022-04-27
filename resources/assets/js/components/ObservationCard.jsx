@@ -41,7 +41,7 @@ export default class ObservationCard extends Component {
   /**
    * Set up flags and confirmations
    */
-  componentWillMount() {
+  componentDidMount() {
     const observation = this.props.observation
 
     if (observation.flags.length > 0) {

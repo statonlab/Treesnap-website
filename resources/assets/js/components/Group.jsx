@@ -53,7 +53,7 @@ export default class Group extends Component {
   /**
    * Get group info and users upon mounting
    */
-  componentWillMount() {
+  componentDidMount() {
     this.loadGroup()
     this.loadCollections()
 

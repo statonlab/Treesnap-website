@@ -12,7 +12,7 @@ export default class InfoBox extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.body !== '') {
       this.setState({body: this.props.body})
       return

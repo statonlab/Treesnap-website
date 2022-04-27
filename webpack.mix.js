@@ -32,8 +32,8 @@ mix.webpackConfig({
 })
 
 // JS and CSS configuration
-mix.react('resources/assets/js/app.jsx', 'public/js')
-  .react('resources/assets/js/admin/admin.jsx', 'public/js/admin.js')
+mix.js('resources/assets/js/app.jsx', 'public/js').react()
+  .js('resources/assets/js/admin/admin.jsx', 'public/js/admin.js').react()
   .sass('resources/assets/sass/app.scss', 'public/css')
   .options({
     processCssUrls: false

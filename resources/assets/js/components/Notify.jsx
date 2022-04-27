@@ -13,7 +13,7 @@ export default class Notify extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.timer = setTimeout(() => {
       this.hide()
     }, 5000)
