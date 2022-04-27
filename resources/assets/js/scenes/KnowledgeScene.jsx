@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import marked from 'marked'
+import {marked} from 'marked'
 import Navbar from '../components/Navbar'
 import HomeFooter from '../components/HomeFooter'
 import LinksSidebar from '../components/LinksSidebar'
@@ -47,7 +47,7 @@ export default class KnowledgeScene extends Scene {
               </div>
               <div className="column">
                 <div className="box body">
-                  <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}}></div>
+                  <div dangerouslySetInnerHTML={{__html: marked.parse(this.state.content)}}></div>
                   <Spinner visible={this.state.loading} inline={true}/>
                 </div>
               </div>
