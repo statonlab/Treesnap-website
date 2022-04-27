@@ -44,7 +44,7 @@
         "lodash._baseclone": "^4.5.7",
         "lodash._bindcallback": "^3.0.1",
         "lodash._createassigner": "^3.1.1",
-        "marked": "^0.3.19",
+        "marked": "^4.0.10",
         "merge-descriptors": "^1.0.1",
         "methods": "^1.1.2",
         "moment": "^2.24.0",
