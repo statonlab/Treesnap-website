@@ -44,9 +44,8 @@ export default class ObservationDetails extends Component {
         from: '',
       },
       selectedUnit       : window.TreeSnap.units || 'US',
+      observation        : null,
     }
-
-    this.observation = {}
   }
 
   /**
@@ -81,8 +80,10 @@ export default class ObservationDetails extends Component {
   /**
    * If the observation changes, reset the observation state.
    */
-  componentWillReceiveProps(props) {
-    this._setup(props.observation)
+  componentDidUpdate(prevProps) {
+    if (prevProps.observation !== this.props.observation) {
+      this._setup(this.props.observation)
+    }
   }
 
   /**
@@ -111,9 +112,7 @@ export default class ObservationDetails extends Component {
       observation.collection_date = moment(observation.date).format('LLL')
     }
 
-    this.observation = observation
-
-    this.setState(Object.assign({}, observation, {
+    this.setState({
       markers    : [{
         user_id : observation.user_id,
         image   : observation.images.images ? observation.images.images[0] : '',
@@ -129,7 +128,8 @@ export default class ObservationDetails extends Component {
       zoom       : 4,
       loading    : false,
       collections: this.state.collections,
-    }))
+      observation,
+    })
 
     setTimeout(() => {
       if (!this.map) {
@@ -157,10 +157,12 @@ export default class ObservationDetails extends Component {
       flowers: 'Flower Photo',
     }
 
+    const {observation} = this.state
+
     return (
       <div className={'image-gallery-image' + (inline ? ' max-h-90vh' : '')}
            style={{
-             backgroundColor: this.observation.images.images.length > 1 ? '#222' : 'transparent',
+             backgroundColor: observation.images.images.length > 1 ? '#222' : 'transparent',
              position       : 'relative',
            }}>
         <img
@@ -185,8 +187,9 @@ export default class ObservationDetails extends Component {
   }
 
   getImages() {
-    let images       = []
-    let imagesObject = this.observation.images
+    const {observation} = this.state
+    let images          = []
+    let imagesObject    = observation.images
 
     Object.keys(imagesObject).map(key => {
       imagesObject[key].map(image => {
@@ -204,7 +207,8 @@ export default class ObservationDetails extends Component {
    * Render the images modal
    */
   _renderImagesModal() {
-    if (!this.state.showModal || this.observation.images.images.length === 0) {
+    const {observation} = this.state
+    if (!this.state.showModal || observation.images.images.length === 0) {
       return null
     }
 
@@ -233,6 +237,8 @@ export default class ObservationDetails extends Component {
       return null
     }
 
+    const {observation} = this.state
+
     return (
       <div>
         <div className="flexbox observation-tools">
@@ -243,7 +249,7 @@ export default class ObservationDetails extends Component {
             </span>
             <span>Add to Collection</span>
           </a>
-          {User.owns(this.observation) ?
+          {User.owns(observation) ?
             <a className="button is-outlined"
                onClick={() => this.setState({showShareLinkModal: true})}>
               <span className="icon is-small">
@@ -251,7 +257,7 @@ export default class ObservationDetails extends Component {
               </span>
               <span>Share Link</span>
             </a> : null}
-          {this.observation.flags.length === 0 ?
+          {observation.flags.length === 0 ?
             <a className="button is-outlined"
                onClick={() => this.setState({controlModalContent: 'flag', showControlModal: true})}>
               <span className="icon is-small">
@@ -280,7 +286,7 @@ export default class ObservationDetails extends Component {
   /**
    * Render the control modal where users can add the
    * observation to a collection, flag it, etc.
-   * @returns {XML}
+   * @returns {{}}
    * @private
    */
   _renderControlModal() {
@@ -302,7 +308,7 @@ export default class ObservationDetails extends Component {
    */
   _renderFlagForm() {
     return (
-      <FlagFrom observationId={this.observation.observation_id}
+      <FlagFrom observationId={this.state.observation.observation_id}
                 onSubmit={(flag) => {
                   this.props.onFlagCreated(flag)
                   this.setState({showControlModal: false})
@@ -320,7 +326,7 @@ export default class ObservationDetails extends Component {
     return (
       <div>
         <h3 className="title is-4">Add to Collection</h3>
-        <CollectionForm observationId={this.observation.observation_id}
+        <CollectionForm observationId={this.state.observation.observation_id}
                         collections={this.state.collections}
                         onSubmit={(collection) => {
                           this.props.onAddedToCollection(collection)
@@ -426,7 +432,7 @@ export default class ObservationDetails extends Component {
       <EmailModal
         visible={this.state.showEmail}
         contact={this.state.contact}
-        observation={this.observation}
+        observation={this.state.observation}
         onCloseRequest={() => {
           this.setState({showEmail: false})
         }}
@@ -448,29 +454,32 @@ export default class ObservationDetails extends Component {
   }
 
   getAccuracy() {
-    if (parseInt(this.observation.location.accuracy) === -2) {
+    if (parseInt(this.state.observation.location.accuracy) === -2) {
       return 'Entered manually by the user'
     }
 
-    if (User.can('view accurate location') || User.owns(this.observation)) {
-      return 'Within ' + this.observation.location.accuracy + ' meters radius'
+    if (User.can('view accurate location') || User.owns(this.state.observation)) {
+      return 'Within ' + this.state.observation.location.accuracy + ' meters radius'
     }
 
     return 'Within 5 miles radius'
   }
 
   render() {
-
     if (this.state.deleted) {
       return this.deleted()
     }
 
-    let data = this.observation.meta_data
+    if (!this.state.observation) {
+      return null
+    }
+
+    let data = this.state.observation.meta_data
     return (
       <div className="box">
         <div className="columns is-mobile flex-v-center">
           <div className="column">
-            <h3 className="title is-4">{this.observation.observation_category}</h3>
+            <h3 className="title is-4">{this.state.observation.observation_category}</h3>
           </div>
           <div className="column is-narrow">
             <span className="select">
@@ -483,11 +492,11 @@ export default class ObservationDetails extends Component {
               </select>
             </span>
           </div>
-          {User.can('delete observations') || User.owns(this.observation) ?
+          {User.can('delete observations') || User.owns(this.state.observation) ?
             <div className="column is-narrow">
               <button type="button"
                       className="button is-outlined is-danger"
-                      onClick={() => this.destroy(this.observation)}>
+                      onClick={() => this.destroy(this.state.observation)}>
                 <span className="icon is-small">
                   <i className="fa fa-trash"></i>
                 </span>
@@ -504,19 +513,19 @@ export default class ObservationDetails extends Component {
                 <tbody>
                 <tr>
                   <th>Submitted By</th>
-                  <td>{this.observation.user.name}</td>
+                  <td>{this.state.observation.user.name}</td>
                 </tr>
 
-                {this.observation.custom_id ?
+                {this.state.observation.custom_id ?
                   <tr>
                     <th>Custom Tree Identifier</th>
-                    <td>{this.observation.custom_id}</td>
+                    <td>{this.state.observation.custom_id}</td>
                   </tr> : null}
 
-                {this.observation.mobile_id ?
+                {this.state.observation.mobile_id ?
                   <tr>
                     <th>ID</th>
-                    <td>{this.observation.mobile_id}</td>
+                    <td>{this.state.observation.mobile_id}</td>
                   </tr>
                   : null}
 
@@ -536,19 +545,19 @@ export default class ObservationDetails extends Component {
                   return this._renderMetaData(label, val, key, unit)
                 })}
 
-                {this.observation.location.address && this.observation.location.address.formatted ?
+                {this.state.observation.location.address && this.state.observation.location.address.formatted ?
                   <tr>
                     <th>Address</th>
-                    <td>{this.observation.location.address.formatted}</td>
+                    <td>{this.state.observation.location.address.formatted}</td>
                   </tr>
                   : null}
 
                 <tr>
                   <th>Coordinates</th>
-                  <td>{this.observation.location.latitude}, {this.observation.location.longitude}</td>
+                  <td>{this.state.observation.location.latitude}, {this.state.observation.location.longitude}</td>
                 </tr>
 
-                {this.observation.location.accuracy ?
+                {this.state.observation.location.accuracy ?
                   <tr>
                     <th>Location Accuracy</th>
                     <td>{this.getAccuracy()}</td>
@@ -557,9 +566,9 @@ export default class ObservationDetails extends Component {
 
                 <tr>
                   <th>Date Collected</th>
-                  <td>{this.observation.collection_date}</td>
+                  <td>{this.state.observation.collection_date}</td>
                 </tr>
-                {this.observation.images.length === 0 ? null :
+                {this.state.observation.images.length === 0 ? null :
                   <tr>
                     <th>Photos</th>
                     <td>
@@ -647,14 +656,16 @@ export default class ObservationDetails extends Component {
   }
 }
 
-ObservationDetails.propTypes = {
+ObservationDetails
+  .propTypes = {
   observation        : PropTypes.object.isRequired,
   showControls       : PropTypes.bool,
   onAddedToCollection: PropTypes.func,
   onFlagCreated      : PropTypes.func,
 }
 
-ObservationDetails.defaultProps = {
+ObservationDetails
+  .defaultProps = {
   showControls: false,
   onFlagCreated(flag) {
   },
