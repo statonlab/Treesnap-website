@@ -71,12 +71,7 @@ export default class ObservationDetails extends Component {
         console.log(error)
       })
     }
-  }
 
-  /**
-   * Fix height and load collections.
-   */
-  componentDidMount() {
     if (window.fixHeight) {
       window.fixHeight()
     }

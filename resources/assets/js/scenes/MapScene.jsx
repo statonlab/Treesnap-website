@@ -60,7 +60,7 @@ export default class App extends Scene {
   }
 
   /**
-   * Set the maps and load observations into the state.
+   * Set loading state and inititate the sidebar
    */
   componentDidMount() {
     this.loadCategories()
@@ -68,12 +68,6 @@ export default class App extends Scene {
     this.loadFilters()
     this.loadCount()
     document.body.className = 'map-page'
-  }
-
-  /**
-   * Set loading state and inititate the sidebar
-   */
-  componentDidMount() {
     this.setState({loading: true})
     this.initSidebar()
   }

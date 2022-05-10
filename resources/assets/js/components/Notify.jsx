@@ -17,9 +17,7 @@ export default class Notify extends Component {
     this.timer = setTimeout(() => {
       this.hide()
     }, 5000)
-  }
 
-  componentDidMount() {
     setTimeout(() => {
       this.setState({show: true})
     }, 100)
