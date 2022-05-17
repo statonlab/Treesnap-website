@@ -36,7 +36,13 @@ Route::group([
     Route::post('/action/completed/{action}', 'ActionsController@completed');
 
     Route::get('/share/observation/{id}', 'ShareTokensController@share');
+});
 
+// Shared SPA and Mobile APIs
+Route::group([
+    'prefix' => 'v1',
+    'middleware' => ['auth:api'],
+], function () {
     // Delete account requests
     Route::get('/delete-account-requests', 'DeleteAccountRequestController@myIndex');
     Route::delete('/delete-account-request/{deleteRequest}', 'DeleteAccountRequestController@delete');

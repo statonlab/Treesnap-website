@@ -53,7 +53,7 @@ class DeleteAccountRequestPolicy
      */
     public function update(User $user, DeleteAccountRequest $deleteAccountRequest): bool
     {
-        return $user->isAdmin() || $user->id === $deleteAccountRequest->user_id;
+        return $user->isAdmin() || $user->id === (int) $deleteAccountRequest->user_id;
     }
 
     /**

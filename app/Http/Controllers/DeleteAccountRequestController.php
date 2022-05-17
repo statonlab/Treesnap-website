@@ -52,4 +52,18 @@ class DeleteAccountRequestController extends Controller
 
         return $this->success($deleteAccountRequest);
     }
+
+    /**
+     * @param \App\DeleteAccountRequest $deleteRequest
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function delete(DeleteAccountRequest $deleteRequest): JsonResponse
+    {
+        $this->authorize('delete', $deleteRequest);
+
+        $deleteRequest->delete();
+
+        return $this->created();
+    }
 }
