@@ -13,9 +13,10 @@ class CreateDeleteAccountRequestsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('delete_account_requests');
         Schema::create('delete_account_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('user_id');
             $table->string('reason')->nullable();
             $table->timestamps();
         });
