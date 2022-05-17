@@ -199,6 +199,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['adm
     // Notifications Settings
     Route::get('/web/notifications', 'AdminNotificationsController@index');
     Route::post('/web/notifications/toggle', 'AdminNotificationsController@toggleSubscription');
+
+    // Delete Requests
+    Route::get('/web/delete-requests', 'DeleteAccountRequestController@index');
+    Route::get('/web/delete-request/{id}', 'DeleteAccountRequestController@show');
 });
 
 // Admin or Scientist Only Route Group

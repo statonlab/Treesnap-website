@@ -36,6 +36,11 @@ Route::group([
     Route::post('/action/completed/{action}', 'ActionsController@completed');
 
     Route::get('/share/observation/{id}', 'ShareTokensController@share');
+
+    // Delete account requests
+    Route::get('/delete-account-requests', 'DeleteAccountRequestController@myIndex');
+    Route::delete('/delete-account-request/{deleteRequest}', 'DeleteAccountRequestController@delete');
+    Route::post('/delete-account-requests', 'DeleteAccountRequestController@create');
 });
 
 // Methods that do not require an api_key
