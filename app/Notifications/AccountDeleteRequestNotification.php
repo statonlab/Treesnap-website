@@ -41,7 +41,9 @@ class AccountDeleteRequestNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->line($this->request->user->name.' has requested to delete their account.')
+        return (new MailMessage)
+            ->replyTo($this->request->user->email)
+            ->line($this->request->user->name.' has requested to delete their account.')
             ->when($this->request->reason, function ($message) {
                 $message->line('Reason: "'.$this->request->reason.'"');
             })
