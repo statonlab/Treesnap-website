@@ -14,6 +14,8 @@ trait Observes
      */
     protected $observation_categories = [
         'American Chestnut',
+        'American Beech',
+        'Cacao',
         'Ash',
         'Hemlock',
         'White Oak',
