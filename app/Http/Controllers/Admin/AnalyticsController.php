@@ -43,16 +43,9 @@ class AnalyticsController extends Controller
      *
      * @return mixed
      */
-    public function usersTrainedPercentage()
+    public function usersWithObservations()
     {
-        $all = User::count();
-        $trained = User::where('class', 'Trained')->count();
-
-        if ($all === 0) {
-            return $this->success("0%");
-        }
-
-        return $this->success(number_format(($trained / $all) * 100, 0)."%");
+        return $this->success(User::whereHas('observations')->count());
     }
 
     /**
@@ -205,15 +198,18 @@ class AnalyticsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function downloads(Request $request) {
+    public function downloads(Request $request)
+    {
         $this->validate($request, [
             'per_page' => 'nullable|int|min:6|max:25',
-            'page' => 'nullable|int'
+            'page' => 'nullable|int',
         ]);
 
         $per_page = $request->per_page ?: 10;
 
-        $downloads = DownloadStatistic::orderBy('created_at', 'desc')->with('user')->paginate($per_page);
+        $downloads = DownloadStatistic::orderBy('created_at', 'desc')
+            ->with('user')
+            ->paginate($per_page);
 
         return $this->success($downloads);
     }

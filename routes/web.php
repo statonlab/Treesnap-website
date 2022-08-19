@@ -225,7 +225,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     // Analytics
     Route::get('/web/analytics/users/count', 'AnalyticsController@usersCount');
     Route::get('/web/analytics/users/trained/count', 'AnalyticsController@usersTrainedCount');
-    Route::get('/web/analytics/users/trained/percentage', 'AnalyticsController@usersTrainedPercentage');
+    Route::get('/web/analytics/users/with-observations', 'AnalyticsController@usersWithObservations');
     Route::get('/web/analytics/users-over-time', 'AnalyticsController@usersOverTime');
     Route::get('/web/analytics/downloads', 'AnalyticsController@downloads');
 

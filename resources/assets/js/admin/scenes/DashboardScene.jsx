@@ -29,9 +29,9 @@ export default class DashboardScene extends Scene {
                      url="/admin/web/analytics/observations/count"/>
           </div>
           <div className="column">
-            <InfoBox title="Trained Users"
+            <InfoBox title="Active Users"
                      icon="fa-users"
-                     url="/admin/web/analytics/users/trained/percentage"/>
+                     url="/admin/web/analytics/users/with-observations"/>
           </div>
         </div>
 

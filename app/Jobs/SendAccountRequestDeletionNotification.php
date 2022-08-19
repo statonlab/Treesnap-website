@@ -34,15 +34,11 @@ class SendAccountRequestDeletionNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $cached = cache()->get("delete-account-request-{$this->request->user_id}");
-
-        if ($cached) {
+        if (DeleteAccountRequest::where('created_at', '>=', now()->subDay())
+            ->where('user_id', $this->request->user_id)
+            ->exists()) {
             return;
         }
-
-        // send only one notification per day per user
-        cache()->put("delete-account-request-{$this->request->user_id}", true,
-            now()->addDay());
 
         User::whereHas('roles', function ($query) {
             $query->where('is_admin', true);
