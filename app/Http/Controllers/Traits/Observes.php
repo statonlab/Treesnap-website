@@ -186,12 +186,6 @@ trait Observes
         $all = [];
         /** @var \App\Observation $observation */
         foreach ($observations as $observation) {
-//            $flattenedImages = [];
-//            foreach ($observation->images as $images) {
-//                foreach ($images as $image) {
-//                    $flattenedImages[] = $image;
-//                }
-//            }
             if (empty($observation->fuzzy_coords)) {
                 $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude,
                     $observation->longitude);
@@ -203,19 +197,12 @@ trait Observes
             if ($authenticated_user) {
                 $owner = $observation->user_id === $authenticated_user->id;
             }
-            if ($authenticated_user && ! $isAdmin && ! $owner) {
+            if ($authenticated_user && !$isAdmin && !$owner) {
                 $inGroup = $authenticated_user->hasFriend($observation->user_id);
             }
 
             $title = $observation->observation_category;
             $title = $title === 'Other' && isset($observation->data['otherLabel']) ? "{$title} ({$observation->data['otherLabel']})" : $title;
-//            $shareData = $isAdmin || $inGroup || $owner;
-
-//            if (! $observation->has_private_comments || ($authenticated_user && $authenticated_user->id === $observation->user_id)) {
-//                $data = $observation->data;
-//            } else {
-//                $data = array_except($observation->data, ['comment']);
-//            }
 
             $owner = $this->getUserDetails($observation, $authenticated_user, $inGroup,
                 $isAdmin);
@@ -229,7 +216,7 @@ trait Observes
                     'longitude' => $observation->fuzzy_coords['longitude'],
                 ],
                 'owner' => $owner['name'], //
-                'user_id' => $owner['id'],
+//                'user_id' => $owner['id'],
                 'date' => $observation->collection_date->toDateString(), //
                 'ref' => null,
                 'flags' => $authenticated_user ? $observation->flags : [],
