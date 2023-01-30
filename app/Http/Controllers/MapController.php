@@ -196,8 +196,8 @@ class MapController extends Controller
             'category' => $observation->observation_category,
             'images' => $flattenedImages,
             'position' => [
-                'latitude' => $observation->fuzzy_coords['latitude'],//$shareData ? $observation->latitude : $observation->fuzzy_coords['latitude'],
-                'longitude' => $observation->fuzzy_coords['longitude'],//$shareData ? $observation->longitude : $observation->fuzzy_coords['longitude'],
+                'latitude' => $shareData ? $observation->latitude : $observation->fuzzy_coords['latitude'],
+                'longitude' => $shareData ? $observation->longitude : $observation->fuzzy_coords['longitude'],
                 'address' => $shareData ? $observation->address : [],
                 'accuracy' => $observation->location_accuracy,
             ],

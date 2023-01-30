@@ -551,7 +551,7 @@ export default class App extends Scene {
                     position={marker.position}
                     title={marker.title}
                     ref={(ref) => marker.ref = ref}
-                    // owner_id={marker.user_id}
+                    owner_id={marker.user_id}
                     onClick={() => {
                       this.setState({
                         selectedMarker: marker,

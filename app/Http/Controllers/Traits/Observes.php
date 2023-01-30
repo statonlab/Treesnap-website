@@ -215,9 +215,9 @@ trait Observes
                     'latitude' => $observation->fuzzy_coords['latitude'],
                     'longitude' => $observation->fuzzy_coords['longitude'],
                 ],
-                'owner' => $owner['name'], //
-//                'user_id' => $owner['id'],
-                'date' => $observation->collection_date->toDateString(), //
+                'owner' => $owner['name'],
+                'user_id' => $owner['id'],
+                'date' => $observation->collection_date->toDateString(),
                 'ref' => null,
                 'flags' => $authenticated_user ? $observation->flags : [],
                 'collections' => $authenticated_user ? $observation->collections : [],
