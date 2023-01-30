@@ -459,7 +459,7 @@ export default class App extends Scene {
       }
     }).catch(error => {
       this.setState({loading: false})
-      console.log(error)
+      console.log(error.response)
     })
   }
 
@@ -551,9 +551,8 @@ export default class App extends Scene {
                     position={marker.position}
                     title={marker.title}
                     ref={(ref) => marker.ref = ref}
-                    owner_id={marker.user_id}
+                    // owner_id={marker.user_id}
                     onClick={() => {
-                      console.log('onClick of marker!')
                       this.setState({
                         selectedMarker: marker,
                         loadingObservation: true,
@@ -564,25 +563,21 @@ export default class App extends Scene {
                       setTimeout(() => { // minimum timeout of 0.1s, because if it's faster the spinner is ugly
                         axios.get(`/web/map/${marker.id}`)
                           .then(result => {
-                            console.log("Delayed for 1 second.");
                             marker = result.data
                             this.setState({
                               selectedMarker: result.data,
                               loadingObservation: false,
                             })
-
-                            console.log('selectedMarker set!')
                           }).catch(error => {
                           if (error.response) {
                             alert(error.response)
                           }
-                          console.log(error)
+                          console.log(error.response)
                           this.setState({
                             loadingObservation: false,
                           })
                         });
                       }, 100)
-
 
                       if (window.innerWidth > 797) {
                         this.openSidebar()
@@ -1058,90 +1053,90 @@ export default class App extends Scene {
     let data = marker.data
     return (
       <div>
-      { this.state.loadingObservation ?
-        <Spinner visible={this.state.loadingObservation} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
-        : <div>
-          <div className="sidebar-img" style={{backgroundImage: `url(${marker.thumbnail})`}}>
-            <a
-              className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
-              onClick={() => {
-                this.setState({galleryImages: marker.images, showModal: true})
-              }}>
-              <i className="fa fa-photo"></i>
-              <div className="has-text-centered">
-                Click to Enlarge
-              </div>
-            </a>
-          </div>
-
-          <div className="sidebar-icons-container">
-            <div className="card-footer">
+        {this.state.loadingObservation ?
+          <Spinner visible={this.state.loadingObservation} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
+          : <div>
+            <div className="sidebar-img" style={{backgroundImage: `url(${marker.thumbnail})`}}>
               <a
-                className="flex-column"
+                className="sidebar-img-overlay flexbox flex-v-center flex-h-center flex-column"
                 onClick={() => {
                   this.setState({galleryImages: marker.images, showModal: true})
                 }}>
-                <i className="fa fa-picture-o"></i>
-                <span className="help">Images</span>
+                <i className="fa fa-photo"></i>
+                <div className="has-text-centered">
+                  Click to Enlarge
+                </div>
               </a>
-              <a
-                className={`flex-column${marker.collections.length > 0 ? ' is-success' : ''}`}
-                onClick={this.showCollectionsForm.bind(this)}>
-                <i className="fa fa-star"></i>
-                <span className="help">Save</span>
-              </a>
-              <a
-                className={`flex-column${marker.flags.length > 0 ? ' is-danger' : ''}`}
-                onClick={this.showFlagForm.bind(this)}>
-                <i className="fa fa-flag"></i>
-                <span className="help">Flag</span>
-              </a>
+            </div>
+
+            <div className="sidebar-icons-container">
+              <div className="card-footer">
+                <a
+                  className="flex-column"
+                  onClick={() => {
+                    this.setState({galleryImages: marker.images, showModal: true})
+                  }}>
+                  <i className="fa fa-picture-o"></i>
+                  <span className="help">Images</span>
+                </a>
+                <a
+                  className={`flex-column${marker.collections.length > 0 ? ' is-success' : ''}`}
+                  onClick={this.showCollectionsForm.bind(this)}>
+                  <i className="fa fa-star"></i>
+                  <span className="help">Save</span>
+                </a>
+                <a
+                  className={`flex-column${marker.flags.length > 0 ? ' is-danger' : ''}`}
+                  onClick={this.showFlagForm.bind(this)}>
+                  <i className="fa fa-flag"></i>
+                  <span className="help">Flag</span>
+                </a>
+              </div>
+            </div>
+            <div className="sidebar-content">
+              <h3 className="title is-4">
+                {marker.title}
+              </h3>
+
+              {marker.custom_id ?
+                <div className="sidebar-item">
+                  <h5><strong>Custom Tree Identifier</strong></h5>
+                  <p className="ml-1">{marker.custom_id}</p>
+                </div>
+                : null}
+
+              {marker.mobile_id ?
+                <div className="sidebar-item">
+                  <h5><strong>ID</strong></h5>
+                  <p className="ml-1">{marker.mobile_id}</p>
+                </div>
+                : null}
+
+              <div className="sidebar-item">
+                <h5><strong>Collection Date</strong></h5>
+                <p className="ml-1">{marker.date}</p>
+              </div>
+
+              {Object.keys(data).map(key => {
+                if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
+                  return null
+                }
+                let unit = null
+                if (typeof data[`${key}_units`] !== 'undefined') {
+                  unit = data[`${key}_units`]
+                }
+                const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
+                return this._renderMetaData(label, data[key], key, marker, unit)
+              })}
+
+              <div className="sidebar-item">
+                <h5><strong>Observation Page</strong></h5>
+                <p className="ml-1"><Link to={`/observation/${marker.id}`}>Visit Observation Page</Link></p>
+              </div>
             </div>
           </div>
-          <div className="sidebar-content">
-            <h3 className="title is-4">
-              {marker.title}
-            </h3>
-
-            {marker.custom_id ?
-              <div className="sidebar-item">
-                <h5><strong>Custom Tree Identifier</strong></h5>
-                <p className="ml-1">{marker.custom_id}</p>
-              </div>
-              : null}
-
-            {marker.mobile_id ?
-              <div className="sidebar-item">
-                <h5><strong>ID</strong></h5>
-                <p className="ml-1">{marker.mobile_id}</p>
-              </div>
-              : null}
-
-            <div className="sidebar-item">
-              <h5><strong>Collection Date</strong></h5>
-              <p className="ml-1">{marker.date}</p>
-            </div>
-
-            {Object.keys(data).map(key => {
-              if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
-                return null
-              }
-              let unit = null
-              if (typeof data[`${key}_units`] !== 'undefined') {
-                unit = data[`${key}_units`]
-              }
-              const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-              return this._renderMetaData(label, data[key], key, marker, unit)
-            })}
-
-            <div className="sidebar-item">
-              <h5><strong>Observation Page</strong></h5>
-              <p className="ml-1"><Link to={`/observation/${marker.id}`}>Visit Observation Page</Link></p>
-            </div>
-          </div>
-        </div>
         }
-        </div>
+      </div>
     )
   }
 
