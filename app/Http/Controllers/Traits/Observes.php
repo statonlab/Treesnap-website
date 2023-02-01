@@ -209,22 +209,22 @@ trait Observes
 
             $all[] = [
                 'id' => $observation->id,
-                'title' => $title,
-                'category' => $observation->observation_category,
-                'position' => [
-                    'latitude' => $observation->fuzzy_coords['latitude'],
-                    'longitude' => $observation->fuzzy_coords['longitude'],
-                ],
-                'owner' => $owner['name'],
-                'user_id' => $owner['id'],
-                'date' => $observation->collection_date->toDateString(),
+//                'title' => $title,
+//                'category' => $observation->observation_category,
+//                'position' => [
+//                    'latitude' => $observation->fuzzy_coords['latitude'],
+//                    'longitude' => $observation->fuzzy_coords['longitude'],
+//                ],
+//                'owner' => $owner['name'],
+//                'user_id' => $owner['id'],
+//                'date' => $observation->collection_date->toDateString(),
                 'ref' => null,
-                'flags' => $authenticated_user ? $observation->flags : [],
-                'collections' => $authenticated_user ? $observation->collections : [],
-                'confirmations_count' => $observation->confirmations_count,
-                'thumbnail' => $observation->thumbnail,
-                'custom_id' => $observation->custom_id,
-                'mobile_id' => $observation->mobile_id,
+//                'flags' => $authenticated_user ? $observation->flags : [],
+//                'collections' => $authenticated_user ? $observation->collections : [],
+//                'confirmations_count' => $observation->confirmations_count,
+//                'thumbnail' => $observation->thumbnail,
+//                'custom_id' => $observation->custom_id,
+//                'mobile_id' => $observation->mobile_id,
             ];
         }
         return $all;

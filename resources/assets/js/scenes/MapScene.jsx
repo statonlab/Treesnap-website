@@ -1,5 +1,5 @@
 import 'dragscroll'
-import React, { Component, useEffect } from 'react'
+import React from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import Copyright from '../components/Copyright'
@@ -197,13 +197,17 @@ export default class App extends Scene {
     }
 
     let bounds = this.refs.maps.getBounds()
-
     axios.get('/web/map', {
-      params     : {
+      params: {
         bounds: {
           southWest: bounds.getSouthWest().toJSON(),
           northEast: bounds.getNorthEast().toJSON(),
         },
+        searchTerm: this.state.searchTerm,
+        selectedCategories: this.state.selectedCategories,
+        selectedCollection: this.state.selectedCollection,
+        selectedFilter: this.state.selectedFilter,
+        selectedConfirmation: this.state.selectedConfirmation,
       },
       cancelToken: new axios.CancelToken(c => this._request = c),
     }).then(response => {
@@ -217,16 +221,16 @@ export default class App extends Scene {
         this.disclaimer.show()
       }
 
-      let filtered
-      if (!this.filter) {
-        this.filter = new MarkersFilter(markers, this.state.selectedCategories)
-        filtered    = this.filter._filter()
-      } else {
-        this.filter.resetBounds()
-        filtered = this.filter.replace(markers)
-      }
+      // let filtered
+      // if (!this.filter) {
+      //   this.filter = new MarkersFilter(markers, this.state.selectedCategories)
+      //   filtered    = this.filter._filter()
+      // } else {
+      //   this.filter.resetBounds()
+      //   filtered = this.filter.replace(markers)
+      // }
 
-      this.setState({markers: filtered, loading: false})
+      this.setState({markers: markers, loading: false})
     }).catch(error => {
       this.setState({loading: false})
       console.log(error)
@@ -312,68 +316,68 @@ export default class App extends Scene {
     })
   }
 
-  /**
-   * Zoom to marker.
-   *
-   * @param marker
-   * @param zoom
-   */
-  goToSubmission(marker, zoom) {
-    if (typeof zoom === 'undefined') {
-      zoom = 15
-    }
+  // /**
+  //  * Zoom to marker.
+  //  *
+  //  * @param marker
+  //  * @param zoom
+  //  */
+  // goToSubmission(marker, zoom) {
+  //   if (typeof zoom === 'undefined') {
+  //     zoom = 15
+  //   }
+  //
+  //   const center = {
+  //     lat: marker.position.latitude ? marker.position.latitude : marker.position.fuzzy_coords.latitude,
+  //     lng: marker.position.longitude ? marker.position.longitude : marker.position.fuzzy_coords.longitude,
+  //   }
+  //
+  //   this.refs.maps.goTo(new google.maps.LatLng(center), zoom)
+  //
+  //   this.updateHistory(center, zoom)
+  // }
 
-    const center = {
-      lat: marker.position.latitude,
-      lng: marker.position.longitude,
-    }
-
-    this.refs.maps.goTo(new google.maps.LatLng(center), zoom)
-
-    this.updateHistory(center, zoom)
-  }
-
-  /**
-   * Render individual submission.
-   *
-   * @param marker
-   * @returns {XML}
-   */
-  _renderSubmission(marker) {
-    let title = marker.title
-    if (title.length > 30) {
-      title = title.substr(0, 30) + '...'
-    }
-    return (
-      <a
-        role="button"
-        className="bar-item"
-        style={{backgroundImage: `url(${marker.thumbnail})`}}
-        key={`marker_${marker.id}`}
-        onClick={() => {
-          this.setState({
-            selectedMarker: marker,
-            showFilters   : false,
-          })
-          this.openSidebar()
-          let zoom = this.refs.maps.getZoom()
-          this.goToSubmission(marker, zoom > 8 ? zoom : 8)
-          if (marker.ref !== null) {
-            marker.ref.openCallout()
-          }
-        }}>
-        <div className="bar-item-field">
-          <strong style={{color: '#fff'}}>{title}</strong>
-          <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
-            {marker.owner}
-          </p>
-          <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
-            {marker.date}
-          </p>
-        </div>
-      </a>
-    )
-  }
+  // /**
+  //  * Render individual submission.
+  //  *
+  //  * @param marker
+  //  * @returns {XML}
+  //  */
+  // _renderSubmission(marker) {
+  //   let title = marker.title
+  //   if (title.length > 30) {
+  //     title = title.substr(0, 30) + '...'
+  //   }
+  //   return (
+  //     <a
+  //       role="button"
+  //       className="bar-item"
+  //       style={{backgroundImage: `url(${marker.thumbnail})`}}
+  //       key={`marker_${marker.id}`}
+  //       onClick={() => {
+  //         this.setState({
+  //           selectedMarker: marker,
+  //           showFilters   : false,
+  //         })
+  //         this.openSidebar()
+  //         let zoom = this.refs.maps.getZoom()
+  //         this.goToSubmission(marker, zoom > 8 ? zoom : 8)
+  //         if (marker.ref !== null) {
+  //           marker.ref.openCallout()
+  //         }
+  //       }}>
+  //       <div className="bar-item-field">
+  //         <strong style={{color: '#fff'}}>{title}</strong>
+  //         <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
+  //           {marker.owner}
+  //         </p>
+  //         <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
+  //           {marker.date}
+  //         </p>
+  //       </div>
+  //     </a>
+  //   )
+  // }
 
   /**
    * Reset the position to the center and zoom out.
@@ -388,13 +392,16 @@ export default class App extends Scene {
    * @param name
    */
   changeCategory(name) {
-    let selectedCategories = this.state.categories
+    let selectedCategories
     if (name !== 'all') {
       selectedCategories = [name]
+    } else {
+      selectedCategories = this.state.categories
     }
 
-    let markers = this.filter.category(selectedCategories)
-    this.setState({markers, selectedCategories})
+    this.setState({selectedCategories},
+      () =>{this.loadObservations()}
+    );
   }
 
   /**
@@ -403,8 +410,9 @@ export default class App extends Scene {
    * @param selectedCollection
    */
   changeCollection(selectedCollection) {
-    let markers = this.filter.collections(selectedCollection)
-    this.setState({markers, selectedCollection})
+    this.setState({selectedCollection},
+      () =>{this.loadObservations()}
+    );
   }
 
   /**
@@ -414,9 +422,9 @@ export default class App extends Scene {
    */
   changeConfirmation(selectedConfirmation) {
     selectedConfirmation = parseInt(selectedConfirmation)
-    let markers          = this.filter.confirmed(selectedConfirmation)
-
-    this.setState({markers, selectedConfirmation})
+    this.setState({selectedConfirmation},
+    () =>{this.loadObservations()}
+    );
   }
 
   /**
@@ -498,8 +506,12 @@ export default class App extends Scene {
    * @param searchTerm
    */
   search(searchTerm) {
-    let markers = this.filter.search(searchTerm)
-    this.setState({markers, searchTerm})
+    let search = debounce(() => {
+      this.setState({searchTerm},
+        () =>{this.loadObservations()}
+      );
+    });
+    search()
   }
 
   /**
@@ -548,57 +560,71 @@ export default class App extends Scene {
         {this.state.markers.map(marker => {
           return (
             <Marker key={marker.id}
-                    position={marker.position}
+                    position={{'latitude' : marker.latitude, 'longitude' : marker.longitude}}
                     title={marker.title}
                     ref={(ref) => marker.ref = ref}
                     owner_id={marker.user_id}
                     onClick={() => {
                       this.setState({
-                        selectedMarker: marker,
+                        selectedMarker: null,
                         loadingObservation: true,
                         showFilters: false,
                         showCollectionsForm: false,
                         showFlagForm: false,
-                      })
-                      setTimeout(() => { // minimum timeout of 0.1s, because if it's faster the spinner is ugly
-                        axios.get(`/web/map/${marker.id}`)
-                          .then(result => {
-                            marker = result.data
-                            this.setState({
-                              selectedMarker: result.data,
-                              loadingObservation: false,
-                            })
-                          }).catch(error => {
-                          if (error.response) {
-                            alert(error.response)
-                          }
-                          console.log(error.response)
-                          this.setState({
-                            loadingObservation: false,
-                          })
-                        });
-                      }, 100)
+                      },() => {
+                          setTimeout(() => { // minimum timeout of 0.1s, because if it's faster the spinner is ugly
+                            axios.get(`/web/map/${marker.id}`)
+                              .then(result => {
+                                marker = result.data
+                                this.setState({
+                                  selectedMarker: result.data,
+                                  loadingObservation: false
+                                })
+                              }).catch(error => {
+                              if (error.response) {
+                                alert(error.response)
+                              }
+                              console.log(error.response)
+                              this.setState({
+                                loadingObservation: false,
+                              })
+                            });
+                          }, 100)
+                        })
 
                       if (window.innerWidth > 797) {
                         this.openSidebar()
                       }
                     }}
             >
-              <div className="media callout is-flex flex-v-center">
-                <div className="media-left mr-0">
-                  <img src={marker.thumbnail}
-                       alt={marker.title}
-                       style={{
-                         width: 50,
-                         height: 'auto',
-                       }}/>
+              {!this.state.loadingObservation &&
+                <div>
+                  <div className="media callout is-flex flex-v-center">
+                    <div>
+                      <div className="media-left mr-0">
+                        <img src={marker.thumbnail}
+                             alt={marker.title}
+                             style={{
+                               width: 50,
+                               height: 'auto',
+                             }}/>
+                      </div>
+                      {/*<Spinner visible={this.state.loadingObservation}*/}
+                      {/*         containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/> */}
+                      <div className="media-content">
+                        <div className="mb-0">
+                          <strong>{this.state.selectedMarker ? this.state.selectedMarker.title : ''}</strong></div>
+                        <div
+                          className="mb-0">By {this.state.selectedMarker ? this.state.selectedMarker.owner : ''}</div>
+                        <a href={`/observation/${this.state.selectedMarker ? this.state.selectedMarker.id : ''}`}>See
+                          full description</a>
+                      </div>
+
+                    </div>
+                  </div>
+
                 </div>
-                <div className="media-content">
-                  <div className="mb-0"><strong>{marker.title}</strong></div>
-                  <div className="mb-0">By {marker.owner}</div>
-                  <a href={`/observation/${marker.id}`}>See full description</a>
-                </div>
-              </div>
+              }
             </Marker>
           )
         })}
@@ -606,86 +632,86 @@ export default class App extends Scene {
     )
   }
 
-  /**
-   * Render bottom horizontal bar.
-   *
-   * @returns {XML}
-   * @private
-   */
-  _renderBottomBar() {
-    return (
-      <div className="horizontal-bar" id="horizontal-bar-container">
-        <a className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
-          <i className="fa fa-chevron-left"></i>
-        </a>
-        <div className="bar-items-container dragscroll"
-             id="horizontal-bar"
-             style={{overflowX: this.state.markers.length === 0 ? 'hidden' : 'scroll'}}
-             onScroll={this.setScrollState.bind(this)}>
-          {this.state.markers.slice(0, 20).map((marker, index) => {
-            return this._renderSubmission(marker, index)
-          })}
-          {this.state.markers.length === 0 ?
-            <p className="ml-1 mt-1 has-text-white">No results found. Try zooming out or moving the map to cover the locations you are interested in.</p>
-            : null}
-        </div>
-        <a className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
-          <i className="fa fa-chevron-right"></i>
-        </a>
-      </div>
-    )
-  }
-
-  /**
-   * Set the scroll bar position for the horizontal bar.
-   */
-  setScrollState() {
-    let bar            = document.getElementById('horizontal-bar')
-    let container      = document.getElementById('horizontal-bar-container')
-    let width          = bar.offsetWidth
-    let scrollPosition = bar.scrollLeft
-
-    if (width + scrollPosition === bar.scrollWidth) {
-      container.style.paddingRight = '65px'
-      bar.scrollLeft += 65
-    } else {
-      container.style.paddingRight = 0
-    }
-  }
-
-  /**
-   * Scroll the horizontal bar to the right
-   */
-  scrollRight() {
-    let scrolled = 0
-    let interval
-    let scroll   = () => {
-      if (scrolled === 200) {
-        clearInterval(interval)
-      }
-      scrolled += 5
-      document.getElementById('horizontal-bar').scrollLeft += 5
-    }
-
-    interval = setInterval(scroll, 5)
-  }
-
-  /**
-   * Scroll the horizontal bar to the left
-   */
-  scrollLeft() {
-    let scrolled = 0
-    let interval
-    let scroll   = () => {
-      if (scrolled === 200) {
-        clearInterval(interval)
-      }
-      scrolled += 5
-      document.getElementById('horizontal-bar').scrollLeft -= 5
-    }
-
-    interval = setInterval(scroll, 5)
-  }
+  // /**
+  //  * Render bottom horizontal bar.
+  //  *
+  //  * @returns {XML}
+  //  * @private
+  //  */
+  // _renderBottomBar() {
+  //   return (
+  //     <div className="horizontal-bar" id="horizontal-bar-container">
+  //       <a className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
+  //         <i className="fa fa-chevron-left"></i>
+  //       </a>
+  //       <div className="bar-items-container dragscroll"
+  //            id="horizontal-bar"
+  //            style={{overflowX: this.state.markers.length === 0 ? 'hidden' : 'scroll'}}
+  //            onScroll={this.setScrollState.bind(this)}>
+  //         {this.state.markers.slice(0, 20).map((marker, index) => {
+  //           return this._renderSubmission(marker, index)
+  //         })}
+  //         {this.state.markers.length === 0 ?
+  //           <p className="ml-1 mt-1 has-text-white">No results found. Try zooming out or moving the map to cover the locations you are interested in.</p>
+  //           : null}
+  //       </div>
+  //       <a className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
+  //         <i className="fa fa-chevron-right"></i>
+  //       </a>
+  //     </div>
+  //   )
+  // }
+  //
+  // /**
+  //  * Set the scroll bar position for the horizontal bar.
+  //  */
+  // setScrollState() {
+  //   let bar            = document.getElementById('horizontal-bar')
+  //   let container      = document.getElementById('horizontal-bar-container')
+  //   let width          = bar.offsetWidth
+  //   let scrollPosition = bar.scrollLeft
+  //
+  //   if (width + scrollPosition === bar.scrollWidth) {
+  //     container.style.paddingRight = '65px'
+  //     bar.scrollLeft += 65
+  //   } else {
+  //     container.style.paddingRight = 0
+  //   }
+  // }
+  //
+  // /**
+  //  * Scroll the horizontal bar to the right
+  //  */
+  // scrollRight() {
+  //   let scrolled = 0
+  //   let interval
+  //   let scroll   = () => {
+  //     if (scrolled === 200) {
+  //       clearInterval(interval)
+  //     }
+  //     scrolled += 5
+  //     document.getElementById('horizontal-bar').scrollLeft += 5
+  //   }
+  //
+  //   interval = setInterval(scroll, 5)
+  // }
+  //
+  // /**
+  //  * Scroll the horizontal bar to the left
+  //  */
+  // scrollLeft() {
+  //   let scrolled = 0
+  //   let interval
+  //   let scroll   = () => {
+  //     if (scrolled === 200) {
+  //       clearInterval(interval)
+  //     }
+  //     scrolled += 5
+  //     document.getElementById('horizontal-bar').scrollLeft -= 5
+  //   }
+  //
+  //   interval = setInterval(scroll, 5)
+  // }
 
   /**
    * Render sidebar filters.
@@ -705,8 +731,9 @@ export default class App extends Scene {
             <input className="input"
                    type="search"
                    placeholder="Search visible area on map"
-                   value={this.state.searchTerm}
-                   onChange={({target}) => this.search(target.value)}/>
+                   // value={this.state.searchTerm}
+                   onChange={({target}) => this.search(target.value)}
+            />
             <span className="icon is-small is-right">
               <i className="fa fa-search"></i>
             </span>
@@ -722,7 +749,9 @@ export default class App extends Scene {
             <span className="select is-full-width">
               <select onChange={({target}) => {
                 this.changeCategory(target.value)
-              }} value={this.state.selectedCategories.length === 1 ? this.state.selectedCategories[0] : 'all'}>
+              }}
+                      value={this.state.selectedCategories.length === 1 ? this.state.selectedCategories[0] : 'all'}
+              >
                 <option value={'all'}>All Categories</option>
                 {this.state.categories.map((category, index) => {
                   return <option value={category} key={index}>{category}</option>
@@ -1269,7 +1298,6 @@ export default class App extends Scene {
         {this._renderSidebar()}
         {this._renderMap()}
         {this._renderFilterButton()}
-        {this._renderBottomBar()}
         {this._renderImagesModal()}
 
         <Disclaimer ref={(ref) => this.disclaimer = ref}>
@@ -1289,4 +1317,17 @@ export default class App extends Scene {
       </div>
     )
   }
+}
+
+let searchTimer;
+const debounce = (func) => {
+  // let timer;
+  return function (...args) {
+    const context = this;
+    if (searchTimer) clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      searchTimer = null;
+      func.apply(context, args);
+    }, 600);
+  };
 }

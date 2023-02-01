@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\DealsWithObservationPermissions;
+use App\Http\Controllers\Traits\MapQuery;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
 use App\Observation;
@@ -11,7 +12,21 @@ use Cache;
 
 class MapController extends Controller
 {
-    use Responds, Observes, DealsWithObservationPermissions;
+    use Responds, Observes, DealsWithObservationPermissions, MapQuery;
+
+    public function simpleMap(Request $request)
+    {
+        $this->validate($request, [
+            'bounds' => 'nullable|json',
+        ]);
+
+        $user = $request->user();
+        $bounds = json_decode($request->bounds);
+
+        $observations = $this->queryObservations($request->all(), $user, $bounds);
+
+        return $observations->get();
+    }
 
     /**
      * Load observations for the map.
@@ -21,11 +36,24 @@ class MapController extends Controller
      */
     public function index(Request $request)
     {
-
         $this->validate($request, [
             'bounds' => 'nullable|json',
+            'search' => 'nullable|max:255',
+            'selectedCategories' => 'nullable|array',
+            'selectedCollection' => 'nullable|integer',
+            'selectedFilter' => 'nullable|integer',
+            'selectedConfirmation' => 'nullable|integer',
         ]);
+        info($request);
+        $user = $request->user();
+        $bounds = json_decode($request->bounds);
+        $observations = $this->queryObservations($request->all(), $user, $bounds);
 
+        return $this->success($observations->get());
+//        info($request->selectedCategories);
+//        info($request->selectedCollection);
+//        info($request->selectedFilter);
+//        info($request->selectedConfirmation);
         $user = $request->user();
         $isAdmin = false;
         if ($user) {
