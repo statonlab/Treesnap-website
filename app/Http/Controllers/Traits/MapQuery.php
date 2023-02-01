@@ -15,17 +15,17 @@ trait MapQuery
         $friends = $user->friends() + [$user->id];
 
         $observations = Observation::query()
-            ->with('user', function ($query) {
-//            $query->select([
-//                'id',
-//                'name',
-//                'is_anonymous'
-//            ]);
-            })->withCount([
-                'confirmations' => function ($query) {
-                    $query->where('correct', true);
-                },
-            ])
+//            ->with('user', function ($query) {
+////            $query->select([
+////                'id',
+////                'name',
+////                'is_anonymous'
+////            ]);
+//            })->withCount([
+//                'confirmations' => function ($query) {
+//                    $query->where('correct', true);
+//                },
+//            ])
             ->bounds($bounds)
             ->when($isAdmin || $isScientist, function ($query) {
                 // Admin logic
@@ -41,6 +41,7 @@ trait MapQuery
                         $friends,
                     ]);
             })
+            ->addSelect(['thumbnail', 'observation_category as title'])
             ->when(!$user, function ($query) {
                 $query->where('is_private', false);
             })
@@ -66,11 +67,12 @@ trait MapQuery
                 });
             })
             ->when(!empty($parameters['selectedConfirmation']), function ($query) use ($parameters) {
-                $query->whereHas('user', function ($query) use ($parameters) {
-                    $query->whereHas('confirmations', function ($query) use ($parameters) {
-                        $query->where('correct');
-                    });
-                });
+                $query->whereHas('confirmations');
+//                $query->whereHas('user', function ($query) use ($parameters) {
+//                    $query->whereHas('confirmations', function ($query) use ($parameters) {
+//                        $query->where('correct',true);
+//                    });
+//                });
             });
 
         return $observations->orderBy('observations.id', 'desc');

@@ -9,7 +9,6 @@ import Modal from '../components/Modal'
 import ImageGallery from 'react-image-gallery'
 import Spinner from '../components/Spinner'
 import Disclaimer from '../components/Disclaimer'
-import MarkersFilter from '../helpers/MarkersFilter'
 import Labels from '../helpers/Labels'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import { Link } from 'react-router-dom'
@@ -43,6 +42,7 @@ export default class App extends Scene {
       showSidebar          : false,
       loading              : false,
       loadingObservation   : true,
+      loadingMap           : true,
       observation          : false,
       showFilters          : false,
       searchTerm           : '',
@@ -196,6 +196,8 @@ export default class App extends Scene {
       this._request()
     }
 
+    this.setState({loadingMap: true})
+
     let bounds = this.refs.maps.getBounds()
     axios.get('/web/map', {
       params: {
@@ -221,16 +223,9 @@ export default class App extends Scene {
         this.disclaimer.show()
       }
 
-      // let filtered
-      // if (!this.filter) {
-      //   this.filter = new MarkersFilter(markers, this.state.selectedCategories)
-      //   filtered    = this.filter._filter()
-      // } else {
-      //   this.filter.resetBounds()
-      //   filtered = this.filter.replace(markers)
-      // }
-
-      this.setState({markers: markers, loading: false})
+      // setTimeout(() => { // minimum timeout of 0.1s, because if it's faster the spinner is ugly
+        this.setState({markers: markers, loading: false, loadingMap: false})
+      // },1000)
     }).catch(error => {
       this.setState({loading: false})
       console.log(error)
@@ -247,10 +242,6 @@ export default class App extends Scene {
         categories        : categories,
         selectedCategories: categories,
       })
-
-      if (this.filter) {
-        this.filter.setCategories(categories)
-      }
     }).catch(error => {
       console.log(error.response)
     })
@@ -315,69 +306,6 @@ export default class App extends Scene {
       console.log(error.response)
     })
   }
-
-  // /**
-  //  * Zoom to marker.
-  //  *
-  //  * @param marker
-  //  * @param zoom
-  //  */
-  // goToSubmission(marker, zoom) {
-  //   if (typeof zoom === 'undefined') {
-  //     zoom = 15
-  //   }
-  //
-  //   const center = {
-  //     lat: marker.position.latitude ? marker.position.latitude : marker.position.fuzzy_coords.latitude,
-  //     lng: marker.position.longitude ? marker.position.longitude : marker.position.fuzzy_coords.longitude,
-  //   }
-  //
-  //   this.refs.maps.goTo(new google.maps.LatLng(center), zoom)
-  //
-  //   this.updateHistory(center, zoom)
-  // }
-
-  // /**
-  //  * Render individual submission.
-  //  *
-  //  * @param marker
-  //  * @returns {XML}
-  //  */
-  // _renderSubmission(marker) {
-  //   let title = marker.title
-  //   if (title.length > 30) {
-  //     title = title.substr(0, 30) + '...'
-  //   }
-  //   return (
-  //     <a
-  //       role="button"
-  //       className="bar-item"
-  //       style={{backgroundImage: `url(${marker.thumbnail})`}}
-  //       key={`marker_${marker.id}`}
-  //       onClick={() => {
-  //         this.setState({
-  //           selectedMarker: marker,
-  //           showFilters   : false,
-  //         })
-  //         this.openSidebar()
-  //         let zoom = this.refs.maps.getZoom()
-  //         this.goToSubmission(marker, zoom > 8 ? zoom : 8)
-  //         if (marker.ref !== null) {
-  //           marker.ref.openCallout()
-  //         }
-  //       }}>
-  //       <div className="bar-item-field">
-  //         <strong style={{color: '#fff'}}>{title}</strong>
-  //         <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
-  //           {marker.owner}
-  //         </p>
-  //         <p style={{color: '#eee', fontWeight: '500', fontSize: '14px'}}>
-  //           {marker.date}
-  //         </p>
-  //       </div>
-  //     </a>
-  //   )
-  // }
 
   /**
    * Reset the position to the center and zoom out.
@@ -535,11 +463,41 @@ export default class App extends Scene {
         return
       }
     }
+  }
 
-    if (this.filter) {
-      let markers = this.filter.bounds(newBounds)
-      this.setState({markers})
+  onMarkerClick(marker) {
+    if (this.state.selectedMarker && (marker.id == this.state.selectedMarker.id)) {
+      return
     }
+
+    this.setState({
+      selectedMarker: null,
+      loadingObservation: true,
+      showFilters: false,
+      showCollectionsForm: false,
+      showFlagForm: false,
+    }, () => {
+      axios.get(`/web/map/${marker.id}`)
+        .then(result => {
+            this.setState({
+              selectedMarker: result.data,
+              loadingObservation: false
+            }, () => {
+            })
+          }).catch(error => {
+          if (error.response) {
+            alert(error.response)
+          }
+          console.log(error.response)
+          this.setState({
+            loadingObservation: false,
+          })
+        });
+      })
+    if (window.innerWidth > 797) {
+      this.openSidebar()
+    }
+    return true
   }
 
   /**
@@ -560,71 +518,17 @@ export default class App extends Scene {
         {this.state.markers.map(marker => {
           return (
             <Marker key={marker.id}
-                    position={{'latitude' : marker.latitude, 'longitude' : marker.longitude}}
+                    position={{
+                      'latitude': marker.latitude ? marker.latitude : marker.fuzzy_coords.latitude,
+                      'longitude': marker.longitude ? marker.longitude : marker.fuzzy_coords.longitude
+                    }}
                     title={marker.title}
                     ref={(ref) => marker.ref = ref}
                     owner_id={marker.user_id}
                     onClick={() => {
-                      this.setState({
-                        selectedMarker: null,
-                        loadingObservation: true,
-                        showFilters: false,
-                        showCollectionsForm: false,
-                        showFlagForm: false,
-                      },() => {
-                          setTimeout(() => { // minimum timeout of 0.1s, because if it's faster the spinner is ugly
-                            axios.get(`/web/map/${marker.id}`)
-                              .then(result => {
-                                marker = result.data
-                                this.setState({
-                                  selectedMarker: result.data,
-                                  loadingObservation: false
-                                })
-                              }).catch(error => {
-                              if (error.response) {
-                                alert(error.response)
-                              }
-                              console.log(error.response)
-                              this.setState({
-                                loadingObservation: false,
-                              })
-                            });
-                          }, 100)
-                        })
-
-                      if (window.innerWidth > 797) {
-                        this.openSidebar()
-                      }
-                    }}
-            >
-              {!this.state.loadingObservation &&
-                <div>
-                  <div className="media callout is-flex flex-v-center">
-                    <div>
-                      <div className="media-left mr-0">
-                        <img src={marker.thumbnail}
-                             alt={marker.title}
-                             style={{
-                               width: 50,
-                               height: 'auto',
-                             }}/>
-                      </div>
-                      {/*<Spinner visible={this.state.loadingObservation}*/}
-                      {/*         containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/> */}
-                      <div className="media-content">
-                        <div className="mb-0">
-                          <strong>{this.state.selectedMarker ? this.state.selectedMarker.title : ''}</strong></div>
-                        <div
-                          className="mb-0">By {this.state.selectedMarker ? this.state.selectedMarker.owner : ''}</div>
-                        <a href={`/observation/${this.state.selectedMarker ? this.state.selectedMarker.id : ''}`}>See
-                          full description</a>
-                      </div>
-
-                    </div>
-                  </div>
-
-                </div>
-              }
+                      this.onMarkerClick(marker)
+                    }}>
+              {this._renderMarkerPopup(marker)}
             </Marker>
           )
         })}
@@ -633,85 +537,47 @@ export default class App extends Scene {
   }
 
   // /**
-  //  * Render bottom horizontal bar.
+  //  * Get the correct marker popup content.
+  //  * If only showing thumbnail and title, this function isn't being used.
   //  *
-  //  * @returns {XML}
-  //  * @private
+  //  * @returns {*}
   //  */
-  // _renderBottomBar() {
-  //   return (
-  //     <div className="horizontal-bar" id="horizontal-bar-container">
-  //       <a className="scroll scroll-left" onClick={this.scrollLeft.bind(this)}>
-  //         <i className="fa fa-chevron-left"></i>
-  //       </a>
-  //       <div className="bar-items-container dragscroll"
-  //            id="horizontal-bar"
-  //            style={{overflowX: this.state.markers.length === 0 ? 'hidden' : 'scroll'}}
-  //            onScroll={this.setScrollState.bind(this)}>
-  //         {this.state.markers.slice(0, 20).map((marker, index) => {
-  //           return this._renderSubmission(marker, index)
-  //         })}
-  //         {this.state.markers.length === 0 ?
-  //           <p className="ml-1 mt-1 has-text-white">No results found. Try zooming out or moving the map to cover the locations you are interested in.</p>
-  //           : null}
-  //       </div>
-  //       <a className="scroll scroll-right" onClick={this.scrollRight.bind(this)}>
-  //         <i className="fa fa-chevron-right"></i>
-  //       </a>
-  //     </div>
-  //   )
-  // }
+  // getPopupContent(marker) {
+  //   // if (this.state.showFilters) {
+  //   //   return this._renderFilters()
+  //   // }
   //
-  // /**
-  //  * Set the scroll bar position for the horizontal bar.
-  //  */
-  // setScrollState() {
-  //   let bar            = document.getElementById('horizontal-bar')
-  //   let container      = document.getElementById('horizontal-bar-container')
-  //   let width          = bar.offsetWidth
-  //   let scrollPosition = bar.scrollLeft
-  //
-  //   if (width + scrollPosition === bar.scrollWidth) {
-  //     container.style.paddingRight = '65px'
-  //     bar.scrollLeft += 65
-  //   } else {
-  //     container.style.paddingRight = 0
-  //   }
-  // }
-  //
-  // /**
-  //  * Scroll the horizontal bar to the right
-  //  */
-  // scrollRight() {
-  //   let scrolled = 0
-  //   let interval
-  //   let scroll   = () => {
-  //     if (scrolled === 200) {
-  //       clearInterval(interval)
-  //     }
-  //     scrolled += 5
-  //     document.getElementById('horizontal-bar').scrollLeft += 5
+  //   if (this.state.markerPopupReady === marker.id) {
+  //     return this._renderMarkerPopup(marker)
   //   }
   //
-  //   interval = setInterval(scroll, 5)
+  //   return null
   // }
-  //
-  // /**
-  //  * Scroll the horizontal bar to the left
-  //  */
-  // scrollLeft() {
-  //   let scrolled = 0
-  //   let interval
-  //   let scroll   = () => {
-  //     if (scrolled === 200) {
-  //       clearInterval(interval)
-  //     }
-  //     scrolled += 5
-  //     document.getElementById('horizontal-bar').scrollLeft -= 5
-  //   }
-  //
-  //   interval = setInterval(scroll, 5)
-  // }
+
+  _renderMarkerPopup(marker) {
+    return (
+      <div className="media callout is-flex flex-v-center">
+          <div>
+            <div className="media-left mr-0">
+              <img src={marker.thumbnail}
+                   alt={marker.title}
+                   style={{
+                     width: 50,
+                     height: 'auto',
+                   }}/>
+            </div>
+            <div className="media-content">
+              <div className="mb-0">
+                <strong>{marker.title}</strong></div>
+              {/*<div*/}
+              {/*  className="mb-0">By {this.state.selectedMarker ? this.state.selectedMarker.owner : ''}</div>*/}
+              <a href={`/observation/${marker.id}`}>See
+                full description</a>
+            </div>
+          </div>
+      </div>
+    )
+  }
 
   /**
    * Render sidebar filters.
@@ -731,7 +597,6 @@ export default class App extends Scene {
             <input className="input"
                    type="search"
                    placeholder="Search visible area on map"
-                   // value={this.state.searchTerm}
                    onChange={({target}) => this.search(target.value)}
             />
             <span className="icon is-small is-right">
@@ -750,8 +615,7 @@ export default class App extends Scene {
               <select onChange={({target}) => {
                 this.changeCategory(target.value)
               }}
-                      value={this.state.selectedCategories.length === 1 ? this.state.selectedCategories[0] : 'all'}
-              >
+                      value={this.state.selectedCategories.length === 1 ? this.state.selectedCategories[0] : 'all'}>
                 <option value={'all'}>All Categories</option>
                 {this.state.categories.map((category, index) => {
                   return <option value={category} key={index}>{category}</option>
@@ -1034,7 +898,7 @@ export default class App extends Scene {
       console.log(error)
     })
   }
-
+  
   /**
    * Render flag observation form.
    *
@@ -1127,19 +991,15 @@ export default class App extends Scene {
                 {marker.title}
               </h3>
 
-              {marker.custom_id ?
-                <div className="sidebar-item">
-                  <h5><strong>Custom Tree Identifier</strong></h5>
-                  <p className="ml-1">{marker.custom_id}</p>
-                </div>
-                : null}
+              <div className="sidebar-item">
+                <h5><strong>Custom Tree Identifier</strong></h5>
+                <p className="ml-1">{marker.custom_id}</p>
+              </div>
 
-              {marker.mobile_id ?
-                <div className="sidebar-item">
-                  <h5><strong>ID</strong></h5>
-                  <p className="ml-1">{marker.mobile_id}</p>
-                </div>
-                : null}
+              <div className="sidebar-item">
+                <h5><strong>ID</strong></h5>
+                <p className="ml-1">{marker.mobile_id}</p>
+              </div>
 
               <div className="sidebar-item">
                 <h5><strong>Collection Date</strong></h5>
