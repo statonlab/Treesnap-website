@@ -186,6 +186,13 @@ trait Observes
         $all = [];
         /** @var \App\Observation $observation */
         foreach ($observations as $observation) {
+            $flattenedImages = [];
+            foreach ($observation->images as $images) {
+                foreach ($images as $image) {
+                    $flattenedImages[] = $image;
+                }
+            }
+
             if (empty($observation->fuzzy_coords)) {
                 $observation->fuzzy_coords = $this->fuzifyCoorinates($observation->latitude,
                     $observation->longitude);
@@ -203,6 +210,13 @@ trait Observes
 
             $title = $observation->observation_category;
             $title = $title === 'Other' && isset($observation->data['otherLabel']) ? "{$title} ({$observation->data['otherLabel']})" : $title;
+            $shareData = $isAdmin || $inGroup || $owner;
+
+            if (! $observation->has_private_comments || ($authenticated_user && $authenticated_user->id === $observation->user_id)) {
+                $data = $observation->data;
+            } else {
+                $data = array_except($observation->data, ['comment']);
+            }
 
             $owner = $this->getUserDetails($observation, $authenticated_user, $inGroup,
                 $isAdmin);
@@ -211,22 +225,28 @@ trait Observes
                 'id' => $observation->id,
                 'title' => $title,
                 'category' => $observation->observation_category,
+                'images' => $flattenedImages,
                 'position' => [
-                    'latitude' => $observation->fuzzy_coords['latitude'],
-                    'longitude' => $observation->fuzzy_coords['longitude'],
+                    'latitude' => $shareData ? $observation->latitude : $observation->fuzzy_coords['latitude'],
+                    'longitude' => $shareData ? $observation->longitude : $observation->fuzzy_coords['longitude'],
+                    'address' => $shareData ? $observation->address : [],
+                    'accuracy' => $observation->location_accuracy,
                 ],
                 'owner' => $owner['name'],
                 'user_id' => $owner['id'],
                 'date' => $observation->collection_date->toDateString(),
+                'data' => $data,
                 'ref' => null,
                 'flags' => $authenticated_user ? $observation->flags : [],
                 'collections' => $authenticated_user ? $observation->collections : [],
                 'confirmations_count' => $observation->confirmations_count,
                 'thumbnail' => $observation->thumbnail,
+                'has_private_comments' => $observation->has_private_comments,
                 'custom_id' => $observation->custom_id,
                 'mobile_id' => $observation->mobile_id,
             ];
         }
+        
         return $all;
     }
 
