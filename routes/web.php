@@ -50,6 +50,7 @@ Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
 // Map
 Route::get('/web/map', 'MapController@index');
 Route::get('/web/map/count', 'MapController@countObservations');
+Route::get('/web/map/{observation}', 'MapController@showObservation');
 
 // Users
 Route::get('/web/user/status', 'UsersController@status');

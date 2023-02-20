@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Collection;
 use App\Services\MetaLabels;
 
 trait Observes
@@ -175,12 +176,12 @@ trait Observes
     /**
      * Create a response optimized for the map.
      *
-     * @param array $observations
+     * @param $observations
      * @param bool $isAdmin
-     * @param \App\User $authenticated_user
-     * @return mixed
+     * @param \App\User|bool $authenticated_user
+     * @return array
      */
-    protected function prepForMap($observations, $isAdmin, $authenticated_user = false)
+    protected function prepForMap($observations, bool $isAdmin, \App\User|bool $authenticated_user = false): array
     {
         $all = [];
         /** @var \App\Observation $observation */
@@ -203,8 +204,7 @@ trait Observes
             if ($authenticated_user) {
                 $owner = $observation->user_id === $authenticated_user->id;
             }
-
-            if ($authenticated_user && ! $isAdmin && ! $owner) {
+            if ($authenticated_user && !$isAdmin && !$owner) {
                 $inGroup = $authenticated_user->hasFriend($observation->user_id);
             }
 
@@ -246,7 +246,7 @@ trait Observes
                 'mobile_id' => $observation->mobile_id,
             ];
         }
-
+        
         return $all;
     }
 

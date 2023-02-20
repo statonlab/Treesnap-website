@@ -44,7 +44,7 @@ export default class AboutUsView extends Component {
                 <div className="media">
                   <div className="media-content">
                     <p className="title is-4">Margaret Staton</p>
-                    <p className="subtitle is-6">Principle Investigator</p>
+                    <p className="subtitle is-6">Principal Investigator</p>
                   </div>
                 </div>
               </div>
