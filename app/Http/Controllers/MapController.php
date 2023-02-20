@@ -145,11 +145,14 @@ class MapController extends Controller
      * @param $bounds
      * @return mixed
      */
-    function queryObservations(array $parameters, User $user, $bounds)
+    function queryObservations(array $parameters, ?User $user, $bounds)
     {
-        $isAdmin = $user->isAdmin();
-        $isScientist = $user->isScientist();
-        $friends = $user->friends() + [$user->id];
+        $isAdmin = $user?->isAdmin();
+        $isScientist = $user?->isScientist();
+        $friends = [];
+        if ($user) {
+            $friends = $user->friends() + [$user->id];
+        }
 
         $observations = Observation::query()
             ->bounds($bounds)
