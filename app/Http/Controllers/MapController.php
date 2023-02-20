@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filter;
 use App\Http\Controllers\Traits\DealsWithObservationPermissions;
 use App\Http\Controllers\Traits\Observes;
 use App\Http\Controllers\Traits\Responds;
@@ -29,10 +30,16 @@ class MapController extends Controller
             'selectedCollection' => 'nullable|integer',
             'selectedFilter' => 'nullable|integer',
             'selectedConfirmation' => 'nullable|integer',
+            'filters' => 'nullable|json',
         ]);
         $user = $request->user();
         $bounds = json_decode($request->bounds);
         $observations = $this->queryObservations($request->all(), $user, $bounds);
+
+        if ($request->filled('filters')) {
+            $observations = Filter::apply(json_decode($request->filters, true),
+                $observations);
+        }
 
         return $this->success($observations->get());
     }
@@ -64,6 +71,7 @@ class MapController extends Controller
 
     /**
      * Loads data for a selected observation within the map.
+     *
      * @param Request $request
      * @param Observation $observation
      * @return array
@@ -93,7 +101,7 @@ class MapController extends Controller
         if ($user) {
             $owner = $observation->user_id === $user->id;
         }
-        if ($user && !$isAdmin && !$owner) {
+        if ($user && ! $isAdmin && ! $owner) {
             $inGroup = $user->hasFriend($observation->user_id);
         }
 
@@ -101,14 +109,13 @@ class MapController extends Controller
         $title = $title === 'Other' && isset($observation->data['otherLabel']) ? "{$title} ({$observation->data['otherLabel']})" : $title;
         $shareData = $isAdmin || $inGroup || $owner;
 
-        if (!$observation->has_private_comments || ($user && $user->id === $observation->user_id)) {
+        if (! $observation->has_private_comments || ($user && $user->id === $observation->user_id)) {
             $data = $observation->data;
         } else {
             $data = array_except($observation->data, ['comment']);
         }
 
-        $owner = $this->getUserDetails($observation, $user, $inGroup,
-            $isAdmin);
+        $owner = $this->getUserDetails($observation, $user, $inGroup, $isAdmin);
 
         $data = [
             'id' => $observation->id,
@@ -140,6 +147,7 @@ class MapController extends Controller
 
     /**
      * Loads data for all observations visible within bounds of the map.
+     *
      * @param array $parameters
      * @param User $user
      * @param $bounds
@@ -164,45 +172,54 @@ class MapController extends Controller
                 // If the user is in the same group and is sharing then get latitude and longitude
                 // If the user owns the observation, same as above
                 // Otherwise, get fuzzy coords
-                if (!empty($friends)) {
+                if (! empty($friends)) {
                     $query->selectRaw('id, IF(user_id in (?), latitude, null) as latitude, IF(user_id in (?), longitude, null) as longitude, fuzzy_coords',
                         [
                             $friends,
                             $friends,
                         ]);
-                }
-                else {
-                    $query->addSelect(['id','fuzzy_coords']);
+                } else {
+                    $query->addSelect(['id', 'fuzzy_coords']);
                 }
             })
             ->addSelect(['thumbnail', 'observation_category as title'])
-            ->when(!$user, function ($query) {
+            ->when(! $user, function ($query) {
                 $query->where('is_private', false);
             })
-            ->when(!empty($parameters['searchTerm']), function ($query) use ($parameters) {
-                $query->where(function ($query) use ($parameters) {
-                    $query->whereHas('user', function ($query) use ($parameters) {
-                        $query->where('users.name', 'like', "%{$parameters['searchTerm']}%");
+            ->when(! empty($parameters['searchTerm']),
+                function ($query) use ($parameters) {
+                    $query->where(function ($query) use ($parameters) {
+                        $query->whereHas('user', function ($query) use ($parameters) {
+                            $query->where('users.name', 'like',
+                                "%{$parameters['searchTerm']}%");
+                        });
+                        $query->orWhere('observation_category', 'like',
+                            "%{$parameters['searchTerm']}%");
+                        if (isset($observation->data['otherLabel'])) {
+                            $query->orWhereJsonContains('otherLabel',
+                                ["%{$parameters['searchTerm']}%"]);
+                        }
+                        $query->orWhere('custom_id', 'like',
+                            "%{$parameters['searchTerm']}%");
+                        $query->orWhere('mobile_id', 'like',
+                            "%{$parameters['searchTerm']}%");
                     });
-                    $query->orWhere('observation_category', 'like', "%{$parameters['searchTerm']}%");
-                    if (isset($observation->data['otherLabel'])) {
-                        $query->orWhereJsonContains('otherLabel', ["%{$parameters['searchTerm']}%"]);
-                    }
-                    $query->orWhere('custom_id', 'like', "%{$parameters['searchTerm']}%");
-                    $query->orWhere('mobile_id', 'like', "%{$parameters['searchTerm']}%");
+                })
+            ->when(! empty($parameters['selectedCategories']),
+                function ($query) use ($parameters) {
+                    $query->whereIn('observation_category',
+                        $parameters['selectedCategories']);
+                })
+            ->when(! empty($parameters['selectedCollection']),
+                function ($query) use ($parameters) {
+                    $query->whereHas('collections', function ($query) use ($parameters) {
+                        $query->where('id', $parameters['selectedCollection']);
+                    });
+                })
+            ->when(! empty($parameters['selectedConfirmation']),
+                function ($query) use ($parameters) {
+                    $query->whereHas('confirmations');
                 });
-            })
-            ->when(!empty($parameters['selectedCategories']), function ($query) use ($parameters) {
-                $query->whereIn('observation_category', $parameters['selectedCategories']);
-            })
-            ->when(!empty($parameters['selectedCollection']), function ($query) use ($parameters) {
-                $query->whereHas('collections', function ($query) use ($parameters) {
-                    $query->where('id', $parameters['selectedCollection']);
-                });
-            })
-            ->when(!empty($parameters['selectedConfirmation']), function ($query) use ($parameters) {
-                $query->whereHas('confirmations');
-            });
 
         return $observations->orderBy('observations.id', 'desc');
     }

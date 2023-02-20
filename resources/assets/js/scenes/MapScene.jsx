@@ -56,6 +56,7 @@ export default class App extends Scene {
       showFlagForm         : false,
       ownedCollections     : [],
       appliedAdvancedFilter: false,
+      advancedFilters      : null,
     }
 
     document.title = 'Map - TreeSnap'
@@ -80,7 +81,7 @@ export default class App extends Scene {
   initPosition() {
     this.defaultMapPosition = {
       center: {
-        lat:38.053920597121056,
+        lat: 38.053920597121056,
         lng: -84.53594932993265,
       },
       zoom  : 8,
@@ -191,7 +192,7 @@ export default class App extends Scene {
   /**
    * Gets observations from the API and parses them into markers.
    */
-  loadObservations() {
+  loadObservations(filters) {
     if (this._request) {
       this._request()
     }
@@ -200,16 +201,17 @@ export default class App extends Scene {
 
     let bounds = this.refs.maps.getBounds()
     axios.get('/web/map', {
-      params: {
-        bounds: {
+      params     : {
+        bounds              : {
           southWest: bounds.getSouthWest().toJSON(),
           northEast: bounds.getNorthEast().toJSON(),
         },
-        searchTerm: this.state.searchTerm,
-        selectedCategories: this.state.selectedCategories,
-        selectedCollection: this.state.selectedCollection,
-        selectedFilter: this.state.selectedFilter,
+        searchTerm          : this.state.searchTerm,
+        selectedCategories  : this.state.selectedCategories,
+        selectedCollection  : this.state.selectedCollection,
+        selectedFilter      : this.state.selectedFilter,
         selectedConfirmation: this.state.selectedConfirmation,
+        filters             : filters || this.state.advancedFilters,
       },
       cancelToken: new axios.CancelToken(c => this._request = c),
     }).then(response => {
@@ -224,7 +226,7 @@ export default class App extends Scene {
       }
 
       // setTimeout(() => { // minimum timeout of 0.1s, because if it's faster the spinner is ugly
-        this.setState({markers: markers, loading: false, loadingMap: false})
+      this.setState({markers: markers, loading: false, loadingMap: false})
       // },1000)
     }).catch(error => {
       this.setState({loading: false})
@@ -328,8 +330,10 @@ export default class App extends Scene {
     }
 
     this.setState({selectedCategories},
-      () =>{this.loadObservations()}
-    );
+      () => {
+        this.loadObservations()
+      },
+    )
   }
 
   /**
@@ -339,8 +343,10 @@ export default class App extends Scene {
    */
   changeCollection(selectedCollection) {
     this.setState({selectedCollection},
-      () =>{this.loadObservations()}
-    );
+      () => {
+        this.loadObservations()
+      },
+    )
   }
 
   /**
@@ -351,8 +357,10 @@ export default class App extends Scene {
   changeConfirmation(selectedConfirmation) {
     selectedConfirmation = parseInt(selectedConfirmation)
     this.setState({selectedConfirmation},
-    () =>{this.loadObservations()}
-    );
+      () => {
+        this.loadObservations()
+      },
+    )
   }
 
   /**
@@ -436,9 +444,11 @@ export default class App extends Scene {
   search(searchTerm) {
     let search = debounce(() => {
       this.setState({searchTerm},
-        () =>{this.loadObservations()}
-      );
-    });
+        () => {
+          this.loadObservations()
+        },
+      )
+    })
     search()
   }
 
@@ -471,29 +481,29 @@ export default class App extends Scene {
     }
 
     this.setState({
-      selectedMarker: null,
-      loadingObservation: true,
-      showFilters: false,
+      selectedMarker     : null,
+      loadingObservation : true,
+      showFilters        : false,
       showCollectionsForm: false,
-      showFlagForm: false,
+      showFlagForm       : false,
     }, () => {
       axios.get(`/web/map/${marker.id}`)
         .then(result => {
-            this.setState({
-              selectedMarker: result.data,
-              loadingObservation: false
-            }, () => {
-            })
-          }).catch(error => {
-          if (error.response) {
-            alert(error.response)
-          }
-          console.log(error.response)
           this.setState({
+            selectedMarker    : result.data,
             loadingObservation: false,
+          }, () => {
           })
-        });
+        }).catch(error => {
+        if (error.response) {
+          alert(error.response)
+        }
+        console.log(error.response)
+        this.setState({
+          loadingObservation: false,
+        })
       })
+    })
     if (window.innerWidth > 797) {
       this.openSidebar()
     }
@@ -519,8 +529,8 @@ export default class App extends Scene {
           return (
             <Marker key={marker.id}
                     position={{
-                      'latitude': marker.latitude ? marker.latitude : marker.fuzzy_coords.latitude,
-                      'longitude': marker.longitude ? marker.longitude : marker.fuzzy_coords.longitude
+                      'latitude' : marker.latitude ? marker.latitude : marker.fuzzy_coords.latitude,
+                      'longitude': marker.longitude ? marker.longitude : marker.fuzzy_coords.longitude,
                     }}
                     title={marker.title}
                     ref={(ref) => marker.ref = ref}
@@ -557,24 +567,24 @@ export default class App extends Scene {
   _renderMarkerPopup(marker) {
     return (
       <div className="media callout is-flex flex-v-center">
-          <div>
-            <div className="media-left mr-0">
-              <img src={marker.thumbnail}
-                   alt={marker.title}
-                   style={{
-                     width: 50,
-                     height: 'auto',
-                   }}/>
-            </div>
-            <div className="media-content">
-              <div className="mb-0">
-                <strong>{marker.title}</strong></div>
-              {/*<div*/}
-              {/*  className="mb-0">By {this.state.selectedMarker ? this.state.selectedMarker.owner : ''}</div>*/}
-              <a href={`/observation/${marker.id}`}>See
-                full description</a>
-            </div>
+        <div>
+          <div className="media-left mr-0">
+            <img src={marker.thumbnail}
+                 alt={marker.title}
+                 style={{
+                   width : 50,
+                   height: 'auto',
+                 }}/>
           </div>
+          <div className="media-content">
+            <div className="mb-0">
+              <strong>{marker.title || marker.observation_category}</strong></div>
+            {/*<div*/}
+            {/*  className="mb-0">By {this.state.selectedMarker ? this.state.selectedMarker.owner : ''}</div>*/}
+            <a href={`/observation/${marker.id}`}>See
+              full description</a>
+          </div>
+        </div>
       </div>
     )
   }
@@ -644,7 +654,7 @@ export default class App extends Scene {
               </select>
             </span>
             {this.state.filters.length === 0 ?
-              <p className='help is-warning'>You currently have no saved collections</p>
+              <p className="help is-warning">You currently have no saved collections</p>
               : null}
             <p className="help">
               You can create or add observations to a collection using the
@@ -671,7 +681,7 @@ export default class App extends Scene {
               </select>
             </span>
             {this.state.filters.length === 0 ?
-              <p className='help is-warning'>You currently have no saved filters</p>
+              <p className="help is-warning">You currently have no saved filters</p>
               : null}
             <p className="help">
               You can save advanced filters by providing a label before applying the filters.
@@ -898,7 +908,7 @@ export default class App extends Scene {
       console.log(error)
     })
   }
-  
+
   /**
    * Render flag observation form.
    *
@@ -943,7 +953,7 @@ export default class App extends Scene {
    */
   _renderObservation() {
     let marker = this.state.selectedMarker
-    let data = marker.data
+    let data   = marker.data
     return (
       <div>
         {this.state.loadingObservation ?
@@ -1170,6 +1180,10 @@ export default class App extends Scene {
         <Spinner visible={this.state.loading} containerStyle={{backgroundColor: 'rgba(255,255,255,0.8)'}}/>
 
         <AdvancedFiltersModal
+          applyFilters={(filters) => {
+            this.setState({showFiltersModal: false, advancedFilters: filters})
+            this.loadObservations(filters)
+          }}
           visible={this.state.showFiltersModal}
           onCloseRequest={() => this.setState({showFiltersModal: false})}
           onCreate={this.filterCreated.bind(this)}
@@ -1179,15 +1193,17 @@ export default class App extends Scene {
   }
 }
 
-let searchTimer;
+let searchTimer
 const debounce = (func) => {
   // let timer;
   return function (...args) {
-    const context = this;
-    if (searchTimer) clearTimeout(searchTimer);
+    const context = this
+    if (searchTimer) {
+      clearTimeout(searchTimer)
+    }
     searchTimer = setTimeout(() => {
-      searchTimer = null;
-      func.apply(context, args);
-    }, 600);
-  };
+      searchTimer = null
+      func.apply(context, args)
+    }, 600)
+  }
 }

@@ -47,7 +47,7 @@ export default class AdvancedFiltersModal extends Component {
       startDate         : null,
       endDate           : null,
       groups            : [],
-      selectedGroup     : -1
+      selectedGroup     : -1,
     }
   }
 
@@ -58,14 +58,14 @@ export default class AdvancedFiltersModal extends Component {
       county            : '',
       state             : '',
       filterName        : '',
-      resultsCount      : 0
+      resultsCount      : 0,
     })
   }
 
   componentDidMount() {
     axios.get('/web/observations/categories').then(response => {
       this.setState({
-        categories: response.data.data
+        categories: response.data.data,
         //selectedCategories: response.data.data
       })
     }).catch(error => {
@@ -79,7 +79,7 @@ export default class AdvancedFiltersModal extends Component {
     try {
       const response = await axios.get('/web/groups')
       this.setState({
-        groups: response.data.data
+        groups: response.data.data,
       })
     } catch (e) {
       console.error(e)
@@ -119,12 +119,22 @@ export default class AdvancedFiltersModal extends Component {
       address         : {
         city  : this.state.city,
         county: this.state.county,
-        state : this.state.state
+        state : this.state.state,
       },
       date_range      : {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
-        end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null
-      }
+        end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null,
+      },
+    }
+
+    if (this.props.applyFilters) {
+      this.setState({
+        loading: false,
+        errors : {},
+      })
+
+      this.props.applyFilters(params)
+      return
     }
 
     let url = '/web/filters'
@@ -135,12 +145,12 @@ export default class AdvancedFiltersModal extends Component {
     axios.post(url, params).then(({data}) => {
       this.setState({
         loading: false,
-        errors : {}
+        errors : {},
       })
 
       this.props.onCreate({
         params,
-        data: data.data
+        data: data.data,
       })
 
       this.props.onStateChange(_.clone(this.state))
@@ -164,7 +174,7 @@ export default class AdvancedFiltersModal extends Component {
 
     this.setState({
       loading: true,
-      [key]  : changed[key]
+      [key]  : changed[key],
     })
 
     axios.post('/web/filter/count', {
@@ -185,16 +195,16 @@ export default class AdvancedFiltersModal extends Component {
       address         : {
         city  : filters.city,
         county: filters.county,
-        state : filters.state
+        state : filters.state,
       },
       date_range      : {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
-        end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null
-      }
+        end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null,
+      },
     }).then(response => {
       this.setState({
         loading     : false,
-        resultsCount: response.data.data.count
+        resultsCount: response.data.data.count,
       })
     }).catch(error => {
       console.log(error.response)
@@ -595,7 +605,7 @@ AdvancedFiltersModal.propTypes = {
   map             : PropTypes.bool,
   withObservations: PropTypes.bool,
   onStateChange   : PropTypes.func,
-  showCount       : PropTypes.bool
+  showCount       : PropTypes.bool,
 }
 
 AdvancedFiltersModal.defaultProps = {
@@ -603,5 +613,5 @@ AdvancedFiltersModal.defaultProps = {
   withObservations: true,
   showCount       : false,
   onStateChange() {
-  }
+  },
 }

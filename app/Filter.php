@@ -111,7 +111,7 @@ class Filter extends Model
         // Apply address
         if (isset($filters['address'])) {
             $nulls = 0;
-            foreach ($filters['address'] as $key => $value) {
+            foreach ($filters['address'] as $value) {
                 if (empty($value)) {
                     $nulls++;
                     continue;
@@ -163,7 +163,7 @@ class Filter extends Model
             }
         }
 
-        if (! isset($filters['categories'])) {
+        if (!isset($filters['categories'])) {
             return $observations;
         }
 
