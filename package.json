@@ -46,7 +46,7 @@
         "marked": "^4.0.14",
         "merge-descriptors": "^1.0.1",
         "methods": "^1.1.2",
-        "moment": "^2.29.3",
+        "moment": "^2.29.4",
         "path-to-regexp": "^1.7.0",
         "prop-types": "^15.7.2",
         "proxy-addr": "^1.1.5",
