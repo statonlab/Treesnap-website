@@ -172,7 +172,7 @@ class MapController extends Controller
                         ]);
                 }
                 else {
-                    $query->addSelect('fuzzy_coords');
+                    $query->addSelect(['id','fuzzy_coords']);
                 }
             })
             ->addSelect(['thumbnail', 'observation_category as title'])
