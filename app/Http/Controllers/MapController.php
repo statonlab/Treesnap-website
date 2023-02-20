@@ -164,11 +164,16 @@ class MapController extends Controller
                 // If the user is in the same group and is sharing then get latitude and longitude
                 // If the user owns the observation, same as above
                 // Otherwise, get fuzzy coords
-                $query->selectRaw('id, IF(user_id in (?), latitude, null) as latitude, IF(user_id in (?), longitude, null) as longitude, fuzzy_coords',
-                    [
-                        $friends,
-                        $friends,
-                    ]);
+                if (!empty($friends)) {
+                    $query->selectRaw('id, IF(user_id in (?), latitude, null) as latitude, IF(user_id in (?), longitude, null) as longitude, fuzzy_coords',
+                        [
+                            $friends,
+                            $friends,
+                        ]);
+                }
+                else {
+                    $query->addSelect('fuzzy_coords');
+                }
             })
             ->addSelect(['thumbnail', 'observation_category as title'])
             ->when(!$user, function ($query) {
