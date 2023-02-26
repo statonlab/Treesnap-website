@@ -134,7 +134,6 @@ export default class AdvancedFiltersModal extends Component {
       })
 
       this.props.applyFilters(params)
-      return
     }
 
     let url = '/web/filters'
