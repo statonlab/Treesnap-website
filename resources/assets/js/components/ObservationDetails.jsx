@@ -381,6 +381,23 @@ export default class ObservationDetails extends Component {
     )
   }
 
+  _renderCategoryClicker(label, data, key) {
+    return (
+        <tr key={key}>
+          <th>{label}</th>
+          <td>
+            {data[key].categories.map(this._renderCategory.bind(this, [data[key]]))}
+          </td>
+        </tr>
+    )
+  }
+
+  _renderCategory(data, label, index) {
+    return (
+        <span key={index}>{data[0].counts[index] + ' ' + label}<br/></span>
+    )
+  }
+
   destroy(observation) {
     if (!confirm('Are you sure you want to delete this observation? This action cannot be undone.')) {
       return
@@ -540,6 +557,10 @@ export default class ObservationDetails extends Component {
                   if (typeof data[`${key}_values`] !== 'undefined') {
                     unit = data[`${key}_values`][`${this.state.selectedUnit}_unit`]
                     val  = data[`${key}_values`][`${this.state.selectedUnit}_value`]
+                  }
+
+                  if (data[key].category_clicker) {
+                    return this._renderCategoryClicker(label, data, key)
                   }
 
                   return this._renderMetaData(label, val, key, unit)
