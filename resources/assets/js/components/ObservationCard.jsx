@@ -74,7 +74,7 @@ export default class ObservationCard extends Component {
 
     let id = this.props.observation.observation_id
 
-    axios.get(`/admin/web/confirmations/count/${id}`).then(response => {
+    axios.get(`/web/confirmations/count/${id}`).then(response => {
       let data = response.data.data
       this.setState({
         correctMarks  : data.correct,

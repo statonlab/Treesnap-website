@@ -325,3 +325,20 @@ a.box {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.disabled {
+    background-color: #fff;
+    border-color: hsl(0deg, 0%, 86%);
+    border-width: 1px;
+    color: hsl(0deg, 0%, 21%);
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+    text-align: center;
+    white-space: nowrap;
+    flex-direction: row;
+}
+

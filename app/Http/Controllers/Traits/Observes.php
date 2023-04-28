@@ -116,7 +116,7 @@ trait Observes
             'mobile_id' => $observation->mobile_id,
             'flags' => $user ? $observation->flags : [],
             'collections' => $user ? $observation->collections : [],
-            'confirmations' => $user ? $observation->confirmations : [],
+            'confirmations' => $observation->confirmations,
             'thumbnail' => $observation->thumbnail,
             'user' => $this->getUserDetails($observation, $user, $inGroup, $admin),
             'has_private_comments' => $observation->has_private_comments,
@@ -246,7 +246,7 @@ trait Observes
                 'mobile_id' => $observation->mobile_id,
             ];
         }
-        
+
         return $all;
     }
 
