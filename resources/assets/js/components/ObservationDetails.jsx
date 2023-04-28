@@ -16,6 +16,8 @@ import { Link } from 'react-router-dom'
 import EmailModal from '../admin/components/EmailModal'
 import ShareLinkModal from './ShareLinkModal'
 import ObservationDetailsModal from './ObservationDetailsModal'
+import Tooltip from "./Tooltip";
+import Notify from "./Notify";
 
 export default class ObservationDetails extends Component {
   constructor(props) {
@@ -45,6 +47,10 @@ export default class ObservationDetails extends Component {
       },
       selectedUnit       : window.TreeSnap.units || 'US',
       observation        : null,
+      confirmation      : {
+        id     : -1,
+        correct: null,
+      },
     }
   }
 
@@ -75,6 +81,14 @@ export default class ObservationDetails extends Component {
       window.fixHeight()
     }
     this.loadCollections()
+
+    if (observation.confirmations.length > 0) {
+      this.setState({
+        confirmation: observation.confirmations[0],
+      })
+    }
+
+    this.loadMarks()
   }
 
   /**
@@ -84,6 +98,30 @@ export default class ObservationDetails extends Component {
     if (prevProps.observation !== this.props.observation) {
       this._setup(this.props.observation)
     }
+  }
+
+  loadMarks() {
+    let observation = this.props.observation
+    if (typeof observation.correct_marks !== 'undefined' && typeof observation.incorrect_marks !== 'undefined') {
+      this.setState({
+        correctMarks  : observation.correct_marks,
+        incorrectMarks: observation.incorrect_marks,
+      })
+      return
+    }
+
+    let id = this.props.observation.observation_id
+
+    axios.get(`/web/confirmations/count/${id}`).then(response => {
+      console.log(response.data.data)
+      let data = response.data.data
+      this.setState({
+        correctMarks  : data.correct,
+        incorrectMarks: data.incorrect,
+      })
+    }).catch(error => {
+      console.log(error)
+    })
   }
 
   /**
@@ -238,6 +276,7 @@ export default class ObservationDetails extends Component {
     }
 
     const {observation} = this.state
+    let confirmation = this.state.confirmation
 
     return (
       <div>
@@ -275,12 +314,133 @@ export default class ObservationDetails extends Component {
               <span>Contact Submitter</span>
             </a>
             : null}
+          {User.can('confirm species') ?
+              <a className={`button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+                  onClick={() => this.confirm(false, observation)} >
+                  <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                           hideOnClick={false}>
+                      <span>{this.state.incorrectMarks}</span>
+                      <span className="icon is-small mr-1">
+                          <b className="fa fa-times text-danger"></b>
+                      </span>
+                  <span>Marks</span>
+                  </Tooltip>
+              </a> :
+              <div className={`disabled`}>
+                  <span>{this.state.incorrectMarks}</span>
+                  <span className="icon is-small ml-1 mr-1">
+                          <b className="fa fa-times text-danger"></b>
+                      </span>
+                  <span>Marks</span>
+              </div>}
+            {User.can('confirm species') ?
+                <a className={`button is-outlined is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+                   onClick={() => this.confirm(true, observation)}>
+                  <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                           hideOnClick={false}>
+                    <span>{this.state.correctMarks}</span>
+                    <span className="icon is-small mr-1">
+                          <b className="fa fa-check text-success"></b>
+                      </span>
+                    <span>Marks</span>
+                  </Tooltip>
+                </a> :
+                <div className={`disabled`} >
+                  <span>{this.state.correctMarks}</span>
+                  <span className="icon is-small ml-1 mr-1">
+                          <b className="fa fa-check text-success"></b>
+                      </span>
+                  <span>Marks</span>
+                </div>}
         </div>
 
         {this._renderControlModal()}
 
       </div>
     )
+  }
+
+  /**
+   * Confirm species as correct or incorrect.
+   *
+   * @param correct
+   * @param observation
+   */
+  confirm(correct, observation) {
+    if (this.state.confirmation.correct === correct) {
+      this.deleteConfirmation(this.state.confirmation)
+      Notify.push('Unmarked observation', 'warning')
+      if (correct) {
+        this.setState({
+          correctMarks: this.state.correctMarks - 1,
+        })
+      } else {
+        this.setState({
+          incorrectMarks: this.state.incorrectMarks - 1,
+        })
+      }
+      return
+    }
+
+    this.setState({
+      confirmation: {
+        id: 0,
+        correct,
+      },
+    })
+
+    if (this.state.confirmation.id !== -1) {
+      if (this.state.confirmation.correct) {
+        this.setState({correctMarks: this.state.correctMarks - 1})
+      } else {
+        this.setState({incorrectMarks: this.state.incorrectMarks - 1})
+      }
+    }
+
+    axios.post('/admin/web/confirmations', {
+      observation_id: observation.observation_id,
+      correct,
+    }).then(response => {
+      let confirmation = response.data.data
+      this.setState({confirmation})
+      let correct = confirmation.correct ? 'correct' : 'incorrect'
+      Notify.push(`Marked observation as ${correct} species`, confirmation.correct ? 'success' : 'danger')
+      if (confirmation.correct) {
+        this.setState({
+          correctMarks: this.state.correctMarks + 1,
+        })
+      } else {
+        this.setState({
+          incorrectMarks: this.state.incorrectMarks + 1,
+        })
+      }
+    }).catch(error => {
+      console.log(error.response)
+    })
+  }
+
+  /**
+   * Undo confirmation.
+   *
+   * @param confirmation
+   */
+  deleteConfirmation(confirmation) {
+    if (confirmation.id <= 0) {
+      return
+    }
+
+    this.setState({
+      confirmation: {
+        id     : -1,
+        correct: null,
+      },
+    })
+
+    axios.delete(`/admin/web/confirmation/${confirmation.id}`).then(response => {
+      //
+    }).catch(error => {
+      console.log(error.response)
+    })
   }
 
   /**
@@ -381,6 +541,23 @@ export default class ObservationDetails extends Component {
     )
   }
 
+  _renderCategoryClicker(label, data, key) {
+    return (
+        <tr key={key}>
+          <th>{label}</th>
+          <td>
+            {data[key].categories.map(this._renderCategory.bind(this, [data[key]]))}
+          </td>
+        </tr>
+    )
+  }
+
+  _renderCategory(data, label, index) {
+    return (
+        <span key={index}>{data[0].counts[index] + ' ' + label}<br/></span>
+    )
+  }
+
   destroy(observation) {
     if (!confirm('Are you sure you want to delete this observation? This action cannot be undone.')) {
       return
@@ -475,10 +652,11 @@ export default class ObservationDetails extends Component {
     }
 
     let data = this.state.observation.meta_data
+
     return (
       <div className="box">
         <div className="columns is-mobile flex-v-center">
-          <div className="column">
+          <div className={"column"}>
             <h3 className="title is-4">{this.state.observation.observation_category}</h3>
           </div>
           <div className="column is-narrow">
@@ -540,6 +718,10 @@ export default class ObservationDetails extends Component {
                   if (typeof data[`${key}_values`] !== 'undefined') {
                     unit = data[`${key}_values`][`${this.state.selectedUnit}_unit`]
                     val  = data[`${key}_values`][`${this.state.selectedUnit}_value`]
+                  }
+
+                  if (data[key].category_clicker) {
+                    return this._renderCategoryClicker(label, data, key)
                   }
 
                   return this._renderMetaData(label, val, key, unit)

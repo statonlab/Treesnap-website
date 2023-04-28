@@ -78,6 +78,9 @@ Route::get('/web/events/{limit?}', 'EventsController@index');
 // Observation Feed
 Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed');
 
+// Public Routes in the Confirmations Controller
+Route::get('/web/confirmations/count/{id}', 'PublicConfirmationsController@count');
+
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
     // Observations
@@ -214,7 +217,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['sci
     // Confirmations Controller
     Route::get('/web/confirmations', 'ConfirmationsController@index');
     Route::post('/web/confirmations', 'ConfirmationsController@create');
-    Route::get('/web/confirmations/count/{id}', 'ConfirmationsController@count');
     Route::delete('/web/confirmation/{id}', 'ConfirmationsController@delete');
 
     // Observations

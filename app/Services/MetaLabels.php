@@ -91,6 +91,21 @@ class MetaLabels
             "seedCollected" => "Seed collected",
             "shadeSpecies" => "Shade Species",
             "treeHealth" => "Tree Health",
+            "hemlockCanopyHealth" => "Canopy Health",
+            "hemlockTraining" => "User trained?",
+            "lingeringHemlock" => "Observation Type",
+            "furtherAssessmentCategory" => "Nearby Hemlock Health",
+            "furtherAssessmentEHS" => "Nearby Trees' EHS Presence",
+            "furtherAssessmentHWA" => "Nearby Trees' HWA Presence",
+            "furtherAssessment" => "Completed Hemlock Protocol Assessment",
+            "furtherAssessmentSlope" => "Habitat",
+            "furtherAssessmentSlopeComment" => "Habitat Description",
+            "recentGrowth" => "Recent Growth",
+            "treeMarked" => "Tree Markings",
+            "locationDescription" => "Habitat Description",
+            "furtherAssessmentManagement" => "Area Actively Managed",
+            "elongateHemlockScaleCoverage" => "Percentage Live Branch Ends With EHS",
+            "furtherAssessmentCanopyHealth" => "Nearby Canopy Health"
         ];
     }
 
