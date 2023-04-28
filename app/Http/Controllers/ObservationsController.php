@@ -128,10 +128,11 @@ class ObservationsController extends Controller
             }
         }
 
-        $observation->load(['confirmations']);
-
         if ($user) {
             $observation->load([
+                'confirmations' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
                 'flags' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 },
