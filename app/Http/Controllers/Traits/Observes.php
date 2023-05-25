@@ -29,6 +29,7 @@ trait Observes
         'Butternut',
         'Pinyon Pine',
         'Sassafras',
+        'Ozark Chinquapin',
         'Other',
     ];
 
