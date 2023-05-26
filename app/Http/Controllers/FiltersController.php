@@ -56,10 +56,13 @@ class FiltersController extends Controller
     protected function getFilteredObservations($request, $filters = null)
     {
         $all = [];
-        $user = $request->user();
+        $user = $request->user() ? $request->user() : false;
         $isAdmin = false;
+
         if ($user) {
-            $isAdmin = $user->isAdmin() || $user->isScientist();
+            if ($user->isAdmin() || $user->isScientist()) {
+                $isAdmin = true;
+            }
         }
 
         if (! $filters) {
