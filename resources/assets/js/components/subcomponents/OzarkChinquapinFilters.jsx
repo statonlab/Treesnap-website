@@ -4,7 +4,7 @@ import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
 import FiltersBase from './FiltersBase'
 
-export default class AmericanChestnutFilters extends FiltersBase {
+export default class OzarkChinquapinFilters extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -129,11 +129,11 @@ export default class AmericanChestnutFilters extends FiltersBase {
   }
 }
 
-AmericanChestnutFilters.propTypes = {
+OzarkChinquapinFilters.propTypes = {
   onChange      : PropTypes.func.isRequired,
   defaultFilters: PropTypes.object
 }
 
-AmericanChestnutFilters.defaultProps = {
+OzarkChinquapinFilters.defaultProps = {
   defaultFilters: {}
 }

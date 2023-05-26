@@ -60,9 +60,7 @@ class FiltersController extends Controller
         $isAdmin = false;
 
         if ($user) {
-            if ($user->isAdmin() || $user->isScientist()) {
-                $isAdmin = true;
-            }
+            $isAdmin = $user->isAdmin() || $user->isScientist();
         }
 
         if (! $filters) {
