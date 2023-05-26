@@ -70,6 +70,7 @@ class Filter extends Model
         'Oregon Ash' => 'oregonAsh',
         'Butternut' => 'butternut',
         'Pinyon Pine' => 'pinyonPine',
+        'Ozark Chinquapin' => 'ozarkChinquapin',
         'Other' => 'other',
     ];
 
