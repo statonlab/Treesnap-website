@@ -13,6 +13,7 @@ import PacificMadroneFilters from './subcomponents/PacificMadroneFilters'
 import OregonAshFilters from './subcomponents/OregonAshFilters'
 import ButternutFilters from './subcomponents/ButternutFilters'
 import PinyonPineFilters from './subcomponents/PinyonPineFilters'
+import OzarkChinquapinFilters from './subcomponents/OzarkChinquapinFilters'
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -40,6 +41,7 @@ export default class AdvancedFiltersModal extends Component {
       oregonAsh         : {},
       butternut         : {},
       pinyonPine        : {},
+      ozarkChinquapin   : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -113,6 +115,7 @@ export default class AdvancedFiltersModal extends Component {
       oregonAsh       : this.state.oregonAsh,
       butternut       : this.state.butternut,
       pinyonPine      : this.state.pinyonPine,
+      ozarkChinquapin : this.state.ozarkChinquapin,
       other           : this.state.other,
       map             : this.props.map,
       group           : selectedGroup === -1 ? null : selectedGroup,
@@ -191,6 +194,7 @@ export default class AdvancedFiltersModal extends Component {
       oregonAsh       : filters.oregonAsh,
       butternut       : filters.butternut,
       pinyonPine      : filters.pinyonPine,
+      ozarkChinquapin : filters.ozarkChinquapin,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -364,6 +368,19 @@ export default class AdvancedFiltersModal extends Component {
             onChange={(pinyonPine) => this.count({pinyonPine})}/>
         </div>
       </div>
+    )
+  }
+
+  renderOzarkChinquapinFilters() {
+    return (
+        <div className="column is-12">
+          <h3 className="title is-4 mb-0">Ozark Chinquapin Filters (Optional)</h3>
+          <div className="bordered">
+            <OzarkChinquapinFilters
+                defaultFilters={this.state.ozarkChinquapin}
+                onChange={(ozarkChinquapin) => this.count({ozarkChinquapin})}/>
+          </div>
+        </div>
     )
   }
 
