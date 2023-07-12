@@ -40,11 +40,11 @@ export default class Welcome extends Scene {
                 <p className="has-text-centered text-dark-muted mb-0">Latest Observations</p>
                 <ObservationFeed/>
               </div>
-              <div className="column">
-                <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Tweets</h3>
-                <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>
-                <TwitterFeed/>
-              </div>
+              {/*<div className="column">*/}
+              {/*  <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Tweets</h3>*/}
+              {/*  <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>*/}
+              {/*  <TwitterFeed/>*/}
+              {/*</div>*/}
             </div>
           </div>
         </div>
