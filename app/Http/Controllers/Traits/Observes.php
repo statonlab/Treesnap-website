@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Traits;
 
 use App\Collection;
 use App\Services\MetaLabels;
+use Illuminate\Support\Facades\Log;
 
 trait Observes
 {
@@ -94,6 +95,12 @@ trait Observes
             $data = $observation->data;
         }
 
+        // sort the data per MetaLabels
+        $metaLabels = new MetaLabels;
+        $desiredKeys = array_keys($metaLabels->toArray());
+        $sortedData = $this->filterAndSortKeys($data, $desiredKeys);
+
+
         if ($user && ! $admin && ! $isOwner) {
             $inGroup = $user->hasFriend($observation->user_id);
         }
@@ -104,7 +111,7 @@ trait Observes
             'observation_id' => $observation->id,
             'user_id' => $observation->user_id,
             'observation_category' => $observation->observation_category,
-            'meta_data' => $data,
+            'meta_data' => $sortedData,
             'location' => [
                 'latitude' => $showData ? $observation->latitude : $observation->fuzzy_coords['latitude'],
                 'longitude' => $showData ? $observation->longitude : $observation->fuzzy_coords['longitude'],
@@ -125,6 +132,24 @@ trait Observes
             'identifiers' => $observation->relationLoaded('customIdentifiers') ? $observation->customIdentifiers : [],
         ];
     }
+
+    /**
+     * Function to filter and sort keys based on the desired order
+     * @param $data
+     * @param $desiredKeys
+     * @return array
+     */
+    protected function filterAndSortKeys($data, $desiredKeys): array
+    {
+        $filteredData = [];
+        foreach ($desiredKeys as $key) {
+            if (array_key_exists($key, $data)) {
+                $filteredData[$key] = $data[$key];
+            }
+        }
+        return $filteredData;
+    }
+
 
     /**
      * Determine whether the user name is anonymous.
