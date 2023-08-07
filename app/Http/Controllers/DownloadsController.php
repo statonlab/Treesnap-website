@@ -62,22 +62,22 @@ class DownloadsController extends Controller
 
         $this->authorize('view', $filter);
 
-        if (! $this->allowedExtension($extension)) {
+        if (!$this->allowedExtension($extension)) {
             return abort(422, 'Invalid extension');
         }
 
         $label = $this->fileNameEscape($filter->name);
-        $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
-        $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
+        $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
+        $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
         $header = $this->prepHeader();
 
         $filtered = Filter::apply($filter->rules);
         $filtered = $filtered->with(['latinName', 'user']);
 
-        if (! $user) {
+        if (!$user) {
             $filtered->where('is_private', false);
-        } elseif (! $user->isAdmin() && ! $user->isScientist()) {
+        } elseif (!$user->isAdmin() && !$user->isScientist()) {
             $filtered = $this->addPrivacyClause($filtered, $user);
         }
 
@@ -122,18 +122,18 @@ class DownloadsController extends Controller
     {
         /** @var \App\User $user */
         $user = $request->user();
-        if (! $collection->users->contains('id', $user->id)) {
+        if (!$collection->users->contains('id', $user->id)) {
             return abort(403);
         }
 
-        if (! $this->allowedExtension($extension)) {
+        if (!$this->allowedExtension($extension)) {
             return abort(422, 'Invalid extension');
         }
 
         $label = $this->fileNameEscape($collection->label);
 
-        $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
-        $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
+        $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
+        $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
         $header = $this->prepHeader();
 
@@ -192,13 +192,13 @@ class DownloadsController extends Controller
 
         $user = $request->user();
 
-        if (! $this->allowedExtension($extension)) {
+        if (!$this->allowedExtension($extension)) {
             return abort(422, 'Invalid extension');
         }
 
         $label = $this->fileNameEscape('observations');
-        $path = 'downloads/'.$label.'_'.uniqid().'.'.$extension;
-        $name = $label.'_'.Carbon::now()->format('m_d_Y').'.'.$extension;
+        $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
+        $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
         $filtered = $this->getFilteredObservations($request);
         $filtered->withCount([
@@ -283,7 +283,7 @@ class DownloadsController extends Controller
         }
 
         $data = $observation->data;
-        if (! $observation->has_private_comments || $user->id === $observation->user_id) {
+        if (!$observation->has_private_comments || $user->id === $observation->user_id) {
             $comment = isset($data['comment']) ? $data['comment'] : '';
         }
 
@@ -299,7 +299,7 @@ class DownloadsController extends Controller
             $comment,
             $observation->address['formatted'],
             $observation->collection_date->toDateString(),
-            (($observation->incorrect_marks ?? 0) + ($observation->flags_count ?? 0)).' times',
+            (($observation->incorrect_marks ?? 0) + ($observation->flags_count ?? 0)) . ' times',
             "$observation->correct_marks times",
         ];
 
@@ -374,10 +374,19 @@ class DownloadsController extends Controller
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {
-                if (preg_match('/^\[.*\]$/i', $data[$key])) {
-                    $line[] = implode(',', json_decode($data[$key]));
+                // categoryClicker must be handled differently
+                if (isset($data[$key]['categories'])) {
+                    $counts = $data[$key]['counts'];
+                    $categories = $data[$key]['categories'];
+                    $line[] = implode(', ', array_map(function ($count, $category) {
+                        return "$count $category";
+                    }, $counts, $categories));
                 } else {
-                    $line[] = $data[$key];
+                    if (preg_match('/^\[.*\]$/i', $data[$key])) {
+                        $line[] = implode(',', json_decode($data[$key]));
+                    } else {
+                        $line[] = $data[$key];
+                    }
                 }
             } else {
                 $line[] = 'NULL';
