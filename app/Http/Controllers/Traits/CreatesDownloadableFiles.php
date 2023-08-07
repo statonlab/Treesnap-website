@@ -32,7 +32,9 @@ trait CreatesDownloadableFiles
      */
     protected function csvLine(array $row)
     {
+//        info(implode(',', $row));
         foreach ($row as $key => $value) {
+//            info('creating CSV line of ' . $key . ' => ' . $value);
             // Remove all quotes from the string since that's against csv specs
             $row[$key] = '"'.str_replace('"', '', $value).'"';
         }
