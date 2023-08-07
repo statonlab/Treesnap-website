@@ -285,9 +285,7 @@ class DownloadsController extends Controller
         $data = $observation->data;
         if (!$observation->has_private_comments || $user->id === $observation->user_id) {
             $comment = isset($data['comment']) ? $data['comment'] : '';
-        } //info('observation address = ' . json_encode($observation->address));
-
-//        dd($observation);
+        }
 
         $line = [
             $observation->mobile_id,
@@ -369,7 +367,6 @@ class DownloadsController extends Controller
      */
     protected function extractMetaData($observation)
     {
-        info('parsing observation id = ' . $observation->id);
         $data = $observation->data;
         if (isset($data['comment'])) {
             unset($data['comment']);
@@ -377,17 +374,17 @@ class DownloadsController extends Controller
         $line = [];
         foreach ($this->labels as $key => $label) {
             if (isset($data[$key])) {
-//                info('$data[' . $key . '] = ' . $data[$key]);
-                info('parsing$data[' . $key . ']');
-
-                if ($key === 'furtherAssessmentCategory') {
-                    info('this is furtherAssessmentCategory, SKIPPING FOR NOW');
+                // categoryClicker must be handled differently
+                if (isset($data[$key]['categories'])) {
+                    $counts = $data[$key]['counts'];
+                    $categories = $data[$key]['categories'];
+                    $line[] = implode(', ', array_map(function ($count, $category) {
+                        return "$count $category";
+                    }, $counts, $categories));
                 } else {
                     if (preg_match('/^\[.*\]$/i', $data[$key])) {
-                        info('if(preg_match)');
                         $line[] = implode(',', json_decode($data[$key]));
                     } else {
-                        info('else');
                         $line[] = $data[$key];
                     }
                 }
