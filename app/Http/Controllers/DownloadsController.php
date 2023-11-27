@@ -33,9 +33,29 @@ class DownloadsController extends Controller
     ];
 
     /**
+     * ALL labels available for all species, in no particular order
      * @var array
      */
     protected $labels;
+
+    /**
+     * ALL labels available for each species, keyed by species name
+     * @var array
+     */
+    protected array $species_labels;
+
+    /**
+     * The single species selected in the Species dropdown. Defaults to ''
+     * @var string
+     */
+    protected string $single_species = '';
+
+    /**
+     * One or more species selected in the Advanced Filter. Defaults to [].
+     * If filtering by multiple species, is overwritten to be in same format as $labels
+     * @var array
+     */
+    protected array $advanced_species = [];
 
     /**
      * DownloadsController constructor.
@@ -44,6 +64,7 @@ class DownloadsController extends Controller
     {
         $this->labels = (new MetaLabels())->toArray();
         unset($this->labels['comment']);
+        $this->species_labels = (new MetaLabels())->speciesLabelstoArray();
     }
 
     /**
@@ -190,6 +211,10 @@ class DownloadsController extends Controller
             'status' => 'nullable|in:marked_correct_by_anyone,marked_correct_by_me',
         ]);
 
+        info('myObservations running now!');
+
+        info('category submitted in http request = ' . $request->category);
+
         $user = $request->user();
 
         if (!$this->allowedExtension($extension)) {
@@ -199,6 +224,17 @@ class DownloadsController extends Controller
         $label = $this->fileNameEscape('observations');
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
+
+        // Advanced filters get priority
+        // If the advanced filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
+        if ($request->advanced_filters && array_values(json_decode($request->advanced_filters)->categories)) {
+            $this->advanced_species = array_values(json_decode($request->advanced_filters)->categories);
+        }
+
+        // If the category filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
+        elseif ($request->category) {
+            $this->single_species = $request->category;
+        }
 
         $filtered = $this->getFilteredObservations($request);
         $filtered->withCount([
@@ -234,7 +270,7 @@ class DownloadsController extends Controller
      *
      * @return array
      */
-    protected function prepHeader()
+    protected function prepHeader(): array
     {
         $header = [
             'Unique ID',
@@ -252,7 +288,6 @@ class DownloadsController extends Controller
             'Marked as Correct Species',
         ];
 
-        // Add meta labels to header
         return array_merge($header, $this->getMetaHeader(), ['Url']);
     }
 
@@ -354,9 +389,32 @@ class DownloadsController extends Controller
      *
      * @return array
      */
-    protected function getMetaHeader()
+    protected function getMetaHeader(): array
     {
-        return array_values($this->labels);
+        // advanced filters get priority
+        if ($this->advanced_species !== []) {
+            // returns only labels used in the species specified in the Advanced Filter
+            $advanced_labels = collect($this->advanced_species)->map(function ($name, $key) {
+                return collect($this->species_labels[$name])->mapWithKeys(function ($species_label, $key) {
+                    return [$species_label => $this->labels[$species_label]];
+                });
+            })->toArray();
+
+            $this->advanced_species = array_merge(...$advanced_labels);
+
+            return $this->advanced_species;
+        }
+
+        elseif ($this->single_species !== '') {
+            // returns only labels used in the single species specified
+            return collect($this->species_labels[$this->single_species])->map(function ($species_label) {
+                return $this->labels[$species_label];
+            })->toArray();
+        }
+
+        else {
+            return array_values($this->labels);
+        }
     }
 
     /**
@@ -372,7 +430,17 @@ class DownloadsController extends Controller
             unset($data['comment']);
         }
         $line = [];
-        foreach ($this->labels as $key => $label) {
+
+        // advanced filters get priority
+        if ($this->advanced_species !== []) {
+            $iter = $this->advanced_species;
+        } elseif ($this->single_species !== '') {
+            $iter = array_flip($this->species_labels[$this->single_species]);
+        } else {
+            $iter = $this->labels;
+        }
+
+        foreach ($iter as $key => $label) {
             if (isset($data[$key])) {
                 // categoryClicker must be handled differently
                 if (isset($data[$key]['categories'])) {
