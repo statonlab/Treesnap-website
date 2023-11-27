@@ -12,6 +12,13 @@ class MetaLabels
     protected $labels;
 
     /**
+     * Lists labels by species.
+     *
+     * @var array
+     */
+    protected $species_labels;
+
+    /**
      * MetaLabels constructor.
      */
     public function __construct()
@@ -91,6 +98,7 @@ class MetaLabels
             'shadeSpecies' => 'Shade Species',
             'treeHealth' => 'Tree Health',
             'lingeringHemlock' => 'Observation Subject',
+            'collectionPurpose' => 'Collection Purpose',
             'reasonForNoHemlocks' => 'No Hemlocks Because',
             'timeSpentSearching' => 'Time Spent',
             'hemlockAreaComments' => 'Describe Area',
@@ -103,10 +111,14 @@ class MetaLabels
             'otherStressors' => 'Other Stressors',
             'otherStressorsComment' => 'Description of Stressors',
             'hemlockCones' => 'Cones',
+            'hemlockCrownHealth' => 'Hemlock Crown Health',
+            'hemlockCrownHealthComment' => 'Hemlock Crown Healthy Comment',
             'hemlockCanopyHealth' => 'Canopy Health',
             'hemlockCanopyHealthComment' => 'Canopy Health Description',
             'hemlockTreated' => 'Treated',
             'treatedComment' => 'Treatment Description',
+            'crownPosition' => 'Crown Position',
+            'crownPositionComment' => 'Crown Position Comment',
             'canopyPosition' => 'Canopy Position',
             'canopyPositionComment' => 'Canopy Position Description',
             'canopyClosure' => 'Canopy Closure',
@@ -116,6 +128,7 @@ class MetaLabels
             'treeMarked' => 'Tree Markings',
             'hemlockLocationCharacteristics' => 'Habitat',
             'locationDescription' => 'Habitat Description',
+            'hemlockTraining' => 'Hemlock Training',
             'furtherAssessment' => 'Training',
             'furtherAssessmentCategory' => 'Nearby Tree Health',
             'furtherAssessmentCanopyHealth' => 'Nearby Canopy Health',
@@ -127,6 +140,229 @@ class MetaLabels
             'furtherAssessmentStressors' => 'Further Stressors'
 //            'furtherAssessmentSlope' => 'Habitat',
 //            'furtherAssessmentSlopeComment' => 'Habitat Description',
+        ];
+
+        $this->species_labels = [
+            "American Chestnut" => [
+                "burrs",
+                "catkins",
+                "chestnutBlightSigns",
+                "plantedWild",
+                // surroundings      ,
+                // accessibility     ,
+                "crownHealth",
+                "diameterNumeric",
+                "heightNumeric",
+            ],
+
+
+            "Ash" => [
+                'ashSpecies',
+                'locationCharacteristics',
+                'seedsBinary',
+                'flowersBinary',
+                'emeraldAshBorer',
+                'nearbyTrees',
+                'crownHealth',
+                'diameterNumeric',
+                'treated',
+            ],
+
+
+            "Hemlock" => [
+                // hemlockSpecies        ,
+                // woollyAdesCoverage    ,
+                // cones                 ,
+                // crownClassification   ,
+                // locationCharacteristics=> true,
+                // nearbyTrees           ,
+                // crownHealth           ,
+                // diameterNumeric       ,
+                // treated               ,
+                'collectionPurpose',
+                'lingeringHemlock',
+                'reasonForNoHemlocks',
+                'timeSpentSearching',
+                'hemlockAreaComments',
+                'hemlockStandQuantity',
+                'moreThanTenHemlocks',
+                'hemlockSpecies',
+                'hemlockDiameter',
+                'lingeringWoollyAdesCoverage',
+                'elongateHemlockScaleCoverage',
+                'otherStressors',
+                'otherStressorsComment',
+                'hemlockCones',
+                'hemlockCrownHealth',
+                'hemlockCrownHealthComment',
+                'hemlockTreated',
+                'treatedComment',
+                'crownPosition',
+                'crownPositionComment',
+                'canopyClosure',
+                // canopyClosureComment=> true,
+                // hemlockCrownClassification=> true,
+                'recentGrowth',
+                'treeMarked',
+                'hemlockLocationCharacteristics',
+                'locationDescription',
+                'hemlockTraining',
+                'furtherAssessment',
+                'furtherAssessmentCategory',
+                'furtherAssessmentCanopyHealth',
+                'furtherAssessmentCanopyHealthComment',
+                'furtherAssessmentManagement',
+                'furtherAssessmentManagementComment',
+                'furtherAssessmentHWA',
+                'furtherAssessmentEHS',
+                'furtherAssessmentStressors',
+                // furtherAssessmentSlope=> true,
+                // furtherAssessmentSlopeComment=> true,
+
+            ],
+
+
+            "Other" => [
+                'otherLabel',
+                'diameterNumeric',
+                'locationCharacteristics',
+            ],
+
+
+            "White Oak" => [
+                'acorns',
+                'heightFirstBranch',
+                'crownHealth',
+                'nearbyTrees',
+                'diameterNumeric',
+                'oakHealthProblems',
+                'standTagging',
+            ],
+
+
+            "American Elm" => [
+                'seedsBinary',
+                'flowersBinary',
+                'nearbyTrees',
+                // treated               ,
+                'locationCharacteristics',
+                'crownHealth',
+                'diameterNumeric',
+            ],
+
+            "Florida Torreya" => [
+                'heightNumeric',
+                'diameterNumeric',
+                'numberRootSprouts',
+                'seedsBinary',
+                'conesMaleFemale',
+                'deerRub',
+                'torreyaFungalBlight',
+            ],
+
+
+            "Pacific Madrone" => [
+                'heightNumeric',
+                'diameterNumeric',
+                'standDiversity',
+                'crownAssessment',
+                'madroneDisease',
+            ],
+
+
+            "Eastern Larch" => [
+                // heightNumeric     ,
+                'diameterNumeric',
+                'needleColor',
+                'needleAmount',
+            ],
+
+
+            "Tanoak" => [
+                // heightNumeric ,
+                'diameterNumeric',
+                'crownClassification',
+                'canopyHealth',
+                'acorns',
+                'treated',
+            ],
+
+
+            "Oregon Ash" => [
+                'heightNumeric',
+                'diameterNumeric',
+                'crownPortion',
+                'seedCollected',
+                'ashFrequency',
+                'oregonAshHealth',
+            ],
+
+
+            "Butternut" => [
+                'heightNumeric',
+                'breastNumeric',
+                'locationCharacteristics',
+                'bearingFruit',
+                'crownDieback',
+                'hybridAttributes',
+                'hybridTraits',
+            ],
+
+
+            "Sassafras" => [
+                'breastNumeric',
+                'canopyHealth',
+                'locationCharacteristics',
+                'laurelWilt',
+            ],
+
+
+            "Pinyon Pine" => [
+                'heightNumeric',
+                'breastNumeric',
+                'canopyCones',
+                'conesOpenClosed',
+                'neighborCones',
+                'neighborHealth',
+            ],
+
+            "Cacao" => [
+                'treeHealth',
+                'heightNumeric',
+                'breastNumeric',
+                'flowersBinary',
+                'numPods',
+                'collectedMaterials',
+                'percentShade',
+                'shadeSpecies',
+                'age',
+                'podPhenotype',
+                'phenotype',
+                'cocoaHabitat',
+            ],
+
+
+            "American Beech" => [
+                'breastNumeric',
+                'locationCharacteristics',
+                'nearbyTrees',
+                'flowersBinary',
+                'canopyDieback',
+                'isReproducing',
+                'beechBarkDiseaseSymptoms',
+                'beechLeafDiseaseNoSymptoms',
+                'beechLeafDiseaseSomeSymptoms',
+                'beechLeafDiseaseAdvancedSymptoms',
+                'beechHealthProblems',
+            ],
+
+            "Ozark Chinquapin" => [
+                'diameterNumeric',
+                'heightNumeric',
+                'catkins',
+                'canopyHealth',
+                'ozarkBlightSigns',
+            ]
         ];
     }
 
@@ -182,5 +418,14 @@ class MetaLabels
     public function toArray()
     {
         return $this->labels;
+    }
+
+    /**
+     * Returns labels sorted by species
+     * @return array|array[]
+     */
+    public function speciesLabelstoArray(): array
+    {
+        return $this->species_labels;
     }
 }

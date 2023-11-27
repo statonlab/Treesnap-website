@@ -73,6 +73,7 @@ export default class MyObservationsScene extends Scene {
 
     let params = this.getParams(state)
 
+
     axios.get('/web/user/observations', {params}).then(response => {
       const data = response.data.data
       let state  = {
