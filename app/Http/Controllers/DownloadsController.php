@@ -211,10 +211,6 @@ class DownloadsController extends Controller
             'status' => 'nullable|in:marked_correct_by_anyone,marked_correct_by_me',
         ]);
 
-        info('myObservations running now!');
-
-        info('category submitted in http request = ' . $request->category);
-
         $user = $request->user();
 
         if (!$this->allowedExtension($extension)) {
@@ -229,9 +225,7 @@ class DownloadsController extends Controller
         // If the advanced filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
         if ($request->advanced_filters && array_values(json_decode($request->advanced_filters)->categories)) {
             $this->advanced_species = array_values(json_decode($request->advanced_filters)->categories);
-        }
-
-        // If the category filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
+        } // If the category filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
         elseif ($request->category) {
             $this->single_species = $request->category;
         }
@@ -403,16 +397,12 @@ class DownloadsController extends Controller
             $this->advanced_species = array_merge(...$advanced_labels);
 
             return $this->advanced_species;
-        }
-
-        elseif ($this->single_species !== '') {
+        } elseif ($this->single_species !== '') {
             // returns only labels used in the single species specified
             return collect($this->species_labels[$this->single_species])->map(function ($species_label) {
                 return $this->labels[$species_label];
             })->toArray();
-        }
-
-        else {
+        } else {
             return array_values($this->labels);
         }
     }

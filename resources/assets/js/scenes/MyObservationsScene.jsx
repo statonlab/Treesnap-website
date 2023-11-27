@@ -6,7 +6,6 @@ import AccountView from '../components/AccountView'
 import AdvancedFiltersModal from '../components/AdvancedFiltersModal'
 import Dropdown from '../components/Dropdown'
 import Scene from './Scene'
-import Notify from "../components/Notify";
 
 export default class MyObservationsScene extends Scene {
   constructor(props) {
@@ -73,7 +72,6 @@ export default class MyObservationsScene extends Scene {
     this.setState({loading: true})
 
     let params = this.getParams(state)
-    console.log('please2')
 
 
     axios.get('/web/user/observations', {params}).then(response => {
@@ -130,9 +128,6 @@ export default class MyObservationsScene extends Scene {
     } else if (state.advancedFiltersRules) {
       advancedFilters = Object.keys(state.advancedFiltersRules).length > 0 ? state.advancedFiltersRules : null
     }
-
-    console.log("selectedCategory")
-    console.log(state.selectedCategory)
 
     let params = {
       page            : state.page,
@@ -567,7 +562,6 @@ export default class MyObservationsScene extends Scene {
    */
   _renderFilters() {
     let params = this.getParams(this.state, true)
-    console.log('please1')
     let query  = ''
     Object.keys(params).map(key => {
       if (params[key]) {
