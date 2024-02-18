@@ -19,7 +19,7 @@ class UpdateOldHemlockAnswers extends Command
      *
      * @var string
      */
-    protected $description = 'Updates old answers to the Hemlock survey';
+    protected $description = 'Updates old answers to the Hemlock survey to ensure compatibility with updated filters';
 
     /**
      * Create a new command instance.
@@ -38,93 +38,103 @@ class UpdateOldHemlockAnswers extends Command
      */
     public function handle()
     {
+        // updates prior versions of the hemlock protocol to the final version
+        $this->updateField('collectionPurpose',
+            'Landscape Genomics project',
+            'Landscape Genomics project with University of Connecticut');
+        $this->updateField('collectionPurpose',
+            'Other research project',
+            'Other Research Project');
+        $this->updateField('lingeringWoollyAdesCoverage',
+            'No = 0% infested',
+            'No HWA present');
+        $this->updateField('elongateHemlockScaleCoverage',
+            'No = 0% infested',
+            'No EHS present');
+        $this->updateField('recentGrowth',
+            'Branch tips are healthy, with green new growth present',
+            'Branch tips are healthy with green needles');
 
-        Observation::where("observation_category", "Hemlock")
-            ->whereJsonContains("data->collectionPurpose", "Landscape Genomics project")
-            ->chunk(200, function ($observations) {
-                $i = 0;
-                foreach ($observations as $observation) {
-                    $data = $observation->data;
-                    $data['collectionPurpose'] = "Landscape Genomics project with University of Connecticut";
-                    $observation->data = $data;
-                    $observation->save();
-                    $i++;
-                }
-                $this->info("Updated $i observations: Landscape Genomics project -> Landscape Genomics project with University of Connecticut");
-            });
 
-        Observation::where("observation_category", "Hemlock")
-            ->whereJsonContains("data->collectionPurpose", "Other research project")
-            ->chunk(200, function ($observations) {
-                $i = 0;
-                foreach ($observations as $observation) {
-                    $data = $observation->data;
-                    $data['collectionPurpose'] = "Other Research Project";
-                    $observation->data = $data;
-                    $observation->save();
-                    $i++;
-                }
-                $this->info("Updated $i observations: Other research project -> Other Research Project");
-            });
+        // updates very old HWA answers to work in the new filters
 
-        Observation::where("observation_category", "Hemlock")
-            ->whereJsonContains("data->collectionPurpose", "No = 0% infested")
-            ->chunk(200, function ($observations) {
-                $i = 0;
-                foreach ($observations as $observation) {
-                    $data = $observation->data;
-                    $data['collectionPurpose'] = "No HWA present";
-                    $observation->data = $data;
-                    $observation->save();
-                    $i++;
-                }
-                $this->info("Updated $i observations: No = 0% infested -> No HWA present");
-            });
+        // updates old lingeringWoollyAdesCoverage data
+        $this->updateField('lingeringWoollyAdesCoverage',
+            '75-100%',
+            'Yes, H = Heavily infested');
+        $this->updateField('lingeringWoollyAdesCoverage',
+            '50-74%',
+            'Yes, H = Heavily infested');
+        $this->updateField('lingeringWoollyAdesCoverage',
+            '25-49%',
+            'Yes, M = Moderately infested');
+        $this->updateField('lingeringWoollyAdesCoverage',
+            '1-24%',
+            'Yes, L = Lightly infested');
+        $this->updateField('lingeringWoollyAdesCoverage',
+            '0%',
+            'No HWA present');
 
-        Observation::where("observation_category", "Hemlock")
-            ->whereJsonContains("data->collectionPurpose", "No = 0% infested")
-            ->chunk(200, function ($observations) {
-                $i = 0;
-                foreach ($observations as $observation) {
-                    $data = $observation->data;
-                    $data['collectionPurpose'] = "No EHS present";
-                    $observation->data = $data;
-                    $observation->save();
-                    $i++;
-                }
-                $this->info("Updated $i observations: No = 0% infested -> No EHS present");
-            });
+        // updates very old crownPosition data
+        $this->updateField('crownPosition',
+            'Dominant. This tree\'s crown extends above others in the area.',
+            'Dominant, this tree’s crown extends above other nearby trees');
+        $this->updateField('crownPosition',
+            'Codominant. This tree\'s crown is level with or slightly below other nearby trees.',
+            'Codominant, this tree’s crown is level with or slightly below other nearby trees');
+        $this->updateField('crownPosition',
+            'Overtopped. This tree\'s crown is entirely below other trees nearby.',
+            'Overtopped, this tree’s crown is entirely below other nearby trees');
+        $this->updateField('crownPosition',
+            'Not applicable (Tree is isolated)',
+            'Not applicable (e.g., tree is isolated, tree is on the edge, etc)');
 
-        Observation::where("observation_category", "Hemlock")
-            ->whereJsonContains("data->collectionPurpose", "Medium (>30% - < 70% canopy closure, patches of light would reach the lingering tree’s foliage in the summer)")
-            ->chunk(200, function ($observations) {
-                $i = 0;
-                foreach ($observations as $observation) {
-                    $data = $observation->data;
-                    $data['collectionPurpose'] = "Medium (>30% to < 70% canopy closure, patches of light would reach the lingering tree’s foliage in the summer)";
-                    $observation->data = $data;
-                    $observation->save();
-                    $i++;
-                }
-                $this->info("Updated $i observations: Medium (>30% - < 70% canopy closure, patches of light would reach the lingering tree’s foliage in the summer) -> Medium (>30% to < 70% canopy closure, patches of light would reach the lingering tree’s foliage in the summer)");
-            });
+        // updates old hemlockCrownHealth data
+        $this->updateField('hemlockCrownHealth',
+            '1 - Healthy',
+            'H = Healthy (>80% healthy crown; deep green, dense foliage; skylight is mostly blocked when you look at the tree)',);
+        $this->updateField('hemlockCrownHealth',
+            '2 - Thinning',
+            'I = In Decline (<80% - >20% healthy crown; foliage beginning to thin; foliage green-to-greyish; some skylight visible when looking at the tree)');
+        $this->updateField('hemlockCrownHealth',
+            '3 - Some dead branches (less than 50%)',
+            'I = In Decline (<80% - >20% healthy crown; foliage beginning to thin; foliage green-to-greyish; some skylight visible when looking at the tree)');
+        $this->updateField('hemlockCrownHealth',
+            '4 - Many dead branches (more than 50%)',
+            'S = Severe Decline (<20% crown; many limbs dead, foliage sparse; skylight very visible when looking at the tree)');
+        $this->updateField('hemlockCrownHealth',
+            '5 - Completely dead',
+            'S = Severe Decline (<20% crown; many limbs dead, foliage sparse; skylight very visible when looking at the tree)');
+        $this->updateField('hemlockCrownHealth',
+            'I\'m not sure',
+            'I\'m not sure (please describe in next field)');
 
-        Observation::where("observation_category", "Hemlock")
-            ->whereJsonContains("data->collectionPurpose", "Branch tips are healthy, with green new growth present")
-            ->chunk(200, function ($observations) {
-                $i = 0;
-                foreach ($observations as $observation) {
-                    $data = $observation->data;
-                    $data['collectionPurpose'] = "Branch tips are healthy with green needles";
-                    $observation->data = $data;
-                    $observation->save();
-                    $i++;
-                }
-                $this->info("Updated $i observations: Branch tips are healthy, with green new growth present -> Branch tips are healthy with green needles");
-            });
+
 
         $this->info('Hemlock observations updated successfully');
 
         return 0;
     }
+
+    public function updateField($fieldName, $oldValue, $newValue)
+    {
+        Observation::where("observation_category", "Hemlock")
+            ->whereJsonContains("data->" . $fieldName, $oldValue)
+            ->chunk(200, function ($observations) use ($fieldName, $oldValue, $newValue) {
+                $i = 0;
+                foreach ($observations as $observation) {
+                    $data = $observation->data;
+                    $data[$fieldName] = $newValue;
+                    $observation->data = $data;
+                    $observation->save();
+                    $i++;
+                }
+                $this->info("Updated $i observations: " . $oldValue . " -> " . $newValue);
+            });
+    }
 }
+
+
+
+
+
