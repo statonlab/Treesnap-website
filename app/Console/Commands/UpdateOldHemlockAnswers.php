@@ -58,6 +58,7 @@ class UpdateOldHemlockAnswers extends Command
 
         // updates very old HWA answers to work in the new filters
 
+        $this->updateAttributeName('woollyAdesCoverage', 'lingeringWoollyAdesCoverage');
         // updates old woollyAdesCoverage data (now lingeringWoollyAdesCoverage)
         $this->updateField('lingeringWoollyAdesCoverage',
             '75-100%',
@@ -75,6 +76,8 @@ class UpdateOldHemlockAnswers extends Command
             '0%',
             'No HWA present');
 
+
+        $this->updateAttributeName('crownClassification', 'crownPosition');
         // updates very old crownClassification data (now crownPosition)
         $this->updateField('crownPosition',
             'Dominant. This tree\'s crown extends above others in the area.',
@@ -89,6 +92,8 @@ class UpdateOldHemlockAnswers extends Command
             'Not applicable (Tree is isolated)',
             'Not applicable (e.g., tree is isolated, tree is on the edge, etc)');
 
+
+        $this->updateAttributeName('crownHealth', 'hemlockCrownHealth');
         // updates old crownHealth data (now hemlockCrownHealth)
         $this->updateField('hemlockCrownHealth',
             '1 - Healthy',
@@ -109,8 +114,6 @@ class UpdateOldHemlockAnswers extends Command
             'I\'m not sure',
             'I\'m not sure (please describe in next field)');
 
-
-
         $this->info('Hemlock observations updated successfully');
 
         return 0;
@@ -130,6 +133,23 @@ class UpdateOldHemlockAnswers extends Command
                     $i++;
                 }
                 $this->info("Updated $i observations: " . $oldValue . " -> " . $newValue);
+            });
+    }
+
+    public function updateAttributeName($old, $new) {
+        Observation::where("observation_category", "Hemlock")
+            ->whereNotNull("data->".$old)
+            ->chunk(200, function ($observations) use ($old, $new) {
+                $i = 0;
+                foreach ($observations as $observation) {
+                    $data = $observation->data;
+                    $data[$new] = $data[$old];
+                    unset($data[$old]);
+                    $observation->data = $data;
+                    $observation->save();
+                    $i++;
+                }
+                $this->info("Renamed attribute in $i observations: " . $old . " -> " . $new);
             });
     }
 }
