@@ -58,7 +58,7 @@ class UpdateOldHemlockAnswers extends Command
 
         // updates very old HWA answers to work in the new filters
 
-        // updates old lingeringWoollyAdesCoverage data
+        // updates old woollyAdesCoverage data (now lingeringWoollyAdesCoverage)
         $this->updateField('lingeringWoollyAdesCoverage',
             '75-100%',
             'Yes, H = Heavily infested');
@@ -75,7 +75,7 @@ class UpdateOldHemlockAnswers extends Command
             '0%',
             'No HWA present');
 
-        // updates very old crownPosition data
+        // updates very old crownClassification data (now crownPosition)
         $this->updateField('crownPosition',
             'Dominant. This tree\'s crown extends above others in the area.',
             'Dominant, this tree’s crown extends above other nearby trees');
@@ -89,7 +89,7 @@ class UpdateOldHemlockAnswers extends Command
             'Not applicable (Tree is isolated)',
             'Not applicable (e.g., tree is isolated, tree is on the edge, etc)');
 
-        // updates old hemlockCrownHealth data
+        // updates old crownHealth data (now hemlockCrownHealth)
         $this->updateField('hemlockCrownHealth',
             '1 - Healthy',
             'H = Healthy (>80% healthy crown; deep green, dense foliage; skylight is mostly blocked when you look at the tree)',);
