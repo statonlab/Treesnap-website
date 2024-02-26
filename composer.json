@@ -14,7 +14,6 @@
         "barryvdh/laravel-ide-helper": "^2.6",
         "doctrine/dbal": "^2.9",
         "firebase/php-jwt": "^v6.1.2",
-        "fruitcake/laravel-cors": "^2.0",
         "genealabs/laravel-sign-in-with-apple": "^0.6.0",
         "google/recaptcha": "~1.2",
         "graham-campbell/markdown": "^15.1",
