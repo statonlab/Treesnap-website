@@ -35,14 +35,6 @@ class Event extends Model
         'updated_at',
         'start_date',
         'end_date',
-    ];
-
-    /**
-     * Casts columns.
-     *
-     * @var array
-     */
-    protected $casts = [
         'has_start_time' => 'boolean',
         'has_end_time' => 'boolean',
     ];

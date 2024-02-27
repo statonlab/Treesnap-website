@@ -27,18 +27,11 @@ class Filter extends Model
     protected $casts = [
         'rules' => 'array',
         'notify_user' => 'boolean',
-    ];
-
-    /**
-     * Date columns.
-     *
-     * @var array
-     */
-    protected $casts = [
         'created_at',
         'updated_at',
         'notifications_sent_at',
     ];
+
 
     /**
      * Fields that support units.
