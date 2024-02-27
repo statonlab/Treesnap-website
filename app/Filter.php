@@ -34,7 +34,7 @@ class Filter extends Model
      *
      * @var array
      */
-    protected $dates = [
+    protected $casts = [
         'created_at',
         'updated_at',
         'notifications_sent_at',

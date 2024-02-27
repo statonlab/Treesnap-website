@@ -15,7 +15,7 @@ class Invite extends Model
         'expires_at',
     ];
 
-    protected $dates = [
+    protected $casts = [
         'expires_at',
         'created_at',
         'updated_at',

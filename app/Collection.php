@@ -17,7 +17,7 @@ class Collection extends Model
      *
      * @var array
      */
-    protected $dates = [
+    protected $casts = [
         'created_at',
         'updated_at',
     ];
