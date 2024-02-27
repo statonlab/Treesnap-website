@@ -14,7 +14,7 @@
         "barryvdh/laravel-ide-helper": "^2.6",
         "doctrine/dbal": "^3.0",
         "firebase/php-jwt": "^v6.1.2",
-        "genealabs/laravel-sign-in-with-apple": "^0.6.0",
+        "genealabs/laravel-sign-in-with-apple": "^0.7.0",
         "google/recaptcha": "~1.2",
         "graham-campbell/markdown": "^15.1",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -24,8 +24,8 @@
         "laravel/legacy-factories": "^1.0",
         "laravel/passport": "^v11.10.5",
         "laravel/socialite": "^v5.0.1",
-        "laravel/tinker": "v2.7.0",
-        "laravel/ui": "^3.0",
+        "laravel/tinker": "v2.9.0",
+        "laravel/ui": "^4.4.0",
         "nunomaduro/collision": "^6.1",
         "predis/predis": "^v1.1.6",
         "spatie/laravel-ignition": "^2.0",
@@ -36,7 +36,7 @@
     "require-dev": {
         "filp/whoops": "~2.0",
         "fakerphp/faker": "~v1.17.0",
-        "laravel/dusk": "^v6.6.0",
+        "laravel/dusk": "^v7.13.0",
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~9.0",
         "symfony/thanks": "~1.0"
