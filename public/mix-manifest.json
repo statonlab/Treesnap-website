@@ -1,15 +1,7 @@
 {
-<<<<<<< HEAD
-    "/js/app.js": "/js/app.js",
-    "/js/admin.js": "/js/admin.js",
-    "/js/manifest.js": "/js/manifest.js",
-    "/css/app.css": "/css/app.css",
-    "/js/vendor.js": "/js/vendor.js"
-=======
-    "/js/app.js": "/js/app.js?id=23164a39e2b8b1cc37ed979e2130ff57",
-    "/js/admin.js": "/js/admin.js?id=4a6e539dfb2b1136e4e6c31055448619",
-    "/js/manifest.js": "/js/manifest.js?id=3409aa79280b3ffb06e367a2f069bf5b",
-    "/css/app.css": "/css/app.css?id=b227c0e235e316e09381b35a054d6dd9",
-    "/js/vendor.js": "/js/vendor.js?id=34afb2c67a71bd802e08edec9dcf71a8"
->>>>>>> master
+    "/js/app.js": "/js/app.js?id=94754e897eb1de3c6e2b95f06f621be0",
+    "/js/admin.js": "/js/admin.js?id=33d02b57dfaf133e6f6fd386b16b0e56",
+    "/js/manifest.js": "/js/manifest.js?id=2439651c1182737fc672cbb5516d84e6",
+    "/css/app.css": "/css/app.css?id=8245a01e0c801f78c47500ffa027af60",
+    "/js/vendor.js": "/js/vendor.js?id=42b4ca36875e4246b40266ffcf0c6ba2"
 }
