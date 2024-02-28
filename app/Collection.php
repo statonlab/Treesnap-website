@@ -17,9 +17,9 @@ class Collection extends Model
      *
      * @var array
      */
-    protected $dates = [
-        'created_at',
-        'updated_at',
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     /**
@@ -48,7 +48,8 @@ class Collection extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function groups() {
+    public function groups()
+    {
         return $this->belongsToMany('App\Group')->withPivot(['can_customize']);
     }
 

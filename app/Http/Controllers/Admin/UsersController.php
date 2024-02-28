@@ -234,7 +234,7 @@ class UsersController extends Controller
 
             \Storage::append($path, trim($this->line([
                 $user->name,
-                $user->created_at->format('m/d/Y'),
+                Carbon::createFromDate($user->created_at)->format('m/d/Y'),
                 $user->email,
                 $user->observations_count,
                 $recent_observation ?: 'Inapplicable',

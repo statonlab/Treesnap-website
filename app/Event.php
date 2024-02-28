@@ -30,19 +30,11 @@ class Event extends Model
      *
      * @var array
      */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'start_date',
-        'end_date',
-    ];
-
-    /**
-     * Casts columns.
-     *
-     * @var array
-     */
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
         'has_start_time' => 'boolean',
         'has_end_time' => 'boolean',
     ];

@@ -25,8 +25,8 @@ class EventsController extends Controller
             ->get()
             ->makeHidden('user_id')
             ->map(function (Event $event) {
-                $start_date = $event->start_date;
-                $end_date = $event->end_date;
+                $start_date = Carbon::createFromDate($event->start_date);
+                $end_date = Carbon::createFromDate($event->end_date);
 
                 $event->formatted_start_date = [
                     'month' => $start_date->format('M'),

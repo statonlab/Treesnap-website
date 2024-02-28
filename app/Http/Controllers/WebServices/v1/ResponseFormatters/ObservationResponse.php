@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WebServices\v1\ResponseFormatters;
 use App\Observation;
 use App\Services\MetaLabels;
 use App\User;
+use Illuminate\Support\Carbon;
 
 class ObservationResponse
 {
@@ -55,7 +56,7 @@ class ObservationResponse
             'longitude' => $has_privileges ? $observation->longitude : $observation->fuzzy_coords['longitude'],
             'latitude' => $has_privileges ? $observation->latitude : $observation->fuzzy_coords['latitude'],
             'location_accuracy' => $has_privileges ? "Within $observation->location_accuracy meters radius" : 'Within 8 kilometers radius',
-            'collection_date' => $observation->collection_date->format('Y-m-d H:i:s \G\M\T O'),
+            'collection_date' => Carbon::createFromDate($observation->collection_date)->format('Y-m-d H:i:s \G\M\T O'),
             'meta_data' => $this->constructMetaDataArray($observation->data, $include_comments),
             'url' => url("/observation/$observation->id"),
         ];

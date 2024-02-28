@@ -106,8 +106,8 @@ var AboutUsView = /*#__PURE__*/function (_Component) {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("figure", {
                   className: "image",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
-                    src: "/images/us/noah.png",
-                    alt: "Noah Caldwell"
+                    src: "/images/us/condon-min.jpg",
+                    alt: "Bradford Condon"
                   })
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -118,7 +118,7 @@ var AboutUsView = /*#__PURE__*/function (_Component) {
                     className: "media-content",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                       className: "title is-4",
-                      children: "Noah Caldwell"
+                      children: "Bradford Condon"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                       className: "subtitle is-6",
                       children: "Mobile and Web Developer"
@@ -136,8 +136,8 @@ var AboutUsView = /*#__PURE__*/function (_Component) {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("figure", {
                   className: "image",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img", {
-                    src: "/images/us/cstribling.jpg",
-                    alt: "Chance Stribling"
+                    src: "/images/us/almsaeed-min.jpg",
+                    alt: "Abdullah Almsaeed"
                   })
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -148,7 +148,7 @@ var AboutUsView = /*#__PURE__*/function (_Component) {
                     className: "media-content",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                       className: "title is-4",
-                      children: "Chance Stribling"
+                      children: "Abdullah Almsaeed"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
                       className: "subtitle is-6",
                       children: "Mobile and Web Developer"
