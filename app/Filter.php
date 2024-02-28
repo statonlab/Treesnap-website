@@ -27,9 +27,9 @@ class Filter extends Model
     protected $casts = [
         'rules' => 'array',
         'notify_user' => 'boolean',
-        'created_at',
-        'updated_at',
-        'notifications_sent_at',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'notifications_sent_at' => 'datetime',
     ];
 
 
