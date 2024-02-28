@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\WebServices\v1;
 
+use App\Http\Controllers\Traits\Responds;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\AccessToken;
@@ -9,6 +10,8 @@ use Illuminate\Http\JsonResponse;
 
 class TokensController extends Controller
 {
+    use Responds;
+
     /**
      * Allow users to refresh their own tokens.
      *
@@ -31,17 +34,14 @@ class TokensController extends Controller
         ])->first();
 
         // Make sure the tokens exist
-        if (! $accessToken || ! $accessToken->OAuthToken) {
-            return JsonResponse::create([
-                'error_code' => 1000,
-                'message' => 'Tokens not found',
-            ], 404);
+        if (!$accessToken || !$accessToken->OAuthToken) {
+            return $this->error('Tokens not found', 1000, 404);
         }
 
         // Verify that the authentication access code is the one being renewed
         // This automatically guarantees that we are not renewing already expired tokens
         if ($accessToken->token !== $request->bearerToken()) {
-            return JsonResponse::create([
+            return response()->json([
                 'error_code' => 1100,
                 'message' => 'Tokens mismatch',
             ], 401);
@@ -57,11 +57,11 @@ class TokensController extends Controller
             'token' => $token->accessToken,
         ])->save();
 
-        return JsonResponse::create([
+        return response()->json([
             'access_token' => $token->accessToken,
             'expires_at' => $token->token->expires_at,
             'error_code' => 0,
             'message' => 'Tokens updated successfully',
-        ]);
+        ], 201);
     }
 }

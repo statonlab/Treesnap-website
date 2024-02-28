@@ -100,7 +100,7 @@ class OAuthController extends Controller
             'name' => $OAuthToken->name,
             'access_token' => $accessToken->token,
             'id' => $accessToken->token_id,
-            'expires_at' => $OAuthToken->expires_at->format('d M, Y H:i:s'),
+            'expires_at' => Carbon::createFromDate($OAuthToken->expires_at)->format('d M, Y H:i:s'),
             'active' => $OAuthToken->expires_at->gt(Carbon::now()),
         ];
     }
