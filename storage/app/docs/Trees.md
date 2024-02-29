@@ -22,7 +22,7 @@ American elm (_Ulmus americana_)is a native species to North America that was on
 
 Dutch elm disease is caused by a parasitic fungus (_Ophiostoma ulmi_) and is spread by elm bark beetles.  Fungal infection results in the tree plugging its own xylem tissue in an attempt to stop its spread.  This stops the flow of water and nutrients from the roots to the rest of the tree, killing it.
 ### Partners 
-* [USDA Forest Service Northern Research Station ](https://www.nrs.fs.fed.us/disturbance/invasive_species/ded/survivor_elms/)
+* [USDA Forest Service Northern Research Station ](https://www.fs.usda.gov/inside-fs/delivering-mission/sustain/forest-service-partners-work-restore-american-elm)
 
 ## Ash
 
@@ -37,7 +37,7 @@ There are several different species of American ash trees, all of which are susc
 
 An invasive insect, the emerald ash borer, is currently moving through North America and killing ash trees. The larvae of this beetle feed on the inner bark of ash trees, cutting off the tree’s flow of water and nutrients and eventually killing the tree. All American ash species are susceptible to the emerald ash borer and so far there is very little natural resistance to the insect in our trees.
 Our hope is that this reporting app will let members of the public identify ash trees that are lingering after the emerald ash borer’s arrival and which may have some natural resistance. Partners will then collect seeds from these trees and add them to tree breeding programs to try and propagate resistant trees that are not killed by the emerald ash borer to use in forest restoration.
-[Read more about the emerald ash borer here](http://www.hungrypests.com/the-threat/emerald-ash-borer.php).
+[Read more about the emerald ash borer here](https://www.aphis.usda.gov/aphis/ourfocus/planthealth/plant-pest-and-disease-programs/pests-and-diseases/emerald-ash-borer), and [learn more about the ash breeding program here](https://www.science.org/content/article/can-ambitious-breeding-effort-save-north-america-s-ash-trees).
 
 ### Partners
 
@@ -67,8 +67,9 @@ Our hope is that this reporting app will let members of the public identify heml
        
 ### Partners
 
+* [The Nature Conservancy] (https://www.nature.org/en-us/about-us/where-we-work/united-states/tennessee/stories-in-tennessee/hemlock/)
 * [Hemlock Restoration Initiatve](http://savehemlocksnc.org/)
-* [Forest Restoration Alliance](https://threatenedforests.com/)
+* [Forest Restoration Alliance](https://www.facebook.com/ThreatenedForests/)
 
 ## Florida Torreya
 
@@ -81,7 +82,7 @@ Florida Torreya is also known as Gopherwood, Stinking Cedar, and Florida nutmeg.
 The deadly fungus has been identified as _Fusarium torreyae_, thought to be imported from Asia, and appears to be ubiquitous in the ravines area. Root sprouts die before reaching maturity and producing fruit, so the species will go extinct in the wild without intervention. Researchers will coordinate with you to take cuttings of your trees which will be grown offsite to save the most genetic diversity possible. Of utmost importance is finding trees that do not exhibit cankers or other signs of disease stress so that genes for disease resistance can be found and used in a breeding program.
 
 ### Partners
-* [Atlanta Botanical Gardens](http://atlantabg.org/learn/conservation-efforts)
+* [Atlanta Botanical Gardens](https://atlantabg.org/plant-profile/florida-torreya/)
 
 ## Eastern Larch
 
@@ -93,10 +94,10 @@ The needle dropping period occurs very soon after the needles change color from 
 
 [A Conifer That Thinks It's a Broadleaf](http://curiousnature.info/A1-Larch.htm)
 
-[Larix laricina (Tamarack, American Larch) Pinaceae](https://www.lakeforest.edu/academics/programs/environmental/courses/es204/larix_laricina.php)
+[Larix laricina (Tamarack, American Larch) Pinaceae](https://www.lakeforest.edu/academics/majors-and-minors/environmental-studies/larix-laricina-(tamarack-american-larch)-pinaceae)
 
 ### Partners
-* [University of Connecticut - Plant Computational Genomics Lab](https://compgenomics.lab.uconn.edu)
+* [University of Connecticut - Plant Computational Genomics Lab](https://plantcompgenomics.com)
 
 ## Pacific Madrone
 
@@ -106,7 +107,7 @@ The Pacific madrone (*Arbutus menziesii* Pursh) tree is the largest member of th
 
 [The Decline of Pacific Madrone](http://depts.washington.edu/hortlib/collections/madrone/ch07_el.pdf)
 
-[Fire Effects Information System](https://www.fs.fed.us/database/feis/plants/tree/arbmen/all.html)
+[Fire Effects Information System](https://www.fs.usda.gov/database/feis/plants/tree/arbmen/all.html?ref=ecofriendlywest.ca)
 
 [Washington State University Extension Pacific Madrone Research](https://ppo.puyallup.wsu.edu/pmr)
 
@@ -139,7 +140,7 @@ Butternut is disappearing from a pathogen known as Ophiognomonia clavigignenti-j
 
 ### Read More
 
-[Butternut Canker (Forest Service)](https://www.fs.fed.us/research/invasive-species/plant-pathogens/butternut-canker-disease.php)
+[Butternut Canker (Forest Service)](https://www.fs.usda.gov/research/treesearch/61954)
 
 [Butternut Canker (Invasive Species)](https://www.invasivespeciesinfo.gov/terrestrial/pathogens-and-diseases/butternut-canker)
 
@@ -154,7 +155,7 @@ Pinyon pine is a short bushy evergreentree with two needles in a sheath or bundl
 A significant limitation to reforesting the Las Conchas Fire area is the lack of good local seed. It is critical to find and collect tree seeds for the purpose of growing seedlings from them in a forest nursery and then planting them to restore these post-fire landscapes. Pinyon pine cone and seed crops vary by year and by place, with good crops of seeds only available every 3-7 years. This makes it hard to count on collecting seeds in a particular location, so extensive seed scouting is necessary to support collection efforts.
 
 ### Read More
-[Botanical and Ecological Characteristics](https://www.fs.fed.us/database/feis/plants/tree/pinedu/all.html#BOTANICAL%20AND%20ECOLOGICAL%20CHARACTERISTICS)
+[Botanical and Ecological Characteristics](https://www.fs.usda.gov/detail/gmug/home?cid=fswdev3_006748)
 
 ### Partners
 * [The Nature Conservancy](https://www.nature.org/en-us/)

@@ -1,5 +1,12 @@
 # Frequently Asked Questions
 
+### Can I use TreeSnap outside of the United States?
+
+Yes! TreeSnap functions globally. Most of our userbase is located within the United States, but as you can see from our 
+[Public Map](https://treesnap.org/map/?center=48.31851827972496,11.322487095768032&zoom=5), we have users from all over 
+the world. We are excited to see the app being used in other countries and hope to expand our partnerships and research 
+programs to include more international projects.
+
 ### When will TreeSnap be available in the app store?
 
 TreeSnap was released in July 2017. It is available now for

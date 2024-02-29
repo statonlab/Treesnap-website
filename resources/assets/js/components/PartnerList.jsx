@@ -14,7 +14,7 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href="https://www.nrs.fs.fed.us/units/invasivescontrol/">
+              <a href="https://www.nrs.fs.usda.gov/disturbance/invasive_species/">
                 <img src="/images/FS_green.png" alt="US forest service" className="feature-icon"/>
               </a>
             </div>
@@ -61,7 +61,7 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href="https://threatenedforests.com/">
+              <a href="https://www.facebook.com/ThreatenedForests">
                 <img src="/images/fra.png"
                      alt="Forest Restoration Alliance logo"
                      className="feature-icon"/>
@@ -74,7 +74,7 @@ export default class PartnerList extends Component {
                 landscapes in eastern America by researching and addressing invasive pest
                 threats to hemlock, firs, and other native trees.
               </p>
-              <a className={'button is-info'} href="https://threatenedforests.com/">Visit Full Site</a>
+              <a className={'button is-info'} href="https://www.facebook.com/ThreatenedForests">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -194,7 +194,7 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href="https://compgenomics.lab.uconn.edu">
+              <a href="https://plantcompgenomics.com">
                 <img src="/images/uconn_lab.png"
                      alt="University of Connecticut"
                      className="feature-icon"/>
@@ -208,7 +208,7 @@ export default class PartnerList extends Component {
               <p className="feature-text">
                 We also develop web-based applications that integrate data across domains to facilitate the forest geneticist or ecologist's ability to analyze, share, and visualize their data. Such integration requires the implementation of semantic technologies and ontologies to connect genotype, phenotype, and environmental data.
               </p>
-              <a className={'button is-info'} href="https://compgenomics.lab.uconn.edu">Visit Full Site</a>
+              <a className={'button is-info'} href="https://plantcompgenomics.com">Visit Full Site</a>
             </div>
           </div>
         </div>
@@ -319,6 +319,23 @@ export default class PartnerList extends Component {
                 The mission of the New Mexico Highlands University Department of Forestry is to engage in teaching, research, and service in forestry to promote the sustainable management of forest resources. The Forestry teaching program seeks to enhance the competency and excellence of the forestry profession. The undergraduate Forestry degree program is designed to educate well-rounded, technologically proficient, and ecologically aware forest managers, providing them with a background sufficient to enable them to support the continued health, integrity, and use of forests for the benefit of society. Being part of a Hispanic Serving Institution (HSI), the Forestry program seeks to address the needs of underrepresented students in the forestry profession.
               </p>
               <a className={'button is-info'} href="https://www.nmhu.edu">Visit Full Site</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="box">
+          <div className="media">
+            <div className="media-left">
+              <a href="https://www.nature.org/en-us/about-us/where-we-work/united-states/tennessee/stories-in-tennessee/hemlock/">
+                <img src="/images/tnc.png" alt="The Nature Conservancy" className="feature-icon"/>
+              </a>
+            </div>
+            <div className="media-content">
+              <p className="title">The Nature Conservancy</p>
+              <p className="feature-text">
+                The John T. Harrington Forestry Research Center with New Mexico State University is the only research program in the southwestern US that focuses on forest nursery technologies, tree improvement, and eco-physiology of young forest trees to facilitate ecological restoration and/or commercial reforestation. These research interests are critical for establishing future forests in the region.
+              </p>
+              <a className={'button is-info'} href="https://www.nature.org/en-us/about-us/where-we-work/united-states/tennessee/stories-in-tennessee/hemlock/">Visit Full Site</a>
             </div>
           </div>
         </div>

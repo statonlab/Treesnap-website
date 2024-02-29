@@ -3,7 +3,7 @@ TreeSnap depends on our partner research groups and breeding programs that will 
 
 # USDA Forest Service Northern Research Station 
  
- The [UDSA Forest Service Northern Research Station's](https://www.nrs.fs.fed.us/units/invasivescontrol/) mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents.
+ The [UDSA Forest Service Northern Research Station's](https://www.fs.usda.gov/research/nrs) mission is to provide basic and applied knowledge about, and develop methods for, protecting and sustaining landscapes disturbed by invasive species and other agents.
  
 As a TreeSnap partner, they will use data on ash and elm to find trees that are resistant to the emerald ash borer and Dutch elm disease.  They plan to use data from areas where these threats have been established for some time to identify “lingering” trees that survive long past others have died to be used in research and breeding programs. 
   
@@ -12,7 +12,7 @@ As a TreeSnap partner, they will use data on ash and elm to find trees that are 
   * [Elm](https://www.nrs.fs.fed.us/disturbance/invasive_species/ded/survivor_elms/)
 
 # Forest Restoration Alliance 
-The [Forest Restoration Alliance](https://threatenedforests.com/) works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees.  They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.
+The [Forest Restoration Alliance](https://www.facebook.com/ThreatenedForests) works to restore healthy forests and landscapes in eastern America by researching and addressing invasive pest threats to hemlock, firs, and other native trees.  They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.
 
 # Hemlock Restoration Initiative 
  The [Hemlock Restoration Initiatve](http://savehemlocksnc.org/) aims to restore eastern and Carolina hemlocks to their native habitats throughout North Carolina and to mitigate damage to hemlocks caused by infestation of the hemlock woolly adelgid.  They will use data on hemlock to find trees that are resistant to hemlock woolly adelgid.
