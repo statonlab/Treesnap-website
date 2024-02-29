@@ -20,23 +20,22 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
 
 var HomeFooter = /*#__PURE__*/function (_Component) {
   _inherits(HomeFooter, _Component);
-  var _super = _createSuper(HomeFooter);
   function HomeFooter(props) {
     _classCallCheck(this, HomeFooter);
-    return _super.call(this, props);
+    return _callSuper(this, HomeFooter, [props]);
   }
   _createClass(HomeFooter, [{
     key: "render",
@@ -201,13 +200,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
@@ -215,10 +214,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 var LinksSidebar = /*#__PURE__*/function (_Component) {
   _inherits(LinksSidebar, _Component);
-  var _super = _createSuper(LinksSidebar);
   function LinksSidebar() {
     _classCallCheck(this, LinksSidebar);
-    return _super.apply(this, arguments);
+    return _callSuper(this, LinksSidebar, arguments);
   }
   _createClass(LinksSidebar, [{
     key: "render",
@@ -272,7 +270,7 @@ var LinksSidebar = /*#__PURE__*/function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 LinksSidebar.propTypes = {
-  links: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array.isRequired),
+  links: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array).isRequired,
   title: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string)
 };
 LinksSidebar.defaultProps = {
@@ -304,13 +302,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
@@ -320,11 +318,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 var Navbar = /*#__PURE__*/function (_Component) {
   _inherits(Navbar, _Component);
-  var _super = _createSuper(Navbar);
   function Navbar(props) {
     var _this;
     _classCallCheck(this, Navbar);
-    _this = _super.call(this, props);
+    _this = _callSuper(this, Navbar, [props]);
     _this.state = {
       isActive: false
     };
@@ -513,23 +510,22 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
 
 var Spinner = /*#__PURE__*/function (_Component) {
   _inherits(Spinner, _Component);
-  var _super = _createSuper(Spinner);
   function Spinner(props) {
     _classCallCheck(this, Spinner);
-    return _super.call(this, props);
+    return _callSuper(this, Spinner, [props]);
   }
 
   /**
@@ -574,7 +570,7 @@ var Spinner = /*#__PURE__*/function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 Spinner.propTypes = {
-  visible: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool.isRequired),
+  visible: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool).isRequired,
   containerStyle: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().object),
   inline: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool)
 };
@@ -1027,13 +1023,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
@@ -1047,11 +1043,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 var KnowledgeScene = /*#__PURE__*/function (_Scene) {
   _inherits(KnowledgeScene, _Scene);
-  var _super = _createSuper(KnowledgeScene);
   function KnowledgeScene(props) {
     var _this;
     _classCallCheck(this, KnowledgeScene);
-    _this = _super.call(this, props);
+    _this = _callSuper(this, KnowledgeScene, [props]);
     _this.state = {
       content: '',
       loading: true
@@ -1121,7 +1116,7 @@ var KnowledgeScene = /*#__PURE__*/function (_Scene) {
 }(_Scene__WEBPACK_IMPORTED_MODULE_7__["default"]);
 
 KnowledgeScene.propTypes = {
-  docPath: (prop_types__WEBPACK_IMPORTED_MODULE_9___default().string.isRequired),
+  docPath: (prop_types__WEBPACK_IMPORTED_MODULE_9___default().string).isRequired,
   title: (prop_types__WEBPACK_IMPORTED_MODULE_9___default().string)
 };
 _helpers_KnowledgeSidebarLinks__WEBPACK_IMPORTED_MODULE_6__["default"].defaultProps = {
@@ -1147,21 +1142,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var Scene = /*#__PURE__*/function (_Component) {
   _inherits(Scene, _Component);
-  var _super = _createSuper(Scene);
   function Scene(props) {
     var _this;
     _classCallCheck(this, Scene);
-    _this = _super.call(this, props);
+    _this = _callSuper(this, Scene, [props]);
     if (window.ga) {
       setTimeout(function () {
         return window.ga('send', 'pageview');
@@ -1183,27 +1177,28 @@ var Scene = /*#__PURE__*/function (_Component) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Lexer": () => (/* binding */ Lexer),
-/* harmony export */   "Parser": () => (/* binding */ Parser),
-/* harmony export */   "Renderer": () => (/* binding */ Renderer),
-/* harmony export */   "Slugger": () => (/* binding */ Slugger),
-/* harmony export */   "TextRenderer": () => (/* binding */ TextRenderer),
-/* harmony export */   "Tokenizer": () => (/* binding */ Tokenizer),
-/* harmony export */   "defaults": () => (/* binding */ defaults),
-/* harmony export */   "getDefaults": () => (/* binding */ getDefaults),
-/* harmony export */   "lexer": () => (/* binding */ lexer),
-/* harmony export */   "marked": () => (/* binding */ marked),
-/* harmony export */   "options": () => (/* binding */ options),
-/* harmony export */   "parse": () => (/* binding */ parse),
-/* harmony export */   "parseInline": () => (/* binding */ parseInline),
-/* harmony export */   "parser": () => (/* binding */ parser),
-/* harmony export */   "setOptions": () => (/* binding */ setOptions),
-/* harmony export */   "use": () => (/* binding */ use),
-/* harmony export */   "walkTokens": () => (/* binding */ walkTokens)
+/* harmony export */   Hooks: () => (/* binding */ Hooks),
+/* harmony export */   Lexer: () => (/* binding */ Lexer),
+/* harmony export */   Parser: () => (/* binding */ Parser),
+/* harmony export */   Renderer: () => (/* binding */ Renderer),
+/* harmony export */   Slugger: () => (/* binding */ Slugger),
+/* harmony export */   TextRenderer: () => (/* binding */ TextRenderer),
+/* harmony export */   Tokenizer: () => (/* binding */ Tokenizer),
+/* harmony export */   defaults: () => (/* binding */ defaults),
+/* harmony export */   getDefaults: () => (/* binding */ getDefaults),
+/* harmony export */   lexer: () => (/* binding */ lexer),
+/* harmony export */   marked: () => (/* binding */ marked),
+/* harmony export */   options: () => (/* binding */ options),
+/* harmony export */   parse: () => (/* binding */ parse),
+/* harmony export */   parseInline: () => (/* binding */ parseInline),
+/* harmony export */   parser: () => (/* binding */ parser),
+/* harmony export */   setOptions: () => (/* binding */ setOptions),
+/* harmony export */   use: () => (/* binding */ use),
+/* harmony export */   walkTokens: () => (/* binding */ walkTokens)
 /* harmony export */ });
 /**
- * marked - a markdown parser
- * Copyright (c) 2011-2022, Christopher Jeffrey. (MIT Licensed)
+ * marked v4.3.0 - a markdown parser
+ * Copyright (c) 2011-2023, Christopher Jeffrey. (MIT Licensed)
  * https://github.com/markedjs/marked
  */
 
@@ -1214,6 +1209,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function getDefaults() {
   return {
+    async: false,
     baseUrl: null,
     breaks: false,
     extensions: null,
@@ -1221,6 +1217,7 @@ function getDefaults() {
     headerIds: true,
     headerPrefix: '',
     highlight: null,
+    hooks: null,
     langPrefix: 'language-',
     mangle: true,
     pedantic: false,
@@ -1228,7 +1225,6 @@ function getDefaults() {
     sanitize: false,
     sanitizer: null,
     silent: false,
-    smartLists: false,
     smartypants: false,
     tokenizer: null,
     walkTokens: null,
@@ -1246,9 +1242,9 @@ function changeDefaults(newDefaults) {
  * Helpers
  */
 const escapeTest = /[&<>"']/;
-const escapeReplace = /[&<>"']/g;
-const escapeTestNoEncode = /[<>"']|&(?!#?\w+;)/;
-const escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g;
+const escapeReplace = new RegExp(escapeTest.source, 'g');
+const escapeTestNoEncode = /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/;
+const escapeReplaceNoEncode = new RegExp(escapeTestNoEncode.source, 'g');
 const escapeReplacements = {
   '&': '&amp;',
   '<': '&lt;',
@@ -1386,23 +1382,6 @@ function resolveUrl(base, href) {
 
 const noopTest = { exec: function noopTest() {} };
 
-function merge(obj) {
-  let i = 1,
-    target,
-    key;
-
-  for (; i < arguments.length; i++) {
-    target = arguments[i];
-    for (key in target) {
-      if (Object.prototype.hasOwnProperty.call(target, key)) {
-        obj[key] = target[key];
-      }
-    }
-  }
-
-  return obj;
-}
-
 function splitCells(tableRow, count) {
   // ensure that every cell-delimiting pipe has a space
   // before it to distinguish it from an escaped pipe
@@ -1532,19 +1511,18 @@ function outputLink(cap, link, raw, lexer) {
       href,
       title,
       text,
-      tokens: lexer.inlineTokens(text, [])
+      tokens: lexer.inlineTokens(text)
     };
     lexer.state.inLink = false;
     return token;
-  } else {
-    return {
-      type: 'image',
-      raw,
-      href,
-      title,
-      text: escape(text)
-    };
   }
+  return {
+    type: 'image',
+    raw,
+    href,
+    title,
+    text: escape(text)
+  };
 }
 
 function indentCodeCompensation(raw, text) {
@@ -1617,7 +1595,7 @@ class Tokenizer {
       return {
         type: 'code',
         raw,
-        lang: cap[2] ? cap[2].trim() : cap[2],
+        lang: cap[2] ? cap[2].trim().replace(this.rules.inline._escapes, '$1') : cap[2],
         text
       };
     }
@@ -1639,15 +1617,13 @@ class Tokenizer {
         }
       }
 
-      const token = {
+      return {
         type: 'heading',
         raw: cap[0],
         depth: cap[1].length,
-        text: text,
-        tokens: []
+        text,
+        tokens: this.lexer.inline(text)
       };
-      this.lexer.inline(token.text, token.tokens);
-      return token;
     }
   }
 
@@ -1665,11 +1641,14 @@ class Tokenizer {
     const cap = this.rules.block.blockquote.exec(src);
     if (cap) {
       const text = cap[0].replace(/^ *>[ \t]?/gm, '');
-
+      const top = this.lexer.state.top;
+      this.lexer.state.top = true;
+      const tokens = this.lexer.blockTokens(text);
+      this.lexer.state.top = top;
       return {
         type: 'blockquote',
         raw: cap[0],
-        tokens: this.lexer.blockTokens(text, []),
+        tokens,
         text
       };
     }
@@ -1716,7 +1695,7 @@ class Tokenizer {
         raw = cap[0];
         src = src.substring(raw.length);
 
-        line = cap[2].split('\n', 1)[0];
+        line = cap[2].split('\n', 1)[0].replace(/^\t+/, (t) => ' '.repeat(3 * t.length));
         nextLine = src.split('\n', 1)[0];
 
         if (this.options.pedantic) {
@@ -1738,37 +1717,73 @@ class Tokenizer {
         }
 
         if (!endEarly) {
-          const nextBulletRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:[*+-]|\\d{1,9}[.)])`);
+          const nextBulletRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ \t][^\\n]*)?(?:\\n|$))`);
+          const hrRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`);
+          const fencesBeginRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:\`\`\`|~~~)`);
+          const headingBeginRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}#`);
 
           // Check if following lines should be included in List Item
           while (src) {
             rawLine = src.split('\n', 1)[0];
-            line = rawLine;
+            nextLine = rawLine;
 
             // Re-align to follow commonmark nesting rules
             if (this.options.pedantic) {
-              line = line.replace(/^ {1,4}(?=( {4})*[^ ])/g, '  ');
+              nextLine = nextLine.replace(/^ {1,4}(?=( {4})*[^ ])/g, '  ');
+            }
+
+            // End list item if found code fences
+            if (fencesBeginRegex.test(nextLine)) {
+              break;
+            }
+
+            // End list item if found start of new heading
+            if (headingBeginRegex.test(nextLine)) {
+              break;
             }
 
             // End list item if found start of new bullet
-            if (nextBulletRegex.test(line)) {
+            if (nextBulletRegex.test(nextLine)) {
               break;
             }
 
-            if (line.search(/[^ ]/) >= indent || !line.trim()) { // Dedent if possible
-              itemContents += '\n' + line.slice(indent);
-            } else if (!blankLine) { // Until blank line, item doesn't need indentation
-              itemContents += '\n' + line;
-            } else { // Otherwise, improper indentation ends this item
+            // Horizontal rule found
+            if (hrRegex.test(src)) {
               break;
             }
 
-            if (!blankLine && !line.trim()) { // Check if current line is blank
+            if (nextLine.search(/[^ ]/) >= indent || !nextLine.trim()) { // Dedent if possible
+              itemContents += '\n' + nextLine.slice(indent);
+            } else {
+              // not enough indentation
+              if (blankLine) {
+                break;
+              }
+
+              // paragraph continuation unless last line was a different block level element
+              if (line.search(/[^ ]/) >= 4) { // indented code block
+                break;
+              }
+              if (fencesBeginRegex.test(line)) {
+                break;
+              }
+              if (headingBeginRegex.test(line)) {
+                break;
+              }
+              if (hrRegex.test(line)) {
+                break;
+              }
+
+              itemContents += '\n' + nextLine;
+            }
+
+            if (!blankLine && !nextLine.trim()) { // Check if current line is blank
               blankLine = true;
             }
 
             raw += rawLine + '\n';
             src = src.substring(rawLine.length + 1);
+            line = nextLine.slice(indent);
           }
         }
 
@@ -1792,7 +1807,7 @@ class Tokenizer {
 
         list.items.push({
           type: 'list_item',
-          raw: raw,
+          raw,
           task: !!istask,
           checked: ischecked,
           loose: false,
@@ -1813,25 +1828,19 @@ class Tokenizer {
       for (i = 0; i < l; i++) {
         this.lexer.state.top = false;
         list.items[i].tokens = this.lexer.blockTokens(list.items[i].text, []);
-        const spacers = list.items[i].tokens.filter(t => t.type === 'space');
-        const hasMultipleLineBreaks = spacers.every(t => {
-          const chars = t.raw.split('');
-          let lineBreaks = 0;
-          for (const char of chars) {
-            if (char === '\n') {
-              lineBreaks += 1;
-            }
-            if (lineBreaks > 1) {
-              return true;
-            }
-          }
 
-          return false;
-        });
+        if (!list.loose) {
+          // Check if list should be loose
+          const spacers = list.items[i].tokens.filter(t => t.type === 'space');
+          const hasMultipleLineBreaks = spacers.length > 0 && spacers.some(t => /\n.*\n/.test(t.raw));
 
-        if (!list.loose && spacers.length && hasMultipleLineBreaks) {
-          // Having a single line break doesn't mean a list is loose. A single line break is terminating the last list item
-          list.loose = true;
+          list.loose = hasMultipleLineBreaks;
+        }
+      }
+
+      // Set all items to loose if list is loose
+      if (list.loose) {
+        for (i = 0; i < l; i++) {
           list.items[i].loose = true;
         }
       }
@@ -1851,10 +1860,10 @@ class Tokenizer {
         text: cap[0]
       };
       if (this.options.sanitize) {
+        const text = this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0]);
         token.type = 'paragraph';
-        token.text = this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0]);
-        token.tokens = [];
-        this.lexer.inline(token.text, token.tokens);
+        token.text = text;
+        token.tokens = this.lexer.inline(text);
       }
       return token;
     }
@@ -1863,14 +1872,15 @@ class Tokenizer {
   def(src) {
     const cap = this.rules.block.def.exec(src);
     if (cap) {
-      if (cap[3]) cap[3] = cap[3].substring(1, cap[3].length - 1);
       const tag = cap[1].toLowerCase().replace(/\s+/g, ' ');
+      const href = cap[2] ? cap[2].replace(/^<(.*)>$/, '$1').replace(this.rules.inline._escapes, '$1') : '';
+      const title = cap[3] ? cap[3].substring(1, cap[3].length - 1).replace(this.rules.inline._escapes, '$1') : cap[3];
       return {
         type: 'def',
         tag,
         raw: cap[0],
-        href: cap[2],
-        title: cap[3]
+        href,
+        title
       };
     }
   }
@@ -1912,8 +1922,7 @@ class Tokenizer {
         // header child tokens
         l = item.header.length;
         for (j = 0; j < l; j++) {
-          item.header[j].tokens = [];
-          this.lexer.inlineTokens(item.header[j].text, item.header[j].tokens);
+          item.header[j].tokens = this.lexer.inline(item.header[j].text);
         }
 
         // cell child tokens
@@ -1921,8 +1930,7 @@ class Tokenizer {
         for (j = 0; j < l; j++) {
           row = item.rows[j];
           for (k = 0; k < row.length; k++) {
-            row[k].tokens = [];
-            this.lexer.inlineTokens(row[k].text, row[k].tokens);
+            row[k].tokens = this.lexer.inline(row[k].text);
           }
         }
 
@@ -1934,45 +1942,40 @@ class Tokenizer {
   lheading(src) {
     const cap = this.rules.block.lheading.exec(src);
     if (cap) {
-      const token = {
+      return {
         type: 'heading',
         raw: cap[0],
         depth: cap[2].charAt(0) === '=' ? 1 : 2,
         text: cap[1],
-        tokens: []
+        tokens: this.lexer.inline(cap[1])
       };
-      this.lexer.inline(token.text, token.tokens);
-      return token;
     }
   }
 
   paragraph(src) {
     const cap = this.rules.block.paragraph.exec(src);
     if (cap) {
-      const token = {
+      const text = cap[1].charAt(cap[1].length - 1) === '\n'
+        ? cap[1].slice(0, -1)
+        : cap[1];
+      return {
         type: 'paragraph',
         raw: cap[0],
-        text: cap[1].charAt(cap[1].length - 1) === '\n'
-          ? cap[1].slice(0, -1)
-          : cap[1],
-        tokens: []
+        text,
+        tokens: this.lexer.inline(text)
       };
-      this.lexer.inline(token.text, token.tokens);
-      return token;
     }
   }
 
   text(src) {
     const cap = this.rules.block.text.exec(src);
     if (cap) {
-      const token = {
+      return {
         type: 'text',
         raw: cap[0],
         text: cap[0],
-        tokens: []
+        tokens: this.lexer.inline(cap[0])
       };
-      this.lexer.inline(token.text, token.tokens);
-      return token;
     }
   }
 
@@ -2079,7 +2082,7 @@ class Tokenizer {
         || (cap = this.rules.inline.nolink.exec(src))) {
       let link = (cap[2] || cap[1]).replace(/\s+/g, ' ');
       link = links[link.toLowerCase()];
-      if (!link || !link.href) {
+      if (!link) {
         const text = cap[0].charAt(0);
         return {
           type: 'text',
@@ -2134,24 +2137,26 @@ class Tokenizer {
         // Remove extra characters. *a*** -> *a*
         rLength = Math.min(rLength, rLength + delimTotal + midDelimTotal);
 
+        const raw = src.slice(0, lLength + match.index + (match[0].length - rDelim.length) + rLength);
+
         // Create `em` if smallest delimiter has odd char count. *a***
         if (Math.min(lLength, rLength) % 2) {
-          const text = src.slice(1, lLength + match.index + rLength);
+          const text = raw.slice(1, -1);
           return {
             type: 'em',
-            raw: src.slice(0, lLength + match.index + rLength + 1),
+            raw,
             text,
-            tokens: this.lexer.inlineTokens(text, [])
+            tokens: this.lexer.inlineTokens(text)
           };
         }
 
         // Create 'strong' if smallest delimiter has even char count. **a***
-        const text = src.slice(2, lLength + match.index + rLength - 1);
+        const text = raw.slice(2, -2);
         return {
           type: 'strong',
-          raw: src.slice(0, lLength + match.index + rLength + 1),
+          raw,
           text,
-          tokens: this.lexer.inlineTokens(text, [])
+          tokens: this.lexer.inlineTokens(text)
         };
       }
     }
@@ -2192,7 +2197,7 @@ class Tokenizer {
         type: 'del',
         raw: cap[0],
         text: cap[2],
-        tokens: this.lexer.inlineTokens(cap[2], [])
+        tokens: this.lexer.inlineTokens(cap[2])
       };
     }
   }
@@ -2241,9 +2246,9 @@ class Tokenizer {
         } while (prevCapZero !== cap[0]);
         text = escape(cap[0]);
         if (cap[1] === 'www.') {
-          href = 'http://' + text;
+          href = 'http://' + cap[0];
         } else {
-          href = text;
+          href = cap[0];
         }
       }
       return {
@@ -2286,7 +2291,7 @@ class Tokenizer {
 const block = {
   newline: /^(?: *(?:\n|$))+/,
   code: /^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,
-  fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?=\n|$)|$)/,
+  fences: /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/,
   hr: /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,
   heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
   blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
@@ -2301,9 +2306,9 @@ const block = {
     + '|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)' // (7) open tag
     + '|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)' // (7) closing tag
     + ')',
-  def: /^ {0,3}\[(label)\]: *(?:\n *)?<?([^\s>]+)>?(?:(?: +(?:\n *)?| *\n *)(title))? *(?:\n+|$)/,
+  def: /^ {0,3}\[(label)\]: *(?:\n *)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n *)?| *\n *)(title))? *(?:\n+|$)/,
   table: noopTest,
-  lheading: /^([^\n]+)\n {0,3}(=+|-+) *(?:\n+|$)/,
+  lheading: /^((?:.|\n(?!\n))+?)\n {0,3}(=+|-+) *(?:\n+|$)/,
   // regex template, placeholders will be replaced according to different paragraph
   // interruption rules of commonmark and the original markdown spec:
   _paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/,
@@ -2361,17 +2366,18 @@ block.blockquote = edit(block.blockquote)
  * Normal Block Grammar
  */
 
-block.normal = merge({}, block);
+block.normal = { ...block };
 
 /**
  * GFM Block Grammar
  */
 
-block.gfm = merge({}, block.normal, {
+block.gfm = {
+  ...block.normal,
   table: '^ *([^\\n ].*\\|.*)\\n' // Header
     + ' {0,3}(?:\\| *)?(:?-+:? *(?:\\| *:?-+:? *)*)(?:\\| *)?' // Align
     + '(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)' // Cells
-});
+};
 
 block.gfm.table = edit(block.gfm.table)
   .replace('hr', block.hr)
@@ -2399,7 +2405,8 @@ block.gfm.paragraph = edit(block._paragraph)
  * Pedantic grammar (original John Gruber's loose markdown specification)
  */
 
-block.pedantic = merge({}, block.normal, {
+block.pedantic = {
+  ...block.normal,
   html: edit(
     '^ *(?:comment *(?:\\n|\\s*$)'
     + '|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)' // closed tag
@@ -2413,6 +2420,7 @@ block.pedantic = merge({}, block.normal, {
   def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
   heading: /^(#{1,6})(.*)(?:\n+|$)/,
   fences: noopTest, // fences not supported
+  lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,
   paragraph: edit(block.normal._paragraph)
     .replace('hr', block.hr)
     .replace('heading', ' *#{1,6} *[^\n]')
@@ -2422,7 +2430,7 @@ block.pedantic = merge({}, block.normal, {
     .replace('|list', '')
     .replace('|html', '')
     .getRegex()
-});
+};
 
 /**
  * Inline-Level Grammar
@@ -2444,9 +2452,9 @@ const inline = {
   emStrong: {
     lDelim: /^(?:\*+(?:([punct_])|[^\s*]))|^_+(?:([punct*])|([^\s_]))/,
     //        (1) and (2) can only be a Right Delimiter. (3) and (4) can only be Left.  (5) and (6) can be either Left or Right.
-    //          () Skip orphan inside strong  () Consume to delim (1) #***                (2) a***#, a***                   (3) #***a, ***a                 (4) ***#              (5) #***#                 (6) a***a
-    rDelimAst: /^[^_*]*?\_\_[^_*]*?\*[^_*]*?(?=\_\_)|[^*]+(?=[^*])|[punct_](\*+)(?=[\s]|$)|[^punct*_\s](\*+)(?=[punct_\s]|$)|[punct_\s](\*+)(?=[^punct*_\s])|[\s](\*+)(?=[punct_])|[punct_](\*+)(?=[punct_])|[^punct*_\s](\*+)(?=[^punct*_\s])/,
-    rDelimUnd: /^[^_*]*?\*\*[^_*]*?\_[^_*]*?(?=\*\*)|[^_]+(?=[^_])|[punct*](\_+)(?=[\s]|$)|[^punct*_\s](\_+)(?=[punct*\s]|$)|[punct*\s](\_+)(?=[^punct*_\s])|[\s](\_+)(?=[punct*])|[punct*](\_+)(?=[punct*])/ // ^- Not allowed for _
+    //          () Skip orphan inside strong                                      () Consume to delim     (1) #***                (2) a***#, a***                             (3) #***a, ***a                 (4) ***#              (5) #***#                 (6) a***a
+    rDelimAst: /^(?:[^_*\\]|\\.)*?\_\_(?:[^_*\\]|\\.)*?\*(?:[^_*\\]|\\.)*?(?=\_\_)|(?:[^*\\]|\\.)+(?=[^*])|[punct_](\*+)(?=[\s]|$)|(?:[^punct*_\s\\]|\\.)(\*+)(?=[punct_\s]|$)|[punct_\s](\*+)(?=[^punct*_\s])|[\s](\*+)(?=[punct_])|[punct_](\*+)(?=[punct_])|(?:[^punct*_\s\\]|\\.)(\*+)(?=[^punct*_\s])/,
+    rDelimUnd: /^(?:[^_*\\]|\\.)*?\*\*(?:[^_*\\]|\\.)*?\_(?:[^_*\\]|\\.)*?(?=\*\*)|(?:[^_\\]|\\.)+(?=[^_])|[punct*](\_+)(?=[\s]|$)|(?:[^punct*_\s\\]|\\.)(\_+)(?=[punct*\s]|$)|[punct*\s](\_+)(?=[^punct*_\s])|[\s](\_+)(?=[punct*])|[punct*](\_+)(?=[punct*])/ // ^- Not allowed for _
   },
   code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
   br: /^( {2,}|\\)\n(?!\s*$)/,
@@ -2462,7 +2470,9 @@ inline.punctuation = edit(inline.punctuation).replace(/punctuation/g, inline._pu
 
 // sequences em should skip over [title](link), `code`, <html>
 inline.blockSkip = /\[[^\]]*?\]\([^\)]*?\)|`[^`]*?`|<[^>]*?>/g;
-inline.escapedEmSt = /\\\*|\\_/g;
+// lookbehind is not available on Safari as of version 16
+// inline.escapedEmSt = /(?<=(?:^|[^\\)(?:\\[^])*)\\[*_]/g;
+inline.escapedEmSt = /(?:^|[^\\])(?:\\\\)*\\[*_]/g;
 
 inline._comment = edit(block._comment).replace('(?:-->|$)', '-->').getRegex();
 
@@ -2522,13 +2532,14 @@ inline.reflinkSearch = edit(inline.reflinkSearch, 'g')
  * Normal Inline Grammar
  */
 
-inline.normal = merge({}, inline);
+inline.normal = { ...inline };
 
 /**
  * Pedantic Inline Grammar
  */
 
-inline.pedantic = merge({}, inline.normal, {
+inline.pedantic = {
+  ...inline.normal,
   strong: {
     start: /^__|\*\*/,
     middle: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
@@ -2547,20 +2558,21 @@ inline.pedantic = merge({}, inline.normal, {
   reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/)
     .replace('label', inline._label)
     .getRegex()
-});
+};
 
 /**
  * GFM Inline Grammar
  */
 
-inline.gfm = merge({}, inline.normal, {
+inline.gfm = {
+  ...inline.normal,
   escape: edit(inline.escape).replace('])', '~|])').getRegex(),
   _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
   url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
-  _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
+  _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,
   del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
   text: /^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/
-});
+};
 
 inline.gfm.url = edit(inline.gfm.url, 'i')
   .replace('email', inline.gfm._extended_email)
@@ -2569,13 +2581,14 @@ inline.gfm.url = edit(inline.gfm.url, 'i')
  * GFM + Line Breaks Inline Grammar
  */
 
-inline.breaks = merge({}, inline.gfm, {
+inline.breaks = {
+  ...inline.gfm,
   br: edit(inline.br).replace('{2,}', '*').getRegex(),
   text: edit(inline.gfm.text)
     .replace('\\b_', '\\b_| {2,}\\n')
     .replace(/\{2,\}/g, '*')
     .getRegex()
-});
+};
 
 /**
  * smartypants text replacement
@@ -2890,8 +2903,9 @@ class Lexer {
     return tokens;
   }
 
-  inline(src, tokens) {
+  inline(src, tokens = []) {
     this.inlineQueue.push({ src, tokens });
+    return tokens;
   }
 
   /**
@@ -2923,7 +2937,8 @@ class Lexer {
 
     // Mask out escaped em & strong delimiters
     while ((match = this.tokenizer.rules.inline.escapedEmSt.exec(maskedSrc)) != null) {
-      maskedSrc = maskedSrc.slice(0, match.index) + '++' + maskedSrc.slice(this.tokenizer.rules.inline.escapedEmSt.lastIndex);
+      maskedSrc = maskedSrc.slice(0, match.index + match[0].length - 2) + '++' + maskedSrc.slice(this.tokenizer.rules.inline.escapedEmSt.lastIndex);
+      this.tokenizer.rules.inline.escapedEmSt.lastIndex--;
     }
 
     while (src) {
@@ -3102,7 +3117,7 @@ class Renderer {
 
     return '<pre><code class="'
       + this.options.langPrefix
-      + escape(lang, true)
+      + escape(lang)
       + '">'
       + (escaped ? code : escape(code, true))
       + '</code></pre>\n';
@@ -3240,7 +3255,7 @@ class Renderer {
     if (href === null) {
       return text;
     }
-    let out = '<a href="' + escape(href) + '"';
+    let out = '<a href="' + href + '"';
     if (title) {
       out += ' title="' + title + '"';
     }
@@ -3650,111 +3665,194 @@ class Parser {
   }
 }
 
+class Hooks {
+  constructor(options) {
+    this.options = options || defaults;
+  }
+
+  static passThroughHooks = new Set([
+    'preprocess',
+    'postprocess'
+  ]);
+
+  /**
+   * Process markdown before marked
+   */
+  preprocess(markdown) {
+    return markdown;
+  }
+
+  /**
+   * Process HTML after marked is finished
+   */
+  postprocess(html) {
+    return html;
+  }
+}
+
+function onError(silent, async, callback) {
+  return (e) => {
+    e.message += '\nPlease report this to https://github.com/markedjs/marked.';
+
+    if (silent) {
+      const msg = '<p>An error occurred:</p><pre>'
+        + escape(e.message + '', true)
+        + '</pre>';
+      if (async) {
+        return Promise.resolve(msg);
+      }
+      if (callback) {
+        callback(null, msg);
+        return;
+      }
+      return msg;
+    }
+
+    if (async) {
+      return Promise.reject(e);
+    }
+    if (callback) {
+      callback(e);
+      return;
+    }
+    throw e;
+  };
+}
+
+function parseMarkdown(lexer, parser) {
+  return (src, opt, callback) => {
+    if (typeof opt === 'function') {
+      callback = opt;
+      opt = null;
+    }
+
+    const origOpt = { ...opt };
+    opt = { ...marked.defaults, ...origOpt };
+    const throwError = onError(opt.silent, opt.async, callback);
+
+    // throw error in case of non string input
+    if (typeof src === 'undefined' || src === null) {
+      return throwError(new Error('marked(): input parameter is undefined or null'));
+    }
+    if (typeof src !== 'string') {
+      return throwError(new Error('marked(): input parameter is of type '
+        + Object.prototype.toString.call(src) + ', string expected'));
+    }
+
+    checkSanitizeDeprecation(opt);
+
+    if (opt.hooks) {
+      opt.hooks.options = opt;
+    }
+
+    if (callback) {
+      const highlight = opt.highlight;
+      let tokens;
+
+      try {
+        if (opt.hooks) {
+          src = opt.hooks.preprocess(src);
+        }
+        tokens = lexer(src, opt);
+      } catch (e) {
+        return throwError(e);
+      }
+
+      const done = function(err) {
+        let out;
+
+        if (!err) {
+          try {
+            if (opt.walkTokens) {
+              marked.walkTokens(tokens, opt.walkTokens);
+            }
+            out = parser(tokens, opt);
+            if (opt.hooks) {
+              out = opt.hooks.postprocess(out);
+            }
+          } catch (e) {
+            err = e;
+          }
+        }
+
+        opt.highlight = highlight;
+
+        return err
+          ? throwError(err)
+          : callback(null, out);
+      };
+
+      if (!highlight || highlight.length < 3) {
+        return done();
+      }
+
+      delete opt.highlight;
+
+      if (!tokens.length) return done();
+
+      let pending = 0;
+      marked.walkTokens(tokens, function(token) {
+        if (token.type === 'code') {
+          pending++;
+          setTimeout(() => {
+            highlight(token.text, token.lang, function(err, code) {
+              if (err) {
+                return done(err);
+              }
+              if (code != null && code !== token.text) {
+                token.text = code;
+                token.escaped = true;
+              }
+
+              pending--;
+              if (pending === 0) {
+                done();
+              }
+            });
+          }, 0);
+        }
+      });
+
+      if (pending === 0) {
+        done();
+      }
+
+      return;
+    }
+
+    if (opt.async) {
+      return Promise.resolve(opt.hooks ? opt.hooks.preprocess(src) : src)
+        .then(src => lexer(src, opt))
+        .then(tokens => opt.walkTokens ? Promise.all(marked.walkTokens(tokens, opt.walkTokens)).then(() => tokens) : tokens)
+        .then(tokens => parser(tokens, opt))
+        .then(html => opt.hooks ? opt.hooks.postprocess(html) : html)
+        .catch(throwError);
+    }
+
+    try {
+      if (opt.hooks) {
+        src = opt.hooks.preprocess(src);
+      }
+      const tokens = lexer(src, opt);
+      if (opt.walkTokens) {
+        marked.walkTokens(tokens, opt.walkTokens);
+      }
+      let html = parser(tokens, opt);
+      if (opt.hooks) {
+        html = opt.hooks.postprocess(html);
+      }
+      return html;
+    } catch (e) {
+      return throwError(e);
+    }
+  };
+}
+
 /**
  * Marked
  */
 function marked(src, opt, callback) {
-  // throw error in case of non string input
-  if (typeof src === 'undefined' || src === null) {
-    throw new Error('marked(): input parameter is undefined or null');
-  }
-  if (typeof src !== 'string') {
-    throw new Error('marked(): input parameter is of type '
-      + Object.prototype.toString.call(src) + ', string expected');
-  }
-
-  if (typeof opt === 'function') {
-    callback = opt;
-    opt = null;
-  }
-
-  opt = merge({}, marked.defaults, opt || {});
-  checkSanitizeDeprecation(opt);
-
-  if (callback) {
-    const highlight = opt.highlight;
-    let tokens;
-
-    try {
-      tokens = Lexer.lex(src, opt);
-    } catch (e) {
-      return callback(e);
-    }
-
-    const done = function(err) {
-      let out;
-
-      if (!err) {
-        try {
-          if (opt.walkTokens) {
-            marked.walkTokens(tokens, opt.walkTokens);
-          }
-          out = Parser.parse(tokens, opt);
-        } catch (e) {
-          err = e;
-        }
-      }
-
-      opt.highlight = highlight;
-
-      return err
-        ? callback(err)
-        : callback(null, out);
-    };
-
-    if (!highlight || highlight.length < 3) {
-      return done();
-    }
-
-    delete opt.highlight;
-
-    if (!tokens.length) return done();
-
-    let pending = 0;
-    marked.walkTokens(tokens, function(token) {
-      if (token.type === 'code') {
-        pending++;
-        setTimeout(() => {
-          highlight(token.text, token.lang, function(err, code) {
-            if (err) {
-              return done(err);
-            }
-            if (code != null && code !== token.text) {
-              token.text = code;
-              token.escaped = true;
-            }
-
-            pending--;
-            if (pending === 0) {
-              done();
-            }
-          });
-        }, 0);
-      }
-    });
-
-    if (pending === 0) {
-      done();
-    }
-
-    return;
-  }
-
-  try {
-    const tokens = Lexer.lex(src, opt);
-    if (opt.walkTokens) {
-      marked.walkTokens(tokens, opt.walkTokens);
-    }
-    return Parser.parse(tokens, opt);
-  } catch (e) {
-    e.message += '\nPlease report this to https://github.com/markedjs/marked.';
-    if (opt.silent) {
-      return '<p>An error occurred:</p><pre>'
-        + escape(e.message + '', true)
-        + '</pre>';
-    }
-    throw e;
-  }
+  return parseMarkdown(Lexer.lex, Parser.parse)(src, opt, callback);
 }
 
 /**
@@ -3763,7 +3861,7 @@ function marked(src, opt, callback) {
 
 marked.options =
 marked.setOptions = function(opt) {
-  merge(marked.defaults, opt);
+  marked.defaults = { ...marked.defaults, ...opt };
   changeDefaults(marked.defaults);
   return marked;
 };
@@ -3777,20 +3875,23 @@ marked.defaults = defaults;
  */
 
 marked.use = function(...args) {
-  const opts = merge({}, ...args);
   const extensions = marked.defaults.extensions || { renderers: {}, childTokens: {} };
-  let hasExtensions;
 
   args.forEach((pack) => {
+    // copy options to new object
+    const opts = { ...pack };
+
+    // set async to true if it was set to true before
+    opts.async = marked.defaults.async || opts.async || false;
+
     // ==-- Parse "addon" extensions --== //
     if (pack.extensions) {
-      hasExtensions = true;
       pack.extensions.forEach((ext) => {
         if (!ext.name) {
           throw new Error('extension name required');
         }
         if (ext.renderer) { // Renderer extensions
-          const prevRenderer = extensions.renderers ? extensions.renderers[ext.name] : null;
+          const prevRenderer = extensions.renderers[ext.name];
           if (prevRenderer) {
             // Replace extension with func to run new extension but fall back if false
             extensions.renderers[ext.name] = function(...args) {
@@ -3833,6 +3934,7 @@ marked.use = function(...args) {
           extensions.childTokens[ext.name] = ext.childTokens;
         }
       });
+      opts.extensions = extensions;
     }
 
     // ==-- Parse "overwrite" extensions --== //
@@ -3867,19 +3969,46 @@ marked.use = function(...args) {
       opts.tokenizer = tokenizer;
     }
 
+    // ==-- Parse Hooks extensions --== //
+    if (pack.hooks) {
+      const hooks = marked.defaults.hooks || new Hooks();
+      for (const prop in pack.hooks) {
+        const prevHook = hooks[prop];
+        if (Hooks.passThroughHooks.has(prop)) {
+          hooks[prop] = (arg) => {
+            if (marked.defaults.async) {
+              return Promise.resolve(pack.hooks[prop].call(hooks, arg)).then(ret => {
+                return prevHook.call(hooks, ret);
+              });
+            }
+
+            const ret = pack.hooks[prop].call(hooks, arg);
+            return prevHook.call(hooks, ret);
+          };
+        } else {
+          hooks[prop] = (...args) => {
+            let ret = pack.hooks[prop].apply(hooks, args);
+            if (ret === false) {
+              ret = prevHook.apply(hooks, args);
+            }
+            return ret;
+          };
+        }
+      }
+      opts.hooks = hooks;
+    }
+
     // ==-- Parse WalkTokens extensions --== //
     if (pack.walkTokens) {
       const walkTokens = marked.defaults.walkTokens;
       opts.walkTokens = function(token) {
-        pack.walkTokens.call(this, token);
+        let values = [];
+        values.push(pack.walkTokens.call(this, token));
         if (walkTokens) {
-          walkTokens.call(this, token);
+          values = values.concat(walkTokens.call(this, token));
         }
+        return values;
       };
-    }
-
-    if (hasExtensions) {
-      opts.extensions = extensions;
     }
 
     marked.setOptions(opts);
@@ -3891,70 +4020,44 @@ marked.use = function(...args) {
  */
 
 marked.walkTokens = function(tokens, callback) {
+  let values = [];
   for (const token of tokens) {
-    callback.call(marked, token);
+    values = values.concat(callback.call(marked, token));
     switch (token.type) {
       case 'table': {
         for (const cell of token.header) {
-          marked.walkTokens(cell.tokens, callback);
+          values = values.concat(marked.walkTokens(cell.tokens, callback));
         }
         for (const row of token.rows) {
           for (const cell of row) {
-            marked.walkTokens(cell.tokens, callback);
+            values = values.concat(marked.walkTokens(cell.tokens, callback));
           }
         }
         break;
       }
       case 'list': {
-        marked.walkTokens(token.items, callback);
+        values = values.concat(marked.walkTokens(token.items, callback));
         break;
       }
       default: {
         if (marked.defaults.extensions && marked.defaults.extensions.childTokens && marked.defaults.extensions.childTokens[token.type]) { // Walk any extensions
           marked.defaults.extensions.childTokens[token.type].forEach(function(childTokens) {
-            marked.walkTokens(token[childTokens], callback);
+            values = values.concat(marked.walkTokens(token[childTokens], callback));
           });
         } else if (token.tokens) {
-          marked.walkTokens(token.tokens, callback);
+          values = values.concat(marked.walkTokens(token.tokens, callback));
         }
       }
     }
   }
+  return values;
 };
 
 /**
  * Parse Inline
  * @param {string} src
  */
-marked.parseInline = function(src, opt) {
-  // throw error in case of non string input
-  if (typeof src === 'undefined' || src === null) {
-    throw new Error('marked.parseInline(): input parameter is undefined or null');
-  }
-  if (typeof src !== 'string') {
-    throw new Error('marked.parseInline(): input parameter is of type '
-      + Object.prototype.toString.call(src) + ', string expected');
-  }
-
-  opt = merge({}, marked.defaults, opt || {});
-  checkSanitizeDeprecation(opt);
-
-  try {
-    const tokens = Lexer.lexInline(src, opt);
-    if (opt.walkTokens) {
-      marked.walkTokens(tokens, opt.walkTokens);
-    }
-    return Parser.parseInline(tokens, opt);
-  } catch (e) {
-    e.message += '\nPlease report this to https://github.com/markedjs/marked.';
-    if (opt.silent) {
-      return '<p>An error occurred:</p><pre>'
-        + escape(e.message + '', true)
-        + '</pre>';
-    }
-    throw e;
-  }
-};
+marked.parseInline = parseMarkdown(Lexer.lexInline, Parser.parseInline);
 
 /**
  * Expose
@@ -3967,6 +4070,7 @@ marked.Lexer = Lexer;
 marked.lexer = Lexer.lex;
 marked.Tokenizer = Tokenizer;
 marked.Slugger = Slugger;
+marked.Hooks = Hooks;
 marked.parse = marked;
 
 const options = marked.options;
