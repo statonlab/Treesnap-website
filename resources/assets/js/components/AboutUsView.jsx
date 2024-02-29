@@ -16,7 +16,7 @@ export default class AboutUsView extends Component {
             genetic diversity of tree species and building better tree breeding programs.
           </p>
           <p>
-            Treesnap works anywhere in the world, though most of our current research partnerships are located within
+            TreeSnap works anywhere in the world, though most of our current research partnerships are located within
             the United States.
           </p>
         </div>
@@ -32,7 +32,7 @@ export default class AboutUsView extends Component {
             <a href="http://www.hardwoodgenomics.org/"> Hardwoods Genomics Database</a>.
           </p>
           <p>
-            In addition to Treesnap, the Staton lab is also involved in several other exciting projects. <a href="https://staton-lab-portfolio.web.app/">Visit our portfolio page for more info</a>.
+            In addition to TreeSnap, the Staton lab is also involved in several other exciting projects. <a href="https://staton-lab-portfolio.web.app/">Visit our portfolio page for more info</a>.
           </p>
         </div>
         <p className="title is-4">Development Team</p>
