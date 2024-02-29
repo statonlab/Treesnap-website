@@ -15,6 +15,10 @@ export default class AboutUsView extends Component {
             Scientists will use the data you collect to locate trees for research projects like studying
             genetic diversity of tree species and building better tree breeding programs.
           </p>
+          <p>
+            TreeSnap works anywhere in the world, though most of our current research partnerships are located within
+            the United States.
+          </p>
         </div>
 
         <div className="box">
@@ -26,6 +30,9 @@ export default class AboutUsView extends Component {
             href="https://nsf.gov/funding/pgm_summ.jsp?pims_id=5338">NSF Plant Genome Research Program</a>.
             To learn more about the Staton laboratory and the genomic resources we provide, please visit the
             <a href="http://www.hardwoodgenomics.org/"> Hardwoods Genomics Database</a>.
+          </p>
+          <p>
+            In addition to TreeSnap, the Staton lab is also involved in several other exciting projects. <a href="https://staton-lab-portfolio.web.app/">Visit our portfolio page for more info</a>.
           </p>
         </div>
         <p className="title is-4">Development Team</p>
