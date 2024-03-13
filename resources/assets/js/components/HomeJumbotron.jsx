@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import GetAppRow from './GetAppRow'
 import {Link} from 'react-router-dom'
 
+
 export default class HomeJumbotron extends Component {
   render() {
     return (
@@ -24,6 +25,7 @@ export default class HomeJumbotron extends Component {
                 </p>
                 <p>
                   <Link to="/partners" className={'button is-borderless'}>Meet the scientists that use TreeSnap data</Link>
+                  <Link to="/partners" className={'button is-borderless ml-2 bg-gray'}><i class="fa fa-youtube mr-2" size="lg"></i> Tutorials available on YouTube</Link>
                 </p>
               </div>
 
