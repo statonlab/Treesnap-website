@@ -24,9 +24,9 @@ export default class HomeFooter extends Component {
             <div className="column is-4">
               <p><b>Resources</b></p>
               <ul>
-                <li><a href="/partners">About Us</a></li>
+                <li><a href="/about">About Us</a></li>
                 <li><a href="/contact">Contact Us</a></li>
-                <li><a href="/about">Scientific Partners</a></li>
+                <li><a href="/partners">Scientific Partners</a></li>
                 <li><a href="/trees">The Trees of TreeSnap</a></li>
                 <li><a href="/faq">Frequently Asked Questions</a></li>
               </ul>
