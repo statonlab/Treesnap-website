@@ -25,7 +25,7 @@ export default class HomeJumbotron extends Component {
                 </p>
                 <p>
                   <Link to="/partners" className={'button is-borderless'}>Meet the scientists that use TreeSnap data</Link>
-                  <Link to="/partners" className={'button is-borderless ml-2 bg-gray'}><i class="fa fa-youtube mr-2" size="lg"></i> Tutorials available on YouTube</Link>
+                  <Link to={{ pathname: "https://www.youtube.com/channel/UCw46pEsdYcqwD238Wy56M3A" }} target="_blank" className={'button is-borderless ml-2 bg-gray'}><i class="fa fa-youtube mr-2" size="lg"></i> Tutorials available on YouTube</Link>
                 </p>
               </div>
 
