@@ -113,7 +113,6 @@ export default class ObservationDetails extends Component {
     let id = this.props.observation.observation_id
 
     axios.get(`/web/confirmations/count/${id}`).then(response => {
-      console.log(response.data.data)
       let data = response.data.data
       this.setState({
         correctMarks  : data.correct,
@@ -635,13 +634,8 @@ export default class ObservationDetails extends Component {
       return 'Entered manually by the user'
     }
 
-    if ((User.can('view accurate location') || User.owns(this.state.observation)) && this.state.selectedUnit == 'metric') {
-      // console.log(this.state.selectedUnit)
-      return 'Within ' + this.state.observation.location.accuracy + ' meters radius'
-    }
-    else if ((User.can('view accurate location') || User.owns(this.state.observation)) && this.state.selectedUnit == 'US') {
-      // console.log(this.state.selectedUnit)
-      return 'Within ' + (this.state.observation.location.accuracy*0.9144) + ' yard radius'
+    if (User.can('view accurate location') || User.owns(this.state.observation)) {
+      return 'Within ' + this.state.observation.location.accuracy + ' meter radius'
     }
 
     return 'Within 5 miles radius'
