@@ -635,8 +635,13 @@ export default class ObservationDetails extends Component {
       return 'Entered manually by the user'
     }
 
-    if (User.can('view accurate location') || User.owns(this.state.observation)) {
+    if ((User.can('view accurate location') || User.owns(this.state.observation)) && this.state.selectedUnit == 'metric') {
+      // console.log(this.state.selectedUnit)
       return 'Within ' + this.state.observation.location.accuracy + ' meters radius'
+    }
+    else if ((User.can('view accurate location') || User.owns(this.state.observation)) && this.state.selectedUnit == 'US') {
+      // console.log(this.state.selectedUnit)
+      return 'Within ' + (this.state.observation.location.accuracy*0.9144) + ' yard radius'
     }
 
     return 'Within 5 miles radius'
