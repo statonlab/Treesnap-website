@@ -38,6 +38,15 @@ class AttachUnits
                 $data['diameterNumeric_units']);
         }
 
+        if (isset($data['hemlockDiameter'])) {
+            if (! isset($data['hemlockDiameter_units'])) {
+                $data['hemlockDiameter_units'] = 'Inches';
+            }
+
+            $data['hemlockDiameter_values'] = $this->createValues($data['hemlockDiameter'],
+                $data['hemlockDiameter_units']);
+        }
+
         if (isset($data['heightNumeric'])) {
             if (! isset($data['heightNumeric_units'])) {
                 $data['heightNumeric_units'] = 'Feet';

@@ -38,6 +38,8 @@ class MetaLabels
             'oakHealthProblems' => 'Health Problems',
             'oregonAshHealth' => 'Oregon Ash Health',
             'diameterNumeric' => 'Tree Diameter',
+            'diameterNumeric_units' => 'Diameter Units',
+            'diameterNumeric_values' => 'Diameter Values',
             'crownHealth' => 'Crown Health',
             'crownPortion' => 'Collected Seed Location',
             'crownClassification' => 'Crown Classification',
@@ -106,6 +108,8 @@ class MetaLabels
             'moreThanTenHemlocks' => 'Comment on Quantity',
             'hemlockSpecies' => 'Species',
             'hemlockDiameter' => 'Tree Diameter',
+            'hemlockDiameter_units' => 'Diameter Units',
+            'hemlockDiameter_values' => 'Diameter Values',
             'lingeringWoollyAdesCoverage' => 'Hemlock Woolly Adelgid (HWA)',
             'elongateHemlockScaleCoverage' => 'Elongate Hemlock Scale (EHS)',
             'otherStressors' => 'Other Stressors',
@@ -141,7 +145,7 @@ class MetaLabels
 //            'furtherAssessmentSlope' => 'Habitat',
 //            'furtherAssessmentSlopeComment' => 'Habitat Description',
         ];
-
+        //just for the downloads
         $this->species_labels = [
             "American Chestnut" => [
                 "burrs",
@@ -152,6 +156,8 @@ class MetaLabels
                 // accessibility     ,
                 "crownHealth",
                 "diameterNumeric",
+                "diameterNumeric_units",
+                "diameterNumeric_values",
                 "heightNumeric",
             ],
 
