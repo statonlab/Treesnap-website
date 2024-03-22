@@ -15,7 +15,7 @@ class SendFilterNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:filters {-p|--print=0}';
+    protected $signature = 'notify:filters {print=0}';
 
     /**
      * The console command description.

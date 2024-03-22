@@ -50,6 +50,7 @@ export default class AdvancedFiltersModal extends Component {
       endDate           : null,
       groups            : [],
       selectedGroup     : -1,
+      notify_user       : true,
     }
   }
 
@@ -128,6 +129,7 @@ export default class AdvancedFiltersModal extends Component {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
         end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null,
       },
+      notify_user     : this.state.notify_user,
     }
 
     if (this.props.applyFilters) {
@@ -168,6 +170,10 @@ export default class AdvancedFiltersModal extends Component {
 
       this.setState({loading: false})
     })
+
+    if(this.state.notify_user == true){
+      console.log('triggered')
+    }
   }
 
   count(changed) {
@@ -204,6 +210,7 @@ export default class AdvancedFiltersModal extends Component {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
         end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null,
       },
+      notify_user     : filters.notify_user
     }).then(response => {
       this.setState({
         loading     : false,
@@ -538,7 +545,7 @@ export default class AdvancedFiltersModal extends Component {
             <div className="field">
               <div className="control">
                 <label className="label checkbox">
-                  <input type="checkbox" className="mr-0" defaultChecked={false}/>
+                  <input type="checkbox" className="mr-0" defaultChecked={this.state.notify_user}/>
                   Notify me via email if new observations fitting this criteria get submitted
                 </label>
                 <p className="help mr-1">Maximum of 3 emails per week.</p>
