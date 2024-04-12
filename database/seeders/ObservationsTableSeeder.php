@@ -20,7 +20,6 @@ class ObservationsTableSeeder extends Seeder
         foreach ($users as $user) {
             factory(Observation::class, $observations_count)->create([
                 'user_id' => $user->id,
-                'observation_category' => 'Ash',
             ]);
             //$observations_count += 10;
         }
