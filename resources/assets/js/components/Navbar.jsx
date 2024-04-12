@@ -37,18 +37,18 @@ export default class Navbar extends Component {
           </div>
 
           <div className={`navbar-menu${this.state.isActive ? ' is-active' : ''}`}>
-            <div className="navbar-end">
-              <a href="https://www.facebook.com/treesnapapp/" className="navbar-item">
-                <span className="icon">
-                  <i className="fa fa-facebook"></i>
-                </span>
-              </a>
-              <a href="https://twitter.com/Treesnapapp" className="navbar-item">
-                <span className="icon">
-                  <i className="fa fa-twitter"></i>
-                </span>
-              </a>
-            </div>
+            {/*<div className="navbar-end">*/}
+            {/*  <a href="https://www.facebook.com/treesnapapp/" className="navbar-item">*/}
+            {/*    <span className="icon">*/}
+            {/*      <i className="fa fa-facebook"></i>*/}
+            {/*    </span>*/}
+            {/*  </a>*/}
+            {/*  <a href="https://twitter.com/Treesnapapp" className="navbar-item">*/}
+            {/*    <span className="icon">*/}
+            {/*      <i className="fa fa-twitter"></i>*/}
+            {/*    </span>*/}
+            {/*  </a>*/}
+            {/*</div>*/}
 
             <div className="navbar-end">
               <NavLink exact={true} to="/" className={`navbar-item`} activeClassName={'is-active'}>
