@@ -12,7 +12,7 @@ export default class AmericanChestnutFilters extends FiltersBase {
       burrs             : [],
       catkins           : [],
       plantedWild       : [],
-      chestnutBlight    : [],
+      chestnutBlightSigns    : [],
       crownHealth       : [],
       diameterNumericMin: '',
       diameterNumericMax: '',
@@ -54,14 +54,14 @@ export default class AmericanChestnutFilters extends FiltersBase {
           <div className="field">
             <label className="label">Chestnut Blight</label>
             <ButtonList
-              value={this.state.chestnutBlight}
+              value={this.state.chestnutBlightSigns}
               list={[
                 'Cankers and cracked bark',
                 'Tan to orange-colored patches or pustules on bark',
                 'Evidence of old dead trunk',
                 'Stump sprouting'
               ]}
-              onChange={chestnutBlight => this._update('chestnutBlight', chestnutBlight)}/>
+              onChange={chestnutBlightSigns => this._update('chestnutBlightSigns', chestnutBlightSigns)}/>
           </div>
         </div>
 
