@@ -50,6 +50,8 @@ class MetaLabels
             'treated' => 'Treated',
             'partOfStudy' => 'Study',
             'heightNumeric' => 'Tree Height',
+            'heightNumeric_units' => 'Height Units',
+            'heightNumeric_values' => 'Height Values',
             'burrs' => 'Nuts/burrs',
             'catkins' => 'Catkins',
             'comment' => 'Comment',
