@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import HomeJumbotron from '../components/HomeJumbotron'
 import FeaturesList from '../components/FeaturesList'
+import RecentUpdates from '../components/RecentUpdates'
 import HomeFooter from '../components/HomeFooter'
 import Leaderboard from '../components/Leaderboard'
 import TwitterFeed from '../components/TwitterFeed'
@@ -49,6 +50,7 @@ export default class Welcome extends Scene {
           </div>
         </div>
         <FeaturesList/>
+        <RecentUpdates/>
         <HomeFooter/>
       </div>
     )

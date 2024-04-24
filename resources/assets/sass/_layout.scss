@@ -337,3 +337,12 @@ a.box {
     flex-direction: row;
 }
 
+.update-row{
+display: flex;
+flex-direction: row;
+justify-content: space-evenly;
+}
+.update-col{
+  display: flex;
+  flex-direction: column;
+}
