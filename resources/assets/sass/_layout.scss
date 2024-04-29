@@ -337,3 +337,15 @@ a.box {
     flex-direction: row;
 }
 
+.update-row{
+display: flex;
+flex-direction: row;
+justify-content: space-evenly;
+}
+
+.recent-updates{
+  padding: 2rem 0;
+  background-color: #2c9c8c;
+  // background-color: whitesmoke;
+  height: 50vh;
+}
