@@ -137,9 +137,20 @@ class MetaLabels
             'furtherAssessmentManagementComment' => 'Describe Active Management',
             'furtherAssessmentHWA' => 'Nearby HWA',
             'furtherAssessmentEHS' => 'Nearby EHS',
-            'furtherAssessmentStressors' => 'Further Stressors'
-//            'furtherAssessmentSlope' => 'Habitat',
-//            'furtherAssessmentSlopeComment' => 'Habitat Description',
+            'furtherAssessmentStressors' => 'Further Stressors',
+            'lowestLivingBranch' => 'Lowest Living Branch',
+            'propertyOwner' => 'Property Owner',
+            'propertyOwnerName' => 'Property Owner Name',
+            'propertyOwnerEmail' => 'Property Owner Email',
+            'propertyOwnerPhone' => 'Propety Owner Phone',
+            'ownerNotified' => 'Owner Notified',
+            'naturallyOccuring' => 'Naturally Occuring',
+            'signsOfEAB' => 'Signs of EAB',
+            'decomposing' => 'Decomposing',
+            'flaking' => 'Flaking',
+            'colorOfFlaking' => 'Color of Flaking',
+            'nearbyTrees' => 'Nearby Trees',
+            'treated' => 'Treated'
         ];
 
         $this->species_labels = [
