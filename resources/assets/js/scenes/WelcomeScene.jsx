@@ -52,7 +52,7 @@ export default class Welcome extends Scene {
 
         </div>
         <FeaturesList/>
-          <RecentUpdates/>
+        <RecentUpdates/>
         <HomeFooter/>
       </div>
     )
