@@ -25,7 +25,9 @@ class MetaLabels
     {
         $this->labels = [
             'ashSpecies' => 'Species',
+            'ashSpeciesV2' => 'Species',
             'ashFrequency' => 'Ash Frequency',
+            'estimatedDBH' => 'Estimated DBH',
             'seedsBinary' => 'Seeds',
             'seedsCollected' => 'Seeds Collected',
             'flowersBinary' => 'Flowers',
@@ -44,10 +46,11 @@ class MetaLabels
             'crownClassification' => 'Crown Classification',
             'otherLabel' => 'Tree Type',
             'locationCharacteristics' => 'Habitat',
-            'mamalocationCharacteristics' => 'Habitat',
+            'mamaLocationCharacteristics' => 'Habitat',
             'nearbyTrees' => 'Trees Nearby',
             'nearByHemlock' => 'Nearby Hemlocks',
             'treated' => 'Treated',
+            'treatedV2' => 'Treated',
             'partOfStudy' => 'Study',
             'heightNumeric' => 'Tree Height',
             'burrs' => 'Nuts/burrs',
@@ -100,9 +103,16 @@ class MetaLabels
             'shadeSpecies' => 'Shade Species',
             'treeHealth' => 'Tree Health',
             'lingeringHemlock' => 'Observation Subject',
+            'lingeringTreeNum' => 'Lingering Tree #',
+            'treeNum' => 'Tree #',
+            'signsOfEAB' => 'Definite Signs of EAB',
+            'signsOfEABV2' => 'Nearby Trees Signs of EAB',
             'collectionPurpose' => 'Collection Purpose',
             'reasonForNoHemlocks' => 'No Hemlocks Because',
             'timeSpentSearching' => 'Time Spent',
+            'photoOfBark' => 'Bark Photo',
+            'photoOfBranching' => 'Branching Photo',
+            'photoOfLeaves' => 'Leaves Photo',
             'hemlockAreaComments' => 'Describe Area',
             'hemlockStandQuantity' => 'Number of Lingering Trees',
             'moreThanTenHemlocks' => 'Comment on Quantity',
@@ -147,12 +157,13 @@ class MetaLabels
             'propertyOwnerPhone' => 'Propety Owner Phone',
             'ownerNotified' => 'Owner Notified',
             'naturallyOccuring' => 'Naturally Occuring',
-            'signsOfEAB' => 'Signs of EAB',
+            'naturallyOccuringV2' => 'Naturally Occuring',
             'decomposing' => 'Decomposing',
             'flaking' => 'Flaking',
             'colorOfFlaking' => 'Color of Flaking',
             'nearbyTrees' => 'Nearby Trees',
-            'treated' => 'Treated'
+            'treated' => 'Treated',
+            'numberInspected' => 'Number of Trees Inspected'
         ];
 
         $this->species_labels = [
