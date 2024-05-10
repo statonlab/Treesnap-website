@@ -45,7 +45,7 @@ export default class Welcome extends Scene {
             {/*    <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>*/}
             {/*    <TwitterFeed/>*/}
             {/*  </div>*/}
-            {/*</div>*/}
+            </div>
           </div>
         </div>
         <FeaturesList/>
