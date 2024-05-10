@@ -28,18 +28,16 @@ export default class DoughnutChart extends Component {
   createChart(labels, data) {
     let el  = ReactDOM.findDOMNode(this.refs.canvas)
     let ctx = el.getContext('2d')
+    let customColors = [
+        "#6f8929", "#3f5627", "#172114", "#bcedbb", "#aeb7b0", "#0f8444", "#2A9D8F", "#8dd8e8", "#f39c12", "#bf5329", "#FFE0B5", "#FF6633", "#8f60e0", "#735b77", "#00B3E6", "#3366E6", "#809900", "#ea9999", "#744700", "#e1ad01", "#4b0082", "#811b4d", "#6bdf12", "#ba265b", "#FF78e9"
+    ];
 
     let colors = labels.map((label, index) => {
+      if (customColors[index]) {
+        return customColors[index];
+      }
       return randomColor({seed: index, hue: 'random', luminosity: 'random'})
     })
-
-    // colors = [
-    //   '#2A9D8F',
-    //   '#4d7ec8',
-    //   '#f39c12',
-    //   '#bf5329',
-    //   '#FFE0B5'
-    // ].concat(colors.slice(0, labels.length - 5))
 
     new Chart(ctx, {
       type   : 'doughnut',
