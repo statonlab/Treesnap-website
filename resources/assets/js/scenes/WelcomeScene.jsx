@@ -45,7 +45,7 @@ export default class Welcome extends Scene {
               <div className="column">
                <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Tweets</h3>
                <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>
-               <TwitterFeed/>
+               {/* <TwitterFeed/> */}
               </div>
             </div>
           </div>

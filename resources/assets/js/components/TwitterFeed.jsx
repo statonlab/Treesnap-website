@@ -1,34 +1,31 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 
 export default class TwitterFeed extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      observations: [],
+      treets: [],
       loading     : true
     }
   }
+  // componentDidMount() {
+  //   this.loadTreets()
 
-  componentDidMount() {
-    this.loadObservations()
+  //   setInterval(this.loadTreets.bind(this), 120000)
+  // }
 
-    setInterval(this.loadObservations.bind(this), 120000)
-  }
-
-  loadObservations() {
-    axios.get(`/web/observations/feed`).then(response => {
-      this.setState({observations: response.data.data, loading: false})
-    }).catch(error => {
-      console.log(error)
-      this.setState({loading: false})
-    })
-  }
-
-  renderObservation(observation) {
+  // loadTreets() {
+  //   axios.get(`/web/treets`).then(response => {
+  //     this.setState({treets: response.data.data, loading: false})
+  //   }).catch(error => {
+  //     console.log(error)
+  //     this.setState({loading: false})
+  //   })
+  // }
+  renderTreet(treet) {
     return (
-      <div key={observation.id}
+      <div key={treet.id}
            className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
         <div className="is-flex flex-v-center flex-wrap">
           <div className="item mr-1">
@@ -48,19 +45,14 @@ export default class TwitterFeed extends Component {
       </div>
     )
   }
-
   render() {
     return (
-      <div style={{maxHeight: 487, overflowY: 'auto'}} className={'invisible-scrollbar'}>
-        {this.state.loading ?
-          <p className="has-text-centered">
-            <i className="fa fa-spinner fa-spin"></i>
-          </p>
-          : null}
-        {this.state.observations.map(this.renderObservation.bind(this))}
-        {this.state.observations.length === 0 && !this.state.loading ?
-          <p className="text-dark-muted has-text-centered">There are no observations at this time</p>
-          : null}
+      <div>
+        <a className="twitter-timeline"
+           data-height="487"
+           data-width="432"
+           data-link-color="#2A9D8F"
+           href="https://twitter.com/Treesnapapp?ref_src=twsrc%5Etfw">Tweets by Treesnapapp</a>
       </div>
     )
   }
