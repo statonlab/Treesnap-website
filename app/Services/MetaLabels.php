@@ -84,7 +84,7 @@ class MetaLabels
             'neighborCones' => 'Neighbor Cones',
             'neighborHealth' => 'Neighbor Health',
             'breastNumeric' => 'Tree Diameter',
-
+            'labelPhoto' => 'Label Photo',            
             'age' => 'Age',
             'beechBarkDiseaseSymptoms' => 'Bark Disease',
             'beechHealthProblems' => 'Health Problems',
