@@ -243,3 +243,14 @@ $factory->define(\App\DownloadStatistic::class, function (Faker\Generator $faker
         'observations_count' => $faker->numberBetween(10, 5000),
     ];
 });
+
+
+$factory->define(\App\Treet::class, function (Faker\Generator $faker) {
+    $appNames = ['treesnap','florestadb','healthywoods', 'aviddeer', 'efp'];
+    return [
+        'app_name' => $appNames[0],
+        'title' => $faker->name(),
+        'description' => $faker->sentence()
+    ];
+});
+
