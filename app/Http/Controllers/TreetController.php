@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTreetRequest;
-use App\Http\Requests\UpdateTreetRequest;
+use Illuminate\Http\Request;
 use App\Treet;
 
 class TreetController extends Controller
@@ -27,7 +26,7 @@ class TreetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTreetRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -51,7 +50,7 @@ class TreetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTreetRequest $request, Treet $treet)
+    public function update(Request $request, Treet $treet)
     {
         //
     }
@@ -62,5 +61,22 @@ class TreetController extends Controller
     public function destroy(Treet $treet)
     {
         //
+    }
+    public function getTreetFeed(Request $request)
+    {
+        $this->validate($request, [
+            'limit' => 'nullable|integer|min:6|max:90',
+        ]);
+
+        $limit = $request->limit ?: 10;
+
+        $treets = Treet::select(['id','app_name', 'title', 'description', 'created_at'])
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
+
+        
+
+        return $this->success($treets);
     }
 }

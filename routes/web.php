@@ -43,8 +43,6 @@ Route::post('/login/{provider}/callback', 'Auth\LoginController@handleSocialProv
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');
 Route::get('/web/observations/{limit?}', 'ObservationsController@index');
 Route::get('/web/observation/{id}', 'ObservationsController@show');
-// Treets
-Route::get('/web/treets', 'TreetController@index');
 
 // Pre-fetched observation view to support FB open graph and twitter cards
 Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
@@ -79,6 +77,8 @@ Route::get('/web/events/{limit?}', 'EventsController@index');
 
 // Observation Feed
 Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed');
+// Treets
+Route::get('/web/treets/feed', 'TreetController@getTreetFeed');
 
 // Public Routes in the Confirmations Controller
 Route::get('/web/confirmations/count/{id}', 'PublicConfirmationsController@count');

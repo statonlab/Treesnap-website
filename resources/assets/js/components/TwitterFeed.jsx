@@ -9,50 +9,55 @@ export default class TwitterFeed extends Component {
       loading     : true
     }
   }
-  // componentDidMount() {
-  //   this.loadTreets()
+ 
+  componentDidMount() {
+    this.loadTreets()
 
-  //   setInterval(this.loadTreets.bind(this), 120000)
-  // }
+    setInterval(this.loadTreets.bind(this), 120000)
+  }
 
-  // loadTreets() {
-  //   axios.get(`/web/treets`).then(response => {
-  //     this.setState({treets: response.data.data, loading: false})
-  //   }).catch(error => {
-  //     console.log(error)
-  //     this.setState({loading: false})
-  //   })
-  // }
+  loadTreets() {
+    axios.get(`/web/treets/feed`).then(response => {
+      this.setState({treets: response.data.data, loading: false})
+    }).catch(error => {
+      console.log(error)
+      this.setState({loading: false})
+    })
+  }
   renderTreet(treet) {
     return (
+      
       <div key={treet.id}
-           className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-        <div className="is-flex flex-v-center flex-wrap">
+      className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
+      <div className="is-flex flex-v-center">
           <div className="item mr-1">
-            <Link to={`observation/${observation.id}`}>
-              <img src={observation.thumbnail}
-                   alt={`${observation.observation_category} by ${observation.user.name}`}
-                   className="item-thumbnail img-circle elevation-1"
+              <img src={"../images/logos/treesnap_logo.png"}
+                   alt="Treesnap"
+                   className="item-thumbnail"
                    style={{marginTop: 8}}/>
-            </Link>
           </div>
           <div className="item">
-            <Link to={`observation/${observation.id}`}><strong>{observation.observation_category}</strong></Link>
-            <div className="text-dark-muted">Submitted by {observation.user.name}</div>
-            <div className="text-dark-muted">{observation.date}</div>
+          <div className="text-dark-muted"><strong>{treet.app_name}</strong></div>
+          <div className="text-dark-muted">{treet.title}</div>
+          <div className="text-dark-muted">{treet.description}</div>
           </div>
         </div>
       </div>
+    
     )
   }
   render() {
     return (
-      <div>
-        <a className="twitter-timeline"
-           data-height="487"
-           data-width="432"
-           data-link-color="#2A9D8F"
-           href="https://twitter.com/Treesnapapp?ref_src=twsrc%5Etfw">Tweets by Treesnapapp</a>
+      <div style={{maxHeight: 487, overflowY: 'auto'}} className={'invisible-scrollbar'}>
+        {this.state.loading ?
+          <p className="has-text-centered">
+            <i className="fa fa-spinner fa-spin"></i>
+          </p>
+          : null}
+        {this.state.treets.map(this.renderTreet.bind(this))}
+        {this.state.treets.length === 0 && !this.state.loading ?
+          <p className="text-dark-muted has-text-centered">There are no treets at this time</p>
+          : null}
       </div>
     )
   }

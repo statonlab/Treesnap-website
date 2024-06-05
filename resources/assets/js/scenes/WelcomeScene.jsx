@@ -43,16 +43,15 @@ export default class Welcome extends Scene {
                 <ObservationFeed/>
               </div>
               <div className="column">
-               <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Tweets</h3>
-               <p className="has-text-centered text-dark-muted mb-0">Latest Tweets by @treesnapapp</p>
-               {/* <TwitterFeed/> */}
+               <h3 className={'title is-3 bg-dark has-text-centered mb-none'}>Treets</h3>
+               <p className="has-text-centered text-dark-muted mb-0">Latest Updates from <a target="_blank"  href="https://staton-lab-portfolio.web.app/">Staton Lab</a> </p>
+               <TwitterFeed/>
               </div>
             </div>
           </div>
 
         </div>
         <FeaturesList/>
-        <RecentUpdates/>
         <HomeFooter/>
       </div>
     )

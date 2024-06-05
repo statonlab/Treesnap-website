@@ -10,6 +10,7 @@ class Treet extends Model
     use HasFactory;
 
     protected $fillable = [
+        'app_name',
         'title',
         'description',
     ];
