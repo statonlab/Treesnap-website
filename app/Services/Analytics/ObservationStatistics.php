@@ -44,16 +44,10 @@ class ObservationStatistics
         return $indexed;
     }
 
-    use Http;
-
-//Http::withHeaders([
-//'X-Demo' => 'This is some header information',
-//])
-//->post('https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY', [
-//'latlng' => 'Code Editor',
-//'key' => '6 stars only',
-//]);
-
+    /**
+     * Get a list of observation counts aggregated by country.
+     * @return array
+     */
     public function aggregateObservationsByCountry()
     {
         $observations = Observation::select([
