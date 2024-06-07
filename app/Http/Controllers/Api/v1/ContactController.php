@@ -35,7 +35,7 @@ class ContactController extends Controller
         $recaptcha = new ReCaptcha(config('services.google.recaptcha'));
         $verify = $recaptcha->verify($request->recaptcha, $request->ip());
 
-        if (! $verify->isSuccess()) {
+        if (!$verify->isSuccess()) {
             return $this->validationError([
                 'recaptcha' => ['Please verify you are not a robot.'],
             ]);
@@ -47,18 +47,21 @@ class ContactController extends Controller
     }
 
     /**
-     * Get all admin users who subscribed to contact requests.
-     *
-     * @return \App\User[]|\Illuminate\Database\Eloquent\Collection
+     * Get all Staton Lab admins who subscribed to contact requests.
      */
     protected function getSubscribedAdmins()
     {
-        return User::with('role')->whereHas('subscriptionTopics', function ($query) {
-            $query->where('key', 'contact');
-        })->get()->reject(function ($user) {
-            return $user->role->name !== 'Admin';
-        })->map(function ($user) {
-            return $user->email;
-        });
+//        return User::with('role')->whereHas('subscriptionTopics', function ($query) {
+//            $query->where('key', 'contact');
+//        })->get()->reject(function ($user) {
+//            return $user->role->name !== 'Admin';
+//        })->map(function ($user) {
+//            return $user->email;
+//        });
+        return collect([
+//            "mestato@gmail.com",
+            "noahgreycaldwell@gmail.com",
+//            "cstribling1717@gmail.com"
+        ]);
     }
 }
