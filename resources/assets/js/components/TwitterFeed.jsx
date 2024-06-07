@@ -29,17 +29,18 @@ export default class TwitterFeed extends Component {
       
       <div key={treet.id}
       className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-      <div className="is-flex flex-v-center">
+      <div className="is-flex flex-v-center flex-wrap">
           <div className="item mr-1">
-              <img src={"../images/logos/treesnap_logo.png"}
-                   alt="Treesnap"
-                   className="item-thumbnail"
+              <img src={treet.image_path}
+                   alt={treet.app_name}
+                   className="item-thumbnail img-circle"
                    style={{marginTop: 8}}/>
           </div>
           <div className="item">
-          <div className="text-dark-muted"><strong>{treet.app_name}</strong></div>
-          <div className="text-dark-muted">{treet.title}</div>
-          <div className="text-dark-muted">{treet.description}</div>
+            <div className="text-dark-muted text-wrap"><strong>{treet.app_name}</strong></div>
+            <div className="text-dark-muted text-wrap">{treet.title}</div>
+            {/* <div className="text-dark-muted text-wrap">{treet.description}</div> */}
+            {/* <div className="text-dark-muted text-wrap">{treet.created_at}</div> */}
           </div>
         </div>
       </div>

@@ -70,7 +70,7 @@ class TreetController extends Controller
 
         $limit = $request->limit ?: 10;
 
-        $treets = Treet::select(['id','app_name', 'title', 'description', 'created_at'])
+        $treets = Treet::select(['id','app_name', 'image_path', 'title', 'description', 'created_at'])
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();

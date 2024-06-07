@@ -247,8 +247,13 @@ $factory->define(\App\DownloadStatistic::class, function (Faker\Generator $faker
 
 $factory->define(\App\Treet::class, function (Faker\Generator $faker) {
     $appNames = ['treesnap','florestadb','healthywoods', 'aviddeer', 'efp'];
+    $imagePaths = ["../images/logos/treesnap_logo.png","../images/logos/florestadb_logo.png","../images/logos/healthywoods_logo.png","../images/logos/aviddeer_logo.png","../images/logos/efp_logo.png"];
+    
+    $randApp = array_rand($appNames, 1);
+    
     return [
-        'app_name' => $appNames[0],
+        'app_name' => $appNames[$randApp],
+        'image_path' => $imagePaths[$randApp],
         'title' => $faker->name(),
         'description' => $faker->sentence()
     ];

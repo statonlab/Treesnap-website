@@ -11,6 +11,7 @@ class Treet extends Model
 
     protected $fillable = [
         'app_name',
+        'image_path',
         'title',
         'description',
     ];

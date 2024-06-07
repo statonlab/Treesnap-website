@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('treets', function (Blueprint $table) {
             $table->id();
             $table->text('app_name');
+            $table->text('image_path');
             $table->text('title');
             $table->text('description');
             $table->timestamps();
