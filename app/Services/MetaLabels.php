@@ -24,6 +24,17 @@ class MetaLabels
     public function __construct()
     {
         $this->labels = [
+            'beechCollectionPurpose' => 'Collection Purpose',
+            'beechBreastNumeric' => 'Tree Diameter',
+            'beechLocationCharacteristics' => 'Habitat',
+            'beechNearbyTrees' => 'Nearby Trees',
+            'surroundingArea' => 'Surrounding Area',
+            'beechLeaves' => 'Leaves',
+            'envelopeLabel' => 'Photo of Envelope Label',
+            'labelInput' => 'Envelope Label',
+            'beechFlowersBinary' => 'Flowers',
+            'beechCanopyDieback'=> 'Canopy Dieback',
+            'beechIsReproducing' => 'Reproducing',
             'ashSpecies' => 'Species',
             'ashFrequency' => 'Ash Frequency',
             'seedsBinary' => 'Seeds',
@@ -73,7 +84,7 @@ class MetaLabels
             'neighborCones' => 'Neighbor Cones',
             'neighborHealth' => 'Neighbor Health',
             'breastNumeric' => 'Tree Diameter',
-
+            'labelPhoto' => 'Label Photo',            
             'age' => 'Age',
             'beechBarkDiseaseSymptoms' => 'Bark Disease',
             'beechHealthProblems' => 'Health Problems',
