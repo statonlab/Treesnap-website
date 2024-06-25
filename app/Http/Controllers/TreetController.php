@@ -18,9 +18,15 @@ class TreetController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $treet = Treet::create([
+            'app_name' => $request->app_name,
+            'image_path' => $request->image_path,
+            'description' => $request->description
+        ]);
+        return $this->created($treet);
+
     }
 
     /**
@@ -70,10 +76,14 @@ class TreetController extends Controller
 
         $limit = $request->limit ?: 10;
 
-        $treets = Treet::select(['id','app_name', 'image_path', 'title', 'description', 'created_at'])
+        $treets = Treet::select(['id','app_name', 'image_path', 'description', 'created_at'])
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
+        
+        $treets->map(function ($treet) {
+            $treet->date = $treet->created_at->diffForHumans();
+        });
 
         
 

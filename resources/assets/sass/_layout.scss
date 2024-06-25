@@ -120,9 +120,6 @@ a.box {
   }
 }
 
-.image-gallery-slide-wrapper {
-  //background-color: #222;
-}
 
 .image-gallery-slide {
   background-color: transparent !important;
@@ -340,7 +337,8 @@ a.box {
 .update-row{
 display: flex;
 flex-direction: row;
-justify-content: space-evenly;
+justify-content: center;
+align-items: center;
 }
 
 .recent-updates{
@@ -361,4 +359,33 @@ justify-content: space-evenly;
   width: 600px;
   border-radius: 2px;
   padding: 20px;
+}
+.w-100{
+  width: 100%;
+}
+.recent-updates-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.input-width{
+  min-width: 250px;
+}
+.textarea-height{
+  height: 8em;
+}
+.flex-column-left{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.flex-column-center{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.flex-row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

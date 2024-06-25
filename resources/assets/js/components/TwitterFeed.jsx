@@ -6,7 +6,7 @@ export default class TwitterFeed extends Component {
 
     this.state = {
       treets: [],
-      loading     : true
+      loading     : true,
     }
   }
  
@@ -24,23 +24,29 @@ export default class TwitterFeed extends Component {
       this.setState({loading: false})
     })
   }
+ 
   renderTreet(treet) {
     return (
       
       <div key={treet.id}
       className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-      <div className="is-flex flex-v-center flex-wrap">
-          <div className="item mr-1">
+      <div className="is-flex flex-v-center flex-column-left flex-wrap">
+          <div className="flex-row">
+          
+          <div className="item mr-3">
               <img src={treet.image_path}
                    alt={treet.app_name}
-                   className="item-thumbnail img-circle"
+                   className="item-thumbnail "
                    style={{marginTop: 8}}/>
           </div>
           <div className="item">
             <div className="text-dark-muted text-wrap"><strong>{treet.app_name}</strong></div>
-            <div className="text-dark-muted text-wrap">{treet.title}</div>
-            {/* <div className="text-dark-muted text-wrap">{treet.description}</div> */}
-            {/* <div className="text-dark-muted text-wrap">{treet.created_at}</div> */}
+          </div>
+          </div>
+          <div className="item">
+
+            <div className="text-dark-muted my-4 text-wrap w-100">{treet.description}</div>
+            <div className="text-dark-muted text-wrap">{treet.date}</div>
           </div>
         </div>
       </div>

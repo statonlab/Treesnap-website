@@ -79,6 +79,7 @@ Route::get('/web/events/{limit?}', 'EventsController@index');
 Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed');
 // Treets
 Route::get('/web/treets/feed', 'TreetController@getTreetFeed');
+Route::post('/web/treets/create', 'TreetController@create');
 
 // Public Routes in the Confirmations Controller
 Route::get('/web/confirmations/count/{id}', 'PublicConfirmationsController@count');
