@@ -9,6 +9,8 @@ import TwitterFeed from '../components/TwitterFeed'
 import ObservationFeed from '../components/ObservationsFeed'
 import Scene from './Scene'
 import Dropdown from '../components/Dropdown'
+import User from '../helpers/User'
+
 
 
 export default class Welcome extends Scene {
@@ -20,7 +22,8 @@ export default class Welcome extends Scene {
       appNames: ['HealthyWoods', 'Eastern Forest Pests', 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
       imagePath: '',
-      description: ''
+      description: '',
+      isLoggedIn: false,
     }
     this.toggle = this.toggle.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
@@ -28,6 +31,16 @@ export default class Welcome extends Scene {
     this.handleChangeDescription = this.handleChangeDescription.bind(this)
 
     document.title = 'TreeSnap - Help Our Nation\'s Trees!'
+  }
+  componentDidMount() {
+    axios.get('/web/user/status').then(response => {
+      let data = response.data.data
+      this.setState({
+        isLoggedIn: data.logged_in,
+      })
+    }).catch(error => {
+      console.log(error)
+    })
   }
    
   toggle() {
@@ -109,7 +122,10 @@ export default class Welcome extends Scene {
               <div className="column">
                 <div className="update-row">
                <h3 className={'title is-3 bg-dark has-text-centered mr-3 mb-none'}>Recent Updates</h3>
+               {this.state.isLoggedIn ?
+
               <button type="button" onClick={this.toggle} className="button is-primary is-small"><i className="fa fa-plus"></i> &nbsp;  New Update </button>
+               :null}
                 </div>
                <p className="has-text-centered text-dark-muted mb-0">Latest Updates from <a target="_blank"  href="https://staton-lab-portfolio.web.app/">Staton Lab</a> </p>
                {this.state.isOpen ? 
