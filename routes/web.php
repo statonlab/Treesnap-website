@@ -77,15 +77,16 @@ Route::get('/web/events/{limit?}', 'EventsController@index');
 
 // Observation Feed
 Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed');
-// Treets
-Route::get('/web/treets/feed', 'TreetController@getTreetFeed');
-Route::post('/web/treets/create', 'TreetController@create');
 
 // Public Routes in the Confirmations Controller
 Route::get('/web/confirmations/count/{id}', 'PublicConfirmationsController@count');
 
+Route::get('/web/treets/feed', 'TreetController@getTreetFeed');
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
+    // Treets
+    Route::delete('/web/treet/{id}', 'TreetController@destroy');
+    Route::post('/web/treets/create', 'TreetController@create');
     // Observations
     Route::delete('/web/observation/{id}', 'ObservationsController@delete');
 

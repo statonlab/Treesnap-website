@@ -12,7 +12,8 @@ class TreetController extends Controller
      */
     public function index()
     {
-        //
+        $treets = Treet::all();
+        return $treets;
     }
 
     /**
@@ -20,6 +21,8 @@ class TreetController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Treet::class);
+
         $treet = Treet::create([
             'app_name' => $request->app_name,
             'image_path' => $request->image_path,
@@ -28,23 +31,6 @@ class TreetController extends Controller
         return $this->created($treet);
 
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Treet $treet)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -54,20 +40,14 @@ class TreetController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Treet $treet)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Treet $treet)
+    public function destroy(Request $request, Treet $treet)
     {
-        //
+        $treet->find($request->id)->delete();
+        return $this->success($treet);
     }
+    
     public function getTreetFeed(Request $request)
     {
         $this->validate($request, [

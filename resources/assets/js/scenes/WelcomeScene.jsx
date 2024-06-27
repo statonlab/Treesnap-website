@@ -50,11 +50,7 @@ export default class Welcome extends Scene {
 
   onSubmit(event) {
     event.preventDefault();
-    
-    console.log(event.target.appName.value)  
-    console.log(event.target.description.value)
-    console.log(this.state.imagePath)
-    
+
     axios.post('/web/treets/create', {
       app_name     : event.target.appName.value,
       image_path   : this.state.imagePath,

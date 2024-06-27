@@ -11,8 +11,17 @@ export default class TwitterFeed extends Component {
   }
  
   componentDidMount() {
+    axios.get('/web/user/status').then(response => {
+      let data = response.data.data
+      this.setState({
+        isLoggedIn: data.logged_in,
+      })
+    }).catch(error => {
+      console.log(error)
+    })
+    
     this.loadTreets()
-
+    
     setInterval(this.loadTreets.bind(this), 120000)
   }
 
@@ -24,15 +33,23 @@ export default class TwitterFeed extends Component {
       this.setState({loading: false})
     })
   }
+  deleteTreet(treet){
+    axios.delete(`/web/treet/${treet.id}`).then(response => {
+      console.log('success')
+      window.location.reload()
+    }).catch(error => {
+      console.log(error)
+    })
+  }
  
   renderTreet(treet) {
     return (
       
       <div key={treet.id}
       className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-      <div className="is-flex flex-v-center flex-column-left flex-wrap">
+      <div className="is-flex flex-v-center flex-column-left flex-wrap w-100">
           <div className="flex-row">
-          
+
           <div className="item mr-3">
               <img src={treet.image_path}
                    alt={treet.app_name}
@@ -47,6 +64,10 @@ export default class TwitterFeed extends Component {
 
             <div className="text-dark-muted my-4 text-wrap w-100">{treet.description}</div>
             <div className="text-dark-muted text-wrap">{treet.date}</div>
+          </div>
+          <div className="edit">
+          <button className="button is-primary is-small mr-3">Edit</button>
+          <button className="button is-danger is-small" onClick={()=>this.deleteTreet(treet)}>Delete</button>
           </div>
         </div>
       </div>
