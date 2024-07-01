@@ -21,7 +21,6 @@ class TreetController extends Controller
      */
     public function create(Request $request)
     {
-        $this->authorize('create', Treet::class);
 
         $treet = Treet::create([
             'app_name' => $request->app_name,
