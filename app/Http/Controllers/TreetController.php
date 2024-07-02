@@ -21,7 +21,6 @@ class TreetController extends Controller
      */
     public function create(Request $request)
     {
-
         $treet = Treet::create([
             'app_name' => $request->app_name,
             'image_path' => $request->image_path,
@@ -33,9 +32,17 @@ class TreetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Treet $treet)
+    public function edit(Request $request, Treet $treet)
     {
-        //
+        $treet = Treet::find($request->id);
+
+        $treet->update([
+            'app_name' => $request->app_name,
+            'image_path' => $request->image_path,
+            'description' => $request->description
+        ]);
+        return $this->success($treet);
+
     }
 
     /**

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Treet from './Treet'
 
 export default class TwitterFeed extends Component {
   constructor(props) {
@@ -49,6 +50,7 @@ export default class TwitterFeed extends Component {
     })
   }
   deleteTreet(treet){
+    console.log(treet)
     axios.delete(`/web/treet/${treet.id}`).then(response => {
       this.loadTreets()
     }).catch(error => {
@@ -109,38 +111,9 @@ export default class TwitterFeed extends Component {
     
     )
   }
-  renderTreet(treet) {
-    return (
-      <div key={treet.id} className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
-        <div className="is-flex flex-v-center flex-column-left flex-wrap w-100">
-            <div className="flex-row">
-              <div className="item mr-3">
-                  <img src={treet.image_path}
-                      alt={treet.app_name}
-                      className="item-thumbnail "
-                      style={{marginTop: 8}}/>
-              </div>
-              <div className="item">
-                <div className="text-dark-muted text-wrap"><strong>{treet.app_name}</strong></div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="text-dark-muted my-4 text-wrap w-100">{treet.description}</div>
-              <div className="text-dark-muted text-wrap">{treet.date}</div>
-            </div> 
-            {this.state.isLoggedIn ?
-            <div className="edit">
-            <button className="button is-primary is-small mr-3">Edit</button>
-            <button className="button is-danger is-small" onClick={()=>this.deleteTreet(treet)}>Delete</button>
-            </div>
-            :null}
-        </div>
-      </div>
-    
-    )
-  }
 
 render() {
+  const treetList = this.state.treets.map((treet)=>( <Treet deleteTreet={this.deleteTreet} treet={treet}/>))
 
   return (
       <div>
@@ -155,7 +128,7 @@ render() {
         <div className="recent-updates-form">
           <div className="field">
   
-          <label for="appName" className="label text-white">App Name</label>
+          <label htmlFor="appName" className="label text-white">App Name</label>
             <div className="control ">
                 <span className="select w-100">
                     <select type="select"
@@ -177,7 +150,7 @@ render() {
             <label className="label text-white">Description</label>
             <div className="control">
               <textarea
-                    className="input textarea-height"
+                    className="input textarea-height-8em"
                     name="description"
                     cols="3"
                     value={this.state.description}
@@ -198,7 +171,7 @@ render() {
           </p>
           : null}
          
-        {this.state.treets.map(this.renderTreet.bind(this))}
+        {treetList}
         {this.state.treets.length === 0 && !this.state.loading ?
           <p className="text-dark-muted has-text-centered">There are no treets at this time</p>
           : null}

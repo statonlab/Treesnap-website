@@ -371,8 +371,11 @@ align-items: center;
 .input-width{
   min-width: 250px;
 }
-.textarea-height{
+.textarea-height-8em{
   height: 8em;
+}
+.textarea-height-4em{
+  height: 4em;
 }
 .flex-column-left{
   display: flex;
