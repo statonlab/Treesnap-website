@@ -50,13 +50,13 @@ export default class TwitterFeed extends Component {
     })
   }
   deleteTreet(treet){
-    console.log(treet)
     axios.delete(`/web/treet/${treet.id}`).then(response => {
       this.loadTreets()
     }).catch(error => {
       console.log(error)
     })
   }
+
   onSubmit(event) {
     event.preventDefault();
 
@@ -113,7 +113,7 @@ export default class TwitterFeed extends Component {
   }
 
 render() {
-  const treetList = this.state.treets.map((treet)=>( <Treet deleteTreet={this.deleteTreet} treet={treet}/>))
+  const treetList = this.state.treets.map((treet)=>( <Treet deleteTreet={this.deleteTreet} loadTreets={this.loadTreets} treet={treet}/>))
 
   return (
       <div>
@@ -150,13 +150,13 @@ render() {
             <label className="label text-white">Description</label>
             <div className="control">
               <textarea
-                    className="input textarea-height-8em"
-                    name="description"
-                    cols="3"
-                    value={this.state.description}
-                    onChange={this.handleChangeDescription}
-                    placeholder={'Description'}>
-                      </textarea>
+                className="input textarea-height-8em"
+                name="description"
+                cols="3"
+                value={this.state.description}
+                onChange={this.handleChangeDescription}
+                placeholder={'Description'}>
+              </textarea>
             </div>
           </div>
           <button type="submit" className="button">Submit</button>
