@@ -72,7 +72,6 @@ class TreetController extends Controller
         });
 
         
-
         return $this->success($treets);
     }
 }

@@ -10,9 +10,9 @@ export default class Treet extends Component {
       isEditing: false,
       appNames: ['HealthyWoods', 'Eastern Forest Pests', 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
-      imagePath: '',
-      description: '',
-      date: '',
+      imagePath: this.props.treet.image_path,
+      description: this.props.treet.description,
+      currentAppName: this.props.treet.app_name,
     }
     this.toggle = this.toggle.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
@@ -22,12 +22,6 @@ export default class Treet extends Component {
     
 
   }
-  componentWillReceiveProps(props) {
-    this.setState({appName: props.treet.app_name})
-    this.setState({description: props.treet.description})
-    this.setState({imagePath: props.treet.image_path})
-    this.setState({date: props.treet.date})
-}
   componentDidMount() {
     axios.get('/web/user/status').then(response => {
       let data = response.data.data
@@ -38,7 +32,16 @@ export default class Treet extends Component {
       console.log(error)
     })
   }
+  onSubmit(event) {
+    event.preventDefault();
+    console.log(event.target.appName.value)
+    this.props.editTreet(this.props.treet.id,event.target.appName.value,this.state.imagePath,event.target.description.value)
+    this.setState({
+      
+    });  
 
+    this.toggle()
+  }
   handleChangeAppName(event) {
     this.setState({appName: event.target.value});
     if(event.target.value == "Treesnap"){
@@ -62,25 +65,6 @@ export default class Treet extends Component {
   }
   toggle() {
     this.setState(prevState => ({ isEditing: !prevState.isEditing }));
-  }
-  onSubmit(event) {
-    event.preventDefault();
-    console.log(event.target.appName.value)
-
-    axios.put(`/web/treets/update/${event.target.id.value}`, {
-      app_name     : event.target.appName.value,
-      image_path   : this.state.imagePath,
-      description  : event.target.description.value
-    }).then(response => {
-      this.toggle();
-      this.setState({appName: response.data.data.app_name});
-      this.setState({description: response.data.data.description});
-      this.setState({imagePath: response.data.data.image_path});
-    }).catch(error => {
-      if (error.response) {
-        console.log(error)
-      }
-    })
   }
   renderAppName(appName) {
     return <option className="pa-2" key={appName} value={appName}>{appName}</option>
@@ -106,10 +90,12 @@ export default class Treet extends Component {
                       name="appName"
                       className="w-100"
                       id="appName-dropdown"
-                      defaultValue={this.state.appName}
+                      defaultValue={treet.app_name}
                       onChange={this.handleChangeAppName}
                     >
-                      {this.state.appNames.map((appName)=>(this.renderAppName(appName)))}   
+                      {this.state.appNames.map((appName)=>(this.renderAppName(appName)))}
+  
+                            
                     </select>
                 </span>
             </div>
@@ -120,14 +106,13 @@ export default class Treet extends Component {
               <textarea
                     className="input textarea-height-8em"
                     name="description"
-                    defaultValue={this.state.description}
+                    defaultValue={treet.description}
                     onChange={this.handleChangeDescription}>
               </textarea>
             </div>
           </div>
           </div>   
         </div>
-        <input type="hidden" id="id" name="id" value={this.props.treet.id} />
        </form> 
         <div className="edit">
         <button className="button is-primary is-small mr-3" type="submit" form="edit-form">Submit</button>
@@ -135,21 +120,22 @@ export default class Treet extends Component {
         </div>
         </>
        :
-            <>   
+            <>
+            
             <div className="flex-row">
               <div className="item mr-3">
-                  <img src={this.state.imagePath}
-                      alt={this.state.appName}
+                  <img src={treet.image_path}
+                      alt={treet.app_name}
                       className="item-thumbnail "
                       style={{marginTop: 8}}/>
               </div>
               <div className="item">
-                <div className="text-dark-muted text-wrap"><strong>{this.state.appName}</strong></div>
+                <div className="text-dark-muted text-wrap"><strong>{treet.app_name}</strong></div>
               </div>
             </div>
             <div className="item">
-              <div className="text-dark-muted my-4 text-wrap w-100">{this.state.description}</div>
-              <div className="text-dark-muted text-wrap">{this.state.date}</div>
+              <div className="text-dark-muted my-4 text-wrap w-100">{treet.description}</div>
+              <div className="text-dark-muted text-wrap">{treet.date}</div>
             </div> 
             {this.state.isLoggedIn ?
             <div className="edit">
@@ -159,6 +145,9 @@ export default class Treet extends Component {
             :null}
             </>
             }
+
+
+
         </div>
       </div>
     )

@@ -18,6 +18,7 @@ export default class TwitterFeed extends Component {
 
     }
     this.onSubmit = this.onSubmit.bind(this)
+    this.editTreet = this.editTreet.bind(this)
     this.handleChangeAppName = this.handleChangeAppName.bind(this)
     this.handleChangeDescription = this.handleChangeDescription.bind(this)
     this.deleteTreet = this.deleteTreet.bind(this)
@@ -56,7 +57,21 @@ export default class TwitterFeed extends Component {
       console.log(error)
     })
   }
+  editTreet(id, appName, imagePath, description) {
+    axios.put(`/web/treets/update/${id}`, {
+      app_name     : appName,
+      image_path   : imagePath,
+      description  : description,
+    }).then(response => {
+      console
+      this.loadTreets()
 
+    }).catch(error => {
+      if (error.response) {
+        console.log(error)
+      }
+    })
+  }
   onSubmit(event) {
     event.preventDefault();
 
@@ -68,7 +83,7 @@ export default class TwitterFeed extends Component {
       this.loadTreets()
       this.setState({appName: ''});
       this.setState({description: ''});
-
+      cosnole.log('hello')
     }).catch(error => {
       if (error.response) {
         console.log(error)
@@ -113,7 +128,7 @@ export default class TwitterFeed extends Component {
   }
 
 render() {
-  const treetList = this.state.treets.map((treet)=>( <Treet deleteTreet={this.deleteTreet} loadTreets={this.loadTreets} treet={treet}/>))
+  const treetList = this.state.treets.map((treet)=>( <Treet deleteTreet={this.deleteTreet} editTreet={this.editTreet} loadTreets={this.loadTreets} treet={treet}/>))
 
   return (
       <div>
