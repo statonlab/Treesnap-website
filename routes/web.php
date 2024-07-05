@@ -81,7 +81,7 @@ Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed'
 // Public Routes in the Confirmations Controller
 Route::get('/web/confirmations/count/{id}', 'PublicConfirmationsController@count');
 
-Route::get('/web/treets/feed', 'TreetController@getTreetFeed');
+Route::get('/web/treets/feed', 'TreetController@index');
 Route::delete('/web/treet/{id}', 'TreetController@destroy');
 Route::post('/web/treets/create', 'TreetController@create');
 Route::put('/web/treets/update/{id}', 'TreetController@edit');
