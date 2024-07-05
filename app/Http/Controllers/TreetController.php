@@ -10,10 +10,25 @@ class TreetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $treets = Treet::all();
-        return $treets;
+        $this->validate($request, [
+            'limit' => 'nullable|integer|min:6|max:90',
+        ]);
+
+        $limit = $request->limit ?: 10;
+
+        $treets = Treet::select(['id','app_name', 'image_path', 'description', 'created_at'])
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
+        
+        $treets->map(function ($treet) {
+            $treet->date = $treet->created_at->diffForHumans();
+        });
+
+        
+        return $this->success($treets);
     }
 
     /**
@@ -60,25 +75,4 @@ class TreetController extends Controller
         return $this->success($treet);
     }
     
-    public function getTreetFeed(Request $request)
-    {
-
-        $this->validate($request, [
-            'limit' => 'nullable|integer|min:6|max:90',
-        ]);
-
-        $limit = $request->limit ?: 10;
-
-        $treets = Treet::select(['id','app_name', 'image_path', 'description', 'created_at'])
-            ->orderBy('created_at', 'desc')
-            ->limit($limit)
-            ->get();
-        
-        $treets->map(function ($treet) {
-            $treet->date = $treet->created_at->diffForHumans();
-        });
-
-        
-        return $this->success($treets);
-    }
 }
