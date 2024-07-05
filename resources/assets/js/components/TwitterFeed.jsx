@@ -8,7 +8,7 @@ export default class TwitterFeed extends Component {
     this.state = {
       isEditing: false,
       isLoggedIn: false,
-      appNames: ['HealthyWoods', 'Eastern Forest Pests', 'Avid Deer', 'Treesnap', 'FlorestaDB'],
+      appNames: ['Eastern Forest Pests','HealthyWoods' , 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
       imagePath: '',
       description: '',
@@ -44,6 +44,7 @@ export default class TwitterFeed extends Component {
   }
   loadTreets() {
     axios.get(`/web/treets/feed`).then(response => {
+      console.log(response.data.data)
       this.setState({treets: response.data.data, loading: false})
     }).catch(error => {
       console.log(error)
@@ -63,7 +64,6 @@ export default class TwitterFeed extends Component {
       image_path   : imagePath,
       description  : description,
     }).then(response => {
-      console
       this.loadTreets()
 
     }).catch(error => {
@@ -81,17 +81,18 @@ export default class TwitterFeed extends Component {
       description  : event.target.description.value,
     }).then(response => {
       this.loadTreets()
+      this.toggle()
       this.setState({appName: ''});
       this.setState({description: ''});
-      cosnole.log('hello')
+      cosnole.log(response.data)
     }).catch(error => {
       if (error.response) {
         console.log(error)
       }
     })
-    this.toggle()
   }
   handleChangeAppName(event) {
+
     this.setState({appName: event.target.value});
     if(event.target.value == "Treesnap"){
       this.setState({imagePath: "../images/logos/treesnap_logo.png"});  
@@ -110,6 +111,7 @@ export default class TwitterFeed extends Component {
     }   
   }
   handleChangeDescription(event) {
+
     this.setState({description: event.target.value});  
   }
   renderButton(isOpen) {
@@ -137,7 +139,7 @@ render() {
           this.renderButton(this.state.isOpen)
         :null}
         {this.state.isOpen ? 
-        <form className="" onSubmit={this.onSubmit}>
+        <form className="" id="create-form" onSubmit={this.onSubmit}>
         
         <div className={'item-box elevation-1 is-lighter-light'}>     
         <div className="recent-updates-form">
@@ -150,7 +152,6 @@ render() {
                             name="appName"
                             className="w-100"
                             id="appName-dropdown"
-                            value={this.state.appName}
                             onChange={this.handleChangeAppName}
                             >
                         <option value="">Select App</option>
@@ -174,7 +175,7 @@ render() {
               </textarea>
             </div>
           </div>
-          <button type="submit" className="button">Submit</button>
+          <button type="submit" form="create-form" className="button">Submit</button>
           </div>   
         </div>
        </form>

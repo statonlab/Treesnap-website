@@ -34,11 +34,7 @@ export default class Treet extends Component {
   }
   onSubmit(event) {
     event.preventDefault();
-    console.log(event.target.appName.value)
     this.props.editTreet(this.props.treet.id,event.target.appName.value,this.state.imagePath,event.target.description.value)
-    this.setState({
-      
-    });  
 
     this.toggle()
   }

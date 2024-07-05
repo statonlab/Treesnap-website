@@ -29,23 +29,26 @@ class TreetPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->isAdmin();
+
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Treet $treet): bool
+    public function edit(User $user): bool
     {
-        //
+        return $user->isAdmin();
+
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Treet $treet): bool
+    public function destroy(User $user): bool
     {
-        //
+        return $user->isAdmin();
+
     }
 
     /**
