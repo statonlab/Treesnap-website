@@ -90,6 +90,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         'Pinyon Pine',
         'Sassafras',
         'Ozark Chinquapin',
+        'Alaskan Willow',
         'Other',
     ];
 

@@ -1611,15 +1611,6 @@ var Welcome = /*#__PURE__*/function (_Scene) {
                   className: "has-text-centered text-dark-muted mb-0",
                   children: "Latest Observations"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ObservationsFeed__WEBPACK_IMPORTED_MODULE_7__["default"], {})]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
-                className: "column",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("h3", {
-                  className: 'title is-3 bg-dark has-text-centered mb-none',
-                  children: "Tweets"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("p", {
-                  className: "has-text-centered text-dark-muted mb-0",
-                  children: "Latest Tweets by @treesnapapp"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_TwitterFeed__WEBPACK_IMPORTED_MODULE_6__["default"], {})]
               })]
             })
           })
