@@ -64,6 +64,7 @@ class Filter extends Model
         'Butternut' => 'butternut',
         'Pinyon Pine' => 'pinyonPine',
         'Ozark Chinquapin' => 'ozarkChinquapin',
+        'Alaskan Willow' => 'alaskanWillow',
         'Other' => 'other',
     ];
 
@@ -84,7 +85,8 @@ class Filter extends Model
         'beechBarkDiseaseSymptoms',
         'hybridTraits',
         'laurelWilt',
-        'hemlockLocationCharacteristics'
+        'hemlockLocationCharacteristics',
+        'nearbyWillowSpecies'
     ];
 
     /**

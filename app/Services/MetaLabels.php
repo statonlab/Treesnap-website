@@ -33,7 +33,7 @@ class MetaLabels
             'envelopeLabel' => 'Photo of Envelope Label',
             'labelInput' => 'Envelope Label',
             'beechFlowersBinary' => 'Flowers',
-            'beechCanopyDieback'=> 'Canopy Dieback',
+            'beechCanopyDieback' => 'Canopy Dieback',
             'beechIsReproducing' => 'Reproducing',
             'ashSpecies' => 'Species',
             'ashFrequency' => 'Ash Frequency',
@@ -84,7 +84,7 @@ class MetaLabels
             'neighborCones' => 'Neighbor Cones',
             'neighborHealth' => 'Neighbor Health',
             'breastNumeric' => 'Tree Diameter',
-            'labelPhoto' => 'Label Photo',            
+            'labelPhoto' => 'Label Photo',
             'age' => 'Age',
             'beechBarkDiseaseSymptoms' => 'Bark Disease',
             'beechHealthProblems' => 'Health Problems',
@@ -148,9 +148,22 @@ class MetaLabels
             'furtherAssessmentManagementComment' => 'Describe Active Management',
             'furtherAssessmentHWA' => 'Nearby HWA',
             'furtherAssessmentEHS' => 'Nearby EHS',
-            'furtherAssessmentStressors' => 'Further Stressors'
-//            'furtherAssessmentSlope' => 'Habitat',
-//            'furtherAssessmentSlopeComment' => 'Habitat Description',
+            'furtherAssessmentStressors' => 'Further Stressors',
+            'willowTreeLocation' => 'Tree Location',
+            'willowTreeSampleId' => 'Sample ID',
+            'willowTreeTag' => 'Tree Tag',
+            'willowHeight' => 'Tree Height',
+            'willowLeaves' => 'Leaf Comments',
+            'willowLeafPics' => 'Leaves',
+            'willowBranches' => 'Branch Comments',
+            'willowBranchPics' => 'Branches',
+            'catkinSex' => 'Catkins Sex',
+            'willowSample' => 'Genetic Sample',
+            'willowSpecies' => 'Willow Species',
+            'otherWillowSpecies' => 'Other Willow Species',
+            'nearbyWillowSpecies' => 'Nearby Willow Species',
+            'streamEdgeDistance' => 'Distance to Stream Edge',
+            'streamRunningDistance' => 'Distance to Running Water',
         ];
 
         $this->species_labels = [
@@ -373,6 +386,24 @@ class MetaLabels
                 'catkins',
                 'canopyHealth',
                 'ozarkBlightSigns',
+            ],
+
+            "Alaskan Willow" => [
+                'willowTreeTag',
+                'willowTreeLocation',
+                'willowTreeSampleId',
+                'willowHeight',
+                'willowLeaves',
+                'willowLeafPics',
+                'willowBranches',
+                'willowBranchPics',
+                'catkinSex',
+                'willowSample',
+                'willowSpecies',
+                'otherWillowSpecies',
+                'nearbyWillowSpecies',
+                'streamEdgeDistance',
+                'streamRunningDistance',
             ]
         ];
     }
