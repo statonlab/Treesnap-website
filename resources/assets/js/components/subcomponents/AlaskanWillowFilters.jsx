@@ -9,8 +9,8 @@ export default class AlaskanWillowFilters extends FiltersBase {
     super(props)
 
     this.state = {
-      heightNumericMin      : '',
-      heightNumericMax      : '',
+      willowHeightNumericMin      : '',
+      willowHeightNumericMax      : '',
       catkins               : [],
       catkinSex             : [],
       geneticSample         : [],
@@ -41,8 +41,8 @@ export default class AlaskanWillowFilters extends FiltersBase {
                     <input type="number"
                            className="input"
                            placeholder="Min."
-                           value={this.state.heightNumericMin}
-                           onChange={({target}) => this._update('heightNumericMin', target.value)}/>
+                           value={this.state.willowHeightNumericMin}
+                           onChange={({target}) => this._update('willowHeightNumericMin', target.value)}/>
                   </div>
                 </div>
                 <div className="field">
@@ -50,8 +50,8 @@ export default class AlaskanWillowFilters extends FiltersBase {
                     <input type="number"
                            className="input"
                            placeholder="Max."
-                           value={this.state.heightNumericMax}
-                           onChange={({target}) => this._update('heightNumericMax', target.value)}/>
+                           value={this.state.willowHeightNumericMax}
+                           onChange={({target}) => this._update('willowHeightNumericMax', target.value)}/>
                   </div>
                 </div>
               </div>
@@ -71,7 +71,7 @@ export default class AlaskanWillowFilters extends FiltersBase {
 
         <div className="column is-6">
           <div className="field">
-            <label className="label">Catkins</label>
+            <label className="label">Catkin Sex</label>
             <ButtonList
               value={this.state.catkinSex}
               list={['Male', 'Female', 'Unknown']}

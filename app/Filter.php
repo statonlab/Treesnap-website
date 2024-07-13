@@ -43,6 +43,8 @@ class Filter extends Model
         'diameterNumeric',
         'heightNumeric',
         'breastNumeric',
+        'willowHeightNumeric',
+        'hemlockDiameter',
     ];
 
     /**
