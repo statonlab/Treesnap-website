@@ -104,7 +104,7 @@ export default class AlaskanWillowFilters extends FiltersBase {
             <label className="label">Nearby Willow Species</label>
             <ButtonList
               value={this.state.nearbyWillowSpecies}
-              list={['Mixed willow', 'Single willow spp.', 'Spruce', 'Birch']}
+              list={['Mixed willow', 'Single willow spp.', 'Spruce', 'Birch', 'Other']}
               onChange={nearbyWillowSpecies => this._update('nearbyWillowSpecies', nearbyWillowSpecies)}/>
           </div>
         </div>
