@@ -164,6 +164,7 @@ class MetaLabels
             'nearbyWillowSpecies' => 'Nearby Willow Species',
             'streamEdgeDistance' => 'Distance to Stream Edge',
             'streamRunningDistance' => 'Distance to Running Water',
+            'otherNearbyWillowSpecies' => 'Other Nearby Species',
         ];
 
         $this->species_labels = [
@@ -404,6 +405,7 @@ class MetaLabels
                 'nearbyWillowSpecies',
                 'streamEdgeDistance',
                 'streamRunningDistance',
+                'otherNearbyWillowSpecies'
             ]
         ];
     }
