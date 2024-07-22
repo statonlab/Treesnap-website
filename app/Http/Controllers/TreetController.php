@@ -56,9 +56,9 @@ class TreetController extends Controller
         $treet = Treet::find($request->id);
 
         $treet->update([
-            'app_name' => $request->app_name,
-            'image_path' => $request->image_path,
-            'description' => $request->description
+            'app_name' => $request->app_name ?: $treet->app_name,
+            'image_path' => $request->image_path ?: $treet->image_path,
+            'description' => $request->description ?: $treet->description
         ]);
         return $this->success($treet);
 
