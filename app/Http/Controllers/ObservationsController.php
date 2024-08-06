@@ -271,10 +271,12 @@ class ObservationsController extends Controller
     public function getObservationFeed(Request $request)
     {
         $this->validate($request, [
-            'limit' => 'nullable|integer|min:6|max:90',
+            'take' => 'nullable|integer|min:0|max:1000',
+            'skip' => 'nullable|integer|min:0|max:1000',
         ]);
 
-        $limit = $request->limit ?: 10;
+        $take = $request->take;
+        $skip = $request->skip;
 
         $observations = Observation::with([
             'user' => function ($query) {
@@ -282,9 +284,10 @@ class ObservationsController extends Controller
             },
         ])
             ->select(['id', 'user_id', 'observation_category', 'created_at', 'thumbnail'])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->where('is_private', false)
-            ->limit($limit)
+            ->skip($skip)
+            ->take($take)
             ->get();
 
         $observations->map(function ($observation) {
