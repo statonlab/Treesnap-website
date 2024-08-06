@@ -313,7 +313,7 @@ class DownloadsController extends Controller
 
         $data = $observation->data;
         if (!$observation->has_private_comments || $user->id === $observation->user_id) {
-            $comment = isset($data['comment']) ? $data['comment'] : '';
+            $comment = isset($data['comment']) ? preg_replace('/\s+/', ' ', trim($data['comment'])) : '';
         }
 
         $line = [

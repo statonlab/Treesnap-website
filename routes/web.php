@@ -25,6 +25,9 @@ Route::get('/web/docs/partners', 'DocumentController@partners');
 // Contact
 Route::post('/contact', 'ContactController@send');
 
+Route::get('/developer', 'HomeController@index');
+
+
 /**
  * Auth Routes:
  * Login: /login

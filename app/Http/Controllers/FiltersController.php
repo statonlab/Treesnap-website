@@ -146,7 +146,7 @@ class FiltersController extends Controller
                 'user_id' => $user->id,
                 'name' => $request->name,
                 'rules' => $request->all(),
-                'notify_user' => false,
+                'notify_user' => $request->notify_user,
             ]);
         }
 

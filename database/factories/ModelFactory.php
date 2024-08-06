@@ -75,12 +75,23 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
     $categories = [
         'American Chestnut',
+        'American Beech',
+        'Cacao',
         'Ash',
-        'Other',
-        'White Oak',
         'Hemlock',
+        'White Oak',
         'American Elm',
         'Florida Torreya',
+        'Eastern Larch',
+        'Tanoak',
+        'Pacific Madrone',
+        'Oregon Ash',
+        'Butternut',
+        'Pinyon Pine',
+        'Sassafras',
+        'Ozark Chinquapin',
+        'Alaskan Willow',
+        'Other',
     ];
 
     $otherTrees = [

@@ -24,6 +24,17 @@ class MetaLabels
     public function __construct()
     {
         $this->labels = [
+            'beechCollectionPurpose' => 'Collection Purpose',
+            'beechBreastNumeric' => 'Tree Diameter',
+            'beechLocationCharacteristics' => 'Habitat',
+            'beechNearbyTrees' => 'Nearby Trees',
+            'surroundingArea' => 'Surrounding Area',
+            'beechLeaves' => 'Leaves',
+            'envelopeLabel' => 'Photo of Envelope Label',
+            'labelInput' => 'Envelope Label',
+            'beechFlowersBinary' => 'Flowers',
+            'beechCanopyDieback' => 'Canopy Dieback',
+            'beechIsReproducing' => 'Reproducing',
             'ashSpecies' => 'Species',
             'ashFrequency' => 'Ash Frequency',
             'seedsBinary' => 'Seeds',
@@ -77,7 +88,7 @@ class MetaLabels
             'neighborCones' => 'Neighbor Cones',
             'neighborHealth' => 'Neighbor Health',
             'breastNumeric' => 'Tree Diameter',
-
+            'labelPhoto' => 'Label Photo',
             'age' => 'Age',
             'beechBarkDiseaseSymptoms' => 'Bark Disease',
             'beechHealthProblems' => 'Health Problems',
@@ -143,9 +154,23 @@ class MetaLabels
             'furtherAssessmentManagementComment' => 'Describe Active Management',
             'furtherAssessmentHWA' => 'Nearby HWA',
             'furtherAssessmentEHS' => 'Nearby EHS',
-            'furtherAssessmentStressors' => 'Further Stressors'
-//            'furtherAssessmentSlope' => 'Habitat',
-//            'furtherAssessmentSlopeComment' => 'Habitat Description',
+            'furtherAssessmentStressors' => 'Further Stressors',
+            'willowTreeLocation' => 'Tree Location',
+            'willowTreeSampleId' => 'Sample ID',
+            'willowTreeTag' => 'Tree Tag',
+            'willowHeightNumeric' => 'Tree Height',
+            'willowLeaves' => 'Leaf Comments',
+            'willowLeafPics' => 'Leaves',
+            'willowBranches' => 'Branch Comments',
+            'willowBranchPics' => 'Branches',
+            'catkinSex' => 'Catkins Sex',
+            'willowSample' => 'Genetic Sample',
+            'willowSpecies' => 'Willow Species',
+            'otherWillowSpecies' => 'Other Willow Species',
+            'nearbyWillowSpecies' => 'Nearby Willow Species',
+            'streamEdgeDistance' => 'Distance to Stream Edge',
+            'streamRunningDistance' => 'Distance to Running Water',
+            'otherNearbyWillowSpecies' => 'Other Nearby Species',
         ];
         //just for the downloads
         $this->species_labels = [
@@ -370,6 +395,25 @@ class MetaLabels
                 'catkins',
                 'canopyHealth',
                 'ozarkBlightSigns',
+            ],
+
+            "Alaskan Willow" => [
+                'willowTreeTag',
+                'willowTreeLocation',
+                'willowTreeSampleId',
+                'willowHeightNumeric',
+                'willowLeaves',
+                'willowLeafPics',
+                'willowBranches',
+                'willowBranchPics',
+                'catkinSex',
+                'willowSample',
+                'willowSpecies',
+                'otherWillowSpecies',
+                'nearbyWillowSpecies',
+                'streamEdgeDistance',
+                'streamRunningDistance',
+                'otherNearbyWillowSpecies'
             ]
         ];
     }

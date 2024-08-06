@@ -105,7 +105,7 @@ trait CreatesUsers
             'is_private' => false,
             'is_anonymous' => false,
             'role_id' => $role->id,
-            'avatar' => isset($user['avatar']) ? $user['avatar'] : null,
+            'avatar' => null, // isset($user['avatar']) ? $user['avatar'] : null,
             'units' => 'US',
             'provider' => $user['provider'],
             'provider_id' => $user['provider_id'],

@@ -14,6 +14,7 @@ import OregonAshFilters from './subcomponents/OregonAshFilters'
 import ButternutFilters from './subcomponents/ButternutFilters'
 import PinyonPineFilters from './subcomponents/PinyonPineFilters'
 import OzarkChinquapinFilters from './subcomponents/OzarkChinquapinFilters'
+import AlaskanWillowFilters from "./subcomponents/AlaskanWillowFilters";
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -42,6 +43,7 @@ export default class AdvancedFiltersModal extends Component {
       butternut         : {},
       pinyonPine        : {},
       ozarkChinquapin   : {},
+      alaskanWillow     : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -50,6 +52,7 @@ export default class AdvancedFiltersModal extends Component {
       endDate           : null,
       groups            : [],
       selectedGroup     : -1,
+      notify_user       : true,
     }
   }
 
@@ -116,6 +119,7 @@ export default class AdvancedFiltersModal extends Component {
       butternut       : this.state.butternut,
       pinyonPine      : this.state.pinyonPine,
       ozarkChinquapin : this.state.ozarkChinquapin,
+      alaskanWillow   : this.state.alaskanWillow,
       other           : this.state.other,
       map             : this.props.map,
       group           : selectedGroup === -1 ? null : selectedGroup,
@@ -128,6 +132,7 @@ export default class AdvancedFiltersModal extends Component {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
         end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null,
       },
+      notify_user     : this.state.notify_user,
     }
 
     if (this.props.applyFilters) {
@@ -168,6 +173,10 @@ export default class AdvancedFiltersModal extends Component {
 
       this.setState({loading: false})
     })
+
+    if(this.state.notify_user == true){
+      console.log('triggered')
+    }
   }
 
   count(changed) {
@@ -195,6 +204,7 @@ export default class AdvancedFiltersModal extends Component {
       butternut       : filters.butternut,
       pinyonPine      : filters.pinyonPine,
       ozarkChinquapin : filters.ozarkChinquapin,
+      alaskanWillow   : filters.alaskanWillow,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -204,6 +214,7 @@ export default class AdvancedFiltersModal extends Component {
         start: this.state.startDate ? this.state.startDate.format('YYYY-MM-DD') : null,
         end  : this.state.endDate ? this.state.endDate.format('YYYY-MM-DD') : null,
       },
+      notify_user     : filters.notify_user
     }).then(response => {
       this.setState({
         loading     : false,
@@ -384,6 +395,19 @@ export default class AdvancedFiltersModal extends Component {
     )
   }
 
+  renderAlaskanWillowFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Alaskan Willow Species Filters (Optional)</h3>
+        <div className="bordered">
+          <AlaskanWillowFilters
+            defaultFilters={this.state.alaskanWillow}
+            onChange={(alaskanWillow) => this.count({alaskanWillow})}/>
+        </div>
+      </div>
+    )
+  }
+
   renderOtherFilters() {
     return (
       <div className="column is-12">
@@ -538,7 +562,7 @@ export default class AdvancedFiltersModal extends Component {
             <div className="field">
               <div className="control">
                 <label className="label checkbox">
-                  <input type="checkbox" className="mr-0" defaultChecked={false}/>
+                  <input type="checkbox" className="mr-0" defaultChecked={this.state.notify_user}/>
                   Notify me via email if new observations fitting this criteria get submitted
                 </label>
                 <p className="help mr-1">Maximum of 3 emails per week.</p>

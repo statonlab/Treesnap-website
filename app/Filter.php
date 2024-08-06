@@ -43,6 +43,8 @@ class Filter extends Model
         'diameterNumeric',
         'heightNumeric',
         'breastNumeric',
+        'willowHeightNumeric',
+        'hemlockDiameter',
     ];
 
     /**
@@ -64,7 +66,29 @@ class Filter extends Model
         'Butternut' => 'butternut',
         'Pinyon Pine' => 'pinyonPine',
         'Ozark Chinquapin' => 'ozarkChinquapin',
+        'Alaskan Willow' => 'alaskanWillow',
         'Other' => 'other',
+    ];
+
+    /**
+     * Filters that can have multiple values.
+     *
+     * @var string[]
+     */
+    protected static $multiCheckFilters = [
+        'emeraldAshBorer',
+        'chestnutBlightSigns',
+        'oakHealthyProblems',
+        'crownPortion',
+        'locationCharacteristics',
+        'nearbyTrees',
+        'torreyaFungalBlight',
+        'madroneDisease',
+        'beechBarkDiseaseSymptoms',
+        'hybridTraits',
+        'laurelWilt',
+        'hemlockLocationCharacteristics',
+        'nearbyWillowSpecies'
     ];
 
     /**
@@ -118,7 +142,7 @@ class Filter extends Model
             }
         }
 
-        if (isset($filters['group']) && ! empty($filters['group'])) {
+        if (isset($filters['group']) && !empty($filters['group'])) {
             $group = Group::with([
                 'users' => function ($query) {
                     $query->select('users.id');
@@ -141,15 +165,15 @@ class Filter extends Model
 
         if (isset($filters['date_range'])) {
             $filters['date_range'] = (array)$filters['date_range'];
-            if (! empty($filters['date_range']['start']) || ! empty($filters['date_range']['end'])) {
+            if (!empty($filters['date_range']['start']) || !empty($filters['date_range']['end'])) {
                 $observations->where(function ($query) use ($filters) {
                     /** @var \Illuminate\Database\Query\Builder $query */
-                    if (! empty($filters['date_range']['start'])) {
+                    if (!empty($filters['date_range']['start'])) {
                         $query->whereDate('observations.created_at', '>=',
                             $filters['date_range']['start']);
                     }
 
-                    if (! empty($filters['date_range']['end'])) {
+                    if (!empty($filters['date_range']['end'])) {
                         $query->whereDate('observations.created_at', '<=',
                             $filters['date_range']['end']);
                     }
@@ -166,7 +190,7 @@ class Filter extends Model
             foreach ($filters['categories'] as $key => $category) {
                 $where = function ($query) use ($category, $filters) {
                     $query->where('observation_category', $category);
-                    if (! isset(static::$filterMapper[$category]) || ! isset($filters[static::$filterMapper[$category]])) {
+                    if (!isset(static::$filterMapper[$category]) || !isset($filters[static::$filterMapper[$category]])) {
                         return;
                     }
 
@@ -175,20 +199,37 @@ class Filter extends Model
                             continue;
                         }
                         if (is_array($value)) {
-                            $query->where(function ($q) use ($filter, $value) {
+
+                            // if the filter allows multiple options to be checked, we must check in a somewhat less efficient manner
+                            if (in_array($filter, static::$multiCheckFilters)) {
                                 foreach ($value as $index => $one) {
                                     if (empty($one)) {
                                         continue;
                                     }
 
-                                    // For the first filter, apply only a WHERE statement instead of an OR WHERE
                                     if ($index === 0) {
-                                        $q->where("data->$filter", $one);
+                                        $query->where("data->$filter", 'LIKE', '%' . $one . '%');
                                     } else {
-                                        $q->orWhere("data->$filter", $one);
+                                        $query->orWhere("data->$filter", 'LIKE', '%' . $one . '%');
                                     }
                                 }
-                            });
+                            } else { // single-option filters are searched here
+                                $query->where(function ($q) use ($filter, $value) {
+                                    foreach ($value as $index => $one) {
+
+                                        if (empty($one)) {
+                                            continue;
+                                        }
+
+                                        // For the first filter, apply only a WHERE statement instead of an OR WHERE
+                                        if ($index === 0) {
+                                            $q->where("data->$filter", $one);
+                                        } else {
+                                            $q->orWhere("data->$filter", $one);
+                                        }
+                                    }
+                                });
+                            }
                         } else {
                             // Check if this is a max/min situation
                             $sub = substr($filter, -3);

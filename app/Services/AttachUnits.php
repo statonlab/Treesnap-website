@@ -55,6 +55,14 @@ class AttachUnits
             $data['heightNumeric_values'] = $this->createValues($data['heightNumeric'], $data['heightNumeric_units']);
         }
 
+        if (isset($data['willowHeightNumeric'])) {
+            if (! isset($data['willowHeightNumeric_units'])) {
+                $data['willowHeightNumeric_units'] = 'Feet';
+            }
+
+            $data['willowHeightNumeric_values'] = $this->createValues($data['willowHeightNumeric'], $data['willowHeightNumeric_units']);
+        }
+
         if (isset($data['breastNumeric'])) {
             if (! isset($data['breastNumeric_units'])) {
                 $data['breastNumeric_units'] = 'Inches';

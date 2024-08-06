@@ -10,7 +10,7 @@ export default class OzarkChinquapinFilters extends FiltersBase {
 
     this.state = {
       catkins           : [],
-      chestnutBlight    : [],
+      ozarkBlightSigns    : [],
       canopyHealth        : [],
       diameterNumericMin: '',
       diameterNumericMax: '',
@@ -40,16 +40,16 @@ export default class OzarkChinquapinFilters extends FiltersBase {
 
         <div className="column is-6">
           <div className="field">
-            <label className="label">Chestnut Blight</label>
+            <label className="label">Ozark Blight</label>
             <ButtonList
-              value={this.state.chestnutBlight}
+              value={this.state.ozarkBlightSigns}
               list={[
                 'Cankers and cracked bark',
                 'Tan to orange-colored patches or pustules on bark',
                 'Evidence of old dead trunk',
                 'Stump sprouting'
               ]}
-              onChange={chestnutBlight => this._update('chestnutBlight', chestnutBlight)}/>
+              onChange={ozarkBlightSigns => this._update('ozarkBlightSigns', ozarkBlightSigns)}/>
           </div>
         </div>
 
