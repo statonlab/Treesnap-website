@@ -44,7 +44,6 @@ export default class TwitterFeed extends Component {
   }
   loadTreets() {
     axios.get(`/web/treets/feed`).then(response => {
-      console.log(response.data.data)
       this.setState({treets: response.data.data, loading: false})
     }).catch(error => {
       console.log(error)
@@ -130,7 +129,7 @@ export default class TwitterFeed extends Component {
   }
 
 render() {
-  const treetList = this.state.treets.map((treet)=>( <Treet deleteTreet={this.deleteTreet} editTreet={this.editTreet} loadTreets={this.loadTreets} treet={treet}/>))
+  const treetList = this.state.treets.map((treet)=>( <Treet key={treet.id} deleteTreet={this.deleteTreet} editTreet={this.editTreet} loadTreets={this.loadTreets} treet={treet}/>))
 
   return (
       <div>

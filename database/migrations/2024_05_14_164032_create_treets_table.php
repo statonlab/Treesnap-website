@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. /Users/chancestribling/Sites/Treesnap-website/database/migrations/2024_05_14_164032_create_treets_table.php
      */
     public function up(): void
     {
@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('app_name');
             $table->text('image_path');
+            $table->text('url');
             $table->text('description');
             $table->timestamps();
         });

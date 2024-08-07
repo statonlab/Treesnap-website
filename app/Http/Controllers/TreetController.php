@@ -18,13 +18,13 @@ class TreetController extends Controller
 
         $limit = $request->limit ?: 10;
 
-        $treets = Treet::select(['id','app_name', 'image_path', 'description', 'created_at'])
+        $treets = Treet::select(['id','app_name', 'image_path', 'description', 'url', 'created_at'])
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
         
         $treets->map(function ($treet) {
-            $treet->date = $treet->created_at->diffForHumans();
+            $treet->date = $treet->created_at->format('m/d/y');
         });
 
         

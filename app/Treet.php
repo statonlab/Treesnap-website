@@ -13,6 +13,7 @@ class Treet extends Model
         'app_name',
         'image_path',
         'description',
+        'url'
     ];
 
     protected $casts = [

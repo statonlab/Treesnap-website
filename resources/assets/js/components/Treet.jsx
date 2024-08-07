@@ -68,7 +68,7 @@ export default class Treet extends Component {
   render() {
     const treet = this.props.treet
     return (
-      <div key={treet.id} className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
+      <div className={'item-box elevation-1 is-lighter-dark is-flex flex-space-between flex-v-center'}>
         <div className="is-flex flex-v-center flex-column-left flex-wrap w-100">
             
             {this.state.isEditing ? 
@@ -118,20 +118,29 @@ export default class Treet extends Component {
        :
             <>
             
-            <div className="flex-row">
-              <div className="item mr-3">
-                  <img src={treet.image_path}
-                      alt={treet.app_name}
-                      className="item-thumbnail "
-                      style={{marginTop: 8}}/>
+            <div className="flex-row flex-space-between w-100">
+              <div className="flex-row">
+                <div className="item mr-2">
+                  <a href={treet.url}>
+                    <img src={treet.image_path}
+                        alt={treet.app_name}
+                        className="item-thumbnail "/>
+                  </a>
+                </div>
+                
+                <div className="item">
+                  <div className="text-dark-muted text-wrap"><strong>{treet.app_name}</strong></div>
+                </div>
               </div>
               <div className="item">
-                <div className="text-dark-muted text-wrap"><strong>{treet.app_name}</strong></div>
+                <div className="text-dark-muted text-wrap">{treet.date}</div>
               </div>
-            </div>
+              
+            
+            </div> {/* end of row */}
+            
             <div className="item">
-              <div className="text-dark-muted my-4 text-wrap w-100">{treet.description}</div>
-              <div className="text-dark-muted text-wrap">{treet.date}</div>
+              <div className="text-dark-muted text-wrap w-100">{treet.description}</div>
             </div> 
             {this.state.isLoggedIn ?
             <div className="edit">
