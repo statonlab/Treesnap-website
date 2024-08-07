@@ -316,8 +316,8 @@ export default class ObservationDetails extends Component {
             : null}
 <div className="flex-row">
 
-          {User.can('confirm species') ? 
-              <a   style={{marginTop: '20px'}}className={`button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+          {User.can('confirm species') ?
+              <a   style={{marginTop: '20px'}}className={`mr-2 button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
               onClick={() => this.confirm(false, observation)} >
                   <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
                            hideOnClick={false}>
