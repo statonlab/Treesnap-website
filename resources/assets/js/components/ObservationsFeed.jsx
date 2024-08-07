@@ -11,8 +11,9 @@ export default class ObservationsFeed extends Component {
       observations: [],
       moreObservations: [],
       loading     : true,
-      take: 10,
-      skip: 0
+      page: 1,
+      lastPage: 0,
+      endOfFeed: false
     }
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMoreObservations = this.loadMoreObservations.bind(this);
@@ -27,13 +28,13 @@ export default class ObservationsFeed extends Component {
   loadObservations() {
     axios.get(`/web/observations/feed/`,{
       params:{
-        take: this.state.take,
-        skip: this.state.skip
+        page: this.state.page
       }
     })
     .then(response => {
       // this.setState({observations: response.data.data, loading: false})
       this.setState({observations: response.data.data })
+      this.setState({lastPage: response.data['last_page']})
       this.setState({loading: false})
 
     }).catch(error => {
@@ -45,8 +46,7 @@ export default class ObservationsFeed extends Component {
   loadMoreObservations(skip) {
     axios.get(`/web/observations/feed/`,{
       params:{
-        take: this.state.take,
-        skip: skip
+        page: this.state.page
       }
     })
     .then(response => {
@@ -63,14 +63,20 @@ export default class ObservationsFeed extends Component {
   handleScroll(event){
       const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
       if (bottom && (this.state.loading==false)) {
-        const newSkip = this.state.skip + 10
-        this.setState({skip: newSkip})
-        this.setState({loading: true})
-        var delayInMilliseconds = 1000;
+        if(this.state.page === (this.state.lastPage+1)){
+          this.setState({endOfFeed: true})
 
-        setTimeout(() => {
-          this.loadMoreObservations(newSkip);
-        }, 1000);
+        }
+        else{
+
+          this.setState({loading: true})
+          this.setState({page: this.state.page+1})
+          var delayInMilliseconds = 1000;
+          
+          setTimeout(() => {
+            this.loadMoreObservations();
+          }, 1000);
+        }
       }
     }
 
@@ -103,6 +109,9 @@ export default class ObservationsFeed extends Component {
         {this.state.observations.map(this.renderObservation.bind(this))}
         {this.state.observations.length === 0 && !this.state.loading ?
           <p className="text-dark-muted has-text-centered">There are no observations at this time</p>
+          : null}
+          {this.state.endOfFeed ?
+          <p className="text-dark-muted has-text-centered">End of Feed</p>
           : null}
           {this.state.loading ?
             <p className="has-text-centered">
