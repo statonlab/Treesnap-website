@@ -22,8 +22,7 @@ Route::group([
     Route::delete('/observation/{id}', 'ObservationsController@delete');
     Route::post('/observation/{id}', 'ObservationsController@update');
 
-   //Treets Controller
-   Route::get('/treets/feed', 'TreetController@index');
+ 
 
     // Images Controller
     Route::post('/observation/image/{id}', 'ImagesController@create');

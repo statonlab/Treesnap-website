@@ -20,7 +20,10 @@ Route::group([
     Route::get('/observations', 'ObservationsServiceController@observations');
     Route::get('/my-observations', 'ObservationsServiceController@myObservations');
     Route::get('/observation/{id}', 'ObservationsServiceController@show');
-
+    
+    //Treets Controller
+    Route::get('/treets/feed', 'TreetController@index');
+    
     // Refresh OAuth Tokens
     Route::post('/refresh-tokens', 'TokensController@refreshTokens');
 });
