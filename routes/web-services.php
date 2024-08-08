@@ -24,3 +24,11 @@ Route::group([
     // Refresh OAuth Tokens
     Route::post('/refresh-tokens', 'TokensController@refreshTokens');
 });
+Route::group([
+    'prefix' => 'v1',
+    'middleware' => ['auth:web-services'],
+], function () {
+    // Treet Routes
+    Route::get('/treets/feed', 'TreetController@index');
+
+});

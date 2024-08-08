@@ -27,7 +27,6 @@ class TreetController extends Controller
             $treet->date = $treet->created_at->format('m/d/y');
         });
 
-        
         return $this->success($treets);
     }
 
