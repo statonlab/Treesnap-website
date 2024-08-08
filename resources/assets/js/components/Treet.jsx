@@ -121,7 +121,7 @@ export default class Treet extends Component {
             <div className="flex-row flex-space-between w-100">
               <div className="flex-row">
                 <div className="item mr-2">
-                  <a href={treet.url}>
+                  <a href={treet.url} target="_blank">
                     <img src={treet.image_path}
                         alt={treet.app_name}
                         className="item-thumbnail "/>
