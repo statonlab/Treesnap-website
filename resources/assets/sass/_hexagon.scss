@@ -8,6 +8,11 @@
     strong {
       color: $white;
     }
+  }  
+  &.is-lighter-light {
+    background-color: $primary;
+
+      color: $white;
   }
 }
 
