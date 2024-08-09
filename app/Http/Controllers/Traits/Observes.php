@@ -31,6 +31,7 @@ trait Observes
         'Pinyon Pine',
         'Sassafras',
         'Ozark Chinquapin',
+        'Alaskan Willow',
         'Other',
     ];
 

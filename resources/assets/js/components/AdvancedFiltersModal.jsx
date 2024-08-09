@@ -14,6 +14,7 @@ import OregonAshFilters from './subcomponents/OregonAshFilters'
 import ButternutFilters from './subcomponents/ButternutFilters'
 import PinyonPineFilters from './subcomponents/PinyonPineFilters'
 import OzarkChinquapinFilters from './subcomponents/OzarkChinquapinFilters'
+import AlaskanWillowFilters from "./subcomponents/AlaskanWillowFilters";
 import OtherFilters from './subcomponents/OtherFilters'
 import User from '../helpers/User'
 import DatePicker from './DatePicker'
@@ -42,6 +43,7 @@ export default class AdvancedFiltersModal extends Component {
       butternut         : {},
       pinyonPine        : {},
       ozarkChinquapin   : {},
+      alaskanWillow     : {},
       other             : {},
       resultsCount      : 0,
       loading           : false,
@@ -117,6 +119,7 @@ export default class AdvancedFiltersModal extends Component {
       butternut       : this.state.butternut,
       pinyonPine      : this.state.pinyonPine,
       ozarkChinquapin : this.state.ozarkChinquapin,
+      alaskanWillow   : this.state.alaskanWillow,
       other           : this.state.other,
       map             : this.props.map,
       group           : selectedGroup === -1 ? null : selectedGroup,
@@ -201,6 +204,7 @@ export default class AdvancedFiltersModal extends Component {
       butternut       : filters.butternut,
       pinyonPine      : filters.pinyonPine,
       ozarkChinquapin : filters.ozarkChinquapin,
+      alaskanWillow   : filters.alaskanWillow,
       address         : {
         city  : filters.city,
         county: filters.county,
@@ -388,6 +392,19 @@ export default class AdvancedFiltersModal extends Component {
                 onChange={(ozarkChinquapin) => this.count({ozarkChinquapin})}/>
           </div>
         </div>
+    )
+  }
+
+  renderAlaskanWillowFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">Alaskan Willow Species Filters (Optional)</h3>
+        <div className="bordered">
+          <AlaskanWillowFilters
+            defaultFilters={this.state.alaskanWillow}
+            onChange={(alaskanWillow) => this.count({alaskanWillow})}/>
+        </div>
+      </div>
     )
   }
 

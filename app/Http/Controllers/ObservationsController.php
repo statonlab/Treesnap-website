@@ -271,10 +271,8 @@ class ObservationsController extends Controller
     public function getObservationFeed(Request $request)
     {
         $this->validate($request, [
-            'limit' => 'nullable|integer|min:6|max:90',
+            'page' => 'nullable|integer|min:0|max:100',
         ]);
-
-        $limit = $request->limit ?: 10;
 
         $observations = Observation::with([
             'user' => function ($query) {
@@ -282,10 +280,9 @@ class ObservationsController extends Controller
             },
         ])
             ->select(['id', 'user_id', 'observation_category', 'created_at', 'thumbnail'])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->where('is_private', false)
-            ->limit($limit)
-            ->get();
+            ->paginate(10);
 
         $observations->map(function ($observation) {
             if ($observation->user->is_anonymous) {
@@ -295,6 +292,6 @@ class ObservationsController extends Controller
             $observation->date = $observation->created_at->diffForHumans();
         });
 
-        return $this->success($observations);
+        return $observations->toArray();
     }
 }

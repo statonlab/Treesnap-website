@@ -22,7 +22,7 @@ class TreetController extends Controller
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
-        
+
         $treets->map(function ($treet) {
             $treet->date = $treet->created_at->format('m/d/y');
         });
@@ -37,11 +37,20 @@ class TreetController extends Controller
     {
         $this->authorize('create', Treet::class);
 
+        $urls = ['Treesnap' => "https://treesnap.org/",
+            'FlorestaDB' => "https://app.florestadb.org/login",
+            'HealthyWoods' => "https://healthywoodsapp.org/",
+            'Avid Deer' => "https://aviddeer.com/",
+            'Eastern Forest Pests' => "https://easternforestpests.com/"];
+
+
         $treet = Treet::create([
             'app_name' => $request->app_name,
             'image_path' => $request->image_path,
-            'description' => $request->description
+            'description' => $request->description,
+            'url' => $urls[$request->app_name]
         ]);
+
         return $this->created($treet);
 
     }
@@ -50,6 +59,12 @@ class TreetController extends Controller
      */
     public function edit(Request $request, Treet $treet)
     {
+        $urls = ['Treesnap' => "https://treesnap.org/",
+            'FlorestaDB' => "https://app.florestadb.org/login",
+            'HealthyWoods' => "https://healthywoodsapp.org/",
+            'Avid Deer' => "https://aviddeer.com/",
+            'Eastern Forest Pests' => "https://easternforestpests.com/"];
+
         $this->authorize('edit', Treet::class);
 
         $treet = Treet::find($request->id);
@@ -57,7 +72,8 @@ class TreetController extends Controller
         $treet->update([
             'app_name' => $request->app_name ?: $treet->app_name,
             'image_path' => $request->image_path ?: $treet->image_path,
-            'description' => $request->description ?: $treet->description
+            'description' => $request->description ?: $treet->description,
+            'url' => $urls[$request->app_name]
         ]);
         return $this->success($treet);
 
@@ -73,5 +89,5 @@ class TreetController extends Controller
         $treet->find($request->id)->delete();
         return $this->success($treet);
     }
-    
+
 }

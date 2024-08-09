@@ -25,7 +25,7 @@ export default class TwitterFeed extends Component {
     this.toggle = this.toggle.bind(this)
 
   }
- 
+
   componentDidMount() {
     axios.get('/web/user/status').then(response => {
       let data = response.data.data
@@ -36,7 +36,7 @@ export default class TwitterFeed extends Component {
       console.log(error)
     })
     this.loadTreets()
-    
+
     setInterval(this.loadTreets.bind(this), 120000)
   }
   toggle() {
@@ -94,37 +94,37 @@ export default class TwitterFeed extends Component {
 
     this.setState({appName: event.target.value});
     if(event.target.value == "Treesnap"){
-      this.setState({imagePath: "../images/logos/treesnap_logo.png"});  
-    }  
+      this.setState({imagePath: "../images/logos/treesnap_logo.png"});
+    }
     else if(event.target.value == "FlorestaDB"){
-      this.setState({imagePath: "../images/logos/florestadb_logo.png"});  
-    }  
+      this.setState({imagePath: "../images/logos/florestadb_logo.png"});
+    }
     else if(event.target.value == "HealthyWoods"){
-      this.setState({imagePath: "../images/logos/healthywoods_logo.png"});  
+      this.setState({imagePath: "../images/logos/healthywoods_logo.png"});
     }
     else if(event.target.value == "Avid Deer"){
-      this.setState({imagePath: "../images/logos/aviddeer_logo.png"});  
+      this.setState({imagePath: "../images/logos/aviddeer_logo.png"});
     }
     else if(event.target.value == "Eastern Forest Pests"){
-      this.setState({imagePath: "../images/logos/efp_logo.png"});  
-    }   
+      this.setState({imagePath: "../images/logos/efp_logo.png"});
+    }
   }
   handleChangeDescription(event) {
 
-    this.setState({description: event.target.value});  
+    this.setState({description: event.target.value});
   }
   renderButton(isOpen) {
     let button;
     if(isOpen){
       return <button type="button" onClick={this.toggle} className="button mb-1 w-100 is-primary"><i className="fa fa-minus"></i> &nbsp;  Close </button>;
     }
-    return <button type="button" onClick={this.toggle} className="button mb-1 w-100 is-primary"><i className="fa fa-plus"></i> &nbsp;  New Update </button>; 
+    return <button type="button" onClick={this.toggle} className="button mb-1 w-100 is-primary"><i className="fa fa-plus"></i> &nbsp;  New Update </button>;
   }
 
   renderAppName(appName) {
     return (
-        <option className="pa-2" value={appName}>{appName}</option>
-    
+        <option key={appName} className="pa-2" value={appName}>{appName}</option>
+
     )
   }
 
@@ -137,13 +137,13 @@ render() {
 
           this.renderButton(this.state.isOpen)
         :null}
-        {this.state.isOpen ? 
+        {this.state.isOpen ?
         <form className="" id="create-form" onSubmit={this.onSubmit}>
-        
-        <div className={'item-box elevation-1 is-lighter-light'}>     
+
+        <div className={'item-box elevation-1 is-lighter-light'}>
         <div className="recent-updates-form">
           <div className="field">
-  
+
           <label htmlFor="appName" className="label text-white">App Name</label>
             <div className="control ">
                 <span className="select w-100">
@@ -155,8 +155,8 @@ render() {
                             >
                         <option value="">Select App</option>
                         {this.state.appNames.map(this.renderAppName.bind(this))}
-  
-                            
+
+
                     </select>
                 </span>
             </div>
@@ -175,7 +175,7 @@ render() {
             </div>
           </div>
           <button type="submit" form="create-form" className="button">Submit</button>
-          </div>   
+          </div>
         </div>
        </form>
       :null}
@@ -185,13 +185,13 @@ render() {
             <i className="fa fa-spinner fa-spin"></i>
           </p>
           : null}
-         
+
         {treetList}
         {this.state.treets.length === 0 && !this.state.loading ?
           <p className="text-dark-muted has-text-centered">There are no treets at this time</p>
           : null}
       </div>
-           
+
           </div>
     )
   }

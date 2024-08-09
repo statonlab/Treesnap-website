@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DeleteAccountRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Responds;
 use App\Jobs\SendAccountRequestDeletionNotification;
 use Illuminate\Http\JsonResponse;

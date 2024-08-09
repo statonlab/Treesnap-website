@@ -47,7 +47,7 @@ body,
 }
 
 .flex-space-between {
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .flex-wrap {
@@ -324,79 +324,105 @@ a.box {
 }
 
 .disabled {
-    justify-content: center;
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: calc(0.5em - 1px);
-    text-align: center;
-    white-space: nowrap;
-    flex-direction: row;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+  flex-direction: row;
 }
 
-.update-row{
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
+.update-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-.recent-updates{
+.recent-updates {
   padding: 2rem 0;
   background-color: #289482;
-// background-color: whitesmoke;
+  // background-color: whitesmoke;
 }
-.update-marquee{
+
+.update-marquee {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.update-card{
+
+.update-card {
   background-color: white;
   height: 200px;
   width: 600px;
   border-radius: 2px;
   padding: 20px;
 }
-.w-100{
+
+.w-100 {
   width: 100%;
 }
-.recent-updates-form{
+
+.recent-updates-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.input-width{
+
+.input-width {
   min-width: 250px;
 }
-.textarea-height-8em{
+
+.textarea-height-8em {
   height: 8em;
 }
-.textarea-height-4em{
+
+.textarea-height-4em {
   height: 4em;
 }
-.flex-column-left{
+
+.flex-column-left {
   display: flex;
   flex-direction: column;
   align-items: start;
 }
-.flex-column-center{
+
+.flex-column-center {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.flex-row{
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.edit{
+
+.edit {
   display: flex;
   width: 100%;
   margin-top: 10px;
 }
-.text-white{
+
+.text-white {
   color: white;
+}
+
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.fit-content {
+  width: fit-content;
 }

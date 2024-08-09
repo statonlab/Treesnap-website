@@ -58,4 +58,5 @@ Route::group([
     Route::post('/user/login', 'UsersController@login');
 
     Route::post('/apple', 'UsersController@apple');
+    Route::post('/contact', 'ContactController@send');
 });

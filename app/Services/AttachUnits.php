@@ -38,12 +38,29 @@ class AttachUnits
                 $data['diameterNumeric_units']);
         }
 
+        if (isset($data['hemlockDiameter'])) {
+            if (! isset($data['hemlockDiameter_units'])) {
+                $data['hemlockDiameter_units'] = 'Inches';
+            }
+
+            $data['hemlockDiameter_values'] = $this->createValues($data['hemlockDiameter'],
+                $data['hemlockDiameter_units']);
+        }
+
         if (isset($data['heightNumeric'])) {
             if (! isset($data['heightNumeric_units'])) {
                 $data['heightNumeric_units'] = 'Feet';
             }
 
             $data['heightNumeric_values'] = $this->createValues($data['heightNumeric'], $data['heightNumeric_units']);
+        }
+
+        if (isset($data['willowHeightNumeric'])) {
+            if (! isset($data['willowHeightNumeric_units'])) {
+                $data['willowHeightNumeric_units'] = 'Feet';
+            }
+
+            $data['willowHeightNumeric_values'] = $this->createValues($data['willowHeightNumeric'], $data['willowHeightNumeric_units']);
         }
 
         if (isset($data['breastNumeric'])) {

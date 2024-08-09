@@ -33,7 +33,7 @@ export default class Welcome extends Scene {
       console.log(error)
     })
   }
-   
+
 
 
   /**
@@ -71,8 +71,7 @@ export default class Welcome extends Scene {
                <TwitterFeed/>
               </div>
             </div>
-            </div>
-            
+          </div>
         </div>
         <FeaturesList/>
         <HomeFooter/>
