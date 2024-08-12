@@ -22,11 +22,11 @@ class UsersTableSeeder extends Seeder
         ]);
 
         \App\User::create([
-            'name' => 'Bradford Condon',
-            'email' => 'bradford.condon@uky.edu',
+            'name' => 'Chance Stribling',
+            'email' => 'cstribling1717@gmail.com',
             'password' => bcrypt('testpass'),
             'api_token' => str_random(60),
-            'birth_year' => 1984,
+            'birth_year' => 1997,
             'role_id' => \App\Role::where('name', 'Admin')->first()->id,
             'units'=> 'US'
         ]);
