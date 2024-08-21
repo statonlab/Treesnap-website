@@ -67,9 +67,10 @@ Our hope is that this reporting app will let members of the public identify heml
        
 ### Partners
 
-* [The Nature Conservancy] (https://www.nature.org/en-us/about-us/where-we-work/united-states/tennessee/stories-in-tennessee/hemlock/)
-* [Hemlock Restoration Initiatve](http://savehemlocksnc.org/)
-* [Forest Restoration Alliance](https://www.facebook.com/ThreatenedForests/)
+* [Hemlock Woolly Adelgid National Initiative (USDA Forest Service)](https://hemlock-woolly-adelgid-national-initiative-gmsts.hub.arcgis.com/)
+* [New York State Hemlock Initiative (Cornell University)](https://blogs.cornell.edu/nyshemlockinitiative/)
+* [Hemlock Restoration Initiative (WNC Communities)](https://savehemlocksnc.org/)
+* [Great Lakes Basin Forest Health Collaborative, Hemlock Project (Holden Forests & Gardens)](https://holdenfg.org/great-lakes-basin-forest-health-collaborative/)
 
 ## Florida Torreya
 
