@@ -114,7 +114,6 @@ export default class ObservationDetails extends Component {
     let id = this.props.observation.observation_id
 
     axios.get(`/web/confirmations/count/${id}`).then(response => {
-      console.log(response.data.data)
       let data = response.data.data
       this.setState({
         correctMarks: data.correct,
@@ -571,9 +570,9 @@ export default class ObservationDetails extends Component {
       <BoxModal
         visible={this.state.showSubObservationModal}
         onCloseRequest={() => this.setState({showSubObservationModal: false})}>
-        {/*{this.state.controlModalContent === 'flag' ? this._renderFlagForm() : null}*/}
-        {/*{this.state.controlModalContent === 'collection' ? this._renderCollectionForm() : null}*/}
-        <span>test</span>
+        <div>
+          <pre>{JSON.stringify(this.state.observation['meta_data']['ashNearbySurvey'], null, 2)}</pre>
+        </div>
       </BoxModal>
     )
   }
@@ -728,7 +727,6 @@ export default class ObservationDetails extends Component {
                   : null}
 
                 {Object.keys(data).map(key => {
-                  console.log(key)
                   if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
                     return null
                   }
@@ -745,18 +743,9 @@ export default class ObservationDetails extends Component {
                     return this._renderCategoryClicker(label, data, key)
                   }
 
-                  // if (key === 'ashNearbySurvey') {
-                  //   console.log('HERE')
-                  //   console.log(data)
-                  //   return (<tr>
-                  //     <th>Ash Nearby Survey</th>
-                  //     <td>
-                  //       <a onClick={() => this.setState({showSubObservationModal: true})}>
-                  //         View Nearby Ash Survey
-                  //       </a>
-                  //     </td>
-                  //   </tr>)
-                  // }
+                  if (key === 'ashNearbySurvey') {
+                    return null
+                  }
 
 
                   return this._renderMetaData(label, val, key, unit)
