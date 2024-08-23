@@ -19,6 +19,26 @@ class InvitesController extends Controller
     use Responds, InvitesToGroups, CreatesUsers, RegistersUsers, ThrottlesLogins;
 
     /**
+     * List the current user's pending invitations.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $invites = Invite::with([
+            'group' => function ($query) {
+                $query->with('owner');
+            },
+            'user'
+        ])->where([
+            'email' => $request->user()->email,
+            'status' => 0
+        ])->get();
+
+        return $this->success($invites);
+    }
+
+    /**
      * Create and send a new invitation.
      *
      * @param \Illuminate\Http\Request $request
@@ -143,7 +163,7 @@ class InvitesController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        if (! auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (!auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             $this->incrementLoginAttempts($request);
 
             return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors([
@@ -238,5 +258,43 @@ class InvitesController extends Controller
     protected function registered(Request $request, $user)
     {
         return $user;
+    }
+
+    /**
+     * Accept invitation through web.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function acceptThroughWeb(Request $request)
+    {
+        /** @var \App\User $user */
+        $user = $request->user();
+
+        // _t is a private token that is part of the GET request
+        // and is attached in the email invitation.
+        $this->validate($request, [
+            '_t' => 'required',
+            'invite' => 'required',
+        ]);
+
+        // Accept the invite
+        $invite = Invite::where('token', $request->_t)->findOrFail($request->invite);
+        $invite->status = $this->status['accepted'];
+        $invite->save();
+
+        // Make sure the group exists
+        /** @var Group $group */
+        $group = Group::findOrFail($invite->group_id);
+
+        // Add the user to the group
+        $user->groups()->detach($invite->group_id);
+        $user->groups()->attach($invite->group_id, [
+            'share' => $request->share == 1 ? true : false,
+        ]);
+
+        event(new UserJoinedGroup($user, $group));
+
+        return redirect()->to("/account/group/{$invite->group_id}");
     }
 }
