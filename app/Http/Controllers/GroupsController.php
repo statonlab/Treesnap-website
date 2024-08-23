@@ -185,6 +185,7 @@ class GroupsController extends Controller
             'owner' => $group->users->where('id', $group->user_id)->first(),
             'is_owner' => $user->id === $group->user_id,
             'is_sharing' => $is_sharing,
+            'is_private' => $group->is_private,
         ]);
     }
 

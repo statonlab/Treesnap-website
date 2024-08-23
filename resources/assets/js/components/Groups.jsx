@@ -12,17 +12,19 @@ export default class Groups extends Component {
     super(props)
 
     this.state = {
-      name     : '',
-      share    : false,
+      name: '',
+      share: false,
       isPrivate: 0,
-      errors   : {
-        share    : [],
-        name     : [],
+      errors: {
+        share: [],
+        name: [],
         isPrivate: []
       },
-      groups   : [],
-      success  : false,
-      loading  : false
+      groups: [],
+      invitations: [],
+      acceptingInvitation: -1,
+      success: false,
+      loading: true
     }
 
     document.title = 'Groups - TreeSnap'
@@ -31,18 +33,33 @@ export default class Groups extends Component {
   /**
    * Get groups from server.
    */
-  componentDidMount() {
+  async componentDidMount() {
+    await this.loadGroupsAndInvitations()
+  }
+
+  async loadGroupsAndInvitations() {
     this.setState({loading: true})
-    axios.get('/web/groups').then(response => {
-      let data = response.data.data
+    try {
+      // Make first two requests
+      let response = await Promise.all([
+        axios.get('/web/groups'),
+        axios.get('/web/invitations')
+      ]);
+
+      let groups = response[0].data.data
+      let invitations = response[1].data.data
+
+      // Update state once with all 3 responses
       this.setState({
-        groups : data,
-        loading: false
-      })
-    }).catch(error => {
+        groups: groups,
+        invitations: invitations,
+        loading: false,
+        acceptingInvitation: -1
+      });
+    } catch (error) {
       console.log(error)
       this.setState({loading: false})
-    })
+    }
   }
 
   /**
@@ -56,7 +73,8 @@ export default class Groups extends Component {
       return (
         <div>
           <p>There are no available groups yet. You can create a group using the form below.</p>
-          <p>If someone else invites you to join their group, the group will show up here once you accept the invitation.</p>
+          <p>If someone else invites you to join their group, the group will show up here once you accept the
+            invitation.</p>
         </div>
       )
     }
@@ -93,6 +111,89 @@ export default class Groups extends Component {
         </tbody>
       </table>
     )
+  }
+
+  /**
+   * Renders invitations table.
+   * @returns {JSX.Element}
+   * @private
+   */
+  _renderInvitationsTable() {
+    if (this.state.invitations.length === 0) {
+      return (
+        <div>
+          <p>You have no pending invitations.</p>
+        </div>
+      )
+    }
+
+    return (
+      <table className="table is-striped mb-none" id="groups-table">
+        <thead>
+        <tr>
+          <th>Group Name</th>
+          <th>Group Owner</th>
+          <th>Invited By</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {this.state.invitations.map((invitation, index) => {
+          return (
+            <tr key={index}>
+              <td>
+                {invitation.group.name}
+              </td>
+              <td>{invitation.group.owner.name}</td>
+              <td>{invitation.user.name}</td>
+              <td className="has-text-right">
+                <button type="button"
+                        className={`button is-primary is-outlined ${this.state.loading ? ' disabled' : ''}`}
+                        disabled={this.state.loading && this.state.acceptingInvitation !== invitation.group.id}
+                        onClick={() => this.acceptInvite(invitation)}>
+                  {'Accept Invite'}
+                </button>
+              </td>
+            </tr>
+          )
+        })}
+        </tbody>
+      </table>
+    )
+  }
+
+  acceptInvite(invitation) {
+    // Prevent multiple requests
+    if (this.state.acceptingInvitation !== -1) {
+      return
+    }
+
+    this.setState({
+      acceptingInvitation: invitation.id,
+      loading: true
+    })
+
+    axios.post(`/web/invitations/accept`, {
+      invite: invitation.id,
+        _t: invitation.token
+    }).then(async () => {
+      Notify.push(`You have joined ${invitation.group.name} successfully.`)
+      await this.loadGroupsAndInvitations()
+    }).catch(error => {
+      this.setState({
+        acceptingInvitation: -1,
+        loading: false
+      })
+
+      if (!error.response) {
+        Notify.push('Network error! Please try again later', 'danger')
+        return
+      }
+
+      let response = error.response
+
+      console.error(response)
+    })
   }
 
   /**
@@ -181,19 +282,19 @@ export default class Groups extends Component {
   submit(e) {
     e.preventDefault()
     axios.post('/web/groups', {
-      name      : this.state.name,
-      share     : this.state.share,
+      name: this.state.name,
+      share: this.state.share,
       is_private: this.state.isPrivate === 1
     }).then(response => {
-      let data   = response.data.data
+      let data = response.data.data
       let groups = this.state.groups
       groups.push(data)
       this.setState({
-        name  : '',
+        name: '',
         groups,
         errors: {
-          name     : [],
-          share    : [],
+          name: [],
+          share: [],
           isPrivate: []
         }
       })
@@ -204,8 +305,8 @@ export default class Groups extends Component {
         let errors = error.response.data
         this.setState({
           errors: {
-            name     : errors.name || [],
-            share    : errors.share || [],
+            name: errors.name || [],
+            share: errors.share || [],
             isPrivate: errors.is_private || []
           }
         })
@@ -220,6 +321,8 @@ export default class Groups extends Component {
         <div className="box">
           <h4 className="title is-4">Groups</h4>
           {this._renderGroupsTable()}
+          <h4 className='title is-4 mt-2'>Invitations</h4>
+          {this._renderInvitationsTable()}
         </div>
 
         <div className="columns is-multiline">

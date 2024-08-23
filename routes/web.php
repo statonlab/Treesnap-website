@@ -162,9 +162,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/web/note/{id}', 'NotesController@delete');
 
     // Invitations
+    Route::get('/web/invitations', 'InvitesController@index');
     Route::get('/web/invites/{group_id}', 'InvitesController@showPendingInvitations');
     Route::post('/web/invite', 'InvitesController@newInvitation');
     Route::post('/invitations/accept/authenticated/{id}', 'InvitesController@acceptAuthenticated');
+    Route::post('web/invitations/accept', 'InvitesController@acceptThroughWeb');
 
     // Unsubscribe
     Route::get('/services/unsubscribe/filter/{filter}', 'SubscriptionsController@unsubscribeFilter');

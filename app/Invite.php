@@ -40,4 +40,9 @@ class Invite extends Model
     {
         return $this->belongsTo('App\Group');
     }
+
+    public function invitee()
+    {
+        return $this->belongsTo('App\User', 'email', 'email');
+    }
 }
