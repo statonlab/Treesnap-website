@@ -133,7 +133,6 @@ export default class Groups extends Component {
         <tr>
           <th>Group Name</th>
           <th>Group Owner</th>
-          {/*<th>Invited By</th>*/}
           <th>Invited By</th>
           <th></th>
         </tr>
@@ -175,10 +174,8 @@ export default class Groups extends Component {
     })
 
     axios.post(`/web/invitations/accept`, {
-      // params: {
       invite: invitation.id,
         _t: invitation.token
-      // }
     }).then(async () => {
       Notify.push(`You have joined ${invitation.group.name} successfully.`)
       await this.loadGroupsAndInvitations()

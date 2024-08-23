@@ -50,7 +50,7 @@ Route::get('/web/observation/{id}', 'ObservationsController@show');
 // Pre-fetched observation view to support FB open graph and twitter cards
 Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
 
-// Mapf
+// Map
 Route::get('/web/map', 'MapController@index');
 Route::get('/web/map/count', 'MapController@countObservations');
 Route::get('/web/map/{observation}', 'MapController@showObservation');
