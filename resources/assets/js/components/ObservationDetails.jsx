@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Map from './Map'
 import Marker from './Marker'
@@ -12,7 +12,7 @@ import Labels from '../helpers/Labels'
 import Utils from '../helpers/Utils'
 import User from '../helpers/User'
 import EventEmitter from '../helpers/EventEmitter'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import EmailModal from '../admin/components/EmailModal'
 import ShareLinkModal from './ShareLinkModal'
 import ObservationDetailsModal from './ObservationDetailsModal'
@@ -24,31 +24,32 @@ export default class ObservationDetails extends Component {
     super(props)
 
     this.state = {
-      activeTab          : 'photos',
-      markers            : [],
-      center             : {
+      activeTab: 'photos',
+      markers: [],
+      center: {
         lat: 40.354388,
         lng: -95.998237,
       },
-      zoom               : 4,
-      showControlModal   : false,
-      showShareLinkModal : false,
+      zoom: 4,
+      showControlModal: false,
+      showShareLinkModal: false,
       controlModalContent: '',
-      collections        : [],
-      showModal          : false,
-      deleted            : false,
-      showEmail          : false,
-      contact            : {
-        to  : {
+      showSubObservationModal: false,
+      collections: [],
+      showModal: false,
+      deleted: false,
+      showEmail: false,
+      contact: {
+        to: {
           user_id: 0,
-          name   : '',
+          name: '',
         },
         from: '',
       },
-      selectedUnit       : window.TreeSnap.units || 'US',
-      observation        : null,
-      confirmation      : {
-        id     : -1,
+      selectedUnit: window.TreeSnap.units || 'US',
+      observation: null,
+      confirmation: {
+        id: -1,
         correct: null,
       },
     }
@@ -63,12 +64,12 @@ export default class ObservationDetails extends Component {
 
     if (User.can('contact users')) {
       axios.get('/web/user').then(response => {
-        let user    = response.data.data
+        let user = response.data.data
         let contact = {
           from: user.email,
-          to  : {
+          to: {
             user_id: observation.user.id,
-            name   : observation.user.name,
+            name: observation.user.name,
           },
         }
         this.setState({contact})
@@ -104,7 +105,7 @@ export default class ObservationDetails extends Component {
     let observation = this.props.observation
     if (typeof observation.correct_marks !== 'undefined' && typeof observation.incorrect_marks !== 'undefined') {
       this.setState({
-        correctMarks  : observation.correct_marks,
+        correctMarks: observation.correct_marks,
         incorrectMarks: observation.incorrect_marks,
       })
       return
@@ -116,7 +117,7 @@ export default class ObservationDetails extends Component {
       console.log(response.data.data)
       let data = response.data.data
       this.setState({
-        correctMarks  : data.correct,
+        correctMarks: data.correct,
         incorrectMarks: data.incorrect,
       })
     }).catch(error => {
@@ -145,26 +146,26 @@ export default class ObservationDetails extends Component {
    */
   _setup(observation) {
     if (typeof observation.location !== 'undefined') {
-      observation.latitude        = observation.location.latitude
-      observation.longitude       = observation.location.longitude
+      observation.latitude = observation.location.latitude
+      observation.longitude = observation.location.longitude
       observation.collection_date = moment(observation.date).format('LLL')
     }
 
     this.setState({
-      markers    : [{
-        user_id : observation.user_id,
-        image   : observation.images.images ? observation.images.images[0] : '',
+      markers: [{
+        user_id: observation.user_id,
+        image: observation.images.images ? observation.images.images[0] : '',
         position: {
-          latitude : observation.latitude,
+          latitude: observation.latitude,
           longitude: observation.longitude,
         },
       }],
-      center     : {
+      center: {
         lat: observation.latitude,
         lng: observation.longitude,
       },
-      zoom       : 4,
-      loading    : false,
+      zoom: 4,
+      loading: false,
       collections: this.state.collections,
       observation,
     })
@@ -190,8 +191,8 @@ export default class ObservationDetails extends Component {
     }
 
     const keyMap = {
-      images : 'General Photo',
-      seeds  : 'Seed Photo',
+      images: 'General Photo',
+      seeds: 'Seed Photo',
       flowers: 'Flower Photo',
     }
 
@@ -201,7 +202,7 @@ export default class ObservationDetails extends Component {
       <div className={'image-gallery-image' + (inline ? ' max-h-90vh' : '')}
            style={{
              backgroundColor: observation.images.images.length > 1 ? '#222' : 'transparent',
-             position       : 'relative',
+             position: 'relative',
            }}>
         <img
           src={item.original}
@@ -209,13 +210,13 @@ export default class ObservationDetails extends Component {
         />
         <div style={{
           position: 'absolute',
-          bottom  : 0,
-          left    : 0,
-          right   : 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
           // backgroundColor: 'rgba(0,0,0,.5)',
-          color     : '#fff',
-          textAlign : 'center',
-          padding   : '20px',
+          color: '#fff',
+          textAlign: 'center',
+          padding: '20px',
           background: 'linear-gradient(rgba(0,0,0,0), #000)',
         }}>
           {typeof keyMap[item.key] !== 'undefined' ? keyMap[item.key] : item.key}
@@ -226,8 +227,8 @@ export default class ObservationDetails extends Component {
 
   getImages() {
     const {observation} = this.state
-    let images          = []
-    let imagesObject    = observation.images
+    let images = []
+    let imagesObject = observation.images
 
     Object.keys(imagesObject).map(key => {
       imagesObject[key].map(image => {
@@ -315,43 +316,45 @@ export default class ObservationDetails extends Component {
             </a>
             : null}
           {User.can('confirm species') ?
-              <a className={`button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
-                  onClick={() => this.confirm(false, observation)} >
-                  <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
-                           hideOnClick={false}>
-                      <span>{this.state.incorrectMarks}</span>
-                      <span className="icon is-small mr-1">
+            <a
+              className={`button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+              onClick={() => this.confirm(false, observation)}>
+              <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                       hideOnClick={false}>
+                <span>{this.state.incorrectMarks}</span>
+                <span className="icon is-small mr-1">
                           <b className="fa fa-times text-danger"></b>
                       </span>
-                  <span>Marks</span>
-                  </Tooltip>
-              </a> :
-              <div className={`disabled`}>
-                  <span>{this.state.incorrectMarks}</span>
-                  <span className="icon is-small ml-1 mr-1">
+                <span>Marks</span>
+              </Tooltip>
+            </a> :
+            <div className={`disabled`}>
+              <span>{this.state.incorrectMarks}</span>
+              <span className="icon is-small ml-1 mr-1">
                           <b className="fa fa-times text-danger"></b>
                       </span>
-                  <span>Marks</span>
-              </div>}
-            {User.can('confirm species') ?
-                <a className={`button is-outlined is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
-                   onClick={() => this.confirm(true, observation)}>
-                  <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
-                           hideOnClick={false}>
-                    <span>{this.state.correctMarks}</span>
-                    <span className="icon is-small mr-1">
+              <span>Marks</span>
+            </div>}
+          {User.can('confirm species') ?
+            <a
+              className={`button is-outlined is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+              onClick={() => this.confirm(true, observation)}>
+              <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                       hideOnClick={false}>
+                <span>{this.state.correctMarks}</span>
+                <span className="icon is-small mr-1">
                           <b className="fa fa-check text-success"></b>
                       </span>
-                    <span>Marks</span>
-                  </Tooltip>
-                </a> :
-                <div className={`disabled`} >
-                  <span>{this.state.correctMarks}</span>
-                  <span className="icon is-small ml-1 mr-1">
+                <span>Marks</span>
+              </Tooltip>
+            </a> :
+            <div className={`disabled`}>
+              <span>{this.state.correctMarks}</span>
+              <span className="icon is-small ml-1 mr-1">
                           <b className="fa fa-check text-success"></b>
                       </span>
-                  <span>Marks</span>
-                </div>}
+              <span>Marks</span>
+            </div>}
         </div>
 
         {this._renderControlModal()}
@@ -431,7 +434,7 @@ export default class ObservationDetails extends Component {
 
     this.setState({
       confirmation: {
-        id     : -1,
+        id: -1,
         correct: null,
       },
     })
@@ -543,18 +546,35 @@ export default class ObservationDetails extends Component {
 
   _renderCategoryClicker(label, data, key) {
     return (
-        <tr key={key}>
-          <th>{label}</th>
-          <td>
-            {data[key].categories.map(this._renderCategory.bind(this, [data[key]]))}
-          </td>
-        </tr>
+      <tr key={key}>
+        <th>{label}</th>
+        <td>
+          {data[key].categories.map(this._renderCategory.bind(this, [data[key]]))}
+        </td>
+      </tr>
     )
   }
 
   _renderCategory(data, label, index) {
     return (
-        <span key={index}>{data[0].counts[index] + ' ' + label}<br/></span>
+      <span key={index}>{data[0].counts[index] + ' ' + label}<br/></span>
+    )
+  }
+
+  /**
+   * Render the modal displaying sub observation data.
+   * @returns {{}}
+   * @private
+   */
+  _renderSubObservationModal() {
+    return (
+      <BoxModal
+        visible={this.state.showSubObservationModal}
+        onCloseRequest={() => this.setState({showSubObservationModal: false})}>
+        {/*{this.state.controlModalContent === 'flag' ? this._renderFlagForm() : null}*/}
+        {/*{this.state.controlModalContent === 'collection' ? this._renderCollectionForm() : null}*/}
+        <span>test</span>
+      </BoxModal>
     )
   }
 
@@ -708,24 +728,50 @@ export default class ObservationDetails extends Component {
                   : null}
 
                 {Object.keys(data).map(key => {
+                  console.log(key)
                   if (key.indexOf('_values') > -1 || key.indexOf('_units') > -1 || key.indexOf('_confidence') > -1) {
                     return null
                   }
 
-                  let unit    = null
+                  let unit = null
                   const label = typeof Labels[key] !== 'undefined' ? Labels[key] : key
-                  let val     = data[key]
+                  let val = data[key]
                   if (typeof data[`${key}_values`] !== 'undefined') {
                     unit = data[`${key}_values`][`${this.state.selectedUnit}_unit`]
-                    val  = data[`${key}_values`][`${this.state.selectedUnit}_value`]
+                    val = data[`${key}_values`][`${this.state.selectedUnit}_value`]
                   }
 
                   if (data[key].category_clicker) {
                     return this._renderCategoryClicker(label, data, key)
                   }
 
+                  // if (key === 'ashNearbySurvey') {
+                  //   console.log('HERE')
+                  //   console.log(data)
+                  //   return (<tr>
+                  //     <th>Ash Nearby Survey</th>
+                  //     <td>
+                  //       <a onClick={() => this.setState({showSubObservationModal: true})}>
+                  //         View Nearby Ash Survey
+                  //       </a>
+                  //     </td>
+                  //   </tr>)
+                  // }
+
+
                   return this._renderMetaData(label, val, key, unit)
                 })}
+
+                {(data['ashNearbySurvey'] !== undefined) ?
+                  <tr>
+                    <th>Ash Nearby Survey</th>
+                    <td>
+                      <a onClick={() => this.setState({showSubObservationModal: true})}>
+                        View Nearby Ash Survey
+                      </a>
+                    </td>
+                  </tr>
+                  : null}
 
                 {this.state.observation.location.address && this.state.observation.location.address.formatted ?
                   <tr>
@@ -800,7 +846,7 @@ export default class ObservationDetails extends Component {
                         {marker.image !== '' ?
                           <div className="callout">
                             <img src={marker.image} alt={marker.title} style={{
-                              width : 'auto',
+                              width: 'auto',
                               height: 100,
                             }}/>
                           </div>
@@ -828,6 +874,7 @@ export default class ObservationDetails extends Component {
         </div>
         {this._renderImagesModal()}
         {this.renderEmailModal()}
+        {this._renderSubObservationModal()}
         {this.state.showShareLinkModal ?
           <ShareLinkModal observationID={this.props.observation.observation_id}
                           onCloseRequest={() => this.setState({showShareLinkModal: false})}
@@ -840,10 +887,10 @@ export default class ObservationDetails extends Component {
 
 ObservationDetails
   .propTypes = {
-  observation        : PropTypes.object.isRequired,
-  showControls       : PropTypes.bool,
+  observation: PropTypes.object.isRequired,
+  showControls: PropTypes.bool,
   onAddedToCollection: PropTypes.func,
-  onFlagCreated      : PropTypes.func,
+  onFlagCreated: PropTypes.func,
 }
 
 ObservationDetails

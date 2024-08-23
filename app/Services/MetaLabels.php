@@ -155,7 +155,7 @@ class MetaLabels
             'seedCollected' => 'Seed collected',
             'ashSeedCollected' => 'Seed collected',
             'seedsBinary' => 'Seeds',
-            'ashSeedsBinary' => 'Seeds',            
+            'ashSeedsBinary' => 'Seeds',
             'seedsCollected' => 'Seeds Collected',
             'shadeSpecies' => 'Shade Species',
             'signsOfEAB' => 'Definite Signs of EAB',
@@ -172,7 +172,8 @@ class MetaLabels
             'treeHealthCategory' => 'Tree Health Category',
             'treeMarked' => 'Tree Markings',
             'treeNum' => 'Tree #',
-            'woollyAdesCoverage' => 'Woolly Adelgids'
+            'woollyAdesCoverage' => 'Woolly Adelgids',
+            'ashNearbySurvey' => 'Nearby Ash Survey',
         ];
 
         $this->species_labels = [
@@ -199,6 +200,7 @@ class MetaLabels
                 'crownHealth',
                 'diameterNumeric',
                 'treated',
+                'ashNearbySurvey'
             ],
 
 

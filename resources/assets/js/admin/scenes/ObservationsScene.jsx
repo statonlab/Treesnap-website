@@ -754,7 +754,7 @@ export default class ObservationsScene extends Scene {
             return (
               <div key={observation.observation_id}
                    className="column is-4-widescreen is-6-desktop is-6-tablet">
-                <ObservationCard
+                f<ObservationCard
                   loading={this.state.reduceCardOpacity}
                   observation={observation}
                   collections={this.state.ownedCollections}
