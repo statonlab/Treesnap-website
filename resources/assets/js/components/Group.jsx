@@ -17,6 +17,8 @@ export default class Group extends Component {
   constructor(props) {
     super(props)
 
+    console.log(this.props)
+
     this.state = {
       id                : 0,
       isPrivate         : false,
@@ -76,7 +78,8 @@ export default class Group extends Component {
         isOwner  : data.is_owner,
         leader   : data.owner,
         isSharing: data.is_sharing,
-        newName  : data.name
+        newName  : data.name,
+        isPrivate: data.is_private
       })
 
       document.title = `${data.name} - TreeSnap`
@@ -657,6 +660,8 @@ export default class Group extends Component {
   }
 
   _renderPrivacyModal() {
+    console.log('private = ' + this.state.isPrivate)
+
     return (
       <div>
         <div className="field">
@@ -677,7 +682,7 @@ export default class Group extends Component {
         {this.state.isOwner ? <div className="field mb-2">
           <label className="label">Discoverability</label>
           <span className="select">
-            <select value={this.state.isPrivate}
+            <select value={this.state.isPrivate === false ? 0 : 1}
                     onChange={({target}) => this.toggleDiscoverability(parseInt(target.value))}>
               <option value={1}>Users must be invited to join</option>
               <option value={0}>Allow anyone to find this group and apply to join</option>

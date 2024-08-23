@@ -50,7 +50,7 @@ Route::get('/web/observation/{id}', 'ObservationsController@show');
 // Pre-fetched observation view to support FB open graph and twitter cards
 Route::get('/observation/{id}', 'ObservationsController@showPreFetch');
 
-// Map
+// Mapf
 Route::get('/web/map', 'MapController@index');
 Route::get('/web/map/count', 'MapController@countObservations');
 Route::get('/web/map/{observation}', 'MapController@showObservation');
@@ -162,9 +162,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/web/note/{id}', 'NotesController@delete');
 
     // Invitations
+    Route::get('/web/invitations', 'InvitesController@index');
     Route::get('/web/invites/{group_id}', 'InvitesController@showPendingInvitations');
     Route::post('/web/invite', 'InvitesController@newInvitation');
     Route::post('/invitations/accept/authenticated/{id}', 'InvitesController@acceptAuthenticated');
+    Route::post('web/invitations/accept', 'InvitesController@acceptThroughWeb');
 
     // Unsubscribe
     Route::get('/services/unsubscribe/filter/{filter}', 'SubscriptionsController@unsubscribeFilter');
