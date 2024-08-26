@@ -6,7 +6,7 @@ use App\Filter;
 use App\Mail\FilterNotification;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendFilterNotifications extends Command
 {
