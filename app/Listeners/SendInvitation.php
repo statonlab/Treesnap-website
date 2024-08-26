@@ -8,7 +8,7 @@ use App\Notifications\InvitationNotification;
 use App\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendInvitation implements ShouldQueue
 {
@@ -40,6 +40,6 @@ class SendInvitation implements ShouldQueue
             return;
         }
 
-        Mail::queue(new InvitationMail($invite));
+        Mail::send(new InvitationMail($invite));
     }
 }
