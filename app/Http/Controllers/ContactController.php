@@ -40,7 +40,7 @@ class ContactController extends Controller
             ]);
         }
 
-        Mail::to($this->getSubscribedAdmins())->send(new ContactRequest((object)$request->all()));
+        Mail::to($this->getSubscribedAdmins())->queue(new ContactRequest((object)$request->all()));
 
         return $this->success('Message Sent');
     }
