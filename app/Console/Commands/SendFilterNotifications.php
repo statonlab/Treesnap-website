@@ -88,7 +88,7 @@ class SendFilterNotifications extends Command
             return;
         }
 
-        Mail::send(new FilterNotification($user, $observations, $total, $filter));
+        Mail::queue(new FilterNotification($user, $observations, $total, $filter));
 
         $this->say("Notification for {$filter->name} has been queued.");
 

@@ -40,6 +40,6 @@ class SendInvitation implements ShouldQueue
             return;
         }
 
-        Mail::send(new InvitationMail($invite));
+        Mail::queue(new InvitationMail($invite));
     }
 }
