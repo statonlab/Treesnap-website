@@ -8,6 +8,7 @@ export default class TwitterFeed extends Component {
     this.state = {
       isEditing: false,
       isLoggedIn: false,
+      isAdmin: false,
       appNames: ['Eastern Forest Pests','HealthyWoods' , 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
       imagePath: '',
@@ -32,6 +33,11 @@ export default class TwitterFeed extends Component {
       this.setState({
         isLoggedIn: data.logged_in,
       })
+      if(data.is_admin){
+        this.setState({
+          isAdmin: data.is_admin,
+        })
+      }
     }).catch(error => {
       console.log(error)
     })
@@ -133,7 +139,7 @@ render() {
 
   return (
       <div>
-        {this.state.isLoggedIn ?
+        {(this.state.isLoggedIn && this.state.isAdmin) ?
 
           this.renderButton(this.state.isOpen)
         :null}

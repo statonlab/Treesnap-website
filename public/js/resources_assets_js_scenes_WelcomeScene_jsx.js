@@ -1355,6 +1355,7 @@ var Treet = /*#__PURE__*/function (_Component) {
     _this.state = {
       loading: true,
       isLoggedIn: false,
+      isAdmin: false,
       isEditing: false,
       appNames: ['HealthyWoods', 'Eastern Forest Pests', 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
@@ -1378,6 +1379,11 @@ var Treet = /*#__PURE__*/function (_Component) {
         _this2.setState({
           isLoggedIn: data.logged_in
         });
+        if (data.is_admin) {
+          _this2.setState({
+            isAdmin: data.is_admin
+          });
+        }
       })["catch"](function (error) {
         console.log(error);
       });
@@ -1553,7 +1559,7 @@ var Treet = /*#__PURE__*/function (_Component) {
                 className: "text-dark-muted text-wrap w-100",
                 children: treet.description
               })
-            }), this.state.isLoggedIn ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            }), this.state.isLoggedIn && this.state.isAdmin ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
               className: "edit",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
                 className: "button is-primary is-small mr-3",
@@ -1619,6 +1625,7 @@ var TwitterFeed = /*#__PURE__*/function (_Component) {
     _this.state = {
       isEditing: false,
       isLoggedIn: false,
+      isAdmin: false,
       appNames: ['Eastern Forest Pests', 'HealthyWoods', 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
       imagePath: '',
@@ -1643,6 +1650,11 @@ var TwitterFeed = /*#__PURE__*/function (_Component) {
         _this2.setState({
           isLoggedIn: data.logged_in
         });
+        if (data.is_admin) {
+          _this2.setState({
+            isAdmin: data.is_admin
+          });
+        }
       })["catch"](function (error) {
         console.log(error);
       });
@@ -1805,7 +1817,7 @@ var TwitterFeed = /*#__PURE__*/function (_Component) {
         }, treet.id);
       });
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        children: [this.state.isLoggedIn ? this.renderButton(this.state.isOpen) : null, this.state.isOpen ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("form", {
+        children: [this.state.isLoggedIn && this.state.isAdmin ? this.renderButton(this.state.isOpen) : null, this.state.isOpen ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("form", {
           className: "",
           id: "create-form",
           onSubmit: this.onSubmit,

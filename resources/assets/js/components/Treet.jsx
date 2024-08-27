@@ -7,6 +7,7 @@ export default class Treet extends Component {
     this.state = {
       loading: true,
       isLoggedIn: false,
+      isAdmin: false,
       isEditing: false,
       appNames: ['HealthyWoods', 'Eastern Forest Pests', 'Avid Deer', 'Treesnap', 'FlorestaDB'],
       appName: '',
@@ -28,6 +29,11 @@ export default class Treet extends Component {
       this.setState({
         isLoggedIn: data.logged_in,
       })
+      if(data.is_admin){
+        this.setState({
+          isAdmin: data.is_admin,
+        })
+      }
     }).catch(error => {
       console.log(error)
     })
@@ -142,7 +148,7 @@ export default class Treet extends Component {
             <div className="item">
               <div className="text-dark-muted text-wrap w-100">{treet.description}</div>
             </div>
-            {this.state.isLoggedIn ?
+            {(this.state.isLoggedIn && this.state.isAdmin) ?
             <div className="edit">
             <button className="button is-primary is-small mr-3" onClick={()=>this.toggle()}>Edit</button>
             <button className="button is-danger is-small" onClick={()=>this.props.deleteTreet(treet)}>Delete</button>
