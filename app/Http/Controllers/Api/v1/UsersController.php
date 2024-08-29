@@ -85,7 +85,7 @@ class UsersController extends Controller
             return $this->error('Unable to create new user.', 100);
         }
 
-        $user->notify(new WelcomeNotification());
+//        $user->notify(new WelcomeNotification());
 
         event(new Registered($user));
 
