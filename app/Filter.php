@@ -84,7 +84,8 @@ class Filter extends Model
         'beechBarkDiseaseSymptoms',
         'hybridTraits',
         'laurelWilt',
-        'hemlockLocationCharacteristics'
+        'hemlockLocationCharacteristics',
+        'ashLocationCharacteristics'
     ];
 
     /**
