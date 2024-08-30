@@ -88,6 +88,7 @@ class Filter extends Model
         'hybridTraits',
         'laurelWilt',
         'hemlockLocationCharacteristics',
+        'ashLocationCharacteristics',
         'nearbyWillowSpecies'
     ];
 
