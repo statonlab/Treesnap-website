@@ -280,8 +280,8 @@ export default class ObservationDetails extends Component {
 
     return (
       <div style={{marginTop: '-20px'}}>
-        <div className="observation-tools" >
-          <a className="button is-outlined"  style={{marginTop: '20px'}}
+        <div className="observation-tools">
+          <a className="button is-outlined" style={{marginTop: '20px'}}
              onClick={() => this.setState({controlModalContent: 'collection', showControlModal: true})}>
             <span className="icon is-small">
               <i className="fa fa-star text-success"></i>
@@ -289,7 +289,7 @@ export default class ObservationDetails extends Component {
             <span>Add to Collection</span>
           </a>
           {User.owns(observation) ?
-            <a className="button is-outlined"  style={{marginTop: '20px'}}
+            <a className="button is-outlined" style={{marginTop: '20px'}}
                onClick={() => this.setState({showShareLinkModal: true})}>
               <span className="icon is-small">
                 <i className="fa fa-share text-success"></i>
@@ -297,7 +297,7 @@ export default class ObservationDetails extends Component {
               <span>Share Link</span>
             </a> : null}
           {observation.flags.length === 0 ?
-            <a className="button is-outlined"  style={{marginTop: '20px'}}
+            <a className="button is-outlined" style={{marginTop: '20px'}}
                onClick={() => this.setState({controlModalContent: 'flag', showControlModal: true})}>
               <span className="icon is-small">
                 <i className="fa fa-flag text-danger"></i>
@@ -306,7 +306,7 @@ export default class ObservationDetails extends Component {
             </a>
             : null}
           {User.can('contact users') ?
-            <a className="button is-outlined"  style={{marginTop: '20px'}}
+            <a className="button is-outlined" style={{marginTop: '20px'}}
                onClick={() => this.setState({showEmail: true})}>
               <span className="icon is-small">
                 <i className="fa fa-envelope text-info"></i>
@@ -314,93 +314,55 @@ export default class ObservationDetails extends Component {
               <span>Contact Submitter</span>
             </a>
             : null}
-<div className="flex-row">
+          <div className="flex-row">
 
-          {User.can('confirm species') ?
+            {User.can('confirm species') ?
 
-            <a className={`button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
-              onClick={() => this.confirm(false, observation)}>
-              <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
-                       hideOnClick={false}>
+              <a
+                className={`button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
+                onClick={() => this.confirm(false, observation)}>
+                <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
+                         hideOnClick={false}>
+                  <span>{this.state.incorrectMarks}</span>
+                  <span className="icon is-small mr-1">
+                          <b className="fa fa-times text-danger"></b>
+                      </span>
+                  <span>Marks</span>
+                </Tooltip>
+              </a> :
+              <div className={`disabled`}>
                 <span>{this.state.incorrectMarks}</span>
-                <span className="icon is-small mr-1">
+                <span className="icon is-small ml-1 mr-1">
                           <b className="fa fa-times text-danger"></b>
                       </span>
                 <span>Marks</span>
-              </Tooltip>
-            </a> :
-            <div className={`disabled`}>
-              <span>{this.state.incorrectMarks}</span>
-              <span className="icon is-small ml-1 mr-1">
-                          <b className="fa fa-times text-danger"></b>
+              </div>}
+            {User.can('confirm species') ?
+              <a
+                className={`button is-outlined is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
+                onClick={() => this.confirm(true, observation)}>
+                <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
+                         hideOnClick={false}>
+                  <span>{this.state.correctMarks}</span>
+                  <span className="icon is-small mr-1">
+                          <b className="fa fa-check text-success"></b>
                       </span>
-              <span>Marks</span>
-            </div>}
-          {User.can('confirm species') ?
-            <a
-              className={`button is-outlined is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
-              onClick={() => this.confirm(true, observation)}>
-              <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
-                       hideOnClick={false}>
+                  <span>Marks</span>
+                </Tooltip>
+              </a> :
+              <div className={`disabled`}>
                 <span>{this.state.correctMarks}</span>
-                <span className="icon is-small mr-1">
+                <span className="icon is-small ml-1 mr-1">
                           <b className="fa fa-check text-success"></b>
                       </span>
                 <span>Marks</span>
-              </Tooltip>
-            </a> :
-            <div className={`disabled`}>
-              <span>{this.state.correctMarks}</span>
-              <span className="icon is-small ml-1 mr-1">
-                          <b className="fa fa-check text-success"></b>
-                      </span>
-              <span>Marks</span>
-            </div>}
+              </div>
+            }
+          </div>
+
+          {this._renderControlModal()}
+
         </div>
-
-//               <a   style={{marginTop: '20px'}}className={`mr-2 button is-outlined is-clear${confirmation.id !== -1 && !confirmation.correct ? ' is-active' : ''}`}
-//               onClick={() => this.confirm(false, observation)} >
-//                   <Tooltip label={confirmation.id !== -1 && !confirmation.correct ? 'Undo' : 'Mark as incorrect species'}
-//                            hideOnClick={false}>
-//                       <span>{this.state.incorrectMarks}</span>
-//                       <span className="icon is-small mr-1">
-//                           <b className="fa fa-times text-danger"></b>
-//                       </span>
-//                   <span>Marks</span>
-//                   </Tooltip>
-//               </a> :
-//               <div className="disabled" style={{width: 'fit-content'}}>
-//                   <span>{this.state.incorrectMarks}</span>
-//                   <span className="icon is-small ml-1 mr-1">
-//                           <b className="fa fa-times text-danger"></b>
-//                       </span>
-//                   <span>Marks</span>
-//               </div>}
-//             {User.can('confirm species') ?
-//                 <a style={{marginTop: '20px'}} className={`button is-outlined is-clear${confirmation.id !== -1 && confirmation.correct ? ' is-active' : ''}`}
-//                 onClick={() => this.confirm(true, observation)}>
-//                   <Tooltip label={confirmation.id !== -1 && confirmation.correct ? 'Undo' : 'Confirm species'}
-//                            hideOnClick={false}>
-//                     <span>{this.state.correctMarks}</span>
-//                     <span className="icon is-small mr-1">
-//                           <b className="fa fa-check text-success"></b>
-//                       </span>
-//                     <span>Marks</span>
-//                   </Tooltip>
-//                 </a> :
-//                 <div className="disabled" style={{width: 'fit-content'}}>
-//                   <span>{this.state.correctMarks}</span>
-//                   <span className="icon is-small ml-1 mr-1">
-//                           <b className="fa fa-check text-success"></b>
-//                       </span>
-//                   <span>Marks</span>
-//                 </div>}
-//                   </div>
-//                   </div>
-
-
-        {this._renderControlModal()}
-
       </div>
     )
   }
