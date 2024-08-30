@@ -4,7 +4,7 @@ import ButtonList from '../ButtonList'
 import Utils from '../../helpers/Utils'
 import FiltersBase from './FiltersBase'
 
-export default class HemlockFilters extends FiltersBase {
+export default class FloridaTorreya extends FiltersBase {
   constructor(props) {
     super(props)
 
@@ -159,6 +159,6 @@ export default class HemlockFilters extends FiltersBase {
   }
 }
 
-HemlockFilters.propTypes = {
+FloridaTorreya.propTypes = {
   onChange: PropTypes.func.isRequired
 }

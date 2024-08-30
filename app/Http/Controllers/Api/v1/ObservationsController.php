@@ -221,7 +221,7 @@ class ObservationsController extends Controller
             'latitude' => $request->latitude,
             'fuzzy_coords' => $fuzzy_coords,
             'location_accuracy' => $request->location_accuracy,
-            'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
+//            'collection_date' => Carbon::createFromFormat('m-d-Y H:i:s', $request->date),
             'images' => $images,
             'is_private' => intval($request->is_private) === 1,
             'mobile_id' => $request->mobile_id,

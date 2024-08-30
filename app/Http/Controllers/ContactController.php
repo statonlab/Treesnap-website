@@ -9,7 +9,7 @@ use App\Mail\ContactUser;
 use App\User;
 use Illuminate\Http\Request;
 use ReCaptcha\ReCaptcha;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {

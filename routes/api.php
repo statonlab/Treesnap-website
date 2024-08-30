@@ -22,6 +22,8 @@ Route::group([
     Route::delete('/observation/{id}', 'ObservationsController@delete');
     Route::post('/observation/{id}', 'ObservationsController@update');
 
+ 
+
     // Images Controller
     Route::post('/observation/image/{id}', 'ImagesController@create');
 
@@ -58,4 +60,5 @@ Route::group([
     Route::post('/user/login', 'UsersController@login');
 
     Route::post('/apple', 'UsersController@apple');
+    Route::post('/contact', 'ContactController@send');
 });

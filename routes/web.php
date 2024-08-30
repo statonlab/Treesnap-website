@@ -25,6 +25,9 @@ Route::get('/web/docs/partners', 'DocumentController@partners');
 // Contact
 Route::post('/contact', 'ContactController@send');
 
+Route::get('/developer', 'HomeController@index');
+
+
 /**
  * Auth Routes:
  * Login: /login
@@ -81,8 +84,13 @@ Route::get('/web/observations/feed', 'ObservationsController@getObservationFeed'
 // Public Routes in the Confirmations Controller
 Route::get('/web/confirmations/count/{id}', 'PublicConfirmationsController@count');
 
+Route::get('/web/treets/feed', 'TreetController@index');
+Route::delete('/web/treet/{id}', 'TreetController@destroy');
+Route::post('/web/treets/create', 'TreetController@create');
+Route::put('/web/treets/update/{id}', 'TreetController@edit');
 // Authenticated Users Only (could be admin, scientist or user)
 Route::group(['middleware' => ['auth']], function () {
+    // Treets
     // Observations
     Route::delete('/web/observation/{id}', 'ObservationsController@delete');
 
@@ -154,9 +162,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/web/note/{id}', 'NotesController@delete');
 
     // Invitations
+    Route::get('/web/invitations', 'InvitesController@index');
     Route::get('/web/invites/{group_id}', 'InvitesController@showPendingInvitations');
     Route::post('/web/invite', 'InvitesController@newInvitation');
     Route::post('/invitations/accept/authenticated/{id}', 'InvitesController@acceptAuthenticated');
+    Route::post('web/invitations/accept', 'InvitesController@acceptThroughWeb');
 
     // Unsubscribe
     Route::get('/services/unsubscribe/filter/{filter}', 'SubscriptionsController@unsubscribeFilter');

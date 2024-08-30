@@ -76,6 +76,12 @@ return [
 
         'mailgun' => [
             'transport' => 'mailgun',
+            /**
+             * workaround for symphony bug https://github.com/symfony/symfony/issues/54491
+             */
+            'client' => [
+                'http_version' => '1.1',
+            ],
         ],
 
         'postmark' => [
@@ -173,4 +179,10 @@ return [
         ],
     ],
 
+    /**
+     * workaround for symphony bug https://github.com/symfony/symfony/issues/54491
+     */
+    'client' => [
+        'http_version' => '1.1',
+    ],
 ];

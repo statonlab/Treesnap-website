@@ -295,4 +295,9 @@ class User extends Authenticatable
         return $this->belongsToMany(SubscriptionTopic::class, 'subscription_topics_user', 'user_id',
             'subscription_topic_id');
     }
+
+    public function invites()
+    {
+        return Invite::where(['email' => $this->email, 'status' => 0])->get();
+    }
 }

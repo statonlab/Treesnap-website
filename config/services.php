@@ -15,6 +15,7 @@ return [
     */
 
     'mailgun' => [
+        'transport' => 'mailgun',
         'domain' => env('MAILGUN_DOMAIN', 'treesnap.org'),
         'secret' => env('MAILGUN_SECRET'),
     ],

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Traits\Responds;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactUser;
 use App\Contact;
 

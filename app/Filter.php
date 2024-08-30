@@ -43,6 +43,8 @@ class Filter extends Model
         'diameterNumeric',
         'heightNumeric',
         'breastNumeric',
+        'willowHeightNumeric',
+        'hemlockDiameter',
     ];
 
     /**
@@ -64,6 +66,7 @@ class Filter extends Model
         'Butternut' => 'butternut',
         'Pinyon Pine' => 'pinyonPine',
         'Ozark Chinquapin' => 'ozarkChinquapin',
+        'Alaskan Willow' => 'alaskanWillow',
         'Other' => 'other',
     ];
 
@@ -85,7 +88,8 @@ class Filter extends Model
         'hybridTraits',
         'laurelWilt',
         'hemlockLocationCharacteristics',
-        'ashLocationCharacteristics'
+        'ashLocationCharacteristics',
+        'nearbyWillowSpecies'
     ];
 
     /**
