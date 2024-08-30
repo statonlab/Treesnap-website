@@ -53,7 +53,7 @@ trait InvitesToGroups
             'email' => $request->email,
             'status' => 0,
             'token' => $rand,
-            'expires_at' => Carbon::now()->addDay(),
+            'expires_at' => Carbon::now()->addYear(),
         ]);
     }
 

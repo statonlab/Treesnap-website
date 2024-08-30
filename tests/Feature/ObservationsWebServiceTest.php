@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Observation;
 use App\User;
+use App\Treet;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -17,7 +18,26 @@ class ObservationsWebServiceTest extends TestCase
         parent::setUp();
         $this->withHeader('Accept', 'application/json');
     }
+    public function testGetTreets()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $token = $user->createToken(uniqid());
+        
+        factory(Treet::class, 10)->create();
 
+        $this->actingAs($user);
+
+        $response = $this->withHeader('Authorization', "Bearer $token->accessToken")
+            ->get('/web-services/v1/treets/feed', [
+                'limit' => 10
+            ]);
+        
+        // dd($response->json());
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure($this->getTreetResponseStructure());
+    }
     public function testMyObservationsService()
     {
         /** @var User $user */
@@ -75,6 +95,22 @@ class ObservationsWebServiceTest extends TestCase
         $response->assertSuccessful();
     }
 
+    protected function getTreetResponseStructure()
+    {
+        return [
+            'error_code',
+            'data' => [
+                [
+                    'id',
+                    'app_name',
+                    'description',
+                    'url',
+                    'created_at',
+                    'date',
+                ],
+            ],
+        ];
+    }
     protected function getPaginatedObservationResponseStructure()
     {
         return [

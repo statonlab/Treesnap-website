@@ -75,12 +75,23 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
 
     $categories = [
         'American Chestnut',
+        'American Beech',
+        'Cacao',
         'Ash',
-        'Other',
-        'White Oak',
         'Hemlock',
+        'White Oak',
         'American Elm',
         'Florida Torreya',
+        'Eastern Larch',
+        'Tanoak',
+        'Pacific Madrone',
+        'Oregon Ash',
+        'Butternut',
+        'Pinyon Pine',
+        'Sassafras',
+        'Ozark Chinquapin',
+        'Alaskan Willow',
+        'Other',
     ];
 
     $otherTrees = [
@@ -243,3 +254,19 @@ $factory->define(\App\DownloadStatistic::class, function (Faker\Generator $faker
         'observations_count' => $faker->numberBetween(10, 5000),
     ];
 });
+
+
+$factory->define(\App\Treet::class, function (Faker\Generator $faker) {
+    $appNames = ['Treesnap','FlorestaDB','HealthyWoods', 'Avid Deer', 'Eastern Forest Pests'];
+    $imagePaths = ["../images/logos/treesnap_logo.png","../images/logos/florestadb_logo.png","../images/logos/healthywoods_logo.png","../images/logos/aviddeer_logo.png","../images/logos/efp_logo.png"];
+    $urls = ["https://treesnap.org/","https://app.florestadb.org/login","https://healthywoodsapp.org/","https://aviddeer.com/","https://easternforestpests.com/"];
+    $randApp = array_rand($appNames, 1);
+    
+    return [
+        'app_name' => $appNames[$randApp],
+        'image_path' => $imagePaths[$randApp],
+        'url' => $urls[$randApp],
+        'description' => $faker->sentence()
+    ];
+});
+

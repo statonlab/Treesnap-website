@@ -439,6 +439,11 @@ class DownloadsController extends Controller
                     $line[] = implode(', ', array_map(function ($count, $category) {
                         return "$count $category";
                     }, $counts, $categories));
+                    // properly handle measurement values. i hope
+                } elseif (str_ends_with($key, '_values')) {
+                    $units = $data[substr($key,0, -7).'_units'];
+                    $search = array_search(strtolower($units), array_map('strtolower', $data[$key]));
+                    $line[] = $data[$key][$search];
                 } else {
                     if (preg_match('/^\[.*\]$/i', $data[$key])) {
                         $line[] = implode(',', json_decode($data[$key]));

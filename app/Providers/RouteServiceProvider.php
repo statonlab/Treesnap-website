@@ -48,6 +48,7 @@ class RouteServiceProvider extends ServiceProvider
             'filters',
             'groups',
             'group/([0-9]+)',
+            'invitations',
             'collections',
             'observations',
             'curate',

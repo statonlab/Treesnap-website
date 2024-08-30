@@ -76,7 +76,7 @@ class UsersController extends Controller
             'is_private' => $request->is_private ? 1 : 0,
             'zipcode' => $request->zipcode,
             'api_token' => $api_token,
-            'birth_year' => $request->birth_year,
+            'birth_year' => intval($request->birth_year),
             'units' => $request->units ? $request->units : 'US',
             'role_id' => Role::where('name', 'User')->first()->id,
         ]);
@@ -85,7 +85,7 @@ class UsersController extends Controller
             return $this->error('Unable to create new user.', 100);
         }
 
-        $user->notify(new WelcomeNotification());
+//        $user->notify(new WelcomeNotification());
 
         event(new Registered($user));
 
@@ -124,7 +124,7 @@ class UsersController extends Controller
             'email' => $request->email,
             'is_anonymous' => $request->is_anonymous,
             'is_private' => $request->is_private ? 1 : 0,
-            'birth_year' => $request->birth_year,
+            'birth_year' => intval($request->birth_year),
             'zipcode' => $request->zipcode,
             'units' => $request->units ? $request->units : 'US',
         ]);

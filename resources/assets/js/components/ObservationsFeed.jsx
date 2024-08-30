@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react';
+
 
 export default class ObservationsFeed extends Component {
   constructor(props) {
@@ -7,24 +9,76 @@ export default class ObservationsFeed extends Component {
 
     this.state = {
       observations: [],
-      loading     : true
+      moreObservations: [],
+      loading     : true,
+      page: 1,
+      lastPage: 0,
+      endOfFeed: false
     }
+    this.handleScroll = this.handleScroll.bind(this);
+    this.loadMoreObservations = this.loadMoreObservations.bind(this);
+    this.loadObservations = this.loadObservations.bind(this);
   }
 
   componentDidMount() {
     this.loadObservations()
 
-    setInterval(this.loadObservations.bind(this), 120000)
   }
 
   loadObservations() {
-    axios.get(`/web/observations/feed`).then(response => {
-      this.setState({observations: response.data.data, loading: false})
+    axios.get(`/web/observations/feed/`,{
+      params:{
+        page: this.state.page
+      }
+    })
+    .then(response => {
+      // this.setState({observations: response.data.data, loading: false})
+      this.setState({observations: response.data.data })
+      this.setState({lastPage: response.data['last_page']})
+      this.setState({loading: false})
+
+    }).catch(error => {
+      console.log(error)
+      this.setState({loading: false})
+    })
+  }  
+
+  loadMoreObservations(skip) {
+    axios.get(`/web/observations/feed/`,{
+      params:{
+        page: this.state.page
+      }
+    })
+    .then(response => {
+      // this.setState({observations: response.data.data, loading: false})
+      this.setState({observations: [...this.state.observations, ...response.data.data] })
+      this.setState({loading: false})     
+
     }).catch(error => {
       console.log(error)
       this.setState({loading: false})
     })
   }
+
+  handleScroll(event){
+      const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
+      if (bottom && (this.state.loading==false)) {
+        if(this.state.page === (this.state.lastPage+1)){
+          this.setState({endOfFeed: true})
+
+        }
+        else{
+
+          this.setState({loading: true})
+          this.setState({page: this.state.page+1})
+          var delayInMilliseconds = 1000;
+          
+          setTimeout(() => {
+            this.loadMoreObservations();
+          }, 1000);
+        }
+      }
+    }
 
   renderObservation(observation) {
     return (
@@ -51,16 +105,19 @@ export default class ObservationsFeed extends Component {
 
   render() {
     return (
-      <div style={{maxHeight: 487, overflowY: 'auto'}} className={'invisible-scrollbar'}>
-        {this.state.loading ?
-          <p className="has-text-centered">
-            <i className="fa fa-spinner fa-spin"></i>
-          </p>
-          : null}
+      <div style={{maxHeight: 487, overflowY: 'auto'}} onScroll={this.handleScroll}>
         {this.state.observations.map(this.renderObservation.bind(this))}
         {this.state.observations.length === 0 && !this.state.loading ?
           <p className="text-dark-muted has-text-centered">There are no observations at this time</p>
           : null}
+          {this.state.endOfFeed ?
+          <p className="text-dark-muted has-text-centered">End of Feed</p>
+          : null}
+          {this.state.loading ?
+            <p className="has-text-centered">
+              <i className="fa fa-spinner fa-spin"></i>
+            </p>
+            : null}
       </div>
     )
   }

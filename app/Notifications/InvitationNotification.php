@@ -46,7 +46,7 @@ class InvitationNotification extends Notification implements ShouldQueue
      * @param  mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $sender = $this->invite->user->name;
         $group = $this->invite->group->name;

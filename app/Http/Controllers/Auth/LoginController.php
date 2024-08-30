@@ -170,7 +170,7 @@ class LoginController extends Controller
             'is_private' => false,
             'is_anonymous' => false,
             'role_id' => $role->id,
-            'avatar' => isset($response->avatar) ? $response->avatar : null,
+            'avatar' => null, // isset($response->avatar) ? $response->avatar : null,
             'units' => 'US',
         ]);
 
@@ -195,7 +195,7 @@ class LoginController extends Controller
         $user = $this->findOrCreateUser([
             'email' => $response->getEmail(),
             'name' => $response->getName(),
-            'avatar' => $response->avatar,
+            'avatar' => null, // $response->avatar,
             'birth_year' => $birth_year,
             'provider' => 'google',
             'provider_id' => $response->getId(),
