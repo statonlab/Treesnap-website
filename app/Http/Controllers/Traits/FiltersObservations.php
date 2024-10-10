@@ -66,20 +66,25 @@ trait FiltersObservations
 
         // Handle keyword search
         if (! empty($request->search)) {
-            $term = $request->search;
-            $observations->where(function ($query) use ($term, $is_admin) {
-                $query->where('observation_category', 'like', "%$term%");
-                $query->orWhereRaw('LOWER(data->"$.otherLabel") like ?', '%'.strtolower($term).'%');
-                $query->orWhereRaw('LOWER(address->"$.formatted") like ?',  '%'.strtolower($term).'%');
-                $query->orWhere('mobile_id', 'like', "%$term%");
-                $query->orWhereRaw('LOWER("custom_id") like ?',  '%'.strtolower($term).'%');
+            //make term an array and replace term below with an iterable
+            $terms = explode(" ", $request->search);
 
-                if ($is_admin) {
-                    $query->orWhereHas('user', function ($query) use ($term) {
-                        $query->where('users.name', 'like', "%$term%");
-                    });
-                }
-            });
+            foreach($terms as $term){
+
+                $observations->where(function ($query) use ($term, $is_admin) {
+                  $query->where('observation_category', 'like', "%$term%");
+                  $query->orWhereRaw('LOWER(data->"$.otherLabel") like ?', '%'.strtolower($term).'%');
+                  $query->orWhereRaw('LOWER(address->"$.formatted") like ?',  '%'.strtolower($term).'%');
+                  $query->orWhere('mobile_id', 'like', "%$term%");
+                  $query->orWhereRaw('LOWER("custom_id") like ?',  '%'.strtolower($term).'%');
+                    
+                    if ($is_admin) {
+                        $query->orWhereHas('user', function ($query) use ($term) {
+                            $query->where('users.name', 'like', "%$term%");
+                        });
+                    }
+                });
+            }
         }
 
         // Handle confirmation status
