@@ -22,7 +22,6 @@ Route::get('/web/docs/faq', 'DocumentController@faq');
 Route::get('/web/docs/trees', 'DocumentController@trees');
 Route::get('/web/docs/partners', 'DocumentController@partners');
 
-// Contact
 Route::post('/contact', 'ContactController@send');
 
 Route::get('/developer', 'HomeController@index');
@@ -40,7 +39,7 @@ Route::get('/logout', 'UsersController@logout');
 
 Route::get('/login/{provider}', 'Auth\LoginController@redirectToSocialProvider');
 Route::get('/login/{provider}/callback', 'Auth\LoginController@handleSocialProviderCallback');
-Route::post('/login/{provider}/callback', 'Auth\LoginController@handleSocialProviderCallback');
+// Route::post('/login/{provider}/callback', 'Auth\LoginController@handleSocialProviderCallback');
 
 // Observations
 Route::get('/web/observations/categories', 'ObservationsController@getCategories');
