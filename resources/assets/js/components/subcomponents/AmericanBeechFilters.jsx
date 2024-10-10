@@ -10,6 +10,9 @@ export default class AmericanBeechFilters extends FiltersBase {
 
     this.state = {
       collectionPurpose: [],
+      locationCharacteristics: [],
+      nearbyTrees: [],
+      flowersBinary: []
     }
   }
 
@@ -30,6 +33,47 @@ export default class AmericanBeechFilters extends FiltersBase {
               list={['Landscape Genomics Project with University of Connecticut','Other Research Project','Personal Use','Not Available']}
               onChange={collectionPurpose => this._update('collectionPurpose', collectionPurpose)}/>
           </div>
+        </div>
+        <div className="column is-6">
+          <div className="field">
+            <label className="label">Habitat</label>
+            <ButtonList
+              value={this.state.locationCharacteristics}
+              list={[
+                  'Forest',
+                  'Wetland',
+                  'Field',
+                  'Roadside, urban, suburban, or park'
+              ]}
+              onChange={locationCharacteristics => this._update('locationCharacteristics', locationCharacteristics)}/>
+          </div>
+        </div>
+        <div className="column is-6">
+         <div className="field">
+           <label className="label">Trees Nearby</label>
+           <ButtonList
+             value={this.state.nearbyTrees}
+             list={[
+               'Dead and/or dying',
+               'Healthy and large',
+               'Healthy and small',
+               'No trees of this species nearby',
+               'Not sure'
+             ]}
+             onChange={nearbyTrees => this._update('nearbyTrees', nearbyTrees)}/>
+         </div>
+        </div>
+        <div className="column is-6">
+         <div className="field">
+           <label className="label">Flowers</label>
+           <ButtonList
+             value={this.state.flowersBinary}
+             list={[
+               'Yes',
+               'No'
+             ]}
+             onChange={flowersBinary => this._update('flowersBinary', flowersBinary)}/>
+         </div>
         </div>
       </div>
     )
