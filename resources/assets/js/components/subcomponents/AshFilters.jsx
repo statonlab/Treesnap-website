@@ -36,7 +36,7 @@ export default class AshFilters extends FiltersBase {
             <label className="label">Collection Purpose</label>
             <ButtonList
               value={this.state.ashCollectionPurpose}
-              list={['(MaMA Protocol) Lingering Ash Search', '(MaMA Protocol) EAB Sighting', 'Other Research Project', 'Personal Use']}
+              list={['(MaMA Protocol) Lingering Ash Search', '(MaMA Protocol) EAB Sighting', 'Other Research Project', 'Personal Use', 'Not Available']}
               onChange={ashCollectionPurpose => this._update('ashCollectionPurpose', ashCollectionPurpose)}/>
           </div>
         </div>

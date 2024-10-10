@@ -55,6 +55,7 @@ class Filter extends Model
     protected static $filterMapper = [
         'Ash' => 'ash',
         'American Chestnut' => 'americanChestnut',
+        'American Beech' => 'americanBeech',
         'Hemlock' => 'hemlock',
         'White Oak' => 'whiteOak',
         'American Elm' => 'americanElm',

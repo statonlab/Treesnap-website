@@ -57,7 +57,8 @@ export default class HemlockFilters extends FiltersBase {
                           'Lingering hemlock(s) data reporting',
                           'Landscape Genomics project with University of Connecticut',
                           'Other Research Project',
-                          'Personal use'
+                          'Personal use',
+                          'Not Available',
                       ]}
                       onChange={collectionPurpose => this._update('collectionPurpose', collectionPurpose)}/>
               </div>
