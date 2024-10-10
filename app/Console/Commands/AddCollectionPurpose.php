@@ -13,7 +13,7 @@ class AddCollectionPurpose extends Command
      *
      * @var string
      */
-    protected $signature = 'observation:add-collection-purpose {category}';
+    protected $signature = 'observations:add-collection-purpose {category}';
 
     /**
      * The console command description.
