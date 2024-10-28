@@ -94,6 +94,8 @@ export default class AshFilters extends FiltersBase {
         {/*</div>*/}
 
         <div className="column is-6">
+        {this.state.ashCollectionPurpose.includes('(MaMA Protocol) Lingering Ash Search') || this.state.ashCollectionPurpose.includes('(MaMA Protocol) EAB Sighting') ?  
+
           <div className="field">
             <label className="label">Ash Borer</label>
             <ButtonList
@@ -107,6 +109,8 @@ export default class AshFilters extends FiltersBase {
               ]}
               onChange={emeraldAshBorer => this._update('emeraldAshBorer', emeraldAshBorer)}/>
           </div>
+        : null}
+
         </div>
 
         {/*<div className="column is-6">*/}
