@@ -74,24 +74,24 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     }
 
     $categories = [
-        'American Chestnut',
-        'American Beech',
-        'Cacao',
+        // 'American Chestnut',
+        // 'American Beech',
+        // 'Cacao',
         'Ash',
-        'Hemlock',
-        'White Oak',
-        'American Elm',
-        'Florida Torreya',
-        'Eastern Larch',
-        'Tanoak',
-        'Pacific Madrone',
-        'Oregon Ash',
-        'Butternut',
-        'Pinyon Pine',
-        'Sassafras',
-        'Ozark Chinquapin',
-        'Alaskan Willow',
-        'Other',
+        // 'Hemlock',
+        // 'White Oak',
+        // 'American Elm',
+        // 'Florida Torreya',
+        // 'Eastern Larch',
+        // 'Tanoak',
+        // 'Pacific Madrone',
+        // 'Oregon Ash',
+        // 'Butternut',
+        // 'Pinyon Pine',
+        // 'Sassafras',
+        // 'Ozark Chinquapin',
+        // 'Alaskan Willow',
+        // 'Other',
     ];
 
     $otherTrees = [
@@ -138,8 +138,9 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     if ($c === 'Other') {
         $data['otherLabel'] = $otherTrees[rand() % count($otherTrees)];
     }
-
-    $user = factory(\App\User::class)->create();
+    if($c == 'Ash'){
+        $data = ['ashSpecies' => 'White ash',];
+    }
     $location = [
         'lat' => $faker->latitude,
         'lng' => $faker->longitude,
@@ -147,7 +148,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     $fuzzy = fuzifyCoorinates($location['lat'], $location['lng']);
 
     return [
-        'user_id' => $user->id,
+        'user_id' => 529,
         'observation_category' => $c,
         'images' => [
             'images' => ['/storage/images/'.$image],
