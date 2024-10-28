@@ -12,23 +12,22 @@ class AshSpeciesToV2 extends Command
      *
      * @var string
      */
-    protected $signature = 'observation:ash-species-to-v2';
+    protected $signature = 'observation:ash-update-species-and-location';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update all Ash observations to include ashSpeciesV2';
+    protected $description = 'Update all Ash observations to include ashSpeciesV2 and ashLocationCharacterirstics';
     
     /**
      * Execute the console command.
      */
     public function handle()
-    {
-        // update observations to include ashSpeciesV2
-        
+    {        
         $this->ashSpeciesToAshSpeciesV2();
+        $this->locationToAshLocation();
     }
 
     public function ashSpeciesToAshSpeciesV2()
@@ -89,13 +88,49 @@ class AshSpeciesToV2 extends Command
                     }
                 }
                 if($i==0){
-                    $this->info($i.' entries has been updated.');
+                    $this->info($i.' entries has been updated. (Ash Species)');
                 }
                 else if($i==1){
-                    $this->info($i.' entry has been updated.');
+                    $this->info($i.' entry has been updated. (Ash Species)');
                 }
                 else{
-                    $this->info($i.' entries have been updated.');
+                    $this->info($i.' entries have been updated. (Ash Species)');
+                }
+                
+            });
+    }
+    public function locationToAshLocation()
+    {
+        //for each observation
+        Observation::where("observation_category", 'Ash')
+            //200 observations at a time
+            ->chunk(200, function ($observations) {              
+
+                $i = 0;
+
+                foreach ($observations as $observation) {
+
+                    //...if locationCharacteristics is set, add the new field to data with same response
+                    if(isset($observation->data['locationCharacteristics']) && !isset($observation->data['ashLocationCharacteristics'])){
+                       
+                        $ashLocationCharacteristics = array(
+                            'ashLocationCharacteristics' => $observation->data['locationCharacteristics'],
+                        );
+                        $observation->data = array_merge($observation->data, $ashLocationCharacteristics);
+                        $observation->save();
+
+                        $i++;
+                    }
+                }
+
+                if($i==0){
+                    $this->info($i.' entries has been updated. (Location Characteristics)');
+                }
+                else if($i==1){
+                    $this->info($i.' entry has been updated. (Location Characteristics)');
+                }
+                else{
+                    $this->info($i.' entries have been updated. (Location Characteristics)');
                 }
                 
             });

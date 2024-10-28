@@ -140,6 +140,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
     }
     if($c == 'Ash'){
         $data['ashSpecies'] = 'White ash';
+        $data['locationCharacteristics'] = 'Forest';
     }
     $location = [
         'lat' => $faker->latitude,
