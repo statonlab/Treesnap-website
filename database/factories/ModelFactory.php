@@ -139,7 +139,7 @@ $factory->define(App\Observation::class, function (Faker\Generator $faker) {
         $data['otherLabel'] = $otherTrees[rand() % count($otherTrees)];
     }
     if($c == 'Ash'){
-        $data = ['ashSpecies' => 'White ash',];
+        $data['ashSpecies'] = 'White ash';
     }
     $location = [
         'lat' => $faker->latitude,
