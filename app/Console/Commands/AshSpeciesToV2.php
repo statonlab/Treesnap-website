@@ -20,14 +20,14 @@ class AshSpeciesToV2 extends Command
      * @var string
      */
     protected $description = 'Update all Ash observations to include ashSpeciesV2';
-    protected $updatedDescription = '';
-
+    
     /**
      * Execute the console command.
      */
     public function handle()
     {
         // update observations to include ashSpeciesV2
+        
         $this->ashSpeciesToAshSpeciesV2();
     }
 
@@ -36,39 +36,59 @@ class AshSpeciesToV2 extends Command
         //for each observation
         Observation::where("observation_category", 'Ash')
             //200 observations at a time
-            ->chunk(200, function ($observations) use ($updatedDescription){
-                
-                
-
+            ->chunk(200, function ($observations) {              
+                             
                 $i = 0;
+
                 foreach ($observations as $observation) {
 
                     //...if ashSpecies is set and ashSpeciesV2 isn't set, add the new field to data
                     if(isset($observation->data['ashSpecies']) && !isset($observation->data['ashSpeciesV2'])){
                         if($observation->data['ashSpecies'] == 'White ash'){
                             $updatedDescription = 'White ash (Fraxinus americana)';
+                            $ashSpeciesV2 = array(
+                                'ashSpeciesV2' => $updatedDescription,
+                            );
+                            $observation->data = array_merge($observation->data, $ashSpeciesV2);
+                            $observation->save();
+
                         }
                         else if($observation->data['ashSpecies'] == 'Green ash'){
                             $updatedDescription = 'Green ash (F. pennsylvanica)';
+                            $ashSpeciesV2 = array(
+                                'ashSpeciesV2' => $updatedDescription,
+                            );
+                            $observation->data = array_merge($observation->data, $ashSpeciesV2);
+                            $observation->save();
 
                         }
                         else if($observation->data['ashSpecies'] == 'Blue ash'){
                             $updatedDescription = 'Blue ash (F. nigra)';
+                            $ashSpeciesV2 = array(
+                                'ashSpeciesV2' => $updatedDescription,
+                            );
+                            $observation->data = array_merge($observation->data, $ashSpeciesV2);
+                            $observation->save();
 
                         }
                         else if($observation->data['ashSpecies'] == 'Black ash'){
                             $updatedDescription = 'Black ash (F. quadrangulata)';
+                            $ashSpeciesV2 = array(
+                                'ashSpeciesV2' => $updatedDescription,
+                            );
+                            $observation->data = array_merge($observation->data, $ashSpeciesV2);
+                            $observation->save();
 
                         }
                         else if($observation->data['ashSpecies'] == 'Uncertain'){
                             $updatedDescription = 'Not sure if this is ash';
+                            $ashSpeciesV2 = array(
+                                'ashSpeciesV2' => $updatedDescription,
+                            );
+                            $observation->data = array_merge($observation->data, $ashSpeciesV2);
+                            $observation->save();
 
                         }
-
-                        $ashSpeciesV2 = array(
-                            'ashSpeciesV2' => $updatedDescription,
-                        );
-                        $observation->data = array_merge($observation->data, $ashSpeciesV2);
 
                         $i++;
                     }
