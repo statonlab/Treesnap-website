@@ -33,8 +33,6 @@ class ObservationsWebServiceTest extends TestCase
                 'limit' => 10
             ]);
         
-        // dd($response->json());
-
         $response->assertStatus(200);
         $response->assertJsonStructure($this->getTreetResponseStructure());
     }
