@@ -60,7 +60,7 @@ class ContactController extends Controller
 //        });
         return collect([
 //            "mestato@gmail.com",
-            "noahgreycaldwell@gmail.com",
+            "florencecaldwell.dev@gmail.com",
 //            "cstribling1717@gmail.com"
         ]);
     }

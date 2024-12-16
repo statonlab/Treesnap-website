@@ -56,6 +56,9 @@ class DownloadsController extends Controller
      * @var array
      */
     protected array $advanced_species = [];
+    
+    //to trim down metalabel
+    protected array $presentLabels = [];
 
     /**
      * DownloadsController constructor.
@@ -91,7 +94,6 @@ class DownloadsController extends Controller
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
-        $header = $this->prepHeader();
 
         $filtered = Filter::apply($filter->rules);
         $filtered = $filtered->with(['latinName', 'user']);
@@ -118,7 +120,9 @@ class DownloadsController extends Controller
 
         $this->download($path, $name, $count);
 
+        $header = $this->prepHeader($this->presentLabels);
         return response()->streamDownload(function () use ($filtered, $user, $extension, $header) {
+
             echo $this->line($header, $extension);
 
             foreach ($filtered->cursor() as $observation) {
@@ -142,27 +146,32 @@ class DownloadsController extends Controller
     public function collection(Collection $collection, Request $request, $extension = 'tsv')
     {
         /** @var \App\User $user */
+        // pulls user information
         $user = $request->user();
+        //if user's name isn't on collection, abort
         if (!$collection->users->contains('id', $user->id)) {
             return abort(403);
         }
 
+        //if user doesn't have authority, abourt
         if (!$this->allowedExtension($extension)) {
             return abort(422, 'Invalid extension');
         }
 
+        //sets the file name
         $label = $this->fileNameEscape($collection->label);
 
+        //sends download to the downloads folder and formats name
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
-        $header = $this->prepHeader();
-
+        
         // Generate Collection
         $filtered = $collection->observations();
         $count = $this->count($filtered);
         $this->download($path, $name, $count);
-
+        
+        
         $filtered->with(['latinName', 'user']);
         $filtered->withCount([
             'flags' => function ($query) {
@@ -175,7 +184,13 @@ class DownloadsController extends Controller
                 $query->where('correct', true);
             },
         ]);
-
+        foreach ($filtered->cursor() as $observation) {
+            foreach(array_keys($observation->data) as $test){
+                array_push($this->presentLabels, $test);
+            }
+        }
+        //populates the headers
+        $header = $this->prepHeader($this->presentLabels);
         return response()->streamDownload(function () use ($filtered, $user, $path, $extension, $header) {
             echo $this->line($header, $extension);
 
@@ -210,17 +225,15 @@ class DownloadsController extends Controller
             'advanced_filters' => 'nullable|json',
             'status' => 'nullable|in:marked_correct_by_anyone,marked_correct_by_me',
         ]);
-
         $user = $request->user();
-
         if (!$this->allowedExtension($extension)) {
             return abort(422, 'Invalid extension');
         }
-
+        
         $label = $this->fileNameEscape('observations');
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
-
+        
         // Advanced filters get priority
         // If the advanced filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
         if ($request->advanced_filters && array_values(json_decode($request->advanced_filters)->categories)) {
@@ -229,7 +242,7 @@ class DownloadsController extends Controller
         elseif ($request->category) {
             $this->single_species = $request->category;
         }
-
+        
         $filtered = $this->getFilteredObservations($request);
         $filtered->withCount([
             'flags' => function ($query) {
@@ -242,13 +255,12 @@ class DownloadsController extends Controller
                 $query->where('correct', true);
             },
         ]);
+
         $count = $this->count($filtered);
         $this->download($path, $name, $count);
-
         return response()->streamDownload(function () use ($filtered, $user, $extension) {
-            $header = $this->prepHeader();
+            $header = $this->prepHeader($this->presentLabels);
             echo $this->line($header, $extension);
-
             foreach ($filtered->cursor() as $observation) {
                 $line = $this->prepObservationLine($observation, $user);
 
@@ -264,7 +276,7 @@ class DownloadsController extends Controller
      *
      * @return array
      */
-    protected function prepHeader(): array
+    protected function prepHeader($presentLabels): array
     {
         $header = [
             'Unique ID',
@@ -282,7 +294,7 @@ class DownloadsController extends Controller
             'Marked as Correct Species',
         ];
 
-        return array_merge($header, $this->getMetaHeader(), ['Url']);
+        return array_merge($header, $this->getMetaHeader($presentLabels), ['Url']);
     }
 
     /**
@@ -383,7 +395,7 @@ class DownloadsController extends Controller
      *
      * @return array
      */
-    protected function getMetaHeader(): array
+    protected function getMetaHeader($presentLabels): array
     {
         // advanced filters get priority
         if ($this->advanced_species !== []) {
@@ -403,6 +415,12 @@ class DownloadsController extends Controller
                 return $this->labels[$species_label];
             })->toArray();
         } else {
+            //compare array keys and present labels
+            foreach(array_keys($this->labels) as $label){
+                if(!in_array($label, $presentLabels)){
+                    $this->labels = array_diff_key($this->labels, array($label => true));
+                }
+            }
             return array_values($this->labels);
         }
     }
