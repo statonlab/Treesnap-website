@@ -62,13 +62,13 @@ export default class AboutUsView extends Component {
             <div className="tile is-child card us-tile">
               <div className="card-image">
                 <figure className="image">
-                  <img src="/images/us/noah.png" alt="Noah Caldwell"/>
+                  <img src="/images/us/img_1.png" alt="Florence Caldwell"/>
                 </figure>
               </div>
               <div className="card-content">
                 <div className="media">
                   <div className="media-content">
-                    <p className="title is-4">Noah Caldwell</p>
+                    <p className="title is-4">Florence Caldwell</p>
                     <p className="subtitle is-6">Mobile and Web Developer</p>
                   </div>
                 </div>

@@ -426,3 +426,7 @@ a.box {
 .fit-content {
   width: fit-content;
 }
+
+.image-fit {
+  object-fit: scale-down;
+}
