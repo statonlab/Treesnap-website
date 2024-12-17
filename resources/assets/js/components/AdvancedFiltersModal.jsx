@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ButtonList from './ButtonList'
 import AmericanChestnutFilters from './subcomponents/AmericanChestnutFilters'
 import AshFilters from './subcomponents/AshFilters'
+import AmericanBeechFilters from './subcomponents/AmericanBeechFilters'
 import HemlockFilters from './subcomponents/HemlockFilters'
 import AmericanElmFilters from './subcomponents/AmericanElmFilters'
 import WhiteOakFilters from './subcomponents/WhiteOakFilters'
@@ -32,6 +33,7 @@ export default class AdvancedFiltersModal extends Component {
       filterName        : '',
       americanChestnut  : {},
       ash               : {},
+      americanBeech     : {},
       hemlock           : {},
       americanElm       : {},
       whiteOak          : {},
@@ -107,6 +109,7 @@ export default class AdvancedFiltersModal extends Component {
       name            : this.state.filterName,
       categories      : this.state.selectedCategories,
       ash             : this.state.ash,
+      americanBeech   : this.state.americanBeech,
       americanChestnut: this.state.americanChestnut,
       hemlock         : this.state.hemlock,
       americanElm     : this.state.americanElm,
@@ -191,6 +194,7 @@ export default class AdvancedFiltersModal extends Component {
     axios.post('/web/filter/count', {
       categories      : filters.selectedCategories,
       ash             : filters.ash,
+      americanBeech   : filters.americanBeech,
       americanChestnut: filters.americanChestnut,
       hemlock         : filters.hemlock,
       americanElm     : filters.americanElm,
@@ -273,6 +277,19 @@ export default class AdvancedFiltersModal extends Component {
           <AshFilters
             defaultFilters={this.state.ash}
             onChange={(ash) => this.count({ash})}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderAmericanBeechFilters() {
+    return (
+      <div className="column is-12">
+        <h3 className="title is-4 mb-0">American Beech Filters (Optional)</h3>
+        <div className="bordered">
+          <AmericanBeechFilters
+            defaultFilters={this.state.americanBeech}
+            onChange={(americanBeech) => this.count({americanBeech})}/>
         </div>
       </div>
     )
