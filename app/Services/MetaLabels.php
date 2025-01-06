@@ -282,6 +282,8 @@ class MetaLabels
             'streamEdgeDistance' => 'Distance to Stream Edge',
             'streamRunningDistance' => 'Distance to Running Water',
             'otherNearbyWillowSpecies' => 'Other Nearby Species',
+            'adventureScienceVolunteerId' => 'Adventure Science Volunteer ID',
+            'adventureScienceTrailSelection' => 'Trail Selection',
         ];
         //just for the downloads
         $this->species_labels = [
@@ -362,6 +364,8 @@ class MetaLabels
                 // diameterNumeric       ,
                 // treated               ,
                 'collectionPurpose',
+                'adventureScienceVolunteerId',
+                'adventureScienceTrailSelection',
                 'lingeringHemlock',
                 'reasonForNoHemlocks',
                 'timeSpentSearching',
