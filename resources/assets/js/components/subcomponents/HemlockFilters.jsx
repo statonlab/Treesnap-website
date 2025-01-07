@@ -18,7 +18,7 @@ export default class HemlockFilters extends FiltersBase {
       hemlockCrownHealth            : [],
       hemlockSpecies         : [],
       lingeringHemlock       : [],
-      collectionPurpose      : [],
+      hemlockCollectionPurpose      : [],
       diameterNumericMin     : '',
       diameterNumericMax     : ''
     }
@@ -52,14 +52,15 @@ export default class HemlockFilters extends FiltersBase {
               <div className="field">
                   <label className="label">Are you looking for data from a specific research group?</label>
                   <ButtonList
-                      value={this.state.collectionPurpose}
+                      value={this.state.hemlockCollectionPurpose}
                       list={[
                           'Lingering hemlock(s) data reporting',
                           'Landscape Genomics project with University of Connecticut',
+                          'Adventure Scientists Hemlock Tracking',
                           'Other Research Project',
                           'Personal use'
                       ]}
-                      onChange={collectionPurpose => this._update('collectionPurpose', collectionPurpose)}/>
+                      onChange={hemlockCollectionPurpose => this._update('hemlockCollectionPurpose', hemlockCollectionPurpose)}/>
               </div>
           </div>
 
