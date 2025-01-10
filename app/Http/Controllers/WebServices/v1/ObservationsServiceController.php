@@ -83,7 +83,7 @@ class ObservationsServiceController extends Controller
         }
 
         if ($request->filters) {
-            $observations = Filter::apply($request->filters, $observations);
+            $observations = Filter::apply(json_decode($request->filters, true), $observations);
         }
 
         if(!$current_user_only && User::hasRole(['User'], $user)) {

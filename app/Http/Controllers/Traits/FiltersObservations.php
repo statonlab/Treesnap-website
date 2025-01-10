@@ -77,7 +77,7 @@ trait FiltersObservations
                   $query->orWhereRaw('LOWER(address->"$.formatted") like ?',  '%'.strtolower($term).'%');
                   $query->orWhere('mobile_id', 'like', "%$term%");
                   $query->orWhereRaw('LOWER("custom_id") like ?',  '%'.strtolower($term).'%');
-                    
+
                     if ($is_admin) {
                         $query->orWhereHas('user', function ($query) use ($term) {
                             $query->where('users.name', 'like', "%$term%");
@@ -129,6 +129,7 @@ trait FiltersObservations
         $filter = Filter::find($request->advanced_filter);
         $this->authorize('view', $filter);
 
+        // if this is broken, it may need json_encode($filter, true) first
         return Filter::apply($filter->rules, $observations);
     }
 }
