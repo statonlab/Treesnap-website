@@ -117,14 +117,12 @@ class Filter extends Model
     /**
      * Apply a certain filter.
      *
-     * @param Filter::rules
+     * @param array $filters Filter::rules
      * @param \Doctrine\DBAL\Query\QueryBuilder $observations
      * @return \App\Observation collection of observations.
      */
     public static function apply($filters, $observations = null)
     {
-        $filters = json_decode($filters, true);
-
         if ($observations === null) {
             $observations = Observation::with('user');
         }
