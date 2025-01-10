@@ -56,7 +56,7 @@ class DownloadsController extends Controller
      * @var array
      */
     protected array $advanced_species = [];
-    
+
     //to trim down metalabel
     protected array $presentLabels = [];
 
@@ -94,7 +94,7 @@ class DownloadsController extends Controller
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
-
+        // if this is broken, it may need json_encode($filter, true) first
         $filtered = Filter::apply($filter->rules);
         $filtered = $filtered->with(['latinName', 'user']);
 
@@ -165,13 +165,13 @@ class DownloadsController extends Controller
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
 
-        
+
         // Generate Collection
         $filtered = $collection->observations();
         $count = $this->count($filtered);
         $this->download($path, $name, $count);
-        
-        
+
+
         $filtered->with(['latinName', 'user']);
         $filtered->withCount([
             'flags' => function ($query) {
@@ -229,11 +229,11 @@ class DownloadsController extends Controller
         if (!$this->allowedExtension($extension)) {
             return abort(422, 'Invalid extension');
         }
-        
+
         $label = $this->fileNameEscape('observations');
         $path = 'downloads/' . $label . '_' . uniqid() . '.' . $extension;
         $name = $label . '_' . Carbon::now()->format('m_d_Y') . '.' . $extension;
-        
+
         // Advanced filters get priority
         // If the advanced filter is selected, parse the observations and only pass $labels that exist within any of the observations' data columns
         if ($request->advanced_filters && array_values(json_decode($request->advanced_filters)->categories)) {
@@ -242,7 +242,7 @@ class DownloadsController extends Controller
         elseif ($request->category) {
             $this->single_species = $request->category;
         }
-        
+
         $filtered = $this->getFilteredObservations($request);
         $filtered->withCount([
             'flags' => function ($query) {

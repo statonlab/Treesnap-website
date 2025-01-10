@@ -76,6 +76,8 @@ class SendFilterNotifications extends Command
     protected function send(Filter $filter)
     {
         $user = $filter->user;
+
+        // if this is broken, it may need json_encode($filter, true) first
         $observations = Filter::apply($filter->rules)
             ->where('observations.created_at', '>', $filter->notifications_sent_at)
             ->where('observations.user_id', '!=', $user->id)
