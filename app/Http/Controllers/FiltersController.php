@@ -67,6 +67,7 @@ class FiltersController extends Controller
             $filters = $request->all();
         }
 
+        // if this is broken, it may need json_encode($filter, true) first
         $filtered = Filter::apply($filters);
 
         if (! $user) {
