@@ -57,6 +57,7 @@ class RouteServiceProvider extends ServiceProvider
             'observations-by-state',
             '404',
             '500',
+            'version',
         ];
         $pattern = implode('|', $routes);
         Route::pattern('react', "$pattern");

@@ -326,23 +326,6 @@ export default class PartnerList extends Component {
         <div className="box">
           <div className="media">
             <div className="media-left">
-              <a href="https://www.nature.org/en-us/about-us/where-we-work/united-states/tennessee/stories-in-tennessee/hemlock/">
-                <img src="/images/tnc.png" alt="The Nature Conservancy" className="feature-icon"/>
-              </a>
-            </div>
-            <div className="media-content">
-              <p className="title">The Nature Conservancy</p>
-              <p className="feature-text">
-                The John T. Harrington Forestry Research Center with New Mexico State University is the only research program in the southwestern US that focuses on forest nursery technologies, tree improvement, and eco-physiology of young forest trees to facilitate ecological restoration and/or commercial reforestation. These research interests are critical for establishing future forests in the region.
-              </p>
-              <a className={'button is-info'} href="https://www.nature.org/en-us/about-us/where-we-work/united-states/tennessee/stories-in-tennessee/hemlock/">Visit Full Site</a>
-            </div>
-          </div>
-        </div>
-
-        <div className="box">
-          <div className="media">
-            <div className="media-left">
               <img src="/images/flat-icons/teamwork-3.png"
                    alt="Man Icon"
                    className="feature-icon"/>
